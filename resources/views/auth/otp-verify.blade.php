@@ -36,12 +36,6 @@
                                 <input type="hidden" name="longitude" id="longitude">
                             </div>
 
-                            @if ($errors->has('otp'))
-                                <div class="text-danger text-center">
-                                    {{ $errors->first('otp') }}
-                                </div>
-                            @endif
-
                             <div class="invalid-feedback d-block text-center" id="otpError"></div>
 
                             <button type="submit" class="btn-submit theme-btn" id="otpSubmitBtn">

@@ -136,13 +136,25 @@ class LoginController extends Controller
 
         try {
             // Make API request with timeout, retry, and proper headers
+            // Note: retry only on server errors (5xx) and network issues, not on client errors (4xx)
             $response = Http::withHeaders([
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json',
             ])
             ->timeout(30) // 30 seconds request timeout
             ->connectTimeout(10) // 10 seconds connection timeout
-            ->retry(3, 100) // Retry 3 times with 100ms delay between retries
+            ->retry(3, 100, function ($exception, $request) {
+                // Only retry on server errors (5xx) or network issues, not on client errors (4xx)
+                if ($exception instanceof RequestException && $exception->hasResponse()) {
+                    $statusCode = $exception->response->status();
+                    // Don't retry on 4xx errors (client errors like invalid OTP)
+                    if ($statusCode >= 400 && $statusCode < 500) {
+                        return false;
+                    }
+                }
+                // Retry on 5xx errors or network issues
+                return true;
+            })
             ->post(
                 config('services.api.base_url') . '/v1/customer/verify-otp',
                 [
@@ -254,11 +266,38 @@ class LoginController extends Controller
             return redirect()->route('book.now');
             
         } catch (RequestException $e) {
-            // Handle HTTP client exceptions (timeout, connection errors, etc.)
-            Log::error('OTP verification HTTP exception', [
+            // Check if exception has a response (API returned an error status code)
+            if ($e->hasResponse()) {
+                $response = $e->response;
+                $statusCode = $response->status();
+                $responseBody = $response->body();
+                
+                // Try to parse JSON response
+                $json = json_decode($responseBody, true);
+                
+                Log::error('OTP verification HTTP exception with response', [
+                    'status' => $statusCode,
+                    'body' => $responseBody,
+                    'parsed_json' => $json
+                ]);
+                
+                // Extract error message from API response if available
+                $errorMessage = 'Invalid OTP. Please check and try again.';
+                if (is_array($json) && isset($json['message'])) {
+                    $errorMessage = $json['message'];
+                } elseif ($statusCode === 401 || $statusCode === 403) {
+                    $errorMessage = 'Invalid OTP. Please check and try again.';
+                } elseif ($statusCode >= 500) {
+                    $errorMessage = 'Server error. Please try again later.';
+                }
+                
+                return back()->withErrors(['otp' => $errorMessage]);
+            }
+            
+            // Handle actual network/connection errors (no response from server)
+            Log::error('OTP verification HTTP exception (no response)', [
                 'message' => $e->getMessage(),
-                'code' => $e->getCode(),
-                'trace' => $e->getTraceAsString()
+                'code' => $e->getCode()
             ]);
             
             if (str_contains(strtolower($e->getMessage()), 'timeout')) {
