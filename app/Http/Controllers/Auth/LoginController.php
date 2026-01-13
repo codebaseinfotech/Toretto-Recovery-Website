@@ -6,13 +6,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Log;
 
 class LoginController extends Controller
 {
     /**
-     * login form
+     * Login page
      */
     public function showLogin()
     {
@@ -28,74 +27,50 @@ class LoginController extends Controller
             'phone' => 'required|string',
         ]);
 
+        // Add UAE country code
         $phone = '971' . $request->phone;
 
+        // Store phone in session
         Session::put('phone', $phone);
 
         try {
             $response = Http::withHeaders([
+                'Accept'       => 'application/json',
                 'Content-Type' => 'application/json',
-                'Accept' => 'application/json',
-            ])
-            ->timeout(30)
-            ->connectTimeout(10)
-            ->retry(3, 100)
-            ->post(
+                'Language'     => 'en',
+                'DeviceType'   => 'Android',
+                'DeviceID'     => '123456789',
+            ])->post(
                 config('services.api.base_url') . '/v1/customer/login',
                 [
-                    'phone' => $phone
+                    'phone' => $phone,
                 ]
             );
 
             if ($response->failed()) {
-                $statusCode = $response->status();
-                Log::error('Send OTP API failed', [
-                    'status' => $statusCode,
-                    'body' => $response->body(),
-                    'phone' => $phone
-                ]);
-
-                if ($statusCode >= 500) {
-                    return back()->withErrors(['phone' => 'Server error. Please try again later.']);
-                } else {
-                    return back()->withErrors(['phone' => 'Failed to send OTP. Please try again.']);
-                }
-            }
-
-            if ($response->serverError()) {
-                Log::error('Send OTP server error', [
+                Log::error('Send OTP failed', [
                     'status' => $response->status(),
-                    'body' => $response->body()
+                    'body'   => $response->body(),
                 ]);
-                return back()->withErrors(['phone' => 'Server error. Please try again later.']);
+
+                return back()->withErrors([
+                    'phone' => 'Failed to send OTP. Please try again.',
+                ]);
             }
 
-            Session::flash('otp-success', 'OTP sent successfully!');
-        
             return response()->json([
                 'status'   => true,
-                'redirect' => route('otp.form')
+                'redirect' => route('otp.form'),
             ]);
-        } catch (RequestException $e) {
-            Log::error('Send OTP HTTP exception', [
-                'message' => $e->getMessage(),
-                'code' => $e->getCode()
-            ]);
-            
-            if (str_contains(strtolower($e->getMessage()), 'timeout')) {
-                return back()->withErrors(['phone' => 'Request timeout. Please check your connection and try again.']);
-            } elseif (str_contains($e->getMessage(), 'Connection') || str_contains($e->getMessage(), 'resolve')) {
-                return back()->withErrors(['phone' => 'Connection error. Please check your internet connection.']);
-            }
-            
-            return back()->withErrors(['phone' => 'Network error. Please try again.']);
-        } catch (\Exception $e) {
+
+        } catch (\Throwable $e) {
             Log::error('Send OTP exception', [
                 'message' => $e->getMessage(),
-                'code' => $e->getCode(),
-                'trace' => $e->getTraceAsString()
             ]);
-            return back()->withErrors(['phone' => 'Something went wrong. Please try again.']);
+
+            return back()->withErrors([
+                'phone' => 'Something went wrong. Please try again.',
+            ]);
         }
     }
 
@@ -130,182 +105,73 @@ class LoginController extends Controller
 
         try {
             $response = Http::withHeaders([
+                'Accept'       => 'application/json',
                 'Content-Type' => 'application/json',
-                'Accept' => 'application/json',
-            ])
-            ->timeout(30)
-            ->connectTimeout(10)
-            ->retry(3, 100, function ($exception, $request) {
-                if ($exception instanceof RequestException) {
-                    if (property_exists($exception, 'response') && $exception->response) {
-                        $statusCode = $exception->response->status();
-                        if ($statusCode >= 400 && $statusCode < 500) {
-                            return false;
-                        }
-                    }
-                }
-                return true;
-            })
-            ->post(
-                env('API_BASE_URL') . '/v1/customer/verify-otp',
+                'Language'     => 'en',
+                'DeviceType'   => 'Android',
+                'DeviceID'     => '123456789',
+            ])->post(
+                config('services.api.base_url') . '/v1/customer/verify-otp',
                 [
                     'phone'     => $phone,
                     'otp'       => $request->otp,
-                    'latitude'  => $request->input('latitude'),
-                    'longitude' => $request->input('longitude'),
+                    'latitude'  => $request->latitude,
+                    'longitude' => $request->longitude,
                 ]
             );
 
             if ($response->failed()) {
-                $statusCode = $response->status();
-                $responseBody = $response->body();
-                
-                Log::error('OTP verification API failed', [
-                    'status' => $statusCode,
-                    'body' => $responseBody,
-                    'phone' => $phone,
-                    'headers' => $response->headers()
-                ]);
-
-                if ($statusCode === 401 || $statusCode === 403) {
-                    return back()->withErrors(['otp' => 'Invalid OTP. Please check and try again.']);
-                } elseif ($statusCode >= 500) {
-                    return back()->withErrors(['otp' => 'Server error. Please try again later.']);
-                } else {
-                    return back()->withErrors(['otp' => 'Invalid OTP or service unavailable']);
-                }
-            }
-
-            if ($response->clientError()) {
-                Log::warning('OTP verification client error', [
+                Log::error('OTP verification failed', [
                     'status' => $response->status(),
-                    'body' => $response->body()
+                    'body'   => $response->body(),
                 ]);
-                return back()->withErrors(['otp' => 'Invalid OTP. Please check and try again.']);
-            }
 
-            if ($response->serverError()) {
-                Log::error('OTP verification server error', [
-                    'status' => $response->status(),
-                    'body' => $response->body()
+                return back()->withErrors([
+                    'otp' => 'Invalid OTP. Please check and try again.',
                 ]);
-                return back()->withErrors(['otp' => 'Server error. Please try again later.']);
             }
 
             $json = $response->json();
-            
-            if ($json === null) {
-                $rawBody = $response->body();
-                Log::error('OTP verification API returned null response', [
-                    'status' => $response->status(),
-                    'body' => $rawBody,
-                    'headers' => $response->headers()
+
+            if (!isset($json['status']) || $json['status'] !== true) {
+                return back()->withErrors([
+                    'otp' => $json['message'] ?? 'OTP verification failed.',
                 ]);
-                return back()->withErrors(['otp' => 'Invalid response from server. Please try again.']);
             }
 
-            if (!isset($json) || empty($json)) {
-                Log::warning('OTP verification API returned empty data', [
-                    'response' => $json,
-                    'status' => $response->status()
+            $data = $json['data'] ?? null;
+
+            if (!$data || empty($data['access_token'])) {
+                Log::error('Access token missing in response', $json);
+
+                return back()->withErrors([
+                    'otp' => 'Authentication failed. Please try again.',
                 ]);
-                
-                if (isset($json['message'])) {
-                    return back()->withErrors(['otp' => $json['message']]);
-                }
-                
-                return back()->withErrors(['otp' => 'Invalid OTP']);
             }
 
-            $data = $json;
+            // Save token in session
+            Session::put('token', $data['access_token']);
 
-            Session::flash('otp-verify', 'OTP verified successfully!');
+            // Regenerate session for security
+            Session::regenerate();
+
+            // Remove phone from session
+            Session::forget('phone');
 
             if (($data['is_registered'] ?? false) === false) {
                 return redirect()->route('signup.form');
             }
 
-            if (empty($data['access_token'])) {
-                Log::warning('OTP verification successful but no access token', [
-                    'data' => $data,
-                    'is_registered' => $data['is_registered'] ?? null
-                ]);
-                return back()->withErrors(['otp' => 'Authentication failed. Please try again.']);
-            }
-
-            Session::put('token', $data['access_token']);
-
-            Session::forget('phone');
-            
-            Session::regenerate();
-            
             return redirect()->route('book.now');
-            
-        } catch (RequestException $e) {
-            $response = null;
-            $statusCode = null;
-            $responseBody = null;
-            
-            try {
-                if (property_exists($e, 'response') && $e->response) {
-                    $response = $e->response;
-                    $statusCode = $response->status();
-                    $responseBody = $response->body();
-                }
-            } catch (\Exception $ex) {
-            }
-            
-            if (isset($response) && $response && $responseBody) {
-                $json = json_decode($responseBody, true);
-                
-                Log::error('OTP verification HTTP exception with response', [
-                    'status' => $statusCode,
-                    'body' => $responseBody,
-                    'parsed_json' => $json
-                ]);
-                
-                $errorMessage = 'Invalid OTP. Please check and try again.';
-                if (is_array($json) && isset($json['message'])) {
-                    $errorMessage = $json['message'];
-                } elseif ($statusCode === 401 || $statusCode === 403) {
-                    $errorMessage = 'Invalid OTP. Please check and try again.';
-                } elseif ($statusCode >= 500) {
-                    $errorMessage = 'Server error. Please try again later.';
-                }
-                
-                return back()->withErrors(['otp' => $errorMessage]);
-            }
-            
-            $exceptionMessage = $e->getMessage();
-            if (preg_match('/\{.*"status".*"message".*\}/s', $exceptionMessage, $matches)) {
-                $json = json_decode($matches[0], true);
-                if (is_array($json) && isset($json['message'])) {
-                    Log::warning('OTP verification - extracted message from exception', [
-                        'message' => $json['message']
-                    ]);
-                    return back()->withErrors(['otp' => $json['message']]);
-                }
-            }
-            
-            Log::error('OTP verification HTTP exception (no response)', [
-                'message' => $exceptionMessage,
-                'code' => $e->getCode()
-            ]);
-            
-            if (str_contains(strtolower($exceptionMessage), 'timeout')) {
-                return back()->withErrors(['otp' => 'Request timeout. Please check your connection and try again.']);
-            } elseif (str_contains($exceptionMessage, 'Connection') || str_contains($exceptionMessage, 'resolve')) {
-                return back()->withErrors(['otp' => 'Connection error. Please check your internet connection.']);
-            }
-            
-            return back()->withErrors(['otp' => 'Network error. Please try again.']);
-        } catch (\Exception $e) {
+
+        } catch (\Throwable $e) {
             Log::error('OTP verification exception', [
                 'message' => $e->getMessage(),
-                'code' => $e->getCode(),
-                'trace' => $e->getTraceAsString()
             ]);
-            return back()->withErrors(['otp' => 'Something went wrong. Please try again.']);
+
+            return back()->withErrors([
+                'otp' => 'Something went wrong. Please try again.',
+            ]);
         }
     }
 }
