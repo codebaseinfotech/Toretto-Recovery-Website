@@ -30,18 +30,16 @@ class LoginController extends Controller
 
         $phone = '971' . $request->phone;
 
-        // Store user input temporarily
         Session::put('phone', $phone);
 
         try {
-            // Make API request with timeout, retry, and proper headers
             $response = Http::withHeaders([
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json',
             ])
-            ->timeout(30) // 30 seconds request timeout
-            ->connectTimeout(10) // 10 seconds connection timeout
-            ->retry(3, 100) // Retry 3 times with 100ms delay between retries
+            ->timeout(30)
+            ->connectTimeout(10)
+            ->retry(3, 100)
             ->post(
                 config('services.api.base_url') . '/v1/customer/login',
                 [
@@ -49,7 +47,6 @@ class LoginController extends Controller
                 ]
             );
 
-            // Check if HTTP request failed
             if ($response->failed()) {
                 $statusCode = $response->status();
                 Log::error('Send OTP API failed', [
@@ -65,7 +62,6 @@ class LoginController extends Controller
                 }
             }
 
-            // Check for server errors
             if ($response->serverError()) {
                 Log::error('Send OTP server error', [
                     'status' => $response->status(),
@@ -74,7 +70,6 @@ class LoginController extends Controller
                 return back()->withErrors(['phone' => 'Server error. Please try again later.']);
             }
 
-            // Flash a success message for the next page
             Session::flash('otp-success', 'OTP sent successfully!');
         
             return response()->json([
@@ -82,7 +77,6 @@ class LoginController extends Controller
                 'redirect' => route('otp.form')
             ]);
         } catch (RequestException $e) {
-            // Handle HTTP client exceptions (timeout, connection errors, etc.)
             Log::error('Send OTP HTTP exception', [
                 'message' => $e->getMessage(),
                 'code' => $e->getCode()
@@ -135,27 +129,21 @@ class LoginController extends Controller
         }
 
         try {
-            // Make API request with timeout, retry, and proper headers
-            // Note: retry only on server errors (5xx) and network issues, not on client errors (4xx)
             $response = Http::withHeaders([
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json',
             ])
-            ->timeout(30) // 30 seconds request timeout
-            ->connectTimeout(10) // 10 seconds connection timeout
+            ->timeout(30)
+            ->connectTimeout(10)
             ->retry(3, 100, function ($exception, $request) {
-                // Only retry on server errors (5xx) or network issues, not on client errors (4xx)
                 if ($exception instanceof RequestException) {
-                    // Check if exception has response property
                     if (property_exists($exception, 'response') && $exception->response) {
                         $statusCode = $exception->response->status();
-                        // Don't retry on 4xx errors (client errors like invalid OTP)
                         if ($statusCode >= 400 && $statusCode < 500) {
                             return false;
                         }
                     }
                 }
-                // Retry on 5xx errors or network issues
                 return true;
             })
             ->post(
@@ -168,7 +156,6 @@ class LoginController extends Controller
                 ]
             );
 
-            // Check if HTTP request failed (4xx, 5xx status codes)
             if ($response->failed()) {
                 $statusCode = $response->status();
                 $responseBody = $response->body();
@@ -180,7 +167,6 @@ class LoginController extends Controller
                     'headers' => $response->headers()
                 ]);
 
-                // Handle specific error cases
                 if ($statusCode === 401 || $statusCode === 403) {
                     return back()->withErrors(['otp' => 'Invalid OTP. Please check and try again.']);
                 } elseif ($statusCode >= 500) {
@@ -190,7 +176,6 @@ class LoginController extends Controller
                 }
             }
 
-            // Check for client errors (4xx) that might not be caught by failed()
             if ($response->clientError()) {
                 Log::warning('OTP verification client error', [
                     'status' => $response->status(),
@@ -199,7 +184,6 @@ class LoginController extends Controller
                 return back()->withErrors(['otp' => 'Invalid OTP. Please check and try again.']);
             }
 
-            // Check for server errors (5xx)
             if ($response->serverError()) {
                 Log::error('OTP verification server error', [
                     'status' => $response->status(),
@@ -208,10 +192,8 @@ class LoginController extends Controller
                 return back()->withErrors(['otp' => 'Server error. Please try again later.']);
             }
 
-            // Get JSON response - handle null case
             $json = $response->json();
             
-            // Check if response is null or not valid JSON
             if ($json === null) {
                 $rawBody = $response->body();
                 Log::error('OTP verification API returned null response', [
@@ -222,14 +204,12 @@ class LoginController extends Controller
                 return back()->withErrors(['otp' => 'Invalid response from server. Please try again.']);
             }
 
-            // Check if response has expected structure
-            if (!isset($json['data']) || empty($json['data'])) {
+            if (!isset($json) || empty($json)) {
                 Log::warning('OTP verification API returned empty data', [
                     'response' => $json,
                     'status' => $response->status()
                 ]);
                 
-                // Check if there's an error message in the response
                 if (isset($json['message'])) {
                     return back()->withErrors(['otp' => $json['message']]);
                 }
@@ -237,17 +217,14 @@ class LoginController extends Controller
                 return back()->withErrors(['otp' => 'Invalid OTP']);
             }
 
-            $data = $json['data'];  // "is_registered" => false ,  "phone" => "971XXXXX"
+            $data = $json;
 
-            // Flash a success message for the next page
             Session::flash('otp-verify', 'OTP verified successfully!');
 
-            // NOT REGISTERED USER
             if (($data['is_registered'] ?? false) === false) {
                 return redirect()->route('signup.form');
             }
 
-            // REGISTERED USER → TOKEN REQUIRED
             if (empty($data['access_token'])) {
                 Log::warning('OTP verification successful but no access token', [
                     'data' => $data,
@@ -256,44 +233,29 @@ class LoginController extends Controller
                 return back()->withErrors(['otp' => 'Authentication failed. Please try again.']);
             }
 
-            // Store token in session
             Session::put('token', $data['access_token']);
 
-            // LOGIN SUCCESS
-            Session::forget('phone');       //Because:Phone is now stored in session('user.phone')
+            Session::forget('phone');
             
-            // Regenerate session ID for security (prevents session fixation attacks)
-            // This also ensures the session is saved before redirect
             Session::regenerate();
             
             return redirect()->route('book.now');
             
         } catch (RequestException $e) {
-            // Check if exception has a response (API returned an error status code)
-            // Laravel's RequestException may have response property or getResponse() method
             $response = null;
             $statusCode = null;
             $responseBody = null;
             
             try {
-                // Try to get response from exception
                 if (property_exists($e, 'response') && $e->response) {
                     $response = $e->response;
-                } elseif (method_exists($e, 'getResponse') && $e->getResponse()) {
-                    $response = $e->getResponse();
-                }
-                
-                if ($response) {
                     $statusCode = $response->status();
                     $responseBody = $response->body();
                 }
             } catch (\Exception $ex) {
-                // If we can't get response, continue with message parsing
             }
             
-            // If we have a response, extract error message from it
-            if ($response && $responseBody) {
-                // Try to parse JSON response
+            if (isset($response) && $response && $responseBody) {
                 $json = json_decode($responseBody, true);
                 
                 Log::error('OTP verification HTTP exception with response', [
@@ -302,7 +264,6 @@ class LoginController extends Controller
                     'parsed_json' => $json
                 ]);
                 
-                // Extract error message from API response if available
                 $errorMessage = 'Invalid OTP. Please check and try again.';
                 if (is_array($json) && isset($json['message'])) {
                     $errorMessage = $json['message'];
@@ -315,7 +276,6 @@ class LoginController extends Controller
                 return back()->withErrors(['otp' => $errorMessage]);
             }
             
-            // Try to extract error message from exception message (which may contain JSON)
             $exceptionMessage = $e->getMessage();
             if (preg_match('/\{.*"status".*"message".*\}/s', $exceptionMessage, $matches)) {
                 $json = json_decode($matches[0], true);
@@ -327,7 +287,6 @@ class LoginController extends Controller
                 }
             }
             
-            // Handle actual network/connection errors (no response from server)
             Log::error('OTP verification HTTP exception (no response)', [
                 'message' => $exceptionMessage,
                 'code' => $e->getCode()
