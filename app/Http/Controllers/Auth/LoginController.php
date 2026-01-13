@@ -145,18 +145,21 @@ class LoginController extends Controller
             ->connectTimeout(10) // 10 seconds connection timeout
             ->retry(3, 100, function ($exception, $request) {
                 // Only retry on server errors (5xx) or network issues, not on client errors (4xx)
-                if ($exception instanceof RequestException && $exception->hasResponse()) {
-                    $statusCode = $exception->response->status();
-                    // Don't retry on 4xx errors (client errors like invalid OTP)
-                    if ($statusCode >= 400 && $statusCode < 500) {
-                        return false;
+                if ($exception instanceof RequestException) {
+                    // Check if exception has response property
+                    if (property_exists($exception, 'response') && $exception->response) {
+                        $statusCode = $exception->response->status();
+                        // Don't retry on 4xx errors (client errors like invalid OTP)
+                        if ($statusCode >= 400 && $statusCode < 500) {
+                            return false;
+                        }
                     }
                 }
                 // Retry on 5xx errors or network issues
                 return true;
             })
             ->post(
-                config('services.api.base_url') . '/v1/customer/verify-otp',
+                env('API_BASE_URL') . '/v1/customer/verify-otp',
                 [
                     'phone'     => $phone,
                     'otp'       => $request->otp,
@@ -267,11 +270,29 @@ class LoginController extends Controller
             
         } catch (RequestException $e) {
             // Check if exception has a response (API returned an error status code)
-            if ($e->hasResponse()) {
-                $response = $e->response;
-                $statusCode = $response->status();
-                $responseBody = $response->body();
+            // Laravel's RequestException may have response property or getResponse() method
+            $response = null;
+            $statusCode = null;
+            $responseBody = null;
+            
+            try {
+                // Try to get response from exception
+                if (property_exists($e, 'response') && $e->response) {
+                    $response = $e->response;
+                } elseif (method_exists($e, 'getResponse') && $e->getResponse()) {
+                    $response = $e->getResponse();
+                }
                 
+                if ($response) {
+                    $statusCode = $response->status();
+                    $responseBody = $response->body();
+                }
+            } catch (\Exception $ex) {
+                // If we can't get response, continue with message parsing
+            }
+            
+            // If we have a response, extract error message from it
+            if ($response && $responseBody) {
                 // Try to parse JSON response
                 $json = json_decode($responseBody, true);
                 
@@ -294,15 +315,27 @@ class LoginController extends Controller
                 return back()->withErrors(['otp' => $errorMessage]);
             }
             
+            // Try to extract error message from exception message (which may contain JSON)
+            $exceptionMessage = $e->getMessage();
+            if (preg_match('/\{.*"status".*"message".*\}/s', $exceptionMessage, $matches)) {
+                $json = json_decode($matches[0], true);
+                if (is_array($json) && isset($json['message'])) {
+                    Log::warning('OTP verification - extracted message from exception', [
+                        'message' => $json['message']
+                    ]);
+                    return back()->withErrors(['otp' => $json['message']]);
+                }
+            }
+            
             // Handle actual network/connection errors (no response from server)
             Log::error('OTP verification HTTP exception (no response)', [
-                'message' => $e->getMessage(),
+                'message' => $exceptionMessage,
                 'code' => $e->getCode()
             ]);
             
-            if (str_contains(strtolower($e->getMessage()), 'timeout')) {
+            if (str_contains(strtolower($exceptionMessage), 'timeout')) {
                 return back()->withErrors(['otp' => 'Request timeout. Please check your connection and try again.']);
-            } elseif (str_contains($e->getMessage(), 'Connection') || str_contains($e->getMessage(), 'resolve')) {
+            } elseif (str_contains($exceptionMessage, 'Connection') || str_contains($exceptionMessage, 'resolve')) {
                 return back()->withErrors(['otp' => 'Connection error. Please check your internet connection.']);
             }
             
