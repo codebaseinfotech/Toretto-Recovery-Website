@@ -61,6 +61,11 @@ class SignupController extends Controller
             Session::put('token', $data['access_token']);
 
             Session::forget('phone');       //Because:Phone is now stored in session('user.phone')
+            
+            // Regenerate session ID for security (prevents session fixation attacks)
+            // This also ensures the session is saved before redirect
+            Session::regenerate();
+            
             return redirect()->route('book.now');
         }
         catch(\Exception $e){

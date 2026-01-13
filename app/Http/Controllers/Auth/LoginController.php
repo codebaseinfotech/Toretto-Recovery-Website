@@ -246,6 +246,11 @@ class LoginController extends Controller
 
             // LOGIN SUCCESS
             Session::forget('phone');       //Because:Phone is now stored in session('user.phone')
+            
+            // Regenerate session ID for security (prevents session fixation attacks)
+            // This also ensures the session is saved before redirect
+            Session::regenerate();
+            
             return redirect()->route('book.now');
             
         } catch (RequestException $e) {
