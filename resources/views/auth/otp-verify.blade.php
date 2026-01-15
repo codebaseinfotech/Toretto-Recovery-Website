@@ -216,9 +216,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 'X-Requested-With': 'XMLHttpRequest'
             },
             // Get phone from localStorage (stored during login step)
-            const phoneFromStorage =
-            
-            localStorage.getItem('phone_for_verification') || '';
+            const phoneFromStorage = localStorage.getItem('phone_for_verification') || '';
             
             body: JSON.stringify({
                 phone: phoneFromStorage,
