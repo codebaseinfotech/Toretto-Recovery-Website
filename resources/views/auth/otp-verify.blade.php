@@ -215,7 +215,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 'Content-Type': 'application/json',
                 'X-Requested-With': 'XMLHttpRequest'
             },
+            // Get phone from localStorage (stored during login step)
+            const phoneFromStorage =
+            
+            localStorage.getItem('phone_for_verification') || '';
+            
             body: JSON.stringify({
+                phone: phoneFromStorage,
                 otp: otp,
                 latitude: latInput ? latInput.value : null,
                 longitude: lngInput ? lngInput.value : null,
