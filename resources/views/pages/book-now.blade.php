@@ -191,9 +191,9 @@
 
 <script>
 const PRICE_API_BASE_URL = "{{ env('PRICE_API_BASE_URL', 'http://3.7.253.61') }}";
-// Inject API token from session-based login (fallback for meta/window token)
+
 const API_BEARER_TOKEN = "{{ session('token') }}";
-// Custom marker icon for drivers (save the provided truck image as assets/images/driver-truck.png)
+
 const DRIVER_ICON_URL = "{{ asset('assets/images/driver-truck.png') }}";
 let latestDistanceKm = 0; // updated when distance is calculated
 let bookingSuccessToastShown = false; // prevent duplicate success toasts
@@ -273,29 +273,28 @@ function initAutocomplete() {
     });
 }
 
-// Function to get the authentication token
 function getAuthToken() {
-    // Prefer token injected from backend for logged-in user
+    const localStorageToken = localStorage.getItem('auth_token');
+    if (localStorageToken && localStorageToken !== '') {
+        return localStorageToken;
+    }
+    
     if (API_BEARER_TOKEN && API_BEARER_TOKEN !== '') {
         return API_BEARER_TOKEN;
     }
 
-    // Get token from meta tag that should be set in the layout
     const tokenMeta = document.querySelector('meta[name="api-token"]');
     if (tokenMeta) {
         return tokenMeta.getAttribute('content');
     }
     
-    // Fallback to a global variable that might be set by the backend
     if (typeof window.userApiToken !== 'undefined') {
         return window.userApiToken;
     }
     
-    // Return empty string if no token found
     return '';
 }
 
-// Function to call the external API to get the price
 async function fetchPriceFromAPI(latitude, longitude, km) {
     try {
         const priceEl = document.getElementById('price');
@@ -327,11 +326,9 @@ async function fetchPriceFromAPI(latitude, longitude, km) {
 
         const data = await response.json();
         
-        // Debug: log the response to see its structure
         console.log('API Response:', data);
         
         if(priceEl) {
-            // Expected payload: { status: true, message: "...", data: { price: 123.45, ... } }
             const price =
                 (data && data.data && data.data.price) ??
                 data?.price ??
@@ -356,20 +353,17 @@ async function fetchPriceFromAPI(latitude, longitude, km) {
     }
 }
 
-// SweetAlert2 toast notification function
 function showToast(message, type = 'success') {
-    // Map our types to SweetAlert2 types
     let swalIcon = type === 'error' ? 'error' : type === 'warning' ? 'warning' : type === 'info' ? 'info' : 'success';
     
-    // Use white background as requested
     let background = '#FFFFFF';
     let color;
     switch(type) {
         case 'error':
-            color = '#dc3545'; // Red for error
+            color = '#dc3545';
             break;
         case 'warning':
-            color = '#ffc107'; // Yellow for warning
+            color = '#ffc107';
             break;
         case 'info':
             color = '#17a2b8'; // Blue for info
