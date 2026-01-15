@@ -69,7 +69,7 @@
 
 
 
-@push('signup-script')
+@push('login-script')
 <script>
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -119,20 +119,36 @@ document.addEventListener('DOMContentLoaded', function () {
             headers: {
                 'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
                 'Accept': 'application/json',
+                'Content-Type': 'application/json',
                 'X-Requested-With': 'XMLHttpRequest'
             },
-            body: new FormData(form)
+            body: JSON.stringify({
+                phone: phone,
+                _token: document.querySelector('input[name="_token"]').value
+            })
         })
-        .then(async response => {
-            const data = await response.json();
+        .then(response => response.json())
+        .then(data => {
+            // Hide loader
+            btn.disabled = false;
+            btnText.classList.remove('d-none');
+            btnLoader.classList.add('d-none');
 
-            if (!response.ok) {
-                throw data;
-            }
-
-            // ✅ Success → redirect
-            if (data.redirect) {
-                window.location.href = data.redirect;
+            if (data.status === true) {
+                // Show success toast
+                showToast('✅ ' + data.message, 'success');
+                
+                // Redirect to OTP page
+                if (data.redirect) {
+                    setTimeout(() => {
+                        window.location.href = data.redirect;
+                    }, 1500);
+                }
+            } else {
+                // Show error toast
+                showToast('❌ ' + (data.message || 'Something went wrong'), 'error');
+                errorBox.innerText = data.message || 'Something went wrong';
+                phoneInput.classList.add('is-invalid');
             }
         })
         .catch(error => {
@@ -140,14 +156,82 @@ document.addEventListener('DOMContentLoaded', function () {
             btn.disabled = false;
             btnText.classList.remove('d-none');
             btnLoader.classList.add('d-none');
-
-            if (error.errors && error.errors.phone) {
-                errorBox.innerText = error.errors.phone[0];
-            } else {
-                errorBox.innerText = error.message || 'Something went wrong';
-            }
+            
+            showToast('❌ Network error. Please try again.', 'error');
+            errorBox.innerText = 'Network error. Please try again.';
         });
     });
+
+    // SweetAlert2 toast notification function
+    function showToast(message, type = 'info') {
+        // Map our types to SweetAlert2 types
+        let swalIcon = type === 'error' ? 'error' : type === 'warning' ? 'warning' : type === 'info' ? 'info' : 'success';
+        
+        // Use white background as requested
+        let background = '#FFFFFF';
+        let color;
+        switch(type) {
+            case 'error':
+                color = '#dc3545'; // Red for error
+                break;
+            case 'warning':
+                color = '#ffc107'; // Yellow for warning
+                break;
+            case 'info':
+                color = '#17a2b8'; // Blue for info
+                break;
+            default: // success
+                color = '#28a745'; // Green for success
+        }
+        
+        // Customize title based on the page and action
+        let toastTitle = message.includes('OTP') ? 'OTP Verification' : 
+                        message.toLowerCase().includes('success') ? 'Success' :
+                        message.toLowerCase().includes('welcome') ? 'Welcome Back' : 
+                        type === 'error' ? 'Login Error' : 
+                        type === 'warning' ? 'Attention Required' : 
+                        type === 'info' ? 'Information' : 'Login Status';
+        
+        Swal.fire({
+            toast: true,
+            icon: swalIcon,
+            title: toastTitle,
+            text: message,
+            animation: true,
+            position: 'top-end',
+            background: background,
+            color: color,
+            timer: 5000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            width: '400px',
+            padding: '20px',
+            customClass: {
+                popup: 'custom-toast-popup',
+                title: 'custom-toast-title',
+                icon: 'custom-toast-icon',
+            },
+            didOpen: () => {
+                const progressBar = Swal.getTimerProgressBar();
+                if(progressBar) {
+                    // Set progress bar color based on type
+                    switch(type) {
+                        case 'error':
+                            progressBar.style.backgroundColor = '#dc3545'; // Red for error
+                            break;
+                        case 'warning':
+                            progressBar.style.backgroundColor = '#ffc107'; // Yellow for warning
+                            break;
+                        case 'info':
+                            progressBar.style.backgroundColor = '#17a2b8'; // Blue for info
+                            break;
+                        default: // success
+                            progressBar.style.backgroundColor = '#28a745'; // Green for success
+                    }
+                }
+            }
+        });
+    }
 });
 
 </script>    

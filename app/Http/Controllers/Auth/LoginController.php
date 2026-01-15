@@ -60,17 +60,23 @@ class LoginController extends Controller
 
             return response()->json([
                 'status'   => true,
+                'message'  => 'OTP sent successfully.',
+                'data'     => [
+                    'phone' => $phone,
+                    // 'otp_debug' => '123456' // Only in debug mode, remove in production
+                ],
                 'redirect' => route('otp.form'),
             ]);
-
         } catch (\Throwable $e) {
             Log::error('Send OTP exception', [
                 'message' => $e->getMessage(),
             ]);
 
-            return back()->withErrors([
-                'phone' => 'Something went wrong. Please try again.',
-            ]);
+            return response()->json([
+                'status'  => false,
+                'message' => 'Something went wrong. Please try again.',
+                'error'   => $e->getMessage(),
+            ], 500);
         }
     }
 
@@ -126,17 +132,19 @@ class LoginController extends Controller
                     'body'   => $response->body(),
                 ]);
 
-                return back()->withErrors([
-                    'otp' => 'Invalid OTP. Please check and try again.',
-                ]);
+                return response()->json([
+                    'status'  => false,
+                    'message' => 'Invalid OTP. Please check and try again.',
+                ], $response->status());
             }
 
             $json = $response->json();
 
             if (!isset($json['status']) || $json['status'] !== true) {
-                return back()->withErrors([
-                    'otp' => $json['message'] ?? 'OTP verification failed.',
-                ]);
+                return response()->json([
+                    'status'  => false,
+                    'message' => $json['message'] ?? 'OTP verification failed.',
+                ], 400);
             }
 
             $data = $json['data'] ?? null;
@@ -144,34 +152,52 @@ class LoginController extends Controller
             if (!$data || empty($data['access_token'])) {
                 Log::error('Access token missing in response', $json);
 
-                return back()->withErrors([
-                    'otp' => 'Authentication failed. Please try again.',
-                ]);
+                return response()->json([
+                    'status'  => false,
+                    'message' => 'Authentication failed. Please try again.',
+                ], 400);
             }
 
-            // Save token in session
+            // Save token in session for middleware compatibility
             Session::put('token', $data['access_token']);
 
             // Regenerate session for security
             Session::regenerate();
 
-            // Remove phone from session
+            // Remove phone from session (as it was verified)
             Session::forget('phone');
 
-            if (($data['is_registered'] ?? false) === false) {
-                return redirect()->route('signup.form');
-            }
-
-            return redirect()->route('book.now');
+            // Extract user data from the API response
+            $apiUserData = $data['user'] ?? [];
+            
+            // Return success with token and user data
+            return response()->json([
+                'status'   => true,
+                'message'  => 'Login successful!',
+                'token'    => $data['access_token'],
+                'user'     => [
+                    'id'            => $apiUserData['id'] ?? $data['id'] ?? null,
+                    'name'          => $apiUserData['name'] ?? $data['name'] ?? null,
+                    'first_name'    => $apiUserData['first_name'] ?? null,
+                    'last_name'     => $apiUserData['last_name'] ?? null,
+                    'email'         => $apiUserData['email'] ?? null,
+                    'phone'         => $apiUserData['phone'] ?? $data['phone'] ?? null,
+                    'is_registered' => $data['is_registered'] ?? false,
+                ],
+                'redirect' => ($data['is_registered'] ?? false) ? route('book.now') : route('signup.form'),
+            ]);
 
         } catch (\Throwable $e) {
             Log::error('OTP verification exception', [
                 'message' => $e->getMessage(),
             ]);
 
-            return back()->withErrors([
-                'otp' => 'Something went wrong. Please try again.',
-            ]);
+            return response()->json([
+                'status'  => false,
+                'message' => 'Something went wrong. Please try again.',
+            ], 500);
         }
+
+
     }
 }

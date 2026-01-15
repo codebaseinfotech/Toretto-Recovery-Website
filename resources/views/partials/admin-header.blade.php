@@ -29,13 +29,13 @@
                 </a>
 
                 <ul class="dropdown-menu dropdown-menu-end">
-                <li>
+                <!-- <li>
                     <a class="dropdown-item" href="{{ route('my.booking') }}">
                     <i class="fa-solid fa-calendar-check"></i> My Bookings
                     </a>
-                </li>
+                </li> -->
                 <li>
-                    <a class="dropdown-item" href="{{ route('logout') }}">
+                    <a class="dropdown-item" href="#" id="ajaxLogout">
                     <i class="fa-solid fa-right-from-bracket"></i> Logout
                     </a>
                 </li>
@@ -44,7 +44,7 @@
 
 
         <div class="header-actions d-flex align-items-center gap-3">
-            <a href="{{ route('login') }}" class="btn btn-signup theme-btn">SIGN IN</a>
+            <a href="{{ route('login') }}" class="btn btn-signup theme-btn signin-button">SIGN IN</a>
             <a href="{{ route('book.now') }}" class="btn btn-book theme-btn theme-btn2">BOOK NOW</a>
         </div>
 

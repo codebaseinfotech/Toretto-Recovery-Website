@@ -206,8 +206,71 @@ document.addEventListener('DOMContentLoaded', function () {
             otpBtnLoader.classList.remove('d-none');
         }
 
-        // Now submit the form normally
-        otpForm.submit();
+        // AJAX submit
+        fetch(otpForm.action, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({
+                otp: otp,
+                latitude: latInput ? latInput.value : null,
+                longitude: lngInput ? lngInput.value : null,
+                _token: document.querySelector('input[name="_token"]').value
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Hide loader
+            if (otpBtn && otpBtnText && otpBtnLoader) {
+                otpBtn.disabled = false;
+                otpBtnText.classList.remove('d-none');
+                otpBtnLoader.classList.add('d-none');
+            }
+
+            if (data.status === true) {
+                // Store token and user data in localStorage
+                if (data.token) {
+                    localStorage.setItem('auth_token', data.token);
+                    localStorage.setItem('user_data', JSON.stringify(data.user || {}));
+                }
+                
+                // Show success toast
+                showToast('✅ ' + data.message, 'success');
+                
+                // Redirect
+                if (data.redirect) {
+                    setTimeout(() => {
+                        window.location.href = data.redirect;
+                    }, 1500);
+                }
+            } else {
+                // Show error toast
+                showToast('❌ ' + (data.message || 'Invalid OTP'), 'error');
+                errorMsg.textContent = data.message || 'Invalid OTP';
+                
+                // Clear OTP fields
+                inputs.forEach(input => {
+                    input.value = '';
+                    input.classList.add('is-invalid');
+                });
+                inputs[0].focus();
+            }
+        })
+        .catch(error => {
+            // Hide loader
+            if (otpBtn && otpBtnText && otpBtnLoader) {
+                otpBtn.disabled = false;
+                otpBtnText.classList.remove('d-none');
+                otpBtnLoader.classList.add('d-none');
+            }
+            
+            showToast('❌ Network error. Please try again.', 'error');
+            errorMsg.textContent = 'Network error. Please try again.';
+        });
     });
 
     /* ⏱ Resend OTP Timer */
@@ -228,6 +291,77 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
     }, 1000);
+
+    // SweetAlert2 toast notification function
+    function showToast(message, type = 'info') {
+        // Map our types to SweetAlert2 types
+        let swalIcon = type === 'error' ? 'error' : type === 'warning' ? 'warning' : type === 'info' ? 'info' : 'success';
+        
+        // Use white background as requested
+        let background = '#FFFFFF';
+        let color;
+        switch(type) {
+            case 'error':
+                color = '#dc3545'; // Red for error
+                break;
+            case 'warning':
+                color = '#ffc107'; // Yellow for warning
+                break;
+            case 'info':
+                color = '#17a2b8'; // Blue for info
+                break;
+            default: // success
+                color = '#28a745'; // Green for success
+        }
+        
+        // Customize title based on the page and action
+        let toastTitle = message.includes('OTP') ? 'OTP Verification' : 
+                        message.toLowerCase().includes('success') ? 'Verification Success' :
+                        message.toLowerCase().includes('login') ? 'Login Status' : 
+                        type === 'error' ? 'Verification Error' : 
+                        type === 'warning' ? 'Attention Required' : 
+                        type === 'info' ? 'Information' : 'OTP Status';
+        
+        Swal.fire({
+            toast: true,
+            icon: swalIcon,
+            title: toastTitle,
+            text: message,
+            animation: true,
+            position: 'top-end',
+            background: background,
+            color: color,
+            timer: 5000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            width: '400px',
+            padding: '20px',
+            customClass: {
+                popup: 'custom-toast-popup',
+                title: 'custom-toast-title',
+                icon: 'custom-toast-icon',
+            },
+            didOpen: () => {
+                const progressBar = Swal.getTimerProgressBar();
+                if(progressBar) {
+                    // Set progress bar color based on type
+                    switch(type) {
+                        case 'error':
+                            progressBar.style.backgroundColor = '#dc3545'; // Red for error
+                            break;
+                        case 'warning':
+                            progressBar.style.backgroundColor = '#ffc107'; // Yellow for warning
+                            break;
+                        case 'info':
+                            progressBar.style.backgroundColor = '#17a2b8'; // Blue for info
+                            break;
+                        default: // success
+                            progressBar.style.backgroundColor = '#28a745'; // Green for success
+                    }
+                }
+            }
+        });
+    }
 
 });
 </script>

@@ -53,7 +53,7 @@
                                             <span id="dialCode">+971</span>
                                         </button>
 
-                                        <input type="text" class="form-control" id="mobile" name="phone" placeholder="Enter your mobile number" maxlength="10" value="{{ preg_replace('/^971/', '', session('phone')) }}" readonly> 
+                                        <input type="text" class="form-control" id="mobile" name="phone" placeholder="Enter your mobile number" maxlength="10" value="" readonly> 
                                         
                                     </div>
                                 </div>
@@ -67,7 +67,19 @@
                                 </div>
                                 
 
-                            <button type="submit" class="btn-submit theme-btn">SIGN UP</button>
+                            <button type="submit" class="btn-submit theme-btn" id="signupSubmitBtn">
+                                <span class="btn-text">SIGN UP</span>
+                                <span class="btn-loader d-none">
+                                    <div class="beat-loader">
+                                        <div class="beat"></div>
+                                        <div class="beat"></div>
+                                        <div class="beat"></div>
+                                        <div class="beat"></div>
+                                        <div class="beat"></div>
+                                        <div class="beat"></div>
+                                    </div>
+                                </span>
+                            </button>
                         </form>
 
                         <p class="login-text">
@@ -111,6 +123,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // sign-up form validation
 document.addEventListener('DOMContentLoaded', function () {
+
+    // Populate phone number from localStorage if available
+    const mobileInput = document.getElementById('mobile');
+    if (mobileInput) {
+        const userData = JSON.parse(localStorage.getItem('user_data') || '{}');
+        if (userData.phone) {
+            // Remove country code '971' and set the remaining digits
+            const phoneNumber = userData.phone.replace(/^971/, '');
+            mobileInput.value = phoneNumber;
+        }
+    }
 
     const form = document.getElementById('signupForm');
     const firstName = document.getElementById('firstName');
@@ -160,9 +183,145 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         if (valid) {
-            form.submit(); // enable backend submit
+            // Get user data from localStorage to send phone number
+            const userData = JSON.parse(localStorage.getItem('user_data') || '{}');
+            const phone = userData.phone || ('971' + mobileInput.value);
+            
+            // Show loader
+            const submitBtn = document.getElementById('signupSubmitBtn');
+            const btnText = submitBtn.querySelector('.btn-text');
+            const btnLoader = submitBtn.querySelector('.btn-loader');
+            
+            if (btnText) btnText.classList.add('d-none');
+            if (btnLoader) btnLoader.classList.remove('d-none');
+            submitBtn.disabled = true;
+
+            // Make AJAX request
+            fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-User-Data': JSON.stringify(userData)
+                },
+                body: JSON.stringify({
+                    first_name: firstName.value,
+                    last_name: lastName.value,
+                    email: document.getElementById('email').value,
+                    phone: phone,
+                    _token: document.querySelector('input[name="_token"]').value
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Hide loader
+                if (btnText) btnText.classList.remove('d-none');
+                if (btnLoader) btnLoader.classList.add('d-none');
+                submitBtn.disabled = false;
+                
+                if (data.status === true) {
+                    // Store token in localStorage if not already present
+                    if (data.token) {
+                        localStorage.setItem('auth_token', data.token);
+                    }
+                    
+                    // Show success toast
+                    showToast('✅ ' + data.message, 'success');
+                    
+                    // Redirect to booking page
+                    setTimeout(() => {
+                        window.location.href = data.redirect;
+                    }, 1500);
+                } else {
+                    // Show error toast
+                    showToast('❌ ' + (data.message || 'Registration failed'), 'error');
+                }
+            })
+            .catch(error => {
+                // Hide loader
+                if (btnText) btnText.classList.remove('d-none');
+                if (btnLoader) btnLoader.classList.add('d-none');
+                submitBtn.disabled = false;
+                
+                showToast('❌ Network error. Please try again.', 'error');
+            });
         }
     });
+
+});
+
+    // SweetAlert2 toast notification function
+    function showToast(message, type = 'info') {
+        // Map our types to SweetAlert2 types
+        let swalIcon = type === 'error' ? 'error' : type === 'warning' ? 'warning' : type === 'info' ? 'info' : 'success';
+        
+        // Use white background as requested
+        let background = '#FFFFFF';
+        let color;
+        switch(type) {
+            case 'error':
+                color = '#dc3545'; // Red for error
+                break;
+            case 'warning':
+                color = '#ffc107'; // Yellow for warning
+                break;
+            case 'info':
+                color = '#17a2b8'; // Blue for info
+                break;
+            default: // success
+                color = '#28a745'; // Green for success
+        }
+        
+        // Customize title based on the page and action
+        let toastTitle = message.includes('Registration') || message.toLowerCase().includes('register') ? 'Registration Status' : 
+                        message.toLowerCase().includes('success') ? 'Registration Success' :
+                        message.toLowerCase().includes('welcome') ? 'Welcome' : 
+                        type === 'error' ? 'Registration Error' : 
+                        type === 'warning' ? 'Attention Required' : 
+                        type === 'info' ? 'Information' : 'Account Status';
+        
+        Swal.fire({
+            toast: true,
+            icon: swalIcon,
+            title: toastTitle,
+            text: message,
+            animation: true,
+            position: 'top-end',
+            background: background,
+            color: color,
+            timer: 5000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            width: '400px',
+            padding: '20px',
+            customClass: {
+                popup: 'custom-toast-popup',
+                title: 'custom-toast-title',
+                icon: 'custom-toast-icon',
+            },
+            didOpen: () => {
+                const progressBar = Swal.getTimerProgressBar();
+                if(progressBar) {
+                    // Set progress bar color based on type
+                    switch(type) {
+                        case 'error':
+                            progressBar.style.backgroundColor = '#dc3545'; // Red for error
+                            break;
+                        case 'warning':
+                            progressBar.style.backgroundColor = '#ffc107'; // Yellow for warning
+                            break;
+                        case 'info':
+                            progressBar.style.backgroundColor = '#17a2b8'; // Blue for info
+                            break;
+                        default: // success
+                            progressBar.style.backgroundColor = '#28a745'; // Green for success
+                    }
+                }
+            }
+        });
+    }
 
 });
 

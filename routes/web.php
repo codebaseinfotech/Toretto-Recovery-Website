@@ -36,3 +36,15 @@ Route::get('/logout', function () {
 
     return redirect()->route('login');
 })->name('logout');
+
+// AJAX logout endpoint
+Route::post('/logout-ajax', function () {
+    Session::forget(['token']);
+    Session::invalidate();
+    Session::regenerateToken();
+    
+    return response()->json([
+        'status'  => true,
+        'message' => 'Logged out successfully'
+    ]);
+})->name('logout.ajax');

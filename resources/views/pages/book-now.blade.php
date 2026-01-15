@@ -181,32 +181,14 @@
         </div>
 </section>
 
-@if(session('otp-verify'))
-<div class="toast-container position-fixed top-0 end-0 p-3 wow animate__animated animate__fadeInRight" style="z-index: 1055; margin-top:10px;">
-    <div id="successToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-            <div class="toast-body">
-                {{ session('otp-verify') }}
-            </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-    </div>
-</div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    var toastEl = document.getElementById('successToast');
-    var toast = new bootstrap.Toast(toastEl);
-    toast.show();
-});
-</script>
-@endif
 
 
 @endsection
 
 
 @push('map-script')
+
 <script>
 const PRICE_API_BASE_URL = "{{ env('PRICE_API_BASE_URL', 'http://3.7.253.61') }}";
 // Inject API token from session-based login (fallback for meta/window token)
@@ -374,37 +356,75 @@ async function fetchPriceFromAPI(latitude, longitude, km) {
     }
 }
 
-// Generic toast helper (Bootstrap 5)
+// SweetAlert2 toast notification function
 function showToast(message, type = 'success') {
-    // type: 'success' | 'error'
-    let container = document.getElementById('dynamicToastContainer');
-    if (!container) {
-        container = document.createElement('div');
-        container.id = 'dynamicToastContainer';
-        container.className = 'toast-container position-fixed top-0 end-0 p-3';
-        container.style.zIndex = '1060';
-        document.body.appendChild(container);
+    // Map our types to SweetAlert2 types
+    let swalIcon = type === 'error' ? 'error' : type === 'warning' ? 'warning' : type === 'info' ? 'info' : 'success';
+    
+    // Use white background as requested
+    let background = '#FFFFFF';
+    let color;
+    switch(type) {
+        case 'error':
+            color = '#dc3545'; // Red for error
+            break;
+        case 'warning':
+            color = '#ffc107'; // Yellow for warning
+            break;
+        case 'info':
+            color = '#17a2b8'; // Blue for info
+            break;
+        default: // success
+            color = '#28a745'; // Green for success
     }
-
-    const toastEl = document.createElement('div');
-    toastEl.className = `toast align-items-center text-bg-${type === 'error' ? 'danger' : 'success'} border-0`;
-    toastEl.setAttribute('role', 'alert');
-    toastEl.setAttribute('aria-live', 'assertive');
-    toastEl.setAttribute('aria-atomic', 'true');
-
-    toastEl.innerHTML = `
-        <div class="d-flex">
-            <div class="toast-body">
-                ${message}
-            </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-    `;
-
-    container.appendChild(toastEl);
-
-    const toast = new bootstrap.Toast(toastEl, { delay: 4000 });
-    toast.show();
+    
+    // Customize title based on the page and action
+    let toastTitle = message.toLowerCase().includes('booking') || message.toLowerCase().includes('book') ? 'Booking Status' : 
+                    message.toLowerCase().includes('promo') || message.toLowerCase().includes('code') ? 'Promo Code' :
+                    message.toLowerCase().includes('success') ? 'Booking Success' : 
+                    type === 'error' ? 'Booking Error' : 
+                    type === 'warning' ? 'Attention Required' : 
+                    type === 'info' ? 'Information' : 'Service Status';
+            
+    Swal.fire({
+        toast: true,
+        icon: swalIcon,
+        title: toastTitle,
+        text: message,
+        animation: true,
+        position: 'top-end',
+        background: background,
+        color: color,
+        timer: 5000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+        width: '400px',
+        padding: '20px',
+        customClass: {
+            popup: 'custom-toast-popup',
+            title: 'custom-toast-title',
+            icon: 'custom-toast-icon',
+        },
+        didOpen: () => {
+            const progressBar = Swal.getTimerProgressBar();
+            if(progressBar) {
+                // Set progress bar color based on type
+                switch(type) {
+                    case 'error':
+                        progressBar.style.backgroundColor = '#dc3545'; // Red for error
+                        break;
+                    case 'warning':
+                        progressBar.style.backgroundColor = '#ffc107'; // Yellow for warning
+                        break;
+                    case 'info':
+                        progressBar.style.backgroundColor = '#17a2b8'; // Blue for info
+                        break;
+                    default: // success
+                        progressBar.style.backgroundColor = '#28a745'; // Green for success
+                }
+            }
+        }
+    });
 }
 
 function initMap() {
@@ -705,7 +725,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 if (promoData.data && promoData.data.id) {
                     promotionId = promoData.data.id;
-                    showToast(promoData.message || 'Promo code applied successfully.', 'success');
+                    // Don't show promo code toast as requested - only show booking messages
                 }
             } catch (err) {
                 console.error('Error verifying promo code:', err);
