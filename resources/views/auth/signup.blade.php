@@ -53,7 +53,7 @@
                                             <span id="dialCode">+971</span>
                                         </button>
 
-                                        <input type="text" class="form-control" id="mobile" name="phone" placeholder="Enter your mobile number" maxlength="10" value="" readonly> 
+                                        <input type="text" class="form-control" id="mobile" name="phone" placeholder="Enter your mobile number" maxlength="10" value="" readonly disabled> 
                                         
                                     </div>
                                 </div>
@@ -118,6 +118,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
+@push('signup-script')
+<script>
+    // Define API base URL globally for use in the signup script
+    window.API_BASE_URL = "{{ config('services.api.base_url') }}";
+</script>
+@endpush
+
 @push('login-script')
 <script>
 
@@ -127,11 +134,19 @@ document.addEventListener('DOMContentLoaded', function () {
     // Populate phone number from localStorage if available
     const mobileInput = document.getElementById('mobile');
     if (mobileInput) {
-        const userData = JSON.parse(localStorage.getItem('user_data') || '{}');
-        if (userData.phone) {
+        // First try to get phone from the phone_for_verification stored during login
+        let phoneNumber = localStorage.getItem('phone_for_verification') || '';
+        
+        // If not found, try from user_data
+        if (!phoneNumber) {
+            const userData = JSON.parse(localStorage.getItem('user_data') || '{}');
+            phoneNumber = userData.phone || '';
+        }
+        
+        if (phoneNumber) {
             // Remove country code '971' and set the remaining digits
-            const phoneNumber = userData.phone.replace(/^971/, '');
-            mobileInput.value = phoneNumber;
+            const displayNumber = phoneNumber.replace(/^971/, '');
+            mobileInput.value = displayNumber;
         }
     }
 
@@ -183,9 +198,21 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         if (valid) {
-            // Get user data from localStorage to send phone number
-            const userData = JSON.parse(localStorage.getItem('user_data') || '{}');
-            const phone = userData.phone || ('971' + mobileInput.value);
+            // Get phone number from localStorage (as input is disabled)
+            let phone = localStorage.getItem('phone_for_verification') || '';
+            
+            // Define userData here to make it available in the fetch headers
+            let userData = JSON.parse(localStorage.getItem('user_data') || '{}');
+            
+            // If not found in phone_for_verification, try user_data
+            if (!phone) {
+                phone = userData.phone || ('971' + mobileInput.value);
+            }
+            
+            // Ensure phone has the country code prefix
+            if (!phone.startsWith('971')) {
+                phone = mobileInput.value;
+            }
             
             // Show loader
             const submitBtn = document.getElementById('signupSubmitBtn');
@@ -196,47 +223,56 @@ document.addEventListener('DOMContentLoaded', function () {
             if (btnLoader) btnLoader.classList.remove('d-none');
             submitBtn.disabled = true;
 
-            // Make AJAX request
-            fetch(form.action, {
+            const apiBaseUrl = document.querySelector('meta[name="api-base-url"]')?.getAttribute('content') || 
+                              document.querySelector('#api-base-url')?.value || 
+                              window.API_BASE_URL || 
+                              'http://3.7.253.61/api';
+        
+            fetch(apiBaseUrl + '/v1/customer/register', {
                 method: 'POST',
                 headers: {
-                    'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-User-Data': JSON.stringify(userData)
+                    'X-Requested-With': 'XMLHttpRequest'
                 },
                 body: JSON.stringify({
                     first_name: firstName.value,
                     last_name: lastName.value,
                     email: document.getElementById('email').value,
-                    phone: phone,
-                    _token: document.querySelector('input[name="_token"]').value
+                    phone: phone
                 })
             })
             .then(response => response.json())
-            .then(data => {
-                // Hide loader
+            .then(apiData => {
                 if (btnText) btnText.classList.remove('d-none');
                 if (btnLoader) btnLoader.classList.add('d-none');
                 submitBtn.disabled = false;
                 
-                if (data.status === true) {
-                    // Store token in localStorage if not already present
-                    if (data.token) {
-                        localStorage.setItem('auth_token', data.token);
+                if (apiData.status === true || apiData.data?.access_token) {
+                    const token = apiData.data?.access_token || apiData.access_token;
+                    
+                    // Store token in localStorage
+                    if (token) {
+                        localStorage.setItem('auth_token', token);
+                        
+                        const userData = {
+                            phone: phone,
+                            first_name: firstName.value,
+                            last_name: lastName.value,
+                            email: document.getElementById('email').value
+                        };
+                        localStorage.setItem('user_data', JSON.stringify(userData));
                     }
                     
                     // Show success toast
-                    showToast('✅ ' + data.message, 'success');
+                    showToast('✅ Registration successful!', 'success');
                     
-                    // Redirect to booking page
                     setTimeout(() => {
-                        window.location.href = data.redirect;
+                        window.location.href = '{{ route("book.now") }}';
                     }, 1500);
                 } else {
-                    // Show error toast
-                    showToast('❌ ' + (data.message || 'Registration failed'), 'error');
+                    const errorMessage = apiData.message || apiData.error || 'Registration failed';
+                    showToast('❌ ' + errorMessage, 'error');
                 }
             })
             .catch(error => {
@@ -246,6 +282,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 submitBtn.disabled = false;
                 
                 showToast('❌ Network error. Please try again.', 'error');
+                console.error('Registration error:', error);
             });
         }
     });
@@ -322,8 +359,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-
-});
 
 </script>    
 @endpush

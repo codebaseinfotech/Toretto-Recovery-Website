@@ -206,6 +206,8 @@ document.addEventListener('DOMContentLoaded', function () {
             otpBtnLoader.classList.remove('d-none');
         }
 
+        const phoneFromStorage = localStorage.getItem('phone_for_verification') || '';
+        
         // AJAX submit
         fetch(otpForm.action, {
             method: 'POST',
@@ -213,11 +215,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest'
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-Phone-Verification': phoneFromStorage
             },
-            // Get phone from localStorage (stored during login step)
-            const phoneFromStorage = localStorage.getItem('phone_for_verification') || '';
-            
             body: JSON.stringify({
                 phone: phoneFromStorage,
                 otp: otp,
@@ -244,9 +244,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 
                 // Show success toast
                 showToast('✅ ' + data.message, 'success');
-                
+                console.log(data.message);
+                console.log(data.redirect);
                 // Redirect
                 if (data.redirect) {
+                    // Ensure token is stored in localStorage before redirect
+                    if (data.token) {
+                        localStorage.setItem('auth_token', data.token);
+                        localStorage.setItem('user_data', JSON.stringify(data.user || {}));
+                    }
+                    
+                    // Wait for a moment to ensure everything is set, then redirect
                     setTimeout(() => {
                         window.location.href = data.redirect;
                     }, 1500);

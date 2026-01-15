@@ -55,10 +55,6 @@
                                     </span>
                             </button>
                         </form>
-
-                        <p class="login-text">
-                            Don't have an account? <a href="{{ route('signup.form') }}">Create account</a>
-                        </p>
                     </div>
                 </div>
             </div>    
