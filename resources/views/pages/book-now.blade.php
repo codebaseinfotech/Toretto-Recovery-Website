@@ -192,7 +192,7 @@
 <script>
 const PRICE_API_BASE_URL = "{{ env('PRICE_API_BASE_URL', 'http://3.7.253.61') }}";
 
-const API_BEARER_TOKEN = "{{ session('token') }}";
+const API_BEARER_TOKEN = localStorage.getItem('auth_token') || '';
 
 const DRIVER_ICON_URL = "{{ asset('assets/images/driver-truck.png') }}";
 let latestDistanceKm = 0; // updated when distance is calculated
