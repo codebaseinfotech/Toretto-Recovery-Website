@@ -7,7 +7,7 @@
 {{-- SIGNUP SECTION --}}
 <section class="signup-section">
         <div class="container">
-            <div class="signup-wrapper row wow fade-in-up-20">
+            <div class="signup-wrapper row" data-aos="fade-up" data-aos-duration="500">
                 <div class="col-lg-6 align-content-center">
                     <div class="left-container">
                         <img src="{{ asset('assets/images/Mobile login-pana (2) 1.png') }}" alt="">
@@ -16,7 +16,7 @@
                 <div class="col-lg-6">
                     <div class="right-container">
                         
-                        <div class="section-heading wow fade-in-up-20">
+                        <div class="section-heading" data-aos="fade-up" data-aos-duration="500">
                             <h2 class="section-title"><span>Create</span> Your Account</h2>
                             <p>Sign up to book fast and reliable vehicle pickup & drop services</p>
                         </div>
@@ -93,7 +93,7 @@
 </section>
 
 @if(session('otp-verify'))
-<div class="toast-container position-fixed top-0 end-0 p-3 wow animate__animated animate__fadeInRight" style="z-index:1055; margin-top:10px;">
+<div class="toast-container position-fixed top-0 end-0 p-3 animate__animated animate__fadeInRight" style="z-index:1055; margin-top:10px;">
     <div id="successToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex">
             <div class="toast-body">
@@ -265,14 +265,14 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                     
                     // Show success toast
-                    showToast('✅ Registration successful!', 'success');
+                    showToast('Registration successful!', 'success');
                     
                     setTimeout(() => {
                         window.location.href = '{{ route("book.now") }}';
                     }, 1500);
                 } else {
                     const errorMessage = apiData.message || apiData.error || 'Registration failed';
-                    showToast('❌ ' + errorMessage, 'error');
+                    showToast(errorMessage, 'error');
                 }
             })
             .catch(error => {
@@ -281,7 +281,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (btnLoader) btnLoader.classList.add('d-none');
                 submitBtn.disabled = false;
                 
-                showToast('❌ Network error. Please try again.', 'error');
+                showToast('Network error. Please try again.', 'error');
                 console.error('Registration error:', error);
             });
         }

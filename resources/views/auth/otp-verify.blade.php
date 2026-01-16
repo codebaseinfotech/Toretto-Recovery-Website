@@ -7,7 +7,7 @@
 {{-- OTP VERIFY SECTION --}}
 <section class="otp-section">
         <div class="container">
-            <div class="otp-wrapper row wow fade-in-up-20">
+            <div class="otp-wrapper row" data-aos="fade-up" data-aos-duration="500">
                 <div class="col-lg-6 align-content-center">
                     <div class="left-container">
                         <img src="{{ asset('assets/images/otp-verify.png') }}" alt="">
@@ -15,7 +15,7 @@
                 </div>
                 <div class="col-lg-6 align-content-center">
                     <div class="right-container">                       
-                        <div class="section-heading wow fade-in-up-20">
+                        <div class="section-heading" data-aos="fade-up" data-aos-duration="500">
                             <h2 class="section-title">Verify Your <span> OTP </span></h2>
                             <p>We’ve sent a 6-digit verification code to your registered mobile number</p>
                         </div>
@@ -24,19 +24,19 @@
                             @csrf
 
                              <div class="otp-inputs">
-                                <input type="text" maxlength="1" class="otp-input" id="otp1">
-                                <input type="text" maxlength="1" class="otp-input" id="otp2">
-                                <input type="text" maxlength="1" class="otp-input" id="otp3">
-                                <input type="text" maxlength="1" class="otp-input" id="otp4">
-                                <input type="text" maxlength="1" class="otp-input" id="otp5">
-                                <input type="text" maxlength="1" class="otp-input" id="otp6">
+                                <input type="text" maxlength="1" class="otp-input" id="otp1" inputmode="numeric" pattern="[0-9]*">
+                                <input type="text" maxlength="1" class="otp-input" id="otp2" inputmode="numeric" pattern="[0-9]*">
+                                <input type="text" maxlength="1" class="otp-input" id="otp3" inputmode="numeric" pattern="[0-9]*">
+                                <input type="text" maxlength="1" class="otp-input" id="otp4" inputmode="numeric" pattern="[0-9]*">
+                                <input type="text" maxlength="1" class="otp-input" id="otp5" inputmode="numeric" pattern="[0-9]*">
+                                <input type="text" maxlength="1" class="otp-input" id="otp6" inputmode="numeric" pattern="[0-9]*">
                                 <input type="hidden" name="otp" id="hiddenOtp">
                                 {{-- Filled automatically from browser geolocation on page load --}}
                                 <input type="hidden" name="latitude" id="latitude">
                                 <input type="hidden" name="longitude" id="longitude">
                             </div>
 
-                            <div class="invalid-feedback d-block text-center" id="otpError"></div>
+                            <div id="otpError" class="error-message text-danger mt-2 text-center" style="min-height: 24px;"></div>
 
                             <button type="submit" class="btn-submit theme-btn" id="otpSubmitBtn">
                                 <span class="btn-text">VERIFY AND CONTINUE</span>
@@ -64,7 +64,7 @@
 
 
 @if(session('otp-success'))
-<div class="toast-container position-fixed top-0 end-0 p-3 wow animate__animated animate__fadeInRight" style="z-index: 1055; margin-top:10px;">
+<div class="toast-container position-fixed top-0 end-0 p-3 animate__animated animate__fadeInRight" style="z-index: 1055; margin-top:10px;">
     <div id="successToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex">
             <div class="toast-body">
@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function () {
 @endif
 
 @if ($errors->any())
-<div class="toast-container position-fixed top-0 end-0 p-3 wow animate__animated animate__fadeInRight" style="z-index: 1055; margin-top:10px;">
+<div class="toast-container position-fixed top-0 end-0 p-3 animate__animated animate__fadeInRight" style="z-index: 1055; margin-top:10px;">
     <div id="errorToast" class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex">
             <div class="toast-body">
@@ -182,11 +182,15 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         if (!valid) {
-            errorMsg.textContent = 'Please enter the complete OTP';
+            if (errorMsg) {
+                errorMsg.textContent = 'Please enter the complete OTP';
+            }
             return;
         }
 
-        errorMsg.textContent = '';
+        if (errorMsg) {
+            errorMsg.textContent = '';
+        }
         // Add hidden input if not exists
         if (!document.getElementById('hiddenOtp')) {
             let hiddenOtpInput = document.createElement('input');
@@ -243,7 +247,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
                 
                 // Show success toast
-                showToast('✅ ' + data.message, 'success');
+                showToast(data.message, 'success');
                 console.log(data.message);
                 console.log(data.redirect);
                 // Redirect
@@ -261,8 +265,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             } else {
                 // Show error toast
-                showToast('❌ ' + (data.message || 'Invalid OTP'), 'error');
-                errorMsg.textContent = data.message || 'Invalid OTP';
+                showToast((data.message || 'Invalid OTP'), 'error');
+                if (errorMsg) {
+                    errorMsg.textContent = data.message || 'Invalid OTP';
+                }
                 
                 // Clear OTP fields
                 inputs.forEach(input => {
@@ -280,8 +286,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 otpBtnLoader.classList.add('d-none');
             }
             
-            showToast('❌ Network error. Please try again.', 'error');
-            errorMsg.textContent = 'Network error. Please try again.';
+            showToast('Network error. Please try again.', 'error');
+            if (errorMsg) {
+                errorMsg.textContent = 'Network error. Please try again.';
+            }
         });
     });
 

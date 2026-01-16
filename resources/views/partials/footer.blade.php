@@ -65,7 +65,7 @@
                     <div class="col-md-12 align-self-center">
                         <p class="copyright-text text-center">
                             © 2026 Toretto Recovery
-                            All Rights Reserved| Design &amp; Developed By  <a href="https://turbotechtechnologies.com/" target="_blank" style="color: #fff">Turbotech Technologies</a>
+                            All Rights Reserved| Design &amp; Developed By  <a href="#" target="_blank" style="color: #fff">Al Attas Information Technology</a>
                         </p>
                     </div>
 

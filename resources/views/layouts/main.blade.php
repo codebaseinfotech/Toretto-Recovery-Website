@@ -64,7 +64,7 @@
 <script src="{{ asset('assets/js/owl.carousel.min.js') }}"></script>
 <script src="{{ asset('assets/js/main.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 @stack('my-booking-script')
@@ -75,7 +75,6 @@
 
 <script>
     AOS.init();
-    new WOW().init();
     
     // Check if user is logged in and hide sign-in button
     document.addEventListener('DOMContentLoaded', function() {
@@ -106,15 +105,10 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    // Clear localStorage
                     localStorage.removeItem('auth_token');
                     localStorage.removeItem('user_data');
-                    
-                    // Remove hide-signin class
-                    document.body.classList.remove('hide-signin');
-                    
-                    // Redirect to login
-                    window.location.href = '{{ route("login") }}';
+                                    
+                    window.location.reload();
                 })
                 .catch(error => {
                     console.error('Logout error:', error);

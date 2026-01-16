@@ -18,7 +18,9 @@
         </div>
 
         <div class="header-actions d-flex align-items-center gap-3">
+            @if(!session()->has('token') && !auth()->check())
             <a href="{{ route('login') }}" class="btn btn-signup theme-btn signin-button">SIGN IN</a>
+            @endif
             <a href="{{ route('book.now') }}" class="btn btn-book theme-btn theme-btn2">BOOK NOW</a>
         </div>
 

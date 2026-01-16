@@ -7,7 +7,7 @@
 {{-- LOGIN SECTION --}}
 <section class="login-section">
         <div class="container">
-            <div class="login-wrapper row wow fade-in-up-20">
+            <div class="login-wrapper row" data-aos="fade-up" data-aos-duration="500">
                 <div class="col-lg-6 align-content-center">
                     <div class="left-container">
                         <img src="{{ asset('assets/images/login-page.png') }}" alt="">
@@ -16,7 +16,7 @@
                 <div class="col-lg-6 align-content-center">
                     <div class="right-container">
                         
-                        <div class="section-heading wow fade-in-up-20">
+                        <div class="section-heading" data-aos="fade-up" data-aos-duration="500">
                             <h2 class="section-title"><span>Welcome </span> Back!</h2>
                             <p>Access your bookings and manage your vehicle recovery services</p>
                         </div>
@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (data.status === true) {
                 // Show success toast
-                showToast('✅ ' + data.message, 'success');
+                showToast(data.message, 'success');
                 
                 // Redirect to OTP page
                 if (data.redirect) {
@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             } else {
                 // Show error toast
-                showToast('❌ ' + (data.message || 'Something went wrong'), 'error');
+                showToast((data.message || 'Something went wrong'), 'error');
                 errorBox.innerText = data.message || 'Something went wrong';
                 phoneInput.classList.add('is-invalid');
             }
@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function () {
             btnText.classList.remove('d-none');
             btnLoader.classList.add('d-none');
             
-            showToast('❌ Network error. Please try again.', 'error');
+            showToast('Network error. Please try again.', 'error');
             errorBox.innerText = 'Network error. Please try again.';
         });
     });

@@ -6,11 +6,11 @@
 
 
 {{-- ROUTE SECTION --}}
-<section class="route-section wow fade-in-up-20">
+<section class="route-section" data-aos="fade-up" data-aos-duration="500">
 
         <div class="container">
             <div class="row">
-                <div class="section-heading text-center wow fade-in-up-20">
+                <div class="section-heading text-center" data-aos="fade-up" data-aos-duration="500">
                     <h2 class="section-title">Book Vehicle<span> Pickup & Drop</span></h2>
                     <p>Fast, safe, and reliable vehicle recovery service at your location</p>
                 </div>
@@ -144,7 +144,7 @@
             <div class="grid-box-section">
                 <div class="row gy-4">
                     <div class="col-md-4">
-                        <div class="grid-info wow fade-in-up-20">
+                        <div class="grid-info" data-aos="fade-up" data-aos-duration="500">
                             <div class="grid-info-icon">
                                 <img src="{{ asset('assets/images/img1.png') }}" alt="">
                             </div>
@@ -155,7 +155,7 @@
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="grid-info wow fade-in-up-20">
+                        <div class="grid-info" data-aos="fade-up" data-aos-duration="500">
                             <div class="grid-info-icon">
                                 <img src="{{ asset('assets/images/img2.png') }}" alt="">
                             </div>
@@ -166,7 +166,7 @@
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="grid-info wow fade-in-up-20">
+                        <div class="grid-info" data-aos="fade-up" data-aos-duration="500">
                             <div class="grid-info-icon">
                                 <img src="{{ asset('assets/images/img3.png') }}" alt="">
                             </div>
@@ -655,12 +655,17 @@ document.addEventListener('DOMContentLoaded', function () {
         const promoCode = document.getElementById('promo_code').value;
         
         if (!pickupLocation || !dropLocation) {
-            alert('Please enter both pickup and drop locations');
+            showToast('Please enter both pickup and drop locations','error');
             return;
         }
 
-        if (!pickupMarker || !dropMarker || !latestDistanceKm) {
-            alert('Please select valid pickup and drop locations so distance can be calculated.');
+        if (!pickupMarker || !dropMarker) {
+            showToast('Please select valid pickup and drop locations on the map.','error');
+            return;
+        }
+        
+        if (latestDistanceKm <= 0) {
+            showToast('Distance could not be calculated. Please ensure both locations are valid.','error');
             return;
         }
 

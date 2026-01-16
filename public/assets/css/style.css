@@ -2003,23 +2003,29 @@ label {
 .otp-inputs {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 15px;
     margin-bottom: 30px;
+    flex-wrap: wrap;
 }
 
 .otp-input {
     width: 50px;
-    height: 40px;
+    height: 50px;
     font-size: 20px;
     text-align: center;
     border: 1px solid #ddd;
     border-radius: 8px;
     outline: none;
+    max-width: 15vw;
+    transition: all 0.3s ease;
+    min-width: 40px;
+    min-height: 40px;
 }
 
 .otp-input:focus {
     border-color:#D70006;
     background-color: #fdf2f3;
+    transform: scale(1.05);
 }
 
 .otp-input.is-invalid {
@@ -2039,6 +2045,18 @@ label {
 }
 
 
+@media(min-width: 992px) {
+    .otp-input {
+        width: 55px;
+        height: 55px;
+        font-size: 22px;
+    }
+    
+    .otp-inputs {
+        gap: 18px;
+    }
+}
+
 @media(max-width: 991px){
     .signup-section, .login-section, .otp-section{
         padding-top:60px;
@@ -2051,6 +2069,40 @@ label {
 
     .right-container {
         margin-top: 30px;
+    }
+    
+    .otp-inputs {
+        gap: 12px;
+    }
+    
+    .otp-input {
+        width: 45px;
+        height: 45px;
+        font-size: 18px;
+    }
+}
+
+@media(max-width: 768px) {
+    .otp-inputs {
+        gap: 12px;
+    }
+    
+    .otp-input {
+        width: 45px;
+        height: 45px;
+        font-size: 18px;
+    }
+}
+
+@media(max-width: 576px) {
+    .otp-inputs {
+        gap: 10px;
+    }
+    
+    .otp-input {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
     }
 }
 
@@ -2086,19 +2138,42 @@ label {
     }
 
     .otp-inputs {
-        gap: 5px;
+        gap: 8px;
     }
 
     .otp-input {
         width: 35px;
         height: 35px;
-        font-size: 18px;
+        font-size: 16px;
     }
 
     .btn-submit{
         font-size: 16px;
     }
+}
 
+@media(max-width: 375px) {
+    .otp-inputs {
+        gap: 6px;
+    }
+    
+    .otp-input {
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+    }
+}
+
+@media(max-width: 320px) {
+    .otp-inputs {
+        gap: 5px;
+    }
+    
+    .otp-input {
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
+    }
 }
 /* SIGN UP PAGE END */
 
