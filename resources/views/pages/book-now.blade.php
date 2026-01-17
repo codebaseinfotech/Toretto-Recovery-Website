@@ -62,7 +62,7 @@
                 </div>
             
                 <!-- Distance and Price Display -->
-                <div class="distance-price-display mb-3">
+                <div class="distance-price-display mb-3 mt-3">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="distance-box p-3 bg-light rounded">
