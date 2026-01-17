@@ -83,7 +83,7 @@
                 <div id="map" class="rounded-4 border" style="height: 350px;"></div>
 
                 <!-- Promo Code Section -->
-                <div class="promo-section mb-4">
+                <div class="promo-section mb-3">
                     <div class="row align-items-end">
                         <div class="col-md-8">
                             <div class="form-group mb-0">
@@ -106,6 +106,28 @@
                                 </span>
                             </button>
                         </div>
+                    </div>
+                </div>
+                
+                <!-- Price Calculation Section -->
+                <div class="price-calculation-section mb-4 mt-3 p-3 bg-light rounded">
+                    <h5 class="mb-3">Price Calculation</h5>
+                    
+                    <div class="price-item mb-2">
+                        <span class="fw-bold">Total Price:</span>
+                        <span id="totalPriceDisplay" class="float-end">0.00</span>
+                    </div>
+                    
+                    <div class="price-item mb-2 d-none" id="discountRow">
+                        <span class="fw-bold">Discounted Price:</span>
+                        <span id="discountAmountDisplay" class="float-end text-danger">0.00</span>
+                    </div>
+                    
+                    <hr class="my-3">
+                    
+                    <div class="price-item">
+                        <span class="fw-bold">Grand Total:</span>
+                        <span id="grandTotalDisplay" class="float-end fw-bold">0.00</span>
                     </div>
                 </div>
 
@@ -236,6 +258,38 @@
     width: 100%;
     height: 100%;
 }
+
+/* Simple price calculation styling */
+.price-calculation-section {
+    border: 1px solid #dee2e6;
+}
+
+.price-calculation-section h5 {
+    color: #495057;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 10px;
+}
+
+.price-item {
+    font-size: 16px;
+}
+
+.price-item .fw-bold {
+    color: #333;
+}
+
+.price-item .float-end {
+    color: #007bff;
+}
+
+.price-item .float-end.fw-bold {
+    color: #28a745;
+    font-size: 18px;
+}
+
+.price-item .text-danger {
+    color: #dc3545 !important;
+}
 </style>
 @endpush
 
@@ -249,6 +303,9 @@ const API_BEARER_TOKEN = localStorage.getItem('auth_token') || '';
 const DRIVER_ICON_URL = "{{ asset('assets/images/driver-truck.png') }}";
 let latestDistanceKm = 0; // updated when distance is calculated
 let bookingSuccessToastShown = false;
+let currentOriginalPrice = 0; // Store original price
+let currentDiscountValue = 0; // Store discount value from promo
+let currentPromotionData = null; // Store full promotion data
 
 function loadGoogleMapsScript() {
     const script = document.createElement('script');
@@ -356,9 +413,13 @@ function getAuthToken() {
 async function fetchPriceFromAPI(latitude, longitude, km) {
     try {
         const priceEl = document.getElementById('price');
-        if (priceEl) {
-            priceEl.innerText = '0.00';
-        }
+        const totalPriceEl = document.getElementById('totalPriceDisplay');
+        const grandTotalEl = document.getElementById('grandTotalDisplay');
+        
+        // Reset displays
+        if (priceEl) priceEl.innerText = '0.00';
+        if (totalPriceEl) totalPriceEl.innerText = '0.00';
+        if (grandTotalEl) grandTotalEl.innerText = '0.00';
 
         const token = getAuthToken();
         const response = await fetch(`${PRICE_API_BASE_URL}/v1/customer/price/calculate`, {
@@ -386,29 +447,88 @@ async function fetchPriceFromAPI(latitude, longitude, km) {
         
         console.log('API Response:', data);
         
-        if(priceEl) {
-            const price =
-                (data && data.data && data.data.price) ??
-                data?.price ??
-                data?.data?.amount ??
-                data?.amount ??
-                data?.data?.total ??
-                data?.total;
+        const price =
+            (data && data.data && data.data.price) ??
+            data?.price ??
+            data?.data?.amount ??
+            data?.amount ??
+            data?.data?.total ??
+            data?.total;
 
-            if (price !== null && price !== undefined && !isNaN(parseFloat(price))) {
-                priceEl.innerText = parseFloat(price).toFixed(2);
-            } else {
-                priceEl.innerText = '0.00';
-                console.warn('Price not found in expected API response format:', data);
-            }
+        if (price !== null && price !== undefined && !isNaN(parseFloat(price))) {
+            const priceValue = parseFloat(price);
+            currentOriginalPrice = priceValue; // Store original price
+            
+            // Update all price displays
+            if (priceEl) priceEl.innerText = priceValue.toFixed(2);
+            updateGrandTotal(); // This will update all displays
+        } else {
+            if (priceEl) priceEl.innerText = '0.00';
+            currentOriginalPrice = 0;
+            updateGrandTotal();
+            console.warn('Price not found in expected API response format:', data);
         }
     } catch (error) {
         console.error('Error fetching price from API:', error);
         const priceEl = document.getElementById('price');
-        if(priceEl) {
-            priceEl.innerText = (50 + km * 12).toFixed(2);
+        const fallbackPrice = (50 + km * 12);
+        currentOriginalPrice = fallbackPrice;
+        
+        if (priceEl) priceEl.innerText = fallbackPrice.toFixed(2);
+        updateGrandTotal();
+    }
+}
+
+// Helper function to calculate and display price calculation
+function updateGrandTotal() {
+    const totalPriceEl = document.getElementById('totalPriceDisplay');
+    const grandTotalEl = document.getElementById('grandTotalDisplay');
+    const discountRow = document.getElementById('discountRow');
+    const discountAmountEl = document.getElementById('discountAmountDisplay');
+    
+    if (!grandTotalEl) return;
+    
+    // Update total price display
+    if (totalPriceEl) {
+        totalPriceEl.innerText = currentOriginalPrice.toFixed(2);
+    }
+    
+    let finalPrice = currentOriginalPrice;
+    let discountAmount = 0;
+    
+    // Apply discount if available
+    if (currentPromotionData && currentDiscountValue > 0) {
+        // Check if discount is percentage or fixed amount
+        if (currentPromotionData.discount_type === 'percentage') {
+            discountAmount = (currentOriginalPrice * currentDiscountValue) / 100;
+        } else {
+            // Fixed amount discount
+            discountAmount = currentDiscountValue;
+        }
+        
+        finalPrice = currentOriginalPrice - discountAmount;
+        
+        // Ensure price doesn't go below zero
+        if (finalPrice < 0) finalPrice = 0;
+        
+        // Show discount row
+        if (discountRow) {
+            discountRow.classList.remove('d-none');
+        }
+        
+        // Update discount display
+        if (discountAmountEl) {
+            discountAmountEl.innerText = discountAmount.toFixed(2);
+        }
+    } else {
+        // Hide discount section if no discount
+        if (discountRow) {
+            discountRow.classList.add('d-none');
         }
     }
+    
+    // Update grand total display
+    grandTotalEl.innerText = finalPrice.toFixed(2);
 }
 
 function showToast(message, type = 'success') {
@@ -502,35 +622,34 @@ function showBookingSuccessPopup() {
                 <p style="font-size: 16px; margin-bottom: 20px; font-weight: bold; font-family: 'Avenir', sans-serif;">
                     Track your recovery vehicle in real time
                 </p>
-                <p style="font-size: 14px; margin-top: 25px; color: #666; text-align: center; font-family: 'Avenir', sans-serif;">
+                <div style="margin-bottom: 25px;">
+                    <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                        <a href="#" target="_blank" style="display: inline-block;">
+                            <img src="{{ asset('assets/images/google-play.png') }}" alt="Google Play" style="height: 50px; width: auto; transition: transform 0.2s;">
+                        </a>
+                        <a href="#" target="_blank" style="display: inline-block;">
+                            <img src="{{ asset('assets/images/app-store.png') }}" alt="App Store" style="height: 50px; width: auto; transition: transform 0.2s;">
+                        </a>
+                    </div>
+                </div>
+                <p style="font-size: 14px; margin-top: 20px; color: #666; text-align: center; font-family: 'Avenir', sans-serif;">
                     <em>Note: Service updates and driver communication are available only in the mobile app.</em>
                 </p>
-                <div style="display: flex; gap: 15px; justify-content: center; margin-top: 25px;">
+                <div style="margin-top: 25px;">
                     <button id="openAppBtn" style="
-                        background-color: white; 
-                        color: black; 
-                        border: 1px solid #000; 
-                        padding: 12px 25px; 
-                        border-radius: 6px; 
-                        cursor: pointer; 
-                        font-size: 16px;
-                        font-family: 'Avenir', sans-serif;
-                        transition: background-color 0.3s, border-color 0.3s;
-                    " onmouseover="this.style.backgroundColor='red'; this.style.borderColor='darkred'; this.style.color='white';" onmouseout="this.style.backgroundColor='white'; this.style.borderColor='#ccc'; this.style.color='black';">
-                        Go to Home Screen
-                    </button>
-                    <button id="downloadAppBtn" style="
-                        background-color: red; 
+                        background-color: #dc3545; 
                         color: white; 
                         border: none; 
-                        padding: 12px 25px; 
+                        padding: 12px 30px; 
                         border-radius: 6px; 
                         cursor: pointer; 
                         font-size: 16px;
                         font-family: 'Avenir', sans-serif;
+                        font-weight: bold;
                         transition: background-color 0.3s;
-                    " onmouseover="this.style.backgroundColor='#cc0000'" onmouseout="this.style.backgroundColor='red'">
-                        Download App
+                        box-shadow: 0 2px 6px rgba(220,53,69,0.3);
+                    " onmouseover="this.style.backgroundColor='#c82333'; this.style.boxShadow='0 4px 12px rgba(220,53,69,0.4)';" onmouseout="this.style.backgroundColor='#dc3545'; this.style.boxShadow='0 2px 6px rgba(220,53,69,0.3)';">
+                        Go to Home Screen
                     </button>
                 </div>
             </div>
@@ -539,29 +658,23 @@ function showBookingSuccessPopup() {
         showCloseButton: true,
         width: '600px',
         padding: '30px',
+        willClose: () => {
+            window.location.href = "{{ route('home') }}";
+        },
         customClass: {
             popup: 'booking-success-popup',
             title: 'booking-success-title',
             content: 'booking-success-content'
         },
         willOpen: () => {
-            // Add event listeners for the buttons
+            // Add event listener for the home button
             setTimeout(() => {
                 const openAppBtn = document.getElementById('openAppBtn');
-                const downloadAppBtn = document.getElementById('downloadAppBtn');
                 
                 if (openAppBtn) {
                     openAppBtn.addEventListener('click', () => {
                         // Redirect to home page
-                        window.location.href = '/';
-                        Swal.close();
-                    });
-                }
-                
-                if (downloadAppBtn) {
-                    downloadAppBtn.addEventListener('click', () => {
-                        // Replace with your actual app store links
-                        window.open('https://play.google.com/store/apps/details?id=com.toretto.recovery', '_blank');
+                        window.location.href = "{{ route('home') }}";
                         Swal.close();
                     });
                 }
@@ -792,6 +905,8 @@ function calculateDistance(pickupAddress, dropAddress) {
 document.addEventListener('DOMContentLoaded', function () {
     initMap();
     loadGoogleMapsScript();
+    
+    checkPendingBookingData();
 
     const bookingBtn = document.getElementById('bookingSubmitBtn');
     const bookingBtnText = bookingBtn ? bookingBtn.querySelector('.btn-text') : null;
@@ -854,10 +969,22 @@ document.addEventListener('DOMContentLoaded', function () {
                     showPromoMessage(promoData.message || 'Invalid promo code.', 'error');
                 } else {
                     showPromoMessage('Promo code applied successfully!', 'success');
-                    // Store the promotion ID for use in booking
-                    if (promoData.data && promoData.data.id) {
-                        document.getElementById('promo_code').dataset.promotionId = promoData.data.id;
+                    
+                    // Store promotion data
+                    if (promoData.data) {
+                        currentPromotionData = promoData.data;
+                        // Extract discount value from the API response
+                        currentDiscountValue = promoData.data.discount_value || 0;
+                        
+                        // Store the promotion ID for use in booking
+                        if (promoData.data.id) {
+                            document.getElementById('promo_code').dataset.promotionId = promoData.data.id;
+                        }
+                        
+                        // Update grand total with discount
+                        updateGrandTotal();
                     }
+                    
                     // Change button to Remove state
                     setPromoButtonState(true);
                 }
@@ -903,6 +1030,13 @@ document.addEventListener('DOMContentLoaded', function () {
         if (promoInputElement) {
             delete promoInputElement.dataset.promotionId;
         }
+        
+        // Reset promotion data
+        currentPromotionData = null;
+        currentDiscountValue = 0;
+        
+        // Update grand total (without discount)
+        updateGrandTotal();
         
         // Show success message
         showPromoMessage('Promo code removed successfully!', 'success');
@@ -951,6 +1085,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 const bookingData = {
                     pickup_location: pickupLocation,
                     drop_location: dropLocation,
+                    pickup_coords: pickupMarker ? { lat: pickupMarker.getLatLng().lat, lng: pickupMarker.getLatLng().lng } : null,
+                    drop_coords: dropMarker ? { lat: dropMarker.getLatLng().lat, lng: dropMarker.getLatLng().lng } : null,
                     distance: latestDistanceKm,
                     timestamp: Date.now()
                 };
@@ -1014,12 +1150,20 @@ document.addEventListener('DOMContentLoaded', function () {
         const token = getAuthToken();
         console.log('Token:', token);
         if (!token) {
-            showToast('Please log in again.', 'error');
-            if (bookingBtn && bookingBtnText && bookingBtnLoader) {
-                bookingBtn.disabled = false;
-                bookingBtnText.classList.remove('d-none');
-                bookingBtnLoader.classList.add('d-none');
-            }
+            // Store the current page data for after login
+            const bookingData = {
+                pickup_location: pickupLocation,
+                drop_location: dropLocation,
+                pickup_coords: pickupMarker ? { lat: pickupMarker.getLatLng().lat, lng: pickupMarker.getLatLng().lng } : null,
+                drop_coords: dropMarker ? { lat: dropMarker.getLatLng().lat, lng: dropMarker.getLatLng().lng } : null,
+                distance: latestDistanceKm,
+                timestamp: Date.now()
+            };
+            
+            localStorage.setItem('pending_booking', JSON.stringify(bookingData));
+            
+            // Redirect to login page
+            window.location.href = '{{ route("login") }}';
             return;
         }
 
@@ -1063,6 +1207,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 if (promoData.data && promoData.data.id) {
                     promotionId = promoData.data.id;
+                    // Also store discount data for display
+                    currentPromotionData = promoData.data;
+                    currentDiscountValue = promoData.data.discount_value || 0;
+                    updateGrandTotal();
                 }
             } catch (err) {
                 console.error('Error verifying promo code:', err);
@@ -1121,15 +1269,15 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!bookingSuccessToastShown) {
                 const successMessage = `Thank you for choosing Toretto Recovery Services.
 
-Your nearest recovery driver is currently being assigned.
+                Your nearest recovery driver is currently being assigned.
 
-To receive real-time updates, driver contact details, and live tracking, please continue using our mobile application.
+                To receive real-time updates, driver contact details, and live tracking, please continue using our mobile application.
 
-Track your recovery vehicle in real time
+                Track your recovery vehicle in real time
 
-[Open App / Download App]
+                [Open App / Download App]
 
-Note: Service updates and driver communication are available only in the mobile app.`;
+                Note: Service updates and driver communication are available only in the mobile app.`;
                 showToast(successMessage, 'success');
                 bookingSuccessToastShown = true;
             }
@@ -1150,5 +1298,81 @@ Note: Service updates and driver communication are available only in the mobile 
         }
     });
 });
+
+// Function to check for and restore pending booking data
+function checkPendingBookingData() {
+    const pendingBooking = localStorage.getItem('pending_booking');
+    
+    if (pendingBooking) {
+        try {
+            const bookingData = JSON.parse(pendingBooking);
+            
+            // Check if data is recent (within 1 hour)
+            const oneHour = 60 * 60 * 1000;
+            if (Date.now() - bookingData.timestamp > oneHour) {
+                // Data is too old, remove it
+                localStorage.removeItem('pending_booking');
+                return;
+            }
+            
+            // Restore form data
+            if (bookingData.pickup_location) {
+                document.getElementById('pickup_location').value = bookingData.pickup_location;
+            }
+            
+            if (bookingData.drop_location) {
+                document.getElementById('drop_location').value = bookingData.drop_location;
+            }
+            
+            // Restore map markers if coordinates are available
+            if (bookingData.pickup_coords && map) {
+                if (pickupMarker) {
+                    map.removeLayer(pickupMarker);
+                }
+                
+                pickupMarker = L.marker([
+                    bookingData.pickup_coords.lat,
+                    bookingData.pickup_coords.lng
+                ]).addTo(map).bindPopup("Pickup Location: " + bookingData.pickup_location);
+                
+                map.setView([bookingData.pickup_coords.lat, bookingData.pickup_coords.lng], 15);
+            }
+            
+            if (bookingData.drop_coords && map) {
+                if (dropMarker) {
+                    map.removeLayer(dropMarker);
+                }
+                
+                dropMarker = L.marker([
+                    bookingData.drop_coords.lat,
+                    bookingData.drop_coords.lng
+                ]).addTo(map).bindPopup("Drop Location: " + bookingData.drop_location);
+            }
+            
+            // Restore distance if available
+            if (bookingData.distance && document.getElementById('distance')) {
+                latestDistanceKm = bookingData.distance;
+                document.getElementById('distance').innerText = bookingData.distance.toFixed(2) + " km";
+            }
+            
+            // Draw route if both markers exist
+            if (pickupMarker && dropMarker) {
+                drawRoute();
+            }
+            
+            // Show success message
+            setTimeout(() => {
+                showToast('Your booking data has been restored!', 'success');
+            }, 1000);
+            
+            // Remove the pending booking data
+            localStorage.removeItem('pending_booking');
+            
+        } catch (error) {
+            console.error('Error restoring booking data:', error);
+            localStorage.removeItem('pending_booking');
+        }
+    }
+}
 </script>
 @endpush
