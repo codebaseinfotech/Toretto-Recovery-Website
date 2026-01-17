@@ -174,6 +174,18 @@ class LoginController extends Controller {
 
             $isRegistered = $data[ 'is_registered' ];
 
+            // Check for pending booking data
+            $pendingBooking = Session::get('pending_booking', []);
+            
+            $redirectRoute = $isRegistered ? route( 'book.now' ) : route( 'signup.form' );
+            
+            // If there's pending booking data, redirect to booking page
+            if (!empty($pendingBooking)) {
+                $redirectRoute = route('book.now');
+                // Clear the pending booking data
+                Session::forget('pending_booking');
+            }
+
             return response()->json( [
                 'status'   => true,
                 'message'  => 'Login successful!',
@@ -187,7 +199,7 @@ class LoginController extends Controller {
                     'phone'         => $apiUserData[ 'phone' ] ?? $data[ 'phone' ] ?? null,
                     'is_registered' => $isRegistered,
                 ],
-                'redirect' => $isRegistered ? route( 'book.now' ) : route( 'signup.form' ),
+                'redirect' => $redirectRoute,
             ] );
 
         } catch ( \Throwable $e ) {

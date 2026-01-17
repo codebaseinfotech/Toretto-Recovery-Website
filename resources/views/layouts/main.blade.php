@@ -46,12 +46,28 @@
 
 @include('partials.topbar')
 
-{{-- HEADER --}}
- @if(session()->has('token'))           {{-- Session::has('token') === authenticated --}}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const token = localStorage.getItem('auth_token');
+
+        if (token) {
+            document.getElementById('admin-header').style.display = 'block';
+            document.getElementById('auth-header').style.display = 'none';
+        } else {
+            document.getElementById('admin-header').style.display = 'none';
+            document.getElementById('auth-header').style.display = 'block';
+        }
+    });
+</script>
+
+<div id="admin-header" style="display:none;">
     @include('partials.admin-header')
-@else
+</div>
+
+<div id="auth-header" style="display:none;">
     @include('partials.auth-header')
-@endif
+</div>
+
 
 {{-- PAGE CONTENT --}}
 @yield('content')

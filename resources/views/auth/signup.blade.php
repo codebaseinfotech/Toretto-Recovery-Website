@@ -226,7 +226,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const apiBaseUrl = document.querySelector('meta[name="api-base-url"]')?.getAttribute('content') || 
                               document.querySelector('#api-base-url')?.value || 
                               window.API_BASE_URL || 
-                              'http://3.7.253.61/api';
+                              'https://larareactfreelancer.com/api';
         
             fetch(apiBaseUrl + '/v1/customer/register', {
                 method: 'POST',

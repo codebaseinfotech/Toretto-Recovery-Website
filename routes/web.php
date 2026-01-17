@@ -23,7 +23,7 @@ Route::get('/signup', [SignupController::class, 'showSignup'])->name('signup.for
 Route::post('/signup-register', [SignupController::class, 'register'])->name('signup.register');
 
 
-Route::middleware('session.auth')->controller(PageController::class)->group(function () {
+Route::controller(PageController::class)->group(function () {
     Route::get('/book-now', 'bookNow')->name('book.now');
     Route::get('/my-booking', 'myBooking')->name('my.booking');
 });
