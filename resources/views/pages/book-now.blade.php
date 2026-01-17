@@ -95,7 +95,7 @@
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <button type="button" class="theme-btn w-100" id="applyPromoBtn">
+                            <button type="button" class="theme-btn w-100" id="applyPromoBtn" data-applied="false">
                                 <span class="btn-text">Apply</span>
                                 <span class="btn-loader-promo d-none">
                                     <div class="beat-loader">
@@ -219,6 +219,25 @@
 
 @endsection
 
+
+@push('styles')
+<style>
+/* Remove button maintains same styling as apply button */
+#applyPromoBtn[data-applied="true"] {
+    /* Same styling as theme-btn, just different text */
+}
+
+/* Ensure loaders are properly centered */
+.btn-loader-price,
+.btn-loader-promo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+</style>
+@endpush
 
 @push('map-script')
 
@@ -787,7 +806,13 @@ document.addEventListener('DOMContentLoaded', function () {
     
     if (applyPromoBtn) {
         applyPromoBtn.addEventListener('click', async function() {
+            const isApplied = applyPromoBtn.dataset.applied === 'true';
             const promoCode = promoInput.value.trim();
+            
+            if (isApplied) {
+                removePromoCode();
+                return;
+            }
             
             if (!promoCode) {
                 showPromoMessage('Please enter a promo code.', 'error');
@@ -833,6 +858,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (promoData.data && promoData.data.id) {
                         document.getElementById('promo_code').dataset.promotionId = promoData.data.id;
                     }
+                    // Change button to Remove state
+                    setPromoButtonState(true);
                 }
             } catch (err) {
                 console.error('Error verifying promo code:', err);
@@ -853,6 +880,35 @@ document.addEventListener('DOMContentLoaded', function () {
             promoBtnLoader.classList.add('d-none');
             applyPromoBtn.disabled = false;
         }
+    }
+    
+    function setPromoButtonState(applied) {
+        if (applyPromoBtn && promoBtnText) {
+            applyPromoBtn.dataset.applied = applied.toString();
+            if (applied) {
+                promoBtnText.textContent = 'Remove';
+            } else {
+                promoBtnText.textContent = 'Apply';
+                // Clear the promo input
+                if (promoInput) {
+                    promoInput.value = '';
+                }
+            }
+        }
+    }
+    
+    function removePromoCode() {
+        // Remove the promotion ID
+        const promoInputElement = document.getElementById('promo_code');
+        if (promoInputElement) {
+            delete promoInputElement.dataset.promotionId;
+        }
+        
+        // Show success message
+        showPromoMessage('Promo code removed successfully!', 'success');
+        
+        // Change button back to Apply state
+        setPromoButtonState(false);
     }
     
     // Calculate Price button functionality
