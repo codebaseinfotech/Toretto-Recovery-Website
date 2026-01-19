@@ -710,16 +710,14 @@ function initMap() {
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap'
     }).addTo(map);
-
-    // Initialize custom driver icon
+    
     driverIcon = L.icon({
         iconUrl: DRIVER_ICON_URL,
-        iconSize: [60, 50],
-        iconAnchor: [30, 50],
-        popupAnchor: [0, -45]
+        iconSize: [30, 30],
+        iconAnchor: [15, 30],
+        popupAnchor: [0, -35]
     });
 
-    // Load available drivers on page load
     fetchAvailableDrivers();
 }
 
@@ -785,7 +783,6 @@ async function fetchAvailableDrivers() {
     try {
         let token = getAuthToken();
 
-        // For testing: use provided static token if no token from session/meta
         if (!token) {
             token = '121|OE9m3bkYoXiJqipniCktL1g4g0Ors6rpHTdslwh4c659b8888';
         }
