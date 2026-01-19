@@ -26,12 +26,11 @@
                             <h4 class="footer-widget-title">Contact Us</h4>
                             <ul class="footer-contact">
                                 <li><i class="fas fa-map-marker-alt"></i>274 Street - Dubai Investment Park - 2 - Dubai </li>
-                                <li><a href="tel:+971522255021"><i class="fas fa-phone"></i>+971 52 225 5021 </a></li>
+                                <li><a href="tel:+971523003423"><i class="fas fa-phone"></i>+971 523003423</a></li>
 
                                 <li>
                                     <a href="mailto:support-torettorecovery.ae">
                                         <i class="fas fa-envelope"></i>support-torettorecovery.ae
-
                                     </a>
                                 </li>
                             </ul>
@@ -64,8 +63,7 @@
                 <div class="row">
                     <div class="col-md-12 align-self-center">
                         <p class="copyright-text text-center">
-                            © 2026 Toretto Recovery
-                            All Rights Reserved| Design &amp; Developed By  <a href="#" target="_blank" style="color: #fff">Al Attas Information Technology</a>
+                            © 2026 Toretto Recovery All Rights Reserved| Design & Developed By HA Al Attas Information Technology
                         </p>
                     </div>
 
@@ -75,8 +73,8 @@
 </footer>
 
 <div class="floating-social">
-    <a href="tel:+971522255021"><i class="fa-solid fa-phone"></i></a>
-    <a href="https://wa.me/+971522255021"><i class="fa-brands fa-whatsapp"></i></a>
+    <a href="tel:+971523003423"><i class="fa-solid fa-phone"></i></a>
+    <a href="https://wa.me/+971523003423"><i class="fa-brands fa-whatsapp"></i></a>
 </div>
 
 <a href="#" id="scroll-top"><i class="fa-solid fa-arrow-up"></i></a>
