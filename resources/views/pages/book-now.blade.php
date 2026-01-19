@@ -321,14 +321,27 @@ let driverMarkers = [];
 let driverIcon;
 
 function initAutocomplete() {
+    const dubaiBounds = new google.maps.LatLngBounds(
+        new google.maps.LatLng(24.7934, 54.9899),
+        new google.maps.LatLng(25.4129, 56.3796)
+    );
+    
     pickupAutocomplete = new google.maps.places.Autocomplete(
         document.getElementById('pickup_location'),
-        { types: ['geocode'] }
+        { 
+            types: ['geocode'],
+            bounds: dubaiBounds,
+            strictBounds: true
+        }
     );
     
     dropAutocomplete = new google.maps.places.Autocomplete(
         document.getElementById('drop_location'),
-        { types: ['geocode'] }
+        { 
+            types: ['geocode'],
+            bounds: dubaiBounds,
+            strictBounds: true
+        }
     );
 
     pickupAutocomplete.addListener('place_changed', function() {
@@ -338,20 +351,28 @@ function initAutocomplete() {
             return;
         }
         
+        const lat = place.geometry.location.lat();
+        const lng = place.geometry.location.lng();
+        
+        if (!isLocationInDubai(lat, lng)) {
+            showToast('Please select a location within Dubai.', 'error');
+            document.getElementById('pickup_location').value = '';
+            return;
+        }
+        
         if (map && place.geometry.location) {
             if (pickupMarker) {
                 map.removeLayer(pickupMarker);
             }
             
             pickupMarker = L.marker([
-                place.geometry.location.lat(),
-                place.geometry.location.lng()
+                lat,
+                lng
             ]).addTo(map).bindPopup("Pickup Location: " + place.formatted_address).openPopup();
             
-            // Update the input field with the full formatted address
             document.getElementById('pickup_location').value = place.formatted_address;
             
-            map.setView([place.geometry.location.lat(), place.geometry.location.lng()], 15);
+            map.setView([lat, lng], 15);
             
             if (dropMarker) {
                 drawRoute();
@@ -1374,5 +1395,18 @@ function checkPendingBookingData() {
         }
     }
 }
+
+// Function to validate if a location is within Dubai
+function isLocationInDubai(lat, lng) {
+    // Dubai coordinates boundaries
+    const dubaiMinLat = 24.7934;
+    const dubaiMaxLat = 25.4129;
+    const dubaiMinLng = 54.9899;
+    const dubaiMaxLng = 56.3796;
+    
+    return (lat >= dubaiMinLat && lat <= dubaiMaxLat && 
+            lng >= dubaiMinLng && lng <= dubaiMaxLng);
+}
+
 </script>
 @endpush
