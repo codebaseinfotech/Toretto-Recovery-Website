@@ -63,7 +63,7 @@
                 <div class="row">
                     <div class="col-md-12 align-self-center">
                         <p class="copyright-text text-center">
-                            © 2026 Toretto Recovery All Rights Reserved| Design & Developed By HA Al Attas Information Technology
+                            © 2026 Toretto Recovery. All Rights Reserved | Designed & Developed by HA Information Technology
                         </p>
                     </div>
 
