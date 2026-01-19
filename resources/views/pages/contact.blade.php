@@ -38,7 +38,7 @@
                             </div>
                             <div class="contact-info-content">
                                 <h5>Call Us</h5>
-                                <p>+971 52 225 5021</p>
+                                <p>+971 523003423</p>
                             </div>
                         </div>
                     </div>
