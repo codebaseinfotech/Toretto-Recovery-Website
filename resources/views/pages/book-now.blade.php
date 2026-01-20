@@ -321,92 +321,92 @@ let driverMarkers = [];
 let driverIcon;
 
 function initAutocomplete() {
-    const dubaiBounds = new google.maps.LatLngBounds(
-        new google.maps.LatLng(24.7934, 54.9899),
-        new google.maps.LatLng(25.4129, 56.3796)
-    );
-    
-    pickupAutocomplete = new google.maps.places.Autocomplete(
-        document.getElementById('pickup_location'),
-        { 
-            types: ['geocode'],
-            bounds: dubaiBounds,
-            strictBounds: true
-        }
-    );
-    
-    dropAutocomplete = new google.maps.places.Autocomplete(
-        document.getElementById('drop_location'),
-        { 
-            types: ['geocode'],
-            bounds: dubaiBounds,
-            strictBounds: true
-        }
+
+    // 🇦🇪 UAE Boundaries
+    const uaeBounds = new google.maps.LatLngBounds(
+        new google.maps.LatLng(22.4969, 51.5795),
+        new google.maps.LatLng(26.0555, 56.3967)
     );
 
-    pickupAutocomplete.addListener('place_changed', function() {
-        const place = pickupAutocomplete.getPlace();
-        if (!place.geometry) {
-            console.log("No details available for input: '" + place.name + "'");
-            return;
+    const autocompleteOptions = {
+        types: ['establishment'],
+        bounds: uaeBounds,
+        strictBounds: true,
+        componentRestrictions: {
+            country: ['AE'] // 🇦🇪 UAE only
         }
-        
-        const lat = place.geometry.location.lat();
-        const lng = place.geometry.location.lng();
-        
-        if (!isLocationInDubai(lat, lng)) {
-            showToast('Please select a location within Dubai.', 'error');
-            document.getElementById('pickup_location').value = '';
-            return;
-        }
-        
-        if (map && place.geometry.location) {
-            if (pickupMarker) {
-                map.removeLayer(pickupMarker);
-            }
-            
-            pickupMarker = L.marker([
-                lat,
-                lng
-            ]).addTo(map).bindPopup("Pickup Location: " + place.formatted_address).openPopup();
-            
-            document.getElementById('pickup_location').value = place.formatted_address;
-            
-            map.setView([lat, lng], 15);
-            
-            if (dropMarker) {
-                drawRoute();
-            }
-        }
-    });
-    
-    dropAutocomplete.addListener('place_changed', function() {
-        const place = dropAutocomplete.getPlace();
-        if (!place.geometry) {
-            console.log("No details available for input: '" + place.name + "'");
-            return;
-        }
-        
-        if (map && place.geometry.location) {
-            if (dropMarker) {
-                map.removeLayer(dropMarker);
-            }
-            
-            dropMarker = L.marker([
-                place.geometry.location.lat(),
-                place.geometry.location.lng()
-            ]).addTo(map).bindPopup("Drop Location: " + place.formatted_address).openPopup();
-            
-            // Update the input field with the full formatted address
-            document.getElementById('drop_location').value = place.formatted_address;
-            
-            map.setView([place.geometry.location.lat(), place.geometry.location.lng()], 15);
-            
-            if (pickupMarker) {
-                drawRoute();
-            }
-        }
-    });
+    };
+
+    pickupAutocomplete = new google.maps.places.Autocomplete(
+        document.getElementById('pickup_location'),
+        autocompleteOptions
+    );
+
+    dropAutocomplete = new google.maps.places.Autocomplete(
+        document.getElementById('drop_location'),
+        autocompleteOptions
+    );
+
+    pickupAutocomplete.addListener('place_changed', onPickupChanged);
+    dropAutocomplete.addListener('place_changed', onDropChanged);
+}
+
+function onPickupChanged() {
+    const place = pickupAutocomplete.getPlace();
+
+    if (!place.geometry) {
+        showToast('Please select a valid location within the UAE.', 'error');
+        document.getElementById('pickup_location').value = '';
+        return;
+    }
+
+    const lat = place.geometry.location.lat();
+    const lng = place.geometry.location.lng();
+
+    if (!isLocationInDubai(lat, lng)) {
+        showToast('Pickup location ફક્ત Dubai અંદર હોવી જોઈએ', 'error');
+        document.getElementById('pickup_location').value = '';
+        return;
+    }
+
+    if (pickupMarker) map.removeLayer(pickupMarker);
+
+    pickupMarker = L.marker([lat, lng])
+        .addTo(map)
+        .bindPopup('Pickup: ' + place.name)
+        .openPopup();
+
+    document.getElementById('pickup_location').value = place.name;
+
+    map.setView([lat, lng], 15);
+
+    if (dropMarker) drawRoute();
+}
+
+function onDropChanged() {
+    const place = dropAutocomplete.getPlace();
+
+    if (!place.geometry) {
+        showToast('Please select a valid location within the UAE.', 'error');
+        document.getElementById('drop_location').value = '';
+        return;
+    }
+
+    const lat = place.geometry.location.lat();
+    const lng = place.geometry.location.lng();
+
+    if (dropMarker) map.removeLayer(dropMarker);
+
+    dropMarker = L.marker([lat, lng])
+        .addTo(map)
+        .bindPopup('Drop: ' + place.name)
+        .openPopup();
+
+    document.getElementById('drop_location').value = place.name;
+
+    map.setView([lat, lng], 15);
+
+    if (pickupMarker) drawRoute();
 }
 
 function getAuthToken() {
