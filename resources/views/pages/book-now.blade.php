@@ -73,7 +73,7 @@
                         <div class="col-md-6">
                             <div class="price-box p-3 bg-light rounded">
                                 <h6>Price</h6>
-                                <p id="price" class="mb-0">0.00</p>
+                                <p id="price" class="mb-0">0.00 AED</p>
                             </div>
                         </div>
                     </div>
@@ -115,19 +115,19 @@
                     
                     <div class="price-item mb-2">
                         <span class="fw-bold">Total Price:</span>
-                        <span id="totalPriceDisplay" class="float-end">0.00</span>
+                        <span id="totalPriceDisplay" class="float-end">0.00 AED</span>
                     </div>
                     
                     <div class="price-item mb-2 d-none" id="discountRow">
                         <span class="fw-bold">Discounted Price:</span>
-                        <span id="discountAmountDisplay" class="float-end text-danger">0.00</span>
+                        <span id="discountAmountDisplay" class="float-end text-danger">0.00 AED</span>
                     </div>
                     
                     <hr class="my-3">
                     
                     <div class="price-item">
                         <span class="fw-bold">Grand Total:</span>
-                        <span id="grandTotalDisplay" class="float-end fw-bold">0.00</span>
+                        <span id="grandTotalDisplay" class="float-end fw-bold">0.00 AED</span>
                     </div>
                 </div>
 
@@ -356,7 +356,8 @@ function onPickupChanged() {
 
     if (!place.geometry) {
         showToast('Please select a valid location within the UAE.', 'error');
-        document.getElementById('pickup_location').value = '';
+        const pickupElement = document.getElementById('pickup_location');
+        if (pickupElement) pickupElement.value = '';
         return;
     }
 
@@ -364,8 +365,9 @@ function onPickupChanged() {
     const lng = place.geometry.location.lng();
 
     if (!isLocationInDubai(lat, lng)) {
-        showToast('Pickup location ફક્ત Dubai અંદર હોવી જોઈએ', 'error');
-        document.getElementById('pickup_location').value = '';
+        showToast('Please select a valid location within the UAE.', 'error');
+        const pickupElement = document.getElementById('pickup_location');
+        if (pickupElement) pickupElement.value = '';
         return;
     }
 
@@ -376,7 +378,8 @@ function onPickupChanged() {
         .bindPopup('Pickup: ' + place.name)
         .openPopup();
 
-    document.getElementById('pickup_location').value = place.name;
+    const pickupElement = document.getElementById('pickup_location');
+    if (pickupElement) pickupElement.value = place.name;
 
     map.setView([lat, lng], 15);
 
@@ -388,7 +391,8 @@ function onDropChanged() {
 
     if (!place.geometry) {
         showToast('Please select a valid location within the UAE.', 'error');
-        document.getElementById('drop_location').value = '';
+        const dropElement = document.getElementById('drop_location');
+        if (dropElement) dropElement.value = '';
         return;
     }
 
@@ -402,7 +406,8 @@ function onDropChanged() {
         .bindPopup('Drop: ' + place.name)
         .openPopup();
 
-    document.getElementById('drop_location').value = place.name;
+    const dropElement = document.getElementById('drop_location');
+    if (dropElement) dropElement.value = place.name;
 
     map.setView([lat, lng], 15);
 
@@ -481,10 +486,10 @@ async function fetchPriceFromAPI(latitude, longitude, km) {
             currentOriginalPrice = priceValue; // Store original price
             
             // Update all price displays
-            if (priceEl) priceEl.innerText = priceValue.toFixed(2);
+            if (priceEl) priceEl.innerText = priceValue.toFixed(2) + ' AED';
             updateGrandTotal(); // This will update all displays
         } else {
-            if (priceEl) priceEl.innerText = '0.00';
+            if (priceEl) priceEl.innerText = '0.00 AED';
             currentOriginalPrice = 0;
             updateGrandTotal();
             console.warn('Price not found in expected API response format:', data);
@@ -495,7 +500,7 @@ async function fetchPriceFromAPI(latitude, longitude, km) {
         const fallbackPrice = (50 + km * 12);
         currentOriginalPrice = fallbackPrice;
         
-        if (priceEl) priceEl.innerText = fallbackPrice.toFixed(2);
+        if (priceEl) priceEl.innerText = fallbackPrice.toFixed(2) + ' AED';
         updateGrandTotal();
     }
 }
@@ -511,7 +516,7 @@ function updateGrandTotal() {
     
     // Update total price display
     if (totalPriceEl) {
-        totalPriceEl.innerText = currentOriginalPrice.toFixed(2);
+        totalPriceEl.innerText = currentOriginalPrice.toFixed(2) + ' AED';
     }
     
     let finalPrice = currentOriginalPrice;
@@ -539,7 +544,7 @@ function updateGrandTotal() {
         
         // Update discount display
         if (discountAmountEl) {
-            discountAmountEl.innerText = discountAmount.toFixed(2);
+            discountAmountEl.innerText = discountAmount.toFixed(2) + ' AED';
         }
     } else {
         // Hide discount section if no discount
@@ -549,7 +554,7 @@ function updateGrandTotal() {
     }
     
     // Update grand total display
-    grandTotalEl.innerText = finalPrice.toFixed(2);
+    grandTotalEl.innerText = finalPrice.toFixed(2) + ' AED';
 }
 
 function showToast(message, type = 'success') {
@@ -863,8 +868,16 @@ function drawRoute() {
             }
 
             // After routing, still calculate distance & price using Distance Matrix
-            const pickupAddress = document.getElementById('pickup_location').value;
-            const dropAddress = document.getElementById('drop_location').value;
+            const pickupElement = document.getElementById('pickup_location');
+            const dropElement = document.getElementById('drop_location');
+            
+            if (!pickupElement || !dropElement) {
+                console.error('Pickup or drop location elements not found');
+                return;
+            }
+            
+            const pickupAddress = pickupElement.value;
+            const dropAddress = dropElement.value;
             calculateDistance(pickupAddress, dropAddress);
         }
     );
@@ -884,19 +897,19 @@ function calculateDistance(pickupAddress, dropAddress) {
             const distanceKm = distanceValue / 1000; // convert to kilometers
             latestDistanceKm = distanceKm;
             
-            if(document.getElementById('distance')) {
-                document.getElementById('distance').innerText = distanceKm.toFixed(2) + " km";
+            const distanceElement = document.getElementById('distance');
+            if(distanceElement) {
+                distanceElement.innerText = distanceKm.toFixed(2) + " km";
             }
             
-            // Price calculation is now triggered manually by the Calculate Price button
-            // Get the pickup location coordinates for later use when Calculate Price is clicked
-            // const pickupLatLng = pickupMarker.getLatLng();
-            
-            // Call the external API to get the price - this will be done when Calculate Price button is clicked
-            // fetchPriceFromAPI(pickupLatLng.lat, pickupLatLng.lng, distanceKm);
         } else {
             console.error('Distance matrix service error:', status);
-            // Fallback to manual calculation if API fails
+            
+            if (!pickupMarker || !dropMarker) {
+                console.error('Pickup or drop marker not available for fallback calculation');
+                return;
+            }
+            
             const p1 = pickupMarker.getLatLng();
             const p2 = dropMarker.getLatLng();
             const R = 6371; // Radius of the Earth in kilometers
@@ -910,8 +923,9 @@ function calculateDistance(pickupAddress, dropAddress) {
             const distanceKm = R * c;
             latestDistanceKm = distanceKm;
             
-            if(document.getElementById('distance')) {
-                document.getElementById('distance').innerText = distanceKm.toFixed(2) + " km";
+            const distanceElement = document.getElementById('distance');
+            if(distanceElement) {
+                distanceElement.innerText = distanceKm.toFixed(2) + " km";
             }
             
             // Price calculation is now triggered manually by the Calculate Price button
@@ -952,7 +966,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
             
-            // Show loader
             if (promoBtnText && promoBtnLoader) {
                 promoBtnText.classList.add('d-none');
                 promoBtnLoader.classList.remove('d-none');
@@ -1070,8 +1083,16 @@ document.addEventListener('DOMContentLoaded', function () {
     
     if (calculatePriceBtn) {
         calculatePriceBtn.addEventListener('click', async function() {
-            const pickupLocation = document.getElementById('pickup_location').value;
-            const dropLocation = document.getElementById('drop_location').value;
+            const pickupElement = document.getElementById('pickup_location');
+            const dropElement = document.getElementById('drop_location');
+            
+            if (!pickupElement || !dropElement) {
+                showToast('Pickup or drop location elements not found', 'error');
+                return;
+            }
+            
+            const pickupLocation = pickupElement.value;
+            const dropLocation = dropElement.value;
             
             if (!pickupLocation || !dropLocation) {
                 showToast('Please enter both pickup and drop locations', 'error');
@@ -1082,7 +1103,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 showToast('Please select valid pickup and drop locations on the map.', 'error');
                 return;
             }
-            
+
             if (latestDistanceKm <= 0) {
                 showToast('Distance could not be calculated. Please ensure both locations are valid.', 'error');
                 return;
@@ -1138,21 +1159,30 @@ document.addEventListener('DOMContentLoaded', function () {
     
     document.getElementById('bookingForm').addEventListener('submit', async function(e) {
         e.preventDefault();
-        
-        const pickupLocation = document.getElementById('pickup_location').value;
-        const dropLocation = document.getElementById('drop_location').value;
-        const promoCode = document.getElementById('promo_code').value;
-        
+            
+        const pickupElement = document.getElementById('pickup_location');
+        const dropElement = document.getElementById('drop_location');
+        const promoElement = document.getElementById('promo_code');
+            
+        if (!pickupElement || !dropElement) {
+            showToast('Pickup or drop location elements not found','error');
+            return;
+        }
+            
+        const pickupLocation = pickupElement.value;
+        const dropLocation = dropElement.value;
+        const promoCode = promoElement ? promoElement.value : '';
+            
         if (!pickupLocation || !dropLocation) {
             showToast('Please enter both pickup and drop locations','error');
             return;
         }
-
+    
         if (!pickupMarker || !dropMarker) {
             showToast('Please select valid pickup and drop locations on the map.','error');
             return;
         }
-        
+    
         if (latestDistanceKm <= 0) {
             showToast('Distance could not be calculated. Please ensure both locations are valid.','error');
             return;
@@ -1335,11 +1365,13 @@ function checkPendingBookingData() {
             
             // Restore form data
             if (bookingData.pickup_location) {
-                document.getElementById('pickup_location').value = bookingData.pickup_location;
+                const pickupElement = document.getElementById('pickup_location');
+                if (pickupElement) pickupElement.value = bookingData.pickup_location;
             }
             
             if (bookingData.drop_location) {
-                document.getElementById('drop_location').value = bookingData.drop_location;
+                const dropElement = document.getElementById('drop_location');
+                if (dropElement) dropElement.value = bookingData.drop_location;
             }
             
             // Restore map markers if coordinates are available
@@ -1368,9 +1400,12 @@ function checkPendingBookingData() {
             }
             
             // Restore distance if available
-            if (bookingData.distance && document.getElementById('distance')) {
-                latestDistanceKm = bookingData.distance;
-                document.getElementById('distance').innerText = bookingData.distance.toFixed(2) + " km";
+            if (bookingData.distance) {
+                const distanceElement = document.getElementById('distance');
+                if (distanceElement) {
+                    latestDistanceKm = bookingData.distance;
+                    distanceElement.innerText = bookingData.distance.toFixed(2) + " km";
+                }
             }
             
             // Draw route if both markers exist

@@ -92,15 +92,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const phone = phoneInput.value.trim();
 
-        // Frontend validation
         if (!phone) {
             errorBox.innerText = 'Mobile number is required';
-            phoneInput.classList.add('is-invalid');
-            return;
-        }
-
-        if (phone.length !== 10) {
-            errorBox.innerText = 'Enter a valid mobile number';
             phoneInput.classList.add('is-invalid');
             return;
         }
