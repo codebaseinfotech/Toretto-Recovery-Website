@@ -308,8 +308,16 @@ let currentDiscountValue = 0; // Store discount value from promo
 let currentPromotionData = null; // Store full promotion data
 
 function loadGoogleMapsScript() {
+    // Check if Google Maps API is already loaded
+    if (window.google && window.google.maps) {
+        // Maps API already loaded, initialize directly
+        initAutocomplete();
+        return;
+    }
+    
     const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAP_API') }}&libraries=places,distance_matrix&callback=initAutocomplete`;
+    // Modified callback to handle map initialization after API loads
+    script.src = `https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAP_API') }}&libraries=places,distance_matrix&callback=initMapAndAutocomplete`;
     script.async = true;
     script.defer = true;
     document.head.appendChild(script);
@@ -319,6 +327,14 @@ let pickupAutocomplete, dropAutocomplete;
 let map, pickupMarker, dropMarker, routeLine;
 let driverMarkers = [];
 let driverIcon;
+
+function initMapAndAutocomplete() {
+    initMap();
+    
+    initAutocomplete();
+    
+    setTimeout(getUserLiveLocation, 500);
+}
 
 function initAutocomplete() {
 
@@ -337,18 +353,55 @@ function initAutocomplete() {
         }
     };
 
-    pickupAutocomplete = new google.maps.places.Autocomplete(
-        document.getElementById('pickup_location'),
-        autocompleteOptions
-    );
+    // Safely initialize autocompletes with checks
+    const pickupElement = document.getElementById('pickup_location');
+    const dropElement = document.getElementById('drop_location');
 
-    dropAutocomplete = new google.maps.places.Autocomplete(
-        document.getElementById('drop_location'),
-        autocompleteOptions
-    );
+    if (pickupElement) {
+        pickupAutocomplete = new google.maps.places.Autocomplete(
+            pickupElement,
+            autocompleteOptions
+        );
+        
+        // Add listener with error handling
+        pickupAutocomplete.addListener('place_changed', function() {
+            try {
+                onPickupChanged();
+            } catch (error) {
+                // Fallback: ensure input value is set properly
+                const element = document.getElementById('pickup_location');
+                if (element && pickupAutocomplete) {
+                    const place = pickupAutocomplete.getPlace();
+                    if (place && place.name) {
+                        element.value = place.name;
+                    }
+                }
+            }
+        });
+    }
 
-    pickupAutocomplete.addListener('place_changed', onPickupChanged);
-    dropAutocomplete.addListener('place_changed', onDropChanged);
+    if (dropElement) {
+        dropAutocomplete = new google.maps.places.Autocomplete(
+            dropElement,
+            autocompleteOptions
+        );
+        
+        // Add listener with error handling
+        dropAutocomplete.addListener('place_changed', function() {
+            try {
+                onDropChanged();
+            } catch (error) {
+                // Fallback: ensure input value is set properly
+                const element = document.getElementById('drop_location');
+                if (element && dropAutocomplete) {
+                    const place = dropAutocomplete.getPlace();
+                    if (place && place.name) {
+                        element.value = place.name;
+                    }
+                }
+            }
+        });
+    }
 }
 
 function onPickupChanged() {
@@ -364,7 +417,7 @@ function onPickupChanged() {
     const lat = place.geometry.location.lat();
     const lng = place.geometry.location.lng();
 
-    if (!isLocationInDubai(lat, lng)) {
+    if (!isLocationInUAE(lat, lng)) {
         showToast('Please select a valid location within the UAE.', 'error');
         const pickupElement = document.getElementById('pickup_location');
         if (pickupElement) pickupElement.value = '';
@@ -378,8 +431,11 @@ function onPickupChanged() {
         .bindPopup('Pickup: ' + place.name)
         .openPopup();
 
+    // Safely update the input field value
     const pickupElement = document.getElementById('pickup_location');
-    if (pickupElement) pickupElement.value = place.name;
+    if (pickupElement && place.name) {
+        pickupElement.value = place.name;
+    }
 
     map.setView([lat, lng], 15);
 
@@ -406,8 +462,11 @@ function onDropChanged() {
         .bindPopup('Drop: ' + place.name)
         .openPopup();
 
+    // Safely update the input field value
     const dropElement = document.getElementById('drop_location');
-    if (dropElement) dropElement.value = place.name;
+    if (dropElement && place.name) {
+        dropElement.value = place.name;
+    }
 
     map.setView([lat, lng], 15);
 
@@ -471,7 +530,7 @@ async function fetchPriceFromAPI(latitude, longitude, km) {
 
         const data = await response.json();
         
-        console.log('API Response:', data);
+
         
         const price =
             (data && data.data && data.data.price) ??
@@ -492,10 +551,10 @@ async function fetchPriceFromAPI(latitude, longitude, km) {
             if (priceEl) priceEl.innerText = '0.00 AED';
             currentOriginalPrice = 0;
             updateGrandTotal();
-            console.warn('Price not found in expected API response format:', data);
+
         }
     } catch (error) {
-        console.error('Error fetching price from API:', error);
+
         const priceEl = document.getElementById('price');
         const fallbackPrice = (50 + km * 12);
         currentOriginalPrice = fallbackPrice;
@@ -710,7 +769,15 @@ function showBookingSuccessPopup() {
 }
 
 function initMap() {
-    map = L.map('map').setView([52.52, 13.405], 12);
+    // Check if map is already initialized to prevent duplicate initialization
+    if (map) {
+        // If map already exists, just refresh the drivers
+        fetchAvailableDrivers();
+        return;
+    }
+    
+    // Initialize the map only if it hasn't been created yet
+    map = L.map('map').setView([24.4539, 54.3773], 12); // Center on UAE
     
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap'
@@ -805,16 +872,15 @@ async function fetchAvailableDrivers() {
         });
 
         const data = await resp.json();
-        console.log('Available drivers response:', data);
-
+                
         if (!resp.ok || data.status !== true || !Array.isArray(data.data)) {
-            console.warn('Unable to load drivers:', data);
+
             return;
         }
 
         addDriverMarkers(data.data);
     } catch (err) {
-        console.error('Error fetching available drivers:', err);
+
     }
 }
 
@@ -851,7 +917,7 @@ function drawRoute() {
 
                 map.fitBounds(routeLine.getBounds());
             } else {
-                console.error('Directions request failed:', status);
+
 
                 // Fallback: straight line if directions fail
                 if (routeLine) map.removeLayer(routeLine);
@@ -872,73 +938,68 @@ function drawRoute() {
             const dropElement = document.getElementById('drop_location');
             
             if (!pickupElement || !dropElement) {
-                console.error('Pickup or drop location elements not found');
+
                 return;
             }
             
             const pickupAddress = pickupElement.value;
             const dropAddress = dropElement.value;
-            calculateDistance(pickupAddress, dropAddress);
+            calculateDistanceByLatLng();
         }
     );
 }
 
-function calculateDistance(pickupAddress, dropAddress) {
+function calculateDistanceByLatLng() {
+    if (!pickupMarker || !dropMarker) return;
+
     const service = new google.maps.DistanceMatrixService();
-    
-    service.getDistanceMatrix({
-        origins: [pickupAddress],
-        destinations: [dropAddress],
-        travelMode: 'DRIVING',
-        unitSystem: google.maps.UnitSystem.METRIC,
-    }, (response, status) => {
-        if (status === 'OK') {
-            const distanceValue = response.rows[0].elements[0].distance.value; // in meters
-            const distanceKm = distanceValue / 1000; // convert to kilometers
-            latestDistanceKm = distanceKm;
-            
-            const distanceElement = document.getElementById('distance');
-            if(distanceElement) {
-                distanceElement.innerText = distanceKm.toFixed(2) + " km";
-            }
-            
-        } else {
-            console.error('Distance matrix service error:', status);
-            
-            if (!pickupMarker || !dropMarker) {
-                console.error('Pickup or drop marker not available for fallback calculation');
+
+    service.getDistanceMatrix(
+        {
+            origins: [{
+                lat: pickupMarker.getLatLng().lat,
+                lng: pickupMarker.getLatLng().lng
+            }],
+            destinations: [{
+                lat: dropMarker.getLatLng().lat,
+                lng: dropMarker.getLatLng().lng
+            }],
+            travelMode: google.maps.TravelMode.DRIVING,
+            unitSystem: google.maps.UnitSystem.METRIC
+        },
+        (response, status) => {
+            if (status !== "OK") {
+                showToast("Unable to calculate distance", "error");
                 return;
             }
-            
-            const p1 = pickupMarker.getLatLng();
-            const p2 = dropMarker.getLatLng();
-            const R = 6371; // Radius of the Earth in kilometers
-            const dLat = (p2.lat - p1.lat) * Math.PI / 180;
-            const dLon = (p2.lng - p1.lng) * Math.PI / 180;
-            const a = 
-                Math.sin(dLat/2) * Math.sin(dLat/2) +
-                Math.cos(p1.lat * Math.PI / 180) * Math.cos(p2.lat * Math.PI / 180) * 
-                Math.sin(dLon/2) * Math.sin(dLon/2);
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-            const distanceKm = R * c;
-            latestDistanceKm = distanceKm;
-            
-            const distanceElement = document.getElementById('distance');
-            if(distanceElement) {
-                distanceElement.innerText = distanceKm.toFixed(2) + " km";
+
+            const element = response.rows[0].elements[0];
+
+            if (element.status === "OK" && element.distance) {
+                const distanceKm = element.distance.value / 1000;
+                latestDistanceKm = distanceKm;
+
+                const distanceEl = document.getElementById("distance");
+                if (distanceEl) {
+                    distanceEl.innerText = distanceKm.toFixed(2) + " km";
+                }
+            } else {
+                showToast(
+                    "Route not available between selected locations",
+                    "error"
+                );
             }
-            
-            // Price calculation is now triggered manually by the Calculate Price button
-            // fetchPriceFromAPI(p1.lat, p1.lng, distanceKm);
         }
-    });
+    );
 }
+
 
 document.addEventListener('DOMContentLoaded', function () {
     initMap();
     loadGoogleMapsScript();
     
-    checkPendingBookingData();
+    // Check for pending booking data after a slight delay to ensure map is ready
+    setTimeout(checkPendingBookingData, 1000);
 
     const bookingBtn = document.getElementById('bookingSubmitBtn');
     const bookingBtnText = bookingBtn ? bookingBtn.querySelector('.btn-text') : null;
@@ -994,7 +1055,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
 
                 const promoData = await promoResp.json();
-                console.log('Promo verify response:', promoData);
 
                 if (!promoResp.ok || promoData.status !== true) {
                     showPromoMessage(promoData.message || 'Invalid promo code.', 'error');
@@ -1020,7 +1080,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     setPromoButtonState(true);
                 }
             } catch (err) {
-                console.error('Error verifying promo code:', err);
                 showPromoMessage('Failed to verify promo code. Please try again.', 'error');
             } finally {
                 resetPromoButton();
@@ -1144,7 +1203,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 await fetchPriceFromAPI(pickupLatLng.lat, pickupLatLng.lng, latestDistanceKm);
                 showToast('Price calculated successfully!', 'success');
             } catch (error) {
-                console.error('Error calculating price:', error);
+
                 showToast('Failed to calculate price. Please try again.', 'error');
             } finally {
                 // Reset button
@@ -1196,7 +1255,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         const token = getAuthToken();
-        console.log('Token:', token);
+
         if (!token) {
             // Store the current page data for after login
             const bookingData = {
@@ -1241,7 +1300,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
 
                 const promoData = await promoResp.json();
-                console.log('Promo verify response:', promoData);
 
                 if (!promoResp.ok || promoData.status !== true) {
                     showToast(promoData.message || 'Invalid promo code.', 'error');
@@ -1261,7 +1319,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     updateGrandTotal();
                 }
             } catch (err) {
-                console.error('Error verifying promo code:', err);
                 showToast('Please try again.', 'error');
                 if (bookingBtn && bookingBtnText && bookingBtnLoader) {
                     bookingBtn.disabled = false;
@@ -1336,7 +1393,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 bookingBtnLoader.classList.add('d-none');
             }
         } catch (err) {
-            console.error('Error creating booking:', err);
+
             showToast('Please try again.', 'error');
             if (bookingBtn && bookingBtnText && bookingBtnLoader) {
                 bookingBtn.disabled = false;
@@ -1355,26 +1412,26 @@ function checkPendingBookingData() {
         try {
             const bookingData = JSON.parse(pendingBooking);
             
-            // Check if data is recent (within 1 hour)
             const oneHour = 60 * 60 * 1000;
             if (Date.now() - bookingData.timestamp > oneHour) {
-                // Data is too old, remove it
                 localStorage.removeItem('pending_booking');
                 return;
             }
             
-            // Restore form data
             if (bookingData.pickup_location) {
                 const pickupElement = document.getElementById('pickup_location');
-                if (pickupElement) pickupElement.value = bookingData.pickup_location;
+                if (pickupElement) {
+                    setAutocompleteValue(pickupElement, pickupAutocomplete, bookingData.pickup_location);
+                }
             }
             
             if (bookingData.drop_location) {
                 const dropElement = document.getElementById('drop_location');
-                if (dropElement) dropElement.value = bookingData.drop_location;
+                if (dropElement) {
+                    setAutocompleteValue(dropElement, dropAutocomplete, bookingData.drop_location);
+                }
             }
             
-            // Restore map markers if coordinates are available
             if (bookingData.pickup_coords && map) {
                 if (pickupMarker) {
                     map.removeLayer(pickupMarker);
@@ -1399,7 +1456,6 @@ function checkPendingBookingData() {
                 ]).addTo(map).bindPopup("Drop Location: " + bookingData.drop_location);
             }
             
-            // Restore distance if available
             if (bookingData.distance) {
                 const distanceElement = document.getElementById('distance');
                 if (distanceElement) {
@@ -1408,36 +1464,167 @@ function checkPendingBookingData() {
                 }
             }
             
-            // Draw route if both markers exist
             if (pickupMarker && dropMarker) {
                 drawRoute();
+                
+                setTimeout(async () => {
+                    if (latestDistanceKm > 0) {
+                        const pickupLatLng = pickupMarker.getLatLng();
+                        await fetchPriceFromAPI(pickupLatLng.lat, pickupLatLng.lng, latestDistanceKm);
+                    } else {
+                        const pickupElement = document.getElementById('pickup_location');
+                        const dropElement = document.getElementById('drop_location');
+                        
+                        if (pickupElement && dropElement && pickupElement.value && dropElement.value) {
+                            calculateDistanceByLatLng();
+                            
+                            setTimeout(async () => {
+                                if (latestDistanceKm > 0) {
+                                    const pickupLatLng = pickupMarker.getLatLng();
+                                    await fetchPriceFromAPI(pickupLatLng.lat, pickupLatLng.lng, latestDistanceKm);
+                                }
+                            }, 1000);
+                        }
+                    }
+                }, 500);
+            } else {
+                setTimeout(() => {
+                    showToast('Your booking data has been restored!', 'success');
+                }, 1000);
             }
-            
-            // Show success message
-            setTimeout(() => {
-                showToast('Your booking data has been restored!', 'success');
-            }, 1000);
             
             // Remove the pending booking data
             localStorage.removeItem('pending_booking');
             
         } catch (error) {
-            console.error('Error restoring booking data:', error);
+
             localStorage.removeItem('pending_booking');
         }
     }
 }
 
-// Function to validate if a location is within Dubai
-function isLocationInDubai(lat, lng) {
-    // Dubai coordinates boundaries
-    const dubaiMinLat = 24.7934;
-    const dubaiMaxLat = 25.4129;
-    const dubaiMinLng = 54.9899;
-    const dubaiMaxLng = 56.3796;
+function setAutocompleteValue(inputElement, autocompleteInstance, value) {
+    if (!inputElement || !autocompleteInstance) return;
     
-    return (lat >= dubaiMinLat && lat <= dubaiMaxLat && 
-            lng >= dubaiMinLng && lng <= dubaiMaxLng);
+    inputElement.value = value;
+    
+    inputElement.dispatchEvent(new Event('input', { bubbles: true }));
+    inputElement.dispatchEvent(new Event('change', { bubbles: true }));
+}
+
+function isLocationInUAE(lat, lng) {
+    // UAE coordinates boundaries
+    const uaeMinLat = 22.4969;
+    const uaeMaxLat = 26.0555;
+    const uaeMinLng = 51.5795;
+    const uaeMaxLng = 56.3967;
+    
+    return (lat >= uaeMinLat && lat <= uaeMaxLat && 
+            lng >= uaeMinLng && lng <= uaeMaxLng);
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Initialize the map only after Google Maps API has loaded
+    loadGoogleMapsScript();
+
+    // User location will be handled after map is initialized
+});
+
+function getUserLiveLocation() {
+    if (!navigator.geolocation) {
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+
+            if (!lat || !lng) {
+                showToast(
+                    "Unable to determine your location. Please enter pickup location manually.",
+                    "info"
+                );
+                return;
+            }
+
+            if (!isLocationInUAE(lat, lng)) {
+                showToast(
+                    "Your current location is outside UAE. Please select pickup location manually.",
+                    "warning"
+                );
+                return;
+            }
+
+            setPickupFromLatLng(lat, lng);
+        },
+        (error) => {
+            let errorMessage = "Unable to fetch your location. Please enter pickup location manually.";
+            
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    errorMessage = "Location access denied. Please enable location services to use this feature.";
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    errorMessage = "Location information is unavailable. Please try again later.";
+                    break;
+                case error.TIMEOUT:
+                    errorMessage = "The request to get your location timed out. Please try again.";
+                    break;
+                case error.UNKNOWN_ERROR:
+                default:
+                    break;
+            }
+            
+            showToast(errorMessage, "info");
+        },
+        {
+            enableHighAccuracy: true,
+            timeout: 15000,
+            maximumAge: 60000
+        }
+    );
+}
+
+function setPickupFromLatLng(lat, lng) {
+    const geocoder = new google.maps.Geocoder();
+
+    geocoder.geocode(
+        { location: { lat: lat, lng: lng } },
+        (results, status) => {
+            if (status === "OK" && results && results.length > 0) {
+                const address = results[0].formatted_address;
+
+                const pickupInput = document.getElementById("pickup_location");
+                if (pickupInput) {
+                    pickupInput.value = address;
+                }
+
+                if (pickupMarker) {
+                    map.removeLayer(pickupMarker);
+                }
+
+                pickupMarker = L.marker([lat, lng])
+                    .addTo(map)
+                    .bindPopup("Your Current Location")
+                    .openPopup();
+
+                map.setView([lat, lng], 15);
+
+                showToast("Pickup location set to your current location", "success");
+
+                if (dropMarker) {
+                    drawRoute();
+                }
+            } else {
+
+                showToast(
+                    "Unable to detect address from your location",
+                    "error"
+                );
+            }
+        }
+    );
 }
 
 </script>
