@@ -14,7 +14,7 @@
                     <h2 class="section-title">Book Vehicle<span> Pickup & Drop</span></h2>
                     <p>Fast, safe, and reliable vehicle recovery service at your location</p>
                 </div>
-            </div>            
+            </div>
         </div>
 
         <div class="container">
@@ -31,7 +31,10 @@
             <form class="route-form" id="bookingForm">
                 <div class="signup-row">
                     <div class="form-group">
-                        <label>Pickup Location</label>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <label>Pickup Location</label>
+                            <a href="#" style="color: #dc3545; margin-bottom: 12px; text-decoration: underline;" id="useCurrentLocationBtn">Use Current Location</a>
+                        </div>
                         <div class="input-icon">
                             <i class="fa-solid fa-location-dot"></i>
                             <input type="text" id="pickup_location" name="pickup_location" placeholder="Enter start location" required>
@@ -46,7 +49,7 @@
                         </div>
                     </div>
                 </div>
-            
+
                 <!-- Calculate Price Button -->
                 <div class="calculate-price-section mb-4 text-center">
                     <button type="button" class="theme-btn" id="calculatePriceBtn">
@@ -60,7 +63,7 @@
                         </span>
                     </button>
                 </div>
-            
+
                 <!-- Distance and Price Display -->
                 <div class="distance-price-display mb-3 mt-3">
                     <div class="row">
@@ -78,7 +81,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Map -->
                 <div id="map" class="rounded-4 border" style="height: 350px;"></div>
 
@@ -108,23 +111,23 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Price Calculation Section -->
                 <div class="price-calculation-section mb-4 mt-3 p-3 bg-light rounded">
                     <h5 class="mb-3">Price Calculation</h5>
-                    
+
                     <div class="price-item mb-2">
                         <span class="fw-bold">Total Price:</span>
                         <span id="totalPriceDisplay" class="float-end">0.00 AED</span>
                     </div>
-                    
+
                     <div class="price-item mb-2 d-none" id="discountRow">
                         <span class="fw-bold">Discounted Price:</span>
                         <span id="discountAmountDisplay" class="float-end text-danger">0.00 AED</span>
                     </div>
-                    
+
                     <hr class="my-3">
-                    
+
                     <div class="price-item">
                         <span class="fw-bold">Grand Total:</span>
                         <span id="grandTotalDisplay" class="float-end fw-bold">0.00 AED</span>
@@ -236,8 +239,24 @@
         </div>
 </section>
 
-
-
+<!-- Location Permission Modal -->
+<div class="modal fade" id="locationPermissionModal" tabindex="-1" aria-labelledby="locationPermissionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="locationPermissionModalLabel">Location Permission</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                To provide better service, we need access to your location. Please allow location access.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="theme-btn" id="allowLocationBtn">Allow Access</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 @endsection
 
@@ -307,6 +326,33 @@ let currentOriginalPrice = 0; // Store original price
 let currentDiscountValue = 0; // Store discount value from promo
 let currentPromotionData = null; // Store full promotion data
 
+let locationPermissionGranted = false;
+
+function checkLocationPermission() {
+    if ('permissions' in navigator) {
+        navigator.permissions.query({name:'geolocation'}).then(function(result) {
+            if (result.state === 'granted') {
+                locationPermissionGranted = true;
+            } else if (result.state === 'prompt') {
+                // show modal
+                const modalElement = document.getElementById('locationPermissionModal');
+                if (modalElement) {
+                    const modal = new bootstrap.Modal(modalElement);
+                    modal.show();
+                    document.getElementById('allowLocationBtn').addEventListener('click', function() {
+                        modal.hide();
+                        getUserLiveLocation();
+                    });
+                }
+            }
+            // if denied, do nothing
+        });
+    } else {
+        // permissions API not supported, assume granted to keep old behavior
+        locationPermissionGranted = true;
+    }
+}
+
 function loadGoogleMapsScript() {
     // Check if Google Maps API is already loaded
     if (window.google && window.google.maps) {
@@ -314,7 +360,7 @@ function loadGoogleMapsScript() {
         initAutocomplete();
         return;
     }
-    
+
     const script = document.createElement('script');
     // Modified callback to handle map initialization after API loads
     script.src = `https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAP_API') }}&libraries=places,distance_matrix&callback=initMapAndAutocomplete`;
@@ -330,10 +376,12 @@ let driverIcon;
 
 function initMapAndAutocomplete() {
     initMap();
-    
+
     initAutocomplete();
-    
-    setTimeout(getUserLiveLocation, 500);
+
+    if (locationPermissionGranted) {
+        setTimeout(getUserLiveLocation, 500);
+    }
 }
 
 function initAutocomplete() {
@@ -362,7 +410,7 @@ function initAutocomplete() {
             pickupElement,
             autocompleteOptions
         );
-        
+
         // Add listener with error handling
         pickupAutocomplete.addListener('place_changed', function() {
             try {
@@ -385,7 +433,7 @@ function initAutocomplete() {
             dropElement,
             autocompleteOptions
         );
-        
+
         // Add listener with error handling
         dropAutocomplete.addListener('place_changed', function() {
             try {
@@ -478,7 +526,7 @@ function getAuthToken() {
     if (localStorageToken && localStorageToken !== '') {
         return localStorageToken;
     }
-    
+
     if (API_BEARER_TOKEN && API_BEARER_TOKEN !== '') {
         return API_BEARER_TOKEN;
     }
@@ -487,11 +535,11 @@ function getAuthToken() {
     if (tokenMeta) {
         return tokenMeta.getAttribute('content');
     }
-    
+
     if (typeof window.userApiToken !== 'undefined') {
         return window.userApiToken;
     }
-    
+
     return '';
 }
 
@@ -500,7 +548,7 @@ async function fetchPriceFromAPI(latitude, longitude, km) {
         const priceEl = document.getElementById('price');
         const totalPriceEl = document.getElementById('totalPriceDisplay');
         const grandTotalEl = document.getElementById('grandTotalDisplay');
-        
+
         // Reset displays
         if (priceEl) priceEl.innerText = '0.00';
         if (totalPriceEl) totalPriceEl.innerText = '0.00';
@@ -523,15 +571,15 @@ async function fetchPriceFromAPI(latitude, longitude, km) {
                 km: km
             })
         });
-        
+
         if (!response.ok) {
             throw new Error(`API responded with status ${response.status}`);
         }
 
         const data = await response.json();
-        
 
-        
+
+
         const price =
             (data && data.data && data.data.price) ??
             data?.price ??
@@ -543,7 +591,7 @@ async function fetchPriceFromAPI(latitude, longitude, km) {
         if (price !== null && price !== undefined && !isNaN(parseFloat(price))) {
             const priceValue = parseFloat(price);
             currentOriginalPrice = priceValue; // Store original price
-            
+
             // Update all price displays
             if (priceEl) priceEl.innerText = priceValue.toFixed(2) + ' AED';
             updateGrandTotal(); // This will update all displays
@@ -558,7 +606,7 @@ async function fetchPriceFromAPI(latitude, longitude, km) {
         const priceEl = document.getElementById('price');
         const fallbackPrice = (50 + km * 12);
         currentOriginalPrice = fallbackPrice;
-        
+
         if (priceEl) priceEl.innerText = fallbackPrice.toFixed(2) + ' AED';
         updateGrandTotal();
     }
@@ -570,17 +618,17 @@ function updateGrandTotal() {
     const grandTotalEl = document.getElementById('grandTotalDisplay');
     const discountRow = document.getElementById('discountRow');
     const discountAmountEl = document.getElementById('discountAmountDisplay');
-    
+
     if (!grandTotalEl) return;
-    
+
     // Update total price display
     if (totalPriceEl) {
         totalPriceEl.innerText = currentOriginalPrice.toFixed(2) + ' AED';
     }
-    
+
     let finalPrice = currentOriginalPrice;
     let discountAmount = 0;
-    
+
     // Apply discount if available
     if (currentPromotionData && currentDiscountValue > 0) {
         // Check if discount is percentage or fixed amount
@@ -590,17 +638,17 @@ function updateGrandTotal() {
             // Fixed amount discount
             discountAmount = currentDiscountValue;
         }
-        
+
         finalPrice = currentOriginalPrice - discountAmount;
-        
+
         // Ensure price doesn't go below zero
         if (finalPrice < 0) finalPrice = 0;
-        
+
         // Show discount row
         if (discountRow) {
             discountRow.classList.remove('d-none');
         }
-        
+
         // Update discount display
         if (discountAmountEl) {
             discountAmountEl.innerText = discountAmount.toFixed(2) + ' AED';
@@ -611,7 +659,7 @@ function updateGrandTotal() {
             discountRow.classList.add('d-none');
         }
     }
-    
+
     // Update grand total display
     grandTotalEl.innerText = finalPrice.toFixed(2) + ' AED';
 }
@@ -622,9 +670,9 @@ function showToast(message, type = 'success') {
         showBookingSuccessPopup();
         return;
     }
-    
+
     let swalIcon = type === 'error' ? 'error' : type === 'warning' ? 'warning' : type === 'info' ? 'info' : 'success';
-    
+
     let background = '#FFFFFF';
     let color;
     switch(type) {
@@ -640,15 +688,15 @@ function showToast(message, type = 'success') {
         default: // success
             color = '#28a745'; // Green for success
     }
-    
+
     // Customize title based on the page and action
-    let toastTitle = message.toLowerCase().includes('booking') || message.toLowerCase().includes('book') ? 'Booking Status' : 
+    let toastTitle = message.toLowerCase().includes('booking') || message.toLowerCase().includes('book') ? 'Booking Status' :
                     message.toLowerCase().includes('promo') || message.toLowerCase().includes('code') ? 'Promo Code' :
-                    message.toLowerCase().includes('success') ? 'Booking Success' : 
-                    type === 'error' ? 'Booking Error' : 
-                    type === 'warning' ? 'Attention Required' : 
+                    message.toLowerCase().includes('success') ? 'Booking Success' :
+                    type === 'error' ? 'Booking Error' :
+                    type === 'warning' ? 'Attention Required' :
                     type === 'info' ? 'Information' : 'Service Status';
-            
+
     Swal.fire({
         toast: true,
         icon: swalIcon,
@@ -722,12 +770,12 @@ function showBookingSuccessPopup() {
                 </p>
                 <div style="margin-top: 25px;">
                     <button id="openAppBtn" style="
-                        background-color: #dc3545; 
-                        color: white; 
-                        border: none; 
-                        padding: 12px 30px; 
-                        border-radius: 6px; 
-                        cursor: pointer; 
+                        background-color: #dc3545;
+                        color: white;
+                        border: none;
+                        padding: 12px 30px;
+                        border-radius: 6px;
+                        cursor: pointer;
                         font-size: 16px;
                         font-family: 'Avenir', sans-serif;
                         font-weight: bold;
@@ -755,7 +803,7 @@ function showBookingSuccessPopup() {
             // Add event listener for the home button
             setTimeout(() => {
                 const openAppBtn = document.getElementById('openAppBtn');
-                
+
                 if (openAppBtn) {
                     openAppBtn.addEventListener('click', () => {
                         // Redirect to home page
@@ -775,14 +823,14 @@ function initMap() {
         fetchAvailableDrivers();
         return;
     }
-    
+
     // Initialize the map only if it hasn't been created yet
     map = L.map('map').setView([24.4539, 54.3773], 12); // Center on UAE
-    
+
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap'
     }).addTo(map);
-    
+
     driverIcon = L.icon({
         iconUrl: DRIVER_ICON_URL,
         iconSize: [30, 30],
@@ -872,7 +920,7 @@ async function fetchAvailableDrivers() {
         });
 
         const data = await resp.json();
-                
+
         if (!resp.ok || data.status !== true || !Array.isArray(data.data)) {
 
             return;
@@ -936,12 +984,12 @@ function drawRoute() {
             // After routing, still calculate distance & price using Distance Matrix
             const pickupElement = document.getElementById('pickup_location');
             const dropElement = document.getElementById('drop_location');
-            
+
             if (!pickupElement || !dropElement) {
 
                 return;
             }
-            
+
             const pickupAddress = pickupElement.value;
             const dropAddress = dropElement.value;
             calculateDistanceByLatLng();
@@ -995,51 +1043,52 @@ function calculateDistanceByLatLng() {
 
 
 document.addEventListener('DOMContentLoaded', function () {
+    checkLocationPermission();
     initMap();
     loadGoogleMapsScript();
-    
+
     // Check for pending booking data after a slight delay to ensure map is ready
     setTimeout(checkPendingBookingData, 1000);
 
     const bookingBtn = document.getElementById('bookingSubmitBtn');
     const bookingBtnText = bookingBtn ? bookingBtn.querySelector('.btn-text') : null;
     const bookingBtnLoader = bookingBtn ? bookingBtn.querySelector('.btn-loader') : null;
-    
+
     // Promo code apply button functionality
     const applyPromoBtn = document.getElementById('applyPromoBtn');
     const promoInput = document.getElementById('promo_code');
     const promoMessage = document.getElementById('promoMessage');
     const promoBtnText = applyPromoBtn ? applyPromoBtn.querySelector('.btn-text') : null;
     const promoBtnLoader = applyPromoBtn ? applyPromoBtn.querySelector('.btn-loader-promo') : null;
-    
+
     if (applyPromoBtn) {
         applyPromoBtn.addEventListener('click', async function() {
             const isApplied = applyPromoBtn.dataset.applied === 'true';
             const promoCode = promoInput.value.trim();
-            
+
             if (isApplied) {
                 removePromoCode();
                 return;
             }
-            
+
             if (!promoCode) {
                 showPromoMessage('Please enter a promo code.', 'error');
                 return;
             }
-            
+
             if (promoBtnText && promoBtnLoader) {
                 promoBtnText.classList.add('d-none');
                 promoBtnLoader.classList.remove('d-none');
                 applyPromoBtn.disabled = true;
             }
-            
+
             const token = getAuthToken();
             if (!token) {
                 showPromoMessage('Please log in to apply promo codes.', 'error');
                 resetPromoButton();
                 return;
             }
-            
+
             try {
                 const promoResp = await fetch(`${PRICE_API_BASE_URL}/v1/customer/promocodes/verify`, {
                     method: 'POST',
@@ -1060,22 +1109,22 @@ document.addEventListener('DOMContentLoaded', function () {
                     showPromoMessage(promoData.message || 'Invalid promo code.', 'error');
                 } else {
                     showPromoMessage('Promo code applied successfully!', 'success');
-                    
+
                     // Store promotion data
                     if (promoData.data) {
                         currentPromotionData = promoData.data;
                         // Extract discount value from the API response
                         currentDiscountValue = promoData.data.discount_value || 0;
-                        
+
                         // Store the promotion ID for use in booking
                         if (promoData.data.id) {
                             document.getElementById('promo_code').dataset.promotionId = promoData.data.id;
                         }
-                        
+
                         // Update grand total with discount
                         updateGrandTotal();
                     }
-                    
+
                     // Change button to Remove state
                     setPromoButtonState(true);
                 }
@@ -1086,11 +1135,11 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-    
+
     function showPromoMessage(message, type) {
         showToast(message, type);
     }
-    
+
     function resetPromoButton() {
         if (promoBtnText && promoBtnLoader) {
             promoBtnText.classList.remove('d-none');
@@ -1098,7 +1147,7 @@ document.addEventListener('DOMContentLoaded', function () {
             applyPromoBtn.disabled = false;
         }
     }
-    
+
     function setPromoButtonState(applied) {
         if (applyPromoBtn && promoBtnText) {
             applyPromoBtn.dataset.applied = applied.toString();
@@ -1113,46 +1162,46 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     }
-    
+
     function removePromoCode() {
         // Remove the promotion ID
         const promoInputElement = document.getElementById('promo_code');
         if (promoInputElement) {
             delete promoInputElement.dataset.promotionId;
         }
-        
+
         // Reset promotion data
         currentPromotionData = null;
         currentDiscountValue = 0;
-        
+
         // Update grand total (without discount)
         updateGrandTotal();
-        
+
         // Show success message
         showPromoMessage('Promo code removed successfully!', 'success');
-        
+
         // Change button back to Apply state
         setPromoButtonState(false);
     }
-    
+
     // Calculate Price button functionality
     const calculatePriceBtn = document.getElementById('calculatePriceBtn');
     const calculatePriceBtnText = calculatePriceBtn ? calculatePriceBtn.querySelector('.btn-text') : null;
     const calculatePriceBtnLoader = calculatePriceBtn ? calculatePriceBtn.querySelector('.btn-loader-price') : null;
-    
+
     if (calculatePriceBtn) {
         calculatePriceBtn.addEventListener('click', async function() {
             const pickupElement = document.getElementById('pickup_location');
             const dropElement = document.getElementById('drop_location');
-            
+
             if (!pickupElement || !dropElement) {
                 showToast('Pickup or drop location elements not found', 'error');
                 return;
             }
-            
+
             const pickupLocation = pickupElement.value;
             const dropLocation = dropElement.value;
-            
+
             if (!pickupLocation || !dropLocation) {
                 showToast('Please enter both pickup and drop locations', 'error');
                 return;
@@ -1176,7 +1225,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             const token = getAuthToken();
-            
+
             // If no token, redirect to login
             if (!token) {
                 // Store the current page data for after login
@@ -1188,9 +1237,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     distance: latestDistanceKm,
                     timestamp: Date.now()
                 };
-                
+
                 localStorage.setItem('pending_booking', JSON.stringify(bookingData));
-                
+
                 // Redirect to login page
                 window.location.href = '{{ route("login") }}';
                 return;
@@ -1198,7 +1247,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // If user is logged in, calculate the price
             const pickupLatLng = pickupMarker.getLatLng(); // Use the coordinates from the selected markers
-            
+
             try {
                 await fetchPriceFromAPI(pickupLatLng.lat, pickupLatLng.lng, latestDistanceKm);
                 showToast('Price calculated successfully!', 'success');
@@ -1215,33 +1264,33 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-    
+
     document.getElementById('bookingForm').addEventListener('submit', async function(e) {
         e.preventDefault();
-            
+
         const pickupElement = document.getElementById('pickup_location');
         const dropElement = document.getElementById('drop_location');
         const promoElement = document.getElementById('promo_code');
-            
+
         if (!pickupElement || !dropElement) {
             showToast('Pickup or drop location elements not found','error');
             return;
         }
-            
+
         const pickupLocation = pickupElement.value;
         const dropLocation = dropElement.value;
         const promoCode = promoElement ? promoElement.value : '';
-            
+
         if (!pickupLocation || !dropLocation) {
             showToast('Please enter both pickup and drop locations','error');
             return;
         }
-    
+
         if (!pickupMarker || !dropMarker) {
             showToast('Please select valid pickup and drop locations on the map.','error');
             return;
         }
-    
+
         if (latestDistanceKm <= 0) {
             showToast('Distance could not be calculated. Please ensure both locations are valid.','error');
             return;
@@ -1266,9 +1315,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 distance: latestDistanceKm,
                 timestamp: Date.now()
             };
-            
+
             localStorage.setItem('pending_booking', JSON.stringify(bookingData));
-            
+
             // Redirect to login page
             window.location.href = '{{ route("login") }}';
             return;
@@ -1404,58 +1453,61 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+// Add event listener for use current location button
+document.getElementById('useCurrentLocationBtn').addEventListener('click', getUserLiveLocation);
+
 // Function to check for and restore pending booking data
 function checkPendingBookingData() {
     const pendingBooking = localStorage.getItem('pending_booking');
-    
+
     if (pendingBooking) {
         try {
             const bookingData = JSON.parse(pendingBooking);
-            
+
             const oneHour = 60 * 60 * 1000;
             if (Date.now() - bookingData.timestamp > oneHour) {
                 localStorage.removeItem('pending_booking');
                 return;
             }
-            
+
             if (bookingData.pickup_location) {
                 const pickupElement = document.getElementById('pickup_location');
                 if (pickupElement) {
                     setAutocompleteValue(pickupElement, pickupAutocomplete, bookingData.pickup_location);
                 }
             }
-            
+
             if (bookingData.drop_location) {
                 const dropElement = document.getElementById('drop_location');
                 if (dropElement) {
                     setAutocompleteValue(dropElement, dropAutocomplete, bookingData.drop_location);
                 }
             }
-            
+
             if (bookingData.pickup_coords && map) {
                 if (pickupMarker) {
                     map.removeLayer(pickupMarker);
                 }
-                
+
                 pickupMarker = L.marker([
                     bookingData.pickup_coords.lat,
                     bookingData.pickup_coords.lng
                 ]).addTo(map).bindPopup("Pickup Location: " + bookingData.pickup_location);
-                
+
                 map.setView([bookingData.pickup_coords.lat, bookingData.pickup_coords.lng], 15);
             }
-            
+
             if (bookingData.drop_coords && map) {
                 if (dropMarker) {
                     map.removeLayer(dropMarker);
                 }
-                
+
                 dropMarker = L.marker([
                     bookingData.drop_coords.lat,
                     bookingData.drop_coords.lng
                 ]).addTo(map).bindPopup("Drop Location: " + bookingData.drop_location);
             }
-            
+
             if (bookingData.distance) {
                 const distanceElement = document.getElementById('distance');
                 if (distanceElement) {
@@ -1463,10 +1515,10 @@ function checkPendingBookingData() {
                     distanceElement.innerText = bookingData.distance.toFixed(2) + " km";
                 }
             }
-            
+
             if (pickupMarker && dropMarker) {
                 drawRoute();
-                
+
                 setTimeout(async () => {
                     if (latestDistanceKm > 0) {
                         const pickupLatLng = pickupMarker.getLatLng();
@@ -1474,10 +1526,10 @@ function checkPendingBookingData() {
                     } else {
                         const pickupElement = document.getElementById('pickup_location');
                         const dropElement = document.getElementById('drop_location');
-                        
+
                         if (pickupElement && dropElement && pickupElement.value && dropElement.value) {
                             calculateDistanceByLatLng();
-                            
+
                             setTimeout(async () => {
                                 if (latestDistanceKm > 0) {
                                     const pickupLatLng = pickupMarker.getLatLng();
@@ -1492,10 +1544,10 @@ function checkPendingBookingData() {
                     showToast('Your booking data has been restored!', 'success');
                 }, 1000);
             }
-            
+
             // Remove the pending booking data
             localStorage.removeItem('pending_booking');
-            
+
         } catch (error) {
 
             localStorage.removeItem('pending_booking');
@@ -1505,9 +1557,9 @@ function checkPendingBookingData() {
 
 function setAutocompleteValue(inputElement, autocompleteInstance, value) {
     if (!inputElement || !autocompleteInstance) return;
-    
+
     inputElement.value = value;
-    
+
     inputElement.dispatchEvent(new Event('input', { bubbles: true }));
     inputElement.dispatchEvent(new Event('change', { bubbles: true }));
 }
@@ -1518,17 +1570,10 @@ function isLocationInUAE(lat, lng) {
     const uaeMaxLat = 26.0555;
     const uaeMinLng = 51.5795;
     const uaeMaxLng = 56.3967;
-    
-    return (lat >= uaeMinLat && lat <= uaeMaxLat && 
+
+    return (lat >= uaeMinLat && lat <= uaeMaxLat &&
             lng >= uaeMinLng && lng <= uaeMaxLng);
 }
-
-document.addEventListener('DOMContentLoaded', function () {
-    // Initialize the map only after Google Maps API has loaded
-    loadGoogleMapsScript();
-
-    // User location will be handled after map is initialized
-});
 
 function getUserLiveLocation() {
     if (!navigator.geolocation) {
@@ -1549,10 +1594,14 @@ function getUserLiveLocation() {
             }
 
             if (!isLocationInUAE(lat, lng)) {
-                showToast(
-                    "Your current location is outside UAE. Please select pickup location manually.",
-                    "warning"
-                );
+                const pickupElement = document.getElementById('pickup_location');
+                const dropElement = document.getElementById('drop_location');
+                if (pickupElement && dropElement && pickupElement.value.trim() === '' && dropElement.value.trim() === '') {
+                    showToast(
+                        "Your current location is outside UAE. Please select pickup location manually.",
+                        "warning"
+                    );
+                }
                 return;
             }
 
@@ -1560,7 +1609,7 @@ function getUserLiveLocation() {
         },
         (error) => {
             let errorMessage = "Unable to fetch your location. Please enter pickup location manually.";
-            
+
             switch(error.code) {
                 case error.PERMISSION_DENIED:
                     errorMessage = "Location access denied. Please enable location services to use this feature.";
@@ -1575,8 +1624,6 @@ function getUserLiveLocation() {
                 default:
                     break;
             }
-            
-            showToast(errorMessage, "info");
         },
         {
             enableHighAccuracy: true,
