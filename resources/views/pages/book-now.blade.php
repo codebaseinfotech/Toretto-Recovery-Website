@@ -357,26 +357,24 @@ function loadGoogleMapsScript() {
     // Check if Google Maps API is already loaded
     if (window.google && window.google.maps) {
         // Maps API already loaded, initialize directly
-        initAutocomplete();
+        initMapAndAutocomplete();
         return;
     }
 
     const script = document.createElement('script');
     // Modified callback to handle map initialization after API loads
-    script.src = `https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAP_API') }}&libraries=places,distance_matrix&callback=initMapAndAutocomplete`;
+    script.src = `https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAP_API') }}&libraries=places,directions,distance_matrix&callback=initMapAndAutocomplete`;
     script.async = true;
     script.defer = true;
     document.head.appendChild(script);
 }
 
 let pickupAutocomplete, dropAutocomplete;
-let map, pickupMarker, dropMarker, routeLine;
-let driverMarkers = [];
-let driverIcon;
+let map, pickupMarker, dropMarker, directionsRenderer;
+let directionsService;
 
 function initMapAndAutocomplete() {
     initMap();
-
     initAutocomplete();
 
     if (locationPermissionGranted) {
@@ -384,8 +382,36 @@ function initMapAndAutocomplete() {
     }
 }
 
-function initAutocomplete() {
+function initMap() {
+    // Initialize the Google map
+    const uaeCenter = { lat: 24.4539, lng: 54.3773 }; // UAE center
+    map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 6,
+        center: uaeCenter,
+        restriction: {
+            latLngBounds: {
+                north: 26.0555,
+                south: 22.4969,
+                west: 51.5795,
+                east: 56.3967
+            },
+            strictBounds: true
+        }
+    });
 
+    // Initialize directions service and renderer
+    directionsService = new google.maps.DirectionsService();
+    directionsRenderer = new google.maps.DirectionsRenderer({
+        map: map,
+        suppressMarkers: true,
+        polylineOptions: {
+            strokeColor: 'red',
+            strokeWeight: 4
+        }
+    });
+}
+
+function initAutocomplete() {
     // 🇦🇪 UAE Boundaries
     const uaeBounds = new google.maps.LatLngBounds(
         new google.maps.LatLng(22.4969, 51.5795),
@@ -472,12 +498,27 @@ function onPickupChanged() {
         return;
     }
 
-    if (pickupMarker) map.removeLayer(pickupMarker);
+    // Remove existing pickup marker if present
+    if (pickupMarker) {
+        pickupMarker.setMap(null);
+    }
 
-    pickupMarker = L.marker([lat, lng])
-        .addTo(map)
-        .bindPopup('Pickup: ' + place.name)
-        .openPopup();
+    // Create new pickup marker
+    pickupMarker = new google.maps.Marker({
+        position: { lat: lat, lng: lng },
+        map: map,
+        title: 'Pickup: ' + place.name,
+        icon: {
+            url: "{{ asset('assets/images/pin.png') }}", // Using a pin icon for pickup
+            scaledSize: new google.maps.Size(30, 30)
+        }
+    });
+
+    // Add info window to the marker
+    const pickupInfoWindow = new google.maps.InfoWindow({
+        content: 'Pickup: ' + place.name
+    });
+    pickupInfoWindow.open(map, pickupMarker);
 
     // Safely update the input field value
     const pickupElement = document.getElementById('pickup_location');
@@ -485,9 +526,14 @@ function onPickupChanged() {
         pickupElement.value = place.name;
     }
 
-    map.setView([lat, lng], 15);
+    // Pan to the marker location
+    map.panTo({ lat: lat, lng: lng });
+    map.setZoom(15);
 
-    if (dropMarker) drawRoute();
+    // Draw route with a small delay to ensure everything is ready
+    if (dropMarker) {
+        setTimeout(drawRoute, 300);
+    }
 }
 
 function onDropChanged() {
@@ -503,12 +549,27 @@ function onDropChanged() {
     const lat = place.geometry.location.lat();
     const lng = place.geometry.location.lng();
 
-    if (dropMarker) map.removeLayer(dropMarker);
+    // Remove existing drop marker if present
+    if (dropMarker) {
+        dropMarker.setMap(null);
+    }
 
-    dropMarker = L.marker([lat, lng])
-        .addTo(map)
-        .bindPopup('Drop: ' + place.name)
-        .openPopup();
+    // Create new drop marker
+    dropMarker = new google.maps.Marker({
+        position: { lat: lat, lng: lng },
+        map: map,
+        title: 'Drop: ' + place.name,
+        icon: {
+            url: "{{ asset('assets/images/pin.png') }}", // Using a pin icon for drop
+            scaledSize: new google.maps.Size(30, 30)
+        }
+    });
+
+    // Add info window to the marker
+    const dropInfoWindow = new google.maps.InfoWindow({
+        content: 'Drop: ' + place.name
+    });
+    dropInfoWindow.open(map, dropMarker);
 
     // Safely update the input field value
     const dropElement = document.getElementById('drop_location');
@@ -516,9 +577,14 @@ function onDropChanged() {
         dropElement.value = place.name;
     }
 
-    map.setView([lat, lng], 15);
+    // Pan to the marker location
+    map.panTo({ lat: lat, lng: lng });
+    map.setZoom(15);
 
-    if (pickupMarker) drawRoute();
+    // Draw route with a small delay to ensure everything is ready
+    if (pickupMarker) {
+        setTimeout(drawRoute, 300);
+    }
 }
 
 function getAuthToken() {
@@ -816,226 +882,76 @@ function showBookingSuccessPopup() {
     });
 }
 
-function initMap() {
-    // Check if map is already initialized to prevent duplicate initialization
-    if (map) {
-        // If map already exists, just refresh the drivers
-        fetchAvailableDrivers();
+// We're removing the driver functionality since it was causing conflicts
+// Adding the missing drawRoute function
+
+function drawRoute() {
+    if (!pickupMarker || !dropMarker || !map || !directionsService || !directionsRenderer) {
+        console.log("Missing required elements for route drawing:", {
+            pickupMarker: !!pickupMarker,
+            dropMarker: !!dropMarker,
+            map: !!map,
+            directionsService: !!directionsService,
+            directionsRenderer: !!directionsRenderer
+        });
         return;
     }
 
-    // Initialize the map only if it hasn't been created yet
-    map = L.map('map').setView([24.4539, 54.3773], 12); // Center on UAE
+    // Get positions of markers
+    const pickupPos = pickupMarker.getPosition();
+    const dropPos = dropMarker.getPosition();
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap'
-    }).addTo(map);
+    // Clear any existing route
+    directionsRenderer.setDirections({routes: []});
 
-    driverIcon = L.icon({
-        iconUrl: DRIVER_ICON_URL,
-        iconSize: [30, 30],
-        iconAnchor: [15, 30],
-        popupAnchor: [0, -35]
-    });
-
-    fetchAvailableDrivers();
-}
-
-// Clear existing driver markers from the map
-function clearDriverMarkers() {
-    if (!driverMarkers || driverMarkers.length === 0) return;
-    driverMarkers.forEach(m => {
-        if (map && m) {
-            map.removeLayer(m);
-        }
-    });
-    driverMarkers = [];
-}
-
-// Add driver markers to the map from API data
-function addDriverMarkers(drivers) {
-    if (!map || !Array.isArray(drivers) || drivers.length === 0) return;
-
-    clearDriverMarkers();
-
-    const bounds = [];
-
-    drivers.forEach(driver => {
-        const loc = driver.location || {};
-        if (loc.latitude == null || loc.longitude == null) {
-            return;
-        }
-
-        const lat = parseFloat(loc.latitude);
-        const lng = parseFloat(loc.longitude);
-        if (isNaN(lat) || isNaN(lng)) {
-            return;
-        }
-
-        const marker = L.marker([lat, lng], {
-            icon: driverIcon || undefined
-        }).addTo(map);
-
-        const name = driver.full_name || 'Driver';
-        const phone = driver.phone || '';
-        const vehicle = driver.vehicle_type || '';
-        const updatedAt = loc.updated_at || '';
-
-        marker.bindPopup(
-            `<strong>${name}</strong><br>` +
-            (vehicle ? `Vehicle: ${vehicle}<br>` : '') +
-            (phone ? `Phone: ${phone}<br>` : '') +
-            (updatedAt ? `<small>Last update: ${updatedAt}</small>` : '')
-        );
-
-        driverMarkers.push(marker);
-        bounds.push([lat, lng]);
-    });
-
-    // If no pickup/drop selected yet, fit map to drivers
-    if (bounds.length > 0 && !pickupMarker && !dropMarker) {
-        map.fitBounds(bounds, { padding: [30, 30] });
-    }
-}
-
-// Fetch available drivers from API and render them on the map
-async function fetchAvailableDrivers() {
-    try {
-        let token = getAuthToken();
-
-        if (!token) {
-            token = '121|OE9m3bkYoXiJqipniCktL1g4g0Ors6rpHTdslwh4c659b8888';
-        }
-
-        const resp = await fetch(`${PRICE_API_BASE_URL}/v1/customer/available-drivers`, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Language': 'en',
-                'DeviceType': 'Android',
-                'DeviceID': '123456789',
-                'Authorization': 'Bearer ' + token
-            }
-        });
-
-        const data = await resp.json();
-
-        if (!resp.ok || data.status !== true || !Array.isArray(data.data)) {
-
-            return;
-        }
-
-        addDriverMarkers(data.data);
-    } catch (err) {
-
-    }
-}
-
-function drawRoute() {
-    if (!pickupMarker || !dropMarker) return;
-
-    const pickupLatLng = pickupMarker.getLatLng();
-    const dropLatLng = dropMarker.getLatLng();
-
-    // Use Google Directions API to get road route between points
-    const directionsService = new google.maps.DirectionsService();
-
+    // Request directions
     directionsService.route(
         {
-            origin: { lat: pickupLatLng.lat, lng: pickupLatLng.lng },
-            destination: { lat: dropLatLng.lat, lng: dropLatLng.lng },
+            origin: pickupPos,
+            destination: dropPos,
             travelMode: google.maps.TravelMode.DRIVING
         },
         (response, status) => {
             if (status === google.maps.DirectionsStatus.OK && response.routes.length > 0) {
-                const route = response.routes[0];
-                const path = route.overview_path || [];
+                // Display the route on the map
+                directionsRenderer.setDirections(response);
 
-                if (routeLine) {
-                    map.removeLayer(routeLine);
+                // Calculate distance from the route
+                let totalDistance = 0;
+                for (let i = 0; i < response.routes[0].legs.length; i++) {
+                    totalDistance += response.routes[0].legs[i].distance.value;
                 }
 
-                const leafletPath = path.map(p => [p.lat(), p.lng()]);
+                // Convert to km and update global variable
+                latestDistanceKm = totalDistance / 1000;
 
-                routeLine = L.polyline(leafletPath, {
-                    color: 'red',
-                    weight: 4
-                }).addTo(map);
-
-                map.fitBounds(routeLine.getBounds());
-            } else {
-
-
-                // Fallback: straight line if directions fail
-                if (routeLine) map.removeLayer(routeLine);
-                const latlngs = [
-                    [pickupLatLng.lat, pickupLatLng.lng],
-                    [dropLatLng.lat, dropLatLng.lng]
-                ];
-                routeLine = L.polyline(latlngs, {
-                    color: 'red',
-                    weight: 4
-                }).addTo(map);
-
-                map.fitBounds(routeLine.getBounds());
-            }
-
-            // After routing, still calculate distance & price using Distance Matrix
-            const pickupElement = document.getElementById('pickup_location');
-            const dropElement = document.getElementById('drop_location');
-
-            if (!pickupElement || !dropElement) {
-
-                return;
-            }
-
-            const pickupAddress = pickupElement.value;
-            const dropAddress = dropElement.value;
-            calculateDistanceByLatLng();
-        }
-    );
-}
-
-function calculateDistanceByLatLng() {
-    if (!pickupMarker || !dropMarker) return;
-
-    const service = new google.maps.DistanceMatrixService();
-
-    service.getDistanceMatrix(
-        {
-            origins: [{
-                lat: pickupMarker.getLatLng().lat,
-                lng: pickupMarker.getLatLng().lng
-            }],
-            destinations: [{
-                lat: dropMarker.getLatLng().lat,
-                lng: dropMarker.getLatLng().lng
-            }],
-            travelMode: google.maps.TravelMode.DRIVING,
-            unitSystem: google.maps.UnitSystem.METRIC
-        },
-        (response, status) => {
-            if (status !== "OK") {
-                showToast("Unable to calculate distance", "error");
-                return;
-            }
-
-            const element = response.rows[0].elements[0];
-
-            if (element.status === "OK" && element.distance) {
-                const distanceKm = element.distance.value / 1000;
-                latestDistanceKm = distanceKm;
-
+                // Update distance display
                 const distanceEl = document.getElementById("distance");
                 if (distanceEl) {
-                    distanceEl.innerText = distanceKm.toFixed(2) + " km";
+                    distanceEl.innerText = latestDistanceKm.toFixed(2) + " km";
                 }
+
+                map.fitBounds(response.routes[0].bounds);
             } else {
-                showToast(
-                    "Route not available between selected locations",
-                    "error"
-                );
+                // Handle error
+                showToast("Unable to calculate route between selected locations. Please try different locations.", "error");
+
+                // Show straight line as fallback
+                const lineCoordinates = [
+                    pickupPos,
+                    dropPos
+                ];
+
+                const straightLine = new google.maps.Polyline({
+                    path: lineCoordinates,
+                    geodesic: true,
+                    strokeColor: '#FF0000',
+                    strokeOpacity: 1.0,
+                    strokeWeight: 3
+                });
+
+                straightLine.setMap(map);
+                map.fitBounds(new google.maps.LatLngBounds(pickupPos, dropPos));
             }
         }
     );
@@ -1044,7 +960,6 @@ function calculateDistanceByLatLng() {
 
 document.addEventListener('DOMContentLoaded', function () {
     checkLocationPermission();
-    initMap();
     loadGoogleMapsScript();
 
     // Check for pending booking data after a slight delay to ensure map is ready
@@ -1217,7 +1132,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
-            // Show loader on calculate price button
             if (calculatePriceBtnText && calculatePriceBtnLoader) {
                 calculatePriceBtn.disabled = true;
                 calculatePriceBtnText.classList.add('d-none');
@@ -1226,36 +1140,31 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const token = getAuthToken();
 
-            // If no token, redirect to login
             if (!token) {
-                // Store the current page data for after login
                 const bookingData = {
                     pickup_location: pickupLocation,
                     drop_location: dropLocation,
-                    pickup_coords: pickupMarker ? { lat: pickupMarker.getLatLng().lat, lng: pickupMarker.getLatLng().lng } : null,
-                    drop_coords: dropMarker ? { lat: dropMarker.getLatLng().lat, lng: dropMarker.getLatLng().lng } : null,
+                    pickup_coords: pickupMarker ? { lat: pickupMarker.getPosition().lat(), lng: pickupMarker.getPosition().lng() } : null,
+                    drop_coords: dropMarker ? { lat: dropMarker.getPosition().lat(), lng: dropMarker.getPosition().lng() } : null,
                     distance: latestDistanceKm,
                     timestamp: Date.now()
                 };
 
                 localStorage.setItem('pending_booking', JSON.stringify(bookingData));
 
-                // Redirect to login page
                 window.location.href = '{{ route("login") }}';
                 return;
             }
 
-            // If user is logged in, calculate the price
-            const pickupLatLng = pickupMarker.getLatLng(); // Use the coordinates from the selected markers
+            const pickupLatLng = pickupMarker.getPosition();
 
             try {
-                await fetchPriceFromAPI(pickupLatLng.lat, pickupLatLng.lng, latestDistanceKm);
+                await fetchPriceFromAPI(pickupLatLng.lat(), pickupLatLng.lng(), latestDistanceKm);
                 showToast('Price calculated successfully!', 'success');
             } catch (error) {
 
                 showToast('Failed to calculate price. Please try again.', 'error');
             } finally {
-                // Reset button
                 if (calculatePriceBtnText && calculatePriceBtnLoader) {
                     calculatePriceBtn.disabled = false;
                     calculatePriceBtnText.classList.remove('d-none');
@@ -1265,6 +1174,13 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // Use Current Location button functionality
+    document.getElementById('useCurrentLocationBtn').addEventListener('click', function(e) {
+        e.preventDefault();
+        getUserLiveLocation();
+    });
+
+    // Booking form submission functionality
     document.getElementById('bookingForm').addEventListener('submit', async function(e) {
         e.preventDefault();
 
@@ -1296,7 +1212,6 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        // Show loader on booking button
         if (bookingBtn && bookingBtnText && bookingBtnLoader) {
             bookingBtn.disabled = true;
             bookingBtnText.classList.add('d-none');
@@ -1306,34 +1221,30 @@ document.addEventListener('DOMContentLoaded', function () {
         const token = getAuthToken();
 
         if (!token) {
-            // Store the current page data for after login
             const bookingData = {
                 pickup_location: pickupLocation,
                 drop_location: dropLocation,
-                pickup_coords: pickupMarker ? { lat: pickupMarker.getLatLng().lat, lng: pickupMarker.getLatLng().lng } : null,
-                drop_coords: dropMarker ? { lat: dropMarker.getLatLng().lat, lng: dropMarker.getLatLng().lng } : null,
+                pickup_coords: pickupMarker ? { lat: pickupMarker.getPosition().lat(), lng: pickupMarker.getPosition().lng() } : null,
+                drop_coords: dropMarker ? { lat: dropMarker.getPosition().lat(), lng: dropMarker.getPosition().lng() } : null,
                 distance: latestDistanceKm,
                 timestamp: Date.now()
             };
 
             localStorage.setItem('pending_booking', JSON.stringify(bookingData));
 
-            // Redirect to login page
             window.location.href = '{{ route("login") }}';
             return;
         }
 
-        const pickupLatLng = pickupMarker.getLatLng();
-        const dropLatLng = dropMarker.getLatLng();
+        const pickupLatLng = pickupMarker.getPosition();
+        const dropLatLng = dropMarker.getPosition();
 
         let promotionId = null;
 
-        // Check if promo code was already verified and applied
         const promoInputElement = document.getElementById('promo_code');
         if (promoInputElement && promoInputElement.dataset.promotionId) {
             promotionId = promoInputElement.dataset.promotionId;
         } else if (promoCode) {
-            // If not already applied, verify it now
             try {
                 const promoResp = await fetch(`${PRICE_API_BASE_URL}/v1/customer/promocodes/verify`, {
                     method: 'POST',
@@ -1382,11 +1293,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const bookingPayload = {
             service_type_id: 1,
             pickup_address: pickupLocation,
-            pickup_lat: pickupLatLng.lat,
-            pickup_lng: pickupLatLng.lng,
+            pickup_lat: pickupLatLng.lat(),
+            pickup_lng: pickupLatLng.lng(),
             dropoff_address: dropLocation,
-            dropoff_lat: dropLatLng.lat,
-            dropoff_lng: dropLatLng.lng,
+            dropoff_lat: dropLatLng.lat(),
+            dropoff_lng: dropLatLng.lng(),
             distance_km: latestDistanceKm
         };
 
@@ -1442,7 +1353,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 bookingBtnLoader.classList.add('d-none');
             }
         } catch (err) {
-
             showToast('Please try again.', 'error');
             if (bookingBtn && bookingBtnText && bookingBtnLoader) {
                 bookingBtn.disabled = false;
@@ -1451,12 +1361,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     });
-});
+}); // Close the DOMContentLoaded event
 
-// Add event listener for use current location button
-document.getElementById('useCurrentLocationBtn').addEventListener('click', getUserLiveLocation);
-
-// Function to check for and restore pending booking data
 function checkPendingBookingData() {
     const pendingBooking = localStorage.getItem('pending_booking');
 
@@ -1486,26 +1392,47 @@ function checkPendingBookingData() {
 
             if (bookingData.pickup_coords && map) {
                 if (pickupMarker) {
-                    map.removeLayer(pickupMarker);
+                    pickupMarker.setMap(null);
                 }
 
-                pickupMarker = L.marker([
-                    bookingData.pickup_coords.lat,
-                    bookingData.pickup_coords.lng
-                ]).addTo(map).bindPopup("Pickup Location: " + bookingData.pickup_location);
+                pickupMarker = new google.maps.Marker({
+                    position: { lat: bookingData.pickup_coords.lat, lng: bookingData.pickup_coords.lng },
+                    map: map,
+                    title: 'Pickup Location: ' + bookingData.pickup_location,
+                    icon: {
+                        url: "{{ asset('assets/images/pin.png') }}",
+                        scaledSize: new google.maps.Size(30, 30)
+                    }
+                });
 
-                map.setView([bookingData.pickup_coords.lat, bookingData.pickup_coords.lng], 15);
+                const pickupInfoWindow = new google.maps.InfoWindow({
+                    content: 'Pickup Location: ' + bookingData.pickup_location
+                });
+                pickupInfoWindow.open(map, pickupMarker);
+
+                map.panTo({ lat: bookingData.pickup_coords.lat, lng: bookingData.pickup_coords.lng });
+                map.setZoom(15);
             }
 
             if (bookingData.drop_coords && map) {
                 if (dropMarker) {
-                    map.removeLayer(dropMarker);
+                    dropMarker.setMap(null);
                 }
 
-                dropMarker = L.marker([
-                    bookingData.drop_coords.lat,
-                    bookingData.drop_coords.lng
-                ]).addTo(map).bindPopup("Drop Location: " + bookingData.drop_location);
+                dropMarker = new google.maps.Marker({
+                    position: { lat: bookingData.drop_coords.lat, lng: bookingData.drop_coords.lng },
+                    map: map,
+                    title: 'Drop Location: ' + bookingData.drop_location,
+                    icon: {
+                        url: "{{ asset('assets/images/pin.png') }}",
+                        scaledSize: new google.maps.Size(30, 30)
+                    }
+                });
+
+                const dropInfoWindow = new google.maps.InfoWindow({
+                    content: 'Drop Location: ' + bookingData.drop_location
+                });
+                dropInfoWindow.open(map, dropMarker);
             }
 
             if (bookingData.distance) {
@@ -1521,8 +1448,8 @@ function checkPendingBookingData() {
 
                 setTimeout(async () => {
                     if (latestDistanceKm > 0) {
-                        const pickupLatLng = pickupMarker.getLatLng();
-                        await fetchPriceFromAPI(pickupLatLng.lat, pickupLatLng.lng, latestDistanceKm);
+                        const pickupLatLng = pickupMarker.getPosition();
+                        await fetchPriceFromAPI(pickupLatLng.lat(), pickupLatLng.lng(), latestDistanceKm);
                     } else {
                         const pickupElement = document.getElementById('pickup_location');
                         const dropElement = document.getElementById('drop_location');
@@ -1532,8 +1459,8 @@ function checkPendingBookingData() {
 
                             setTimeout(async () => {
                                 if (latestDistanceKm > 0) {
-                                    const pickupLatLng = pickupMarker.getLatLng();
-                                    await fetchPriceFromAPI(pickupLatLng.lat, pickupLatLng.lng, latestDistanceKm);
+                                    const pickupLatLng = pickupMarker.getPosition();
+                                    await fetchPriceFromAPI(pickupLatLng.lat(), pickupLatLng.lng(), latestDistanceKm);
                                 }
                             }, 1000);
                         }
@@ -1545,7 +1472,6 @@ function checkPendingBookingData() {
                 }, 1000);
             }
 
-            // Remove the pending booking data
             localStorage.removeItem('pending_booking');
 
         } catch (error) {
@@ -1593,17 +1519,17 @@ function getUserLiveLocation() {
                 return;
             }
 
-            // if (!isLocationInUAE(lat, lng)) {
-            //     const pickupElement = document.getElementById('pickup_location');
-            //     const dropElement = document.getElementById('drop_location');
-            //     if (pickupElement && dropElement && pickupElement.value.trim() === '' && dropElement.value.trim() === '') {
-            //         showToast(
-            //             "Your current location is outside UAE. Please select pickup location manually.",
-            //             "warning"
-            //         );
-            //     }
-            //     return;
-            // }
+            if (!isLocationInUAE(lat, lng)) {
+                 const pickupElement = document.getElementById('pickup_location');
+                 const dropElement = document.getElementById('drop_location');
+                 if (pickupElement && dropElement && pickupElement.value.trim() === '' && dropElement.value.trim() === '') {
+                     showToast(
+                         "Your current location is outside UAE. Please select pickup location manually.",
+                         "warning"
+                     );
+                 }
+                 return;
+            }
 
             setPickupFromLatLng(lat, lng);
         },
@@ -1624,6 +1550,8 @@ function getUserLiveLocation() {
                 default:
                     break;
             }
+
+            showToast(errorMessage, "error");
         },
         {
             enableHighAccuracy: true,
@@ -1648,23 +1576,33 @@ function setPickupFromLatLng(lat, lng) {
                 }
 
                 if (pickupMarker) {
-                    map.removeLayer(pickupMarker);
+                    pickupMarker.setMap(null);
                 }
 
-                pickupMarker = L.marker([lat, lng])
-                    .addTo(map)
-                    .bindPopup("Your Current Location")
-                    .openPopup();
+                pickupMarker = new google.maps.Marker({
+                    position: { lat: lat, lng: lng },
+                    map: map,
+                    title: "Your Current Location",
+                    icon: {
+                        url: "{{ asset('assets/images/pin.png') }}",
+                        scaledSize: new google.maps.Size(30, 30)
+                    }
+                });
 
-                map.setView([lat, lng], 15);
+                const pickupInfoWindow = new google.maps.InfoWindow({
+                    content: "Your Current Location"
+                });
+                pickupInfoWindow.open(map, pickupMarker);
+
+                map.panTo({ lat: lat, lng: lng });
+                map.setZoom(15);
 
                 showToast("Pickup location set to your current location", "success");
 
-                if (dropMarker) {
-                    drawRoute();
+                if (dropMarker && pickupMarker) {
+                    setTimeout(drawRoute, 500);
                 }
             } else {
-
                 showToast(
                     "Unable to detect address from your location",
                     "error"
