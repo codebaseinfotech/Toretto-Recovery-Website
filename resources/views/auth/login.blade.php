@@ -15,7 +15,7 @@
                 </div>
                 <div class="col-lg-6 align-content-center">
                     <div class="right-container">
-                        
+
                         <div class="section-heading" data-aos="fade-up" data-aos-duration="500">
                             <h2 class="section-title"><span>Welcome </span> Back!</h2>
                             <p>Access your bookings and manage your vehicle recovery services</p>
@@ -39,7 +39,7 @@
                                     <!-- Validation Message -->
                                     <div class="invalid-feedback d-block" id="errorMsg"></div>
                                 </div>
-                                
+
 
                             <button type="submit" class="btn-submit theme-btn" id="submitBtn">
                                 <span class="btn-text">SEND AND CONTINUE</span>
@@ -57,7 +57,7 @@
                         </form>
                     </div>
                 </div>
-            </div>    
+            </div>
         </div>
 </section>
 
@@ -103,12 +103,10 @@ document.addEventListener('DOMContentLoaded', function () {
         btnText.classList.add('d-none');
         btnLoader.classList.remove('d-none');
 
-        fetch(form.action, {
+        window.ApiUtils.fetch(form.action, {
             method: 'POST',
             headers: {
                 'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
                 'X-Requested-With': 'XMLHttpRequest'
             },
             body: JSON.stringify({
@@ -126,13 +124,13 @@ document.addEventListener('DOMContentLoaded', function () {
             if (data.status === true) {
                 // Show success toast
                 showToast(data.message, 'success');
-                
+
                 // Redirect to OTP page
                 if (data.redirect) {
                     // Store the phone number in localStorage for OTP verification
                     const phoneWithPrefix = '971' + phoneInput.value.trim();
                     localStorage.setItem('phone_for_verification', phoneWithPrefix);
-                    
+
                     setTimeout(() => {
                         window.location.href = data.redirect;
                     }, 1500);
@@ -149,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function () {
             btn.disabled = false;
             btnText.classList.remove('d-none');
             btnLoader.classList.add('d-none');
-            
+
             showToast('Network error. Please try again.', 'error');
             errorBox.innerText = 'Network error. Please try again.';
         });
@@ -159,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function showToast(message, type = 'info') {
         // Map our types to SweetAlert2 types
         let swalIcon = type === 'error' ? 'error' : type === 'warning' ? 'warning' : type === 'info' ? 'info' : 'success';
-        
+
         // Use white background as requested
         let background = '#FFFFFF';
         let color;
@@ -176,15 +174,15 @@ document.addEventListener('DOMContentLoaded', function () {
             default: // success
                 color = '#28a745'; // Green for success
         }
-        
+
         // Customize title based on the page and action
-        let toastTitle = message.includes('OTP') ? 'OTP Verification' : 
+        let toastTitle = message.includes('OTP') ? 'OTP Verification' :
                         message.toLowerCase().includes('success') ? 'Success' :
-                        message.toLowerCase().includes('welcome') ? 'Welcome Back' : 
-                        type === 'error' ? 'Login Error' : 
-                        type === 'warning' ? 'Attention Required' : 
+                        message.toLowerCase().includes('welcome') ? 'Welcome Back' :
+                        type === 'error' ? 'Login Error' :
+                        type === 'warning' ? 'Attention Required' :
                         type === 'info' ? 'Information' : 'Login Status';
-        
+
         Swal.fire({
             toast: true,
             icon: swalIcon,
@@ -227,5 +225,5 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-</script>    
+</script>
 @endpush

@@ -33,7 +33,7 @@
                     <div class="form-group">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <label>Pickup Location</label>
-                            <a href="#" style="color: #dc3545; margin-bottom: 12px; text-decoration: underline;" id="useCurrentLocationBtn">Use Current Location</a>
+                            <a href="#" style="color: #dc3545; margin-bottom: 12px; text-decoration: underline; opacity: 0.6; pointer-events: none;" id="useCurrentLocationBtn">Use Current Location</a>
                         </div>
                         <div class="input-icon">
                             <i class="fa-solid fa-location-dot"></i>
@@ -87,17 +87,17 @@
 
                 <!-- Promo Code Section -->
                 <div class="promo-section mb-3">
-                    <div class="row align-items-end">
-                        <div class="col-md-8">
+                    <div class="row g-2 align-items-end">
+                        <div class="col-md-8 col-12">
                             <div class="form-group mb-0">
-                                <label>Promo Code</label>
-                                <div class="input-icon">
-                                    <i class="fa-solid fa-tag"></i>
-                                    <input type="text" name="promo_code" id="promo_code" placeholder="Enter promo code">
+                                <label for="promo_code" class="form-label mb-1">Promo Code</label>
+                                <div class="input-icon position-relative">
+                                    <i class="fa-solid fa-tag position-absolute" style="left: 12px; top: 50%; transform: translateY(-50%); color: #6c757d;"></i>
+                                    <input type="text" name="promo_code" id="promo_code" class="form-control ps-4" placeholder="Enter promo code">
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4 col-12">
                             <button type="button" class="theme-btn w-100" id="applyPromoBtn" data-applied="false">
                                 <span class="btn-text">Apply</span>
                                 <span class="btn-loader-promo d-none">
@@ -278,6 +278,57 @@
     height: 100%;
 }
 
+.promo-section {
+    margin-bottom: 1rem;
+}
+
+.promo-section .form-group {
+    margin-bottom: 0;
+}
+
+.promo-section .input-icon {
+    position: relative;
+}
+
+.promo-section input[type="text"] {
+    padding-left: 2.5rem;
+}
+
+@media (max-width: 767.98px) {
+    .promo-section .row {
+        gap: 0.75rem;
+    }
+
+    .promo-section .col-md-8 {
+        flex: 0 0 100%;
+        max-width: 100%;
+        margin-bottom: 0.5rem;
+    }
+
+    .promo-section .col-md-4 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    .promo-section .theme-btn {
+        width: 100% !important;
+        min-height: 45px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .promo-section .col-md-8 {
+        flex: 0 0 65%;
+        max-width: 65%;
+    }
+
+    .promo-section .col-md-4 {
+        flex: 0 0 35%;
+        max-width: 35%;
+        padding-left: 0.75rem;
+    }
+}
+
 /* Simple price calculation styling */
 .price-calculation-section {
     border: 1px solid #dee2e6;
@@ -308,6 +359,15 @@
 
 .price-item .text-danger {
     color: #dc3545 !important;
+}
+
+/* Use Current Location button styling */
+#useCurrentLocationBtn {
+    transition: opacity 0.3s ease;
+}
+
+#useCurrentLocationBtn:not([style*="opacity: 1"]) {
+    cursor: not-allowed;
 }
 </style>
 @endpush
@@ -380,6 +440,16 @@ function initMapAndAutocomplete() {
     if (locationPermissionGranted) {
         setTimeout(getUserLiveLocation, 500);
     }
+
+    // Enable the "Use Current Location" button after map is ready
+    setTimeout(() => {
+        const useCurrentLocationBtn = document.getElementById('useCurrentLocationBtn');
+        if (useCurrentLocationBtn) {
+            useCurrentLocationBtn.style.opacity = '1';
+            useCurrentLocationBtn.style.pointerEvents = 'auto';
+            console.log('Use Current Location button enabled');
+        }
+    }, 1000);
 }
 
 function initMap() {
@@ -621,14 +691,9 @@ async function fetchPriceFromAPI(latitude, longitude, km) {
         if (grandTotalEl) grandTotalEl.innerText = '0.00';
 
         const token = getAuthToken();
-        const response = await fetch(`${PRICE_API_BASE_URL}/v1/customer/price/calculate`, {
+        const response = await window.ApiUtils.fetch(`${PRICE_API_BASE_URL}/v1/customer/price/calculate`, {
             method: 'POST',
             headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Language': 'en',
-                'DeviceType': 'Android',
-                'DeviceID': '123456789',
                 'Authorization': 'Bearer ' + token
             },
             body: JSON.stringify({
@@ -1005,14 +1070,9 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             try {
-                const promoResp = await fetch(`${PRICE_API_BASE_URL}/v1/customer/promocodes/verify`, {
+                const promoResp = await window.ApiUtils.fetch(`${PRICE_API_BASE_URL}/v1/customer/promocodes/verify`, {
                     method: 'POST',
                     headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Language': 'en',
-                        'DeviceType': 'Android',
-                        'DeviceID': '123456789',
                         'Authorization': 'Bearer ' + token
                     },
                     body: JSON.stringify({ code: promoCode })
@@ -1175,10 +1235,24 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Use Current Location button functionality
-    document.getElementById('useCurrentLocationBtn').addEventListener('click', function(e) {
-        e.preventDefault();
-        getUserLiveLocation();
-    });
+    const useCurrentLocationBtn = document.getElementById('useCurrentLocationBtn');
+    if (useCurrentLocationBtn) {
+        useCurrentLocationBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('Use Current Location button clicked');
+
+            // Check if map is ready
+            if (!map) {
+                console.log('Map not ready yet, showing loading message');
+                showToast('Map is still loading. Please wait a moment and try again.', 'info');
+                return;
+            }
+
+            getUserLiveLocation();
+        });
+    } else {
+        console.error('Use Current Location button not found');
+    }
 
     // Booking form submission functionality
     document.getElementById('bookingForm').addEventListener('submit', async function(e) {
@@ -1246,14 +1320,9 @@ document.addEventListener('DOMContentLoaded', function () {
             promotionId = promoInputElement.dataset.promotionId;
         } else if (promoCode) {
             try {
-                const promoResp = await fetch(`${PRICE_API_BASE_URL}/v1/customer/promocodes/verify`, {
+                const promoResp = await window.ApiUtils.fetch(`${PRICE_API_BASE_URL}/v1/customer/promocodes/verify`, {
                     method: 'POST',
                     headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Language': 'en',
-                        'DeviceType': 'Android',
-                        'DeviceID': '123456789',
                         'Authorization': 'Bearer ' + token
                     },
                     body: JSON.stringify({ code: promoCode })
@@ -1306,14 +1375,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         try {
-            const bookingResp = await fetch(`${PRICE_API_BASE_URL}/v1/customer/bookings`, {
+            const bookingResp = await window.ApiUtils.fetch(`${PRICE_API_BASE_URL}/v1/customer/bookings`, {
                 method: 'POST',
                 headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Language': 'en',
-                    'DeviceType': 'Android',
-                    'DeviceID': '123456789',
                     'Authorization': 'Bearer ' + token
                 },
                 body: JSON.stringify(bookingPayload)
@@ -1502,16 +1566,24 @@ function isLocationInUAE(lat, lng) {
 }
 
 function getUserLiveLocation() {
+    console.log('getUserLiveLocation called');
+
     if (!navigator.geolocation) {
+        console.error('Geolocation is not supported by this browser');
+        showToast("Geolocation is not supported by your browser. Please enter pickup location manually.", "error");
         return;
     }
 
+    console.log('Requesting geolocation...');
+
     navigator.geolocation.getCurrentPosition(
         (position) => {
+            console.log('Geolocation success:', position);
             const lat = position.coords.latitude;
             const lng = position.coords.longitude;
 
             if (!lat || !lng) {
+                console.error('Invalid coordinates received');
                 showToast(
                     "Unable to determine your location. Please enter pickup location manually.",
                     "info"
@@ -1519,21 +1591,33 @@ function getUserLiveLocation() {
                 return;
             }
 
-            if (!isLocationInUAE(lat, lng)) {
-                 const pickupElement = document.getElementById('pickup_location');
-                 const dropElement = document.getElementById('drop_location');
-                 if (pickupElement && dropElement && pickupElement.value.trim() === '' && dropElement.value.trim() === '') {
-                     showToast(
-                         "Your current location is outside UAE. Please select pickup location manually.",
-                         "warning"
-                     );
-                 }
-                 return;
+            console.log('Coordinates:', lat, lng);
+
+            // Check if map is initialized
+            if (!map) {
+                console.error('Map not initialized yet');
+                showToast("Map is still loading. Please try again in a moment.", "warning");
+                return;
             }
 
+            if (!isLocationInUAE(lat, lng)) {
+                console.log('Location is outside UAE');
+                const pickupElement = document.getElementById('pickup_location');
+                const dropElement = document.getElementById('drop_location');
+                if (pickupElement && dropElement && pickupElement.value.trim() === '' && dropElement.value.trim() === '') {
+                    showToast(
+                        "Your current location is outside UAE. Please select pickup location manually.",
+                        "warning"
+                    );
+                }
+                return;
+            }
+
+            console.log('Setting pickup location from coordinates');
             setPickupFromLatLng(lat, lng);
         },
         (error) => {
+            console.error('Geolocation error:', error);
             let errorMessage = "Unable to fetch your location. Please enter pickup location manually.";
 
             switch(error.code) {
@@ -1548,6 +1632,7 @@ function getUserLiveLocation() {
                     break;
                 case error.UNKNOWN_ERROR:
                 default:
+                    errorMessage = "An unknown error occurred while getting your location.";
                     break;
             }
 

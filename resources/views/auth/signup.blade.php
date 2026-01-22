@@ -15,7 +15,7 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="right-container">
-                        
+
                         <div class="section-heading" data-aos="fade-up" data-aos-duration="500">
                             <h2 class="section-title"><span>Create</span> Your Account</h2>
                             <p>Sign up to book fast and reliable vehicle pickup & drop services</p>
@@ -41,7 +41,7 @@
                                     <div class="invalid-feedback d-block"></div>
                                 </div>
 
-                    
+
                                 <div class="form-group">
                                     <label>Mobile Number</label>
                                     <!-- Country Dropdown -->
@@ -53,8 +53,8 @@
                                             <span id="dialCode">+971</span>
                                         </button>
 
-                                        <input type="text" class="form-control" id="mobile" name="phone" placeholder="Enter your mobile number" maxlength="10" value="" readonly disabled> 
-                                        
+                                        <input type="text" class="form-control" id="mobile" name="phone" placeholder="Enter your mobile number" maxlength="10" value="" readonly disabled>
+
                                     </div>
                                 </div>
 
@@ -65,7 +65,7 @@
                                         <input type="email" id="email" name="email" placeholder="Enter Your Email Address">
                                     </div>
                                 </div>
-                                
+
 
                             <button type="submit" class="btn-submit theme-btn" id="signupSubmitBtn">
                                 <span class="btn-text">SIGN UP</span>
@@ -88,7 +88,7 @@
                     </div>
                 </div>
             </div>
-            
+
         </div>
 </section>
 
@@ -136,13 +136,13 @@ document.addEventListener('DOMContentLoaded', function () {
     if (mobileInput) {
         // First try to get phone from the phone_for_verification stored during login
         let phoneNumber = localStorage.getItem('phone_for_verification') || '';
-        
+
         // If not found, try from user_data
         if (!phoneNumber) {
             const userData = JSON.parse(localStorage.getItem('user_data') || '{}');
             phoneNumber = userData.phone || '';
         }
-        
+
         if (phoneNumber) {
             // Remove country code '971' and set the remaining digits
             const displayNumber = phoneNumber.replace(/^971/, '');
@@ -200,46 +200,53 @@ document.addEventListener('DOMContentLoaded', function () {
         if (valid) {
             // Get phone number from localStorage (as input is disabled)
             let phone = localStorage.getItem('phone_for_verification') || '';
-            
+
             // Define userData here to make it available in the fetch headers
             let userData = JSON.parse(localStorage.getItem('user_data') || '{}');
-            
+
             // If not found in phone_for_verification, try user_data
             if (!phone) {
                 phone = userData.phone || ('971' + mobileInput.value);
             }
-            
+
             // Ensure phone has the country code prefix
             if (!phone.startsWith('971')) {
                 phone = mobileInput.value;
             }
-            
+
             // Show loader
             const submitBtn = document.getElementById('signupSubmitBtn');
             const btnText = submitBtn.querySelector('.btn-text');
             const btnLoader = submitBtn.querySelector('.btn-loader');
-            
+
             if (btnText) btnText.classList.add('d-none');
             if (btnLoader) btnLoader.classList.remove('d-none');
             submitBtn.disabled = true;
 
-            const apiBaseUrl = document.querySelector('meta[name="api-base-url"]')?.getAttribute('content') || 
-                              document.querySelector('#api-base-url')?.value || 
-                              window.API_BASE_URL || 
+            const apiBaseUrl = document.querySelector('meta[name="api-base-url"]')?.getAttribute('content') ||
+                              document.querySelector('#api-base-url')?.value ||
+                              window.API_BASE_URL ||
                               'https://larareactfreelancer.com/api';
-        
-            fetch(apiBaseUrl + '/v1/customer/register', {
+
+            // Get country code from dial code element
+            const countryCodeElement = document.getElementById('dialCode');
+            const countryCode = countryCodeElement ? countryCodeElement.textContent.replace('+', '') : '971';
+
+            // Get referral code
+            const referralCode = document.getElementById('referralCode')?.value || '';
+
+            window.ApiUtils.fetch(apiBaseUrl + '/v1/customer/register', {
                 method: 'POST',
                 headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
                     'X-Requested-With': 'XMLHttpRequest'
                 },
                 body: JSON.stringify({
+                    phone: phone,
                     first_name: firstName.value,
                     last_name: lastName.value,
                     email: document.getElementById('email').value,
-                    phone: phone
+                    referral_code: "",
+                    country_code: countryCode
                 })
             })
             .then(response => response.json())
@@ -247,14 +254,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (btnText) btnText.classList.remove('d-none');
                 if (btnLoader) btnLoader.classList.add('d-none');
                 submitBtn.disabled = false;
-                
+
                 if (apiData.status === true || apiData.data?.access_token) {
                     const token = apiData.data?.access_token || apiData.access_token;
-                    
+
                     // Store token in localStorage
                     if (token) {
                         localStorage.setItem('auth_token', token);
-                        
+
                         const userData = {
                             phone: phone,
                             first_name: firstName.value,
@@ -263,10 +270,10 @@ document.addEventListener('DOMContentLoaded', function () {
                         };
                         localStorage.setItem('user_data', JSON.stringify(userData));
                     }
-                    
+
                     // Show success toast
                     showToast('Registration successful!', 'success');
-                    
+
                     setTimeout(() => {
                         window.location.href = '{{ route("book.now") }}';
                     }, 1500);
@@ -280,7 +287,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (btnText) btnText.classList.remove('d-none');
                 if (btnLoader) btnLoader.classList.add('d-none');
                 submitBtn.disabled = false;
-                
+
                 showToast('Network error. Please try again.', 'error');
                 console.error('Registration error:', error);
             });
@@ -293,7 +300,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function showToast(message, type = 'info') {
         // Map our types to SweetAlert2 types
         let swalIcon = type === 'error' ? 'error' : type === 'warning' ? 'warning' : type === 'info' ? 'info' : 'success';
-        
+
         // Use white background as requested
         let background = '#FFFFFF';
         let color;
@@ -310,15 +317,15 @@ document.addEventListener('DOMContentLoaded', function () {
             default: // success
                 color = '#28a745'; // Green for success
         }
-        
+
         // Customize title based on the page and action
-        let toastTitle = message.includes('Registration') || message.toLowerCase().includes('register') ? 'Registration Status' : 
+        let toastTitle = message.includes('Registration') || message.toLowerCase().includes('register') ? 'Registration Status' :
                         message.toLowerCase().includes('success') ? 'Registration Success' :
-                        message.toLowerCase().includes('welcome') ? 'Welcome' : 
-                        type === 'error' ? 'Registration Error' : 
-                        type === 'warning' ? 'Attention Required' : 
+                        message.toLowerCase().includes('welcome') ? 'Welcome' :
+                        type === 'error' ? 'Registration Error' :
+                        type === 'warning' ? 'Attention Required' :
                         type === 'info' ? 'Information' : 'Account Status';
-        
+
         Swal.fire({
             toast: true,
             icon: swalIcon,
@@ -360,5 +367,5 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-</script>    
+</script>
 @endpush

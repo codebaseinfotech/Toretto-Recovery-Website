@@ -14,7 +14,7 @@
                     </div>
                 </div>
                 <div class="col-lg-6 align-content-center">
-                    <div class="right-container">                       
+                    <div class="right-container">
                         <div class="section-heading" data-aos="fade-up" data-aos-duration="500">
                             <h2 class="section-title">Verify Your <span> OTP </span></h2>
                             <p>We’ve sent a 6-digit verification code to your registered mobile number</p>
@@ -58,7 +58,7 @@
                         </p>
                     </div>
                 </div>
-            </div>    
+            </div>
         </div>
 </section>
 
@@ -211,14 +211,12 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         const phoneFromStorage = localStorage.getItem('phone_for_verification') || '';
-        
+
         // AJAX submit
-        fetch(otpForm.action, {
+        window.ApiUtils.fetch(otpForm.action, {
             method: 'POST',
             headers: {
                 'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
                 'X-Requested-With': 'XMLHttpRequest',
                 'X-Phone-Verification': phoneFromStorage
             },
@@ -245,7 +243,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     localStorage.setItem('auth_token', data.token);
                     localStorage.setItem('user_data', JSON.stringify(data.user || {}));
                 }
-                
+
                 // Show success toast
                 showToast(data.message, 'success');
                 console.log(data.message);
@@ -257,7 +255,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         localStorage.setItem('auth_token', data.token);
                         localStorage.setItem('user_data', JSON.stringify(data.user || {}));
                     }
-                    
+
                     // Wait for a moment to ensure everything is set, then redirect
                     setTimeout(() => {
                         window.location.href = data.redirect;
@@ -269,7 +267,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (errorMsg) {
                     errorMsg.textContent = data.message || 'Invalid OTP';
                 }
-                
+
                 // Clear OTP fields
                 inputs.forEach(input => {
                     input.value = '';
@@ -285,7 +283,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 otpBtnText.classList.remove('d-none');
                 otpBtnLoader.classList.add('d-none');
             }
-            
+
             showToast('Network error. Please try again.', 'error');
             if (errorMsg) {
                 errorMsg.textContent = 'Network error. Please try again.';
@@ -307,7 +305,7 @@ document.addEventListener('DOMContentLoaded', function () {
             timerEl.style.cursor = 'pointer';
 
             timerEl.addEventListener('click', () => {
-                location.reload(); 
+                location.reload();
             });
         }
     }, 1000);
@@ -316,7 +314,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function showToast(message, type = 'info') {
         // Map our types to SweetAlert2 types
         let swalIcon = type === 'error' ? 'error' : type === 'warning' ? 'warning' : type === 'info' ? 'info' : 'success';
-        
+
         // Use white background as requested
         let background = '#FFFFFF';
         let color;
@@ -333,15 +331,15 @@ document.addEventListener('DOMContentLoaded', function () {
             default: // success
                 color = '#28a745'; // Green for success
         }
-        
+
         // Customize title based on the page and action
-        let toastTitle = message.includes('OTP') ? 'OTP Verification' : 
+        let toastTitle = message.includes('OTP') ? 'OTP Verification' :
                         message.toLowerCase().includes('success') ? 'Verification Success' :
-                        message.toLowerCase().includes('login') ? 'Login Status' : 
-                        type === 'error' ? 'Verification Error' : 
-                        type === 'warning' ? 'Attention Required' : 
+                        message.toLowerCase().includes('login') ? 'Login Status' :
+                        type === 'error' ? 'Verification Error' :
+                        type === 'warning' ? 'Attention Required' :
                         type === 'info' ? 'Information' : 'OTP Status';
-        
+
         Swal.fire({
             toast: true,
             icon: swalIcon,

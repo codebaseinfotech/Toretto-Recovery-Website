@@ -217,6 +217,9 @@ display: none !important;
     .navbar-brand img {
         width: 130px;
     }
+    .navbar-brand{
+        display: none;
+    }
     .topbar{
         display: none;
     }
@@ -235,7 +238,7 @@ display: none !important;
   }
   .header-actions {
       margin-left: 0;
-      margin-top: 10px;
+      margin-top: 0px;
   }
   .theme-btn {
     font-size: 12px !important;

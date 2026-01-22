@@ -91,29 +91,105 @@
 
 <script>
     AOS.init();
-    
+
+    window.ApiUtils = {
+        deviceId: '123456789',
+        deviceType: 'Web',
+        language: 'en',
+        latitude: null,
+        longitude: null,
+        locationPermissionGranted: false,
+
+        async getCurrentLocation() {
+            return new Promise((resolve, reject) => {
+                if (!navigator.geolocation) {
+                    reject(new Error('Geolocation is not supported by this browser.'));
+                    return;
+                }
+
+                if (this.latitude !== null && this.longitude !== null) {
+                    resolve({ latitude: this.latitude, longitude: this.longitude });
+                    return;
+                }
+
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        this.latitude = position.coords.latitude;
+                        this.longitude = position.coords.longitude;
+                        this.locationPermissionGranted = true;
+                        resolve({ latitude: this.latitude, longitude: this.longitude });
+                    },
+                    (error) => {
+                        console.warn('Geolocation error:', error);
+                        this.latitude = 0;
+                        this.longitude = 0;
+                        resolve({ latitude: 0, longitude: 0 });
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 300000
+                    }
+                );
+            });
+        },
+
+        // Get common API headers
+        async getCommonHeaders(additionalHeaders = {}) {
+            // Get location first
+            await this.getCurrentLocation();
+
+            const baseHeaders = {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Language': this.language,
+                'DeviceType': this.deviceType,
+                'DeviceId': this.deviceId,
+                'Latitude': this.latitude.toString(),
+                'Longitude': this.longitude.toString()
+            };
+
+            // Add authorization if token exists
+            const token = localStorage.getItem('auth_token');
+            if (token) {
+                baseHeaders['Authorization'] = `Bearer ${token}`;
+            }
+
+            // Merge additional headers
+            return { ...baseHeaders, ...additionalHeaders };
+        },
+
+        // Enhanced fetch wrapper
+        async fetch(url, options = {}) {
+            const headers = await this.getCommonHeaders(options.headers || {});
+
+            return fetch(url, {
+                ...options,
+                headers: headers
+            });
+        }
+    };
+
     // Check if user is logged in and hide sign-in button
     document.addEventListener('DOMContentLoaded', function() {
         const token = localStorage.getItem('auth_token');
         const signinButton = document.querySelector('.signin-button');
-        
+
         if (token && signinButton) {
             // Add class to hide sign-in button
             document.body.classList.add('hide-signin');
         }
-        
+
         // AJAX Logout
         const logoutLink = document.getElementById('ajaxLogout');
         if (logoutLink) {
             logoutLink.addEventListener('click', function(e) {
                 e.preventDefault();
-                
-                fetch('{{ route("logout.ajax") }}', {
+
+                window.ApiUtils.fetch('{{ route("logout.ajax") }}', {
                     method: 'POST',
                     headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                     },
                     body: JSON.stringify({
                         _token: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
@@ -123,7 +199,7 @@
                 .then(data => {
                     localStorage.removeItem('auth_token');
                     localStorage.removeItem('user_data');
-                                    
+
                     window.location.reload();
                 })
                 .catch(error => {
