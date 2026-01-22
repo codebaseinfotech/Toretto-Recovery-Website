@@ -16,7 +16,7 @@
         </div>
 
         <div class="hero-slider owl-carousel owl-theme owl-loaded owl-drag">
-        
+
                 <div class="owl-stage-outer">
                     <div class="owl-stage" style="transform: translate3d(-3750px, 0px, 0px); transition: 0.25s; width: 7500px;">
                         <div class="owl-item" style="width: 1250px;">
@@ -28,7 +28,7 @@
                                                 <h6 class="hero-sub-title wow animate__animated animate__fadeInDown" data-wow-delay="0.25s">
                                                     <i class="fa-solid fa-car"></i>Welcome To Toretto Recovery
                                                 </h6>
-                                                <h1 class="hero-title wow animate__animated animate__fadeInRight" data-wow-delay="0.25s">Fast &amp; Reliable  
+                                                <h1 class="hero-title wow animate__animated animate__fadeInRight" data-wow-delay="0.25s">Fast &amp; Reliable
                                                 <span>Car Recovery </span>in Dubai – Available 24/7
                                                 </h1>
                                                 <p class="wow animate__animated animate__fadeInLeft" data-wow-delay="0.25s">
@@ -77,7 +77,7 @@
                                                 <h6 class="hero-sub-title wow animate__animated animate__fadeInDown" data-wow-delay="0.25s">
                                                     <i class="fa-solid fa-car"></i>Welcome To Toretto Recovery
                                                 </h6>
-                                                <h1 class="hero-title wow animate__animated animate__fadeInRight" data-wow-delay="0.25s">Fast &amp; Reliable  
+                                                <h1 class="hero-title wow animate__animated animate__fadeInRight" data-wow-delay="0.25s">Fast &amp; Reliable
                                                 <span>Car Recovery </span>in Dubai – Available 24/7
                                                 </h1>
                                                 <p class="wow animate__animated animate__fadeInLeft" data-wow-delay="0.25s">
@@ -126,7 +126,7 @@
                                                 <h6 class="hero-sub-title wow animate__animated animate__fadeInDown" data-wow-delay="0.25s">
                                                     <i class="fa-solid fa-car"></i>Welcome To Toretto Recovery
                                                 </h6>
-                                                <h1 class="hero-title wow animate__animated animate__fadeInRight" data-wow-delay="0.25s">Fast &amp; Reliable  
+                                                <h1 class="hero-title wow animate__animated animate__fadeInRight" data-wow-delay="0.25s">Fast &amp; Reliable
                                                 <span>Car Recovery </span>in Dubai – Available 24/7
                                                 </h1>
                                                 <p class="wow animate__animated animate__fadeInLeft" data-wow-delay="0.25s">
@@ -342,7 +342,7 @@
                                     <img src="{{ asset('assets/images/5.png') }}" alt="">
                                 </div>
                                 <div class="service-content">
-                                    <h3 class="service-title">Off-Road Recovery 
+                                    <h3 class="service-title">Off-Road Recovery
 
                                     </h3>
                                     <p class="service-text">
@@ -498,7 +498,7 @@
                             <img src="{{ asset('assets/images/Book-Service-Online.png') }}" alt="">
                         </div>
                         <h4>Book Service Online</h4>
-                        <p>Submit your request instantly through call or WhatsApp.</p>
+                        <p>Submit your service request instantly through our website or phone call.</p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 text-center mb-30">
@@ -584,7 +584,7 @@
                         <h3 class="testimonial-title">Ahmed K.</h3>
                         <h6>Owner</h6>
                         <img class="star-testimonial" src="{{ asset('assets/images/Frame (15).png') }}" alt="">
-                        
+
                         <p class="testimonial-text">
                             “Fast, reliable, and super professional. They reached me in 15 minutes in Jebel Ali!”
                         </p>
