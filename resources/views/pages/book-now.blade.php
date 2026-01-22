@@ -1593,17 +1593,17 @@ function getUserLiveLocation() {
                 return;
             }
 
-            if (!isLocationInUAE(lat, lng)) {
-                const pickupElement = document.getElementById('pickup_location');
-                const dropElement = document.getElementById('drop_location');
-                if (pickupElement && dropElement && pickupElement.value.trim() === '' && dropElement.value.trim() === '') {
-                    showToast(
-                        "Your current location is outside UAE. Please select pickup location manually.",
-                        "warning"
-                    );
-                }
-                return;
-            }
+            // if (!isLocationInUAE(lat, lng)) {
+            //     const pickupElement = document.getElementById('pickup_location');
+            //     const dropElement = document.getElementById('drop_location');
+            //     if (pickupElement && dropElement && pickupElement.value.trim() === '' && dropElement.value.trim() === '') {
+            //         showToast(
+            //             "Your current location is outside UAE. Please select pickup location manually.",
+            //             "warning"
+            //         );
+            //     }
+            //     return;
+            // }
 
             setPickupFromLatLng(lat, lng);
         },

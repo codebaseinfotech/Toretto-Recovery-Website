@@ -139,7 +139,7 @@ display: none !important;
 /* LOGO */
 .navbar-brand img {
   height: auto;
-  width: 200px;
+  width: 130px;
   margin-right: 10px;
 }
 
@@ -478,7 +478,7 @@ display: none !important;
     .hero-single .hero-content .hero-title {
         font-size: 37px;
     }
-    .hero-slider.owl-theme .owl-nav .owl-prev, 
+    .hero-slider.owl-theme .owl-nav .owl-prev,
     .hero-slider.owl-theme .owl-nav .owl-next {
         top: unset;
         bottom: 80px !important;
@@ -487,7 +487,7 @@ display: none !important;
         left: unset;
         right: 120px;
     }
-       
+
 }
 
 /* home hero section css end */
@@ -2051,7 +2051,7 @@ label {
         height: 55px;
         font-size: 22px;
     }
-    
+
     .otp-inputs {
         gap: 18px;
     }
@@ -2070,11 +2070,11 @@ label {
     .right-container {
         margin-top: 30px;
     }
-    
+
     .otp-inputs {
         gap: 12px;
     }
-    
+
     .otp-input {
         width: 45px;
         height: 45px;
@@ -2086,7 +2086,7 @@ label {
     .otp-inputs {
         gap: 12px;
     }
-    
+
     .otp-input {
         width: 45px;
         height: 45px;
@@ -2098,7 +2098,7 @@ label {
     .otp-inputs {
         gap: 10px;
     }
-    
+
     .otp-input {
         width: 40px;
         height: 40px;
@@ -2156,7 +2156,7 @@ label {
     .otp-inputs {
         gap: 6px;
     }
-    
+
     .otp-input {
         width: 30px;
         height: 30px;
@@ -2168,7 +2168,7 @@ label {
     .otp-inputs {
         gap: 5px;
     }
-    
+
     .otp-input {
         width: 28px;
         height: 28px;
@@ -2834,7 +2834,7 @@ label {
 
 .gray i{
   margin-left:5px;
-} 
+}
 
 .blue{
   background:#fff;
