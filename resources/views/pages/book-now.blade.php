@@ -934,7 +934,57 @@ function showBookingSuccessPopup() {
         width: '600px',
         padding: '30px',
         willClose: () => {
-            window.location.href = "{{ route('home') }}";
+            // Clear the form instead of reloading the page
+            document.getElementById('bookingForm').reset();
+
+            // Reset all displays
+            document.getElementById('distance').innerText = '0.00 km';
+            document.getElementById('price').innerText = '0.00 AED';
+            document.getElementById('totalPriceDisplay').innerText = '0.00 AED';
+            document.getElementById('grandTotalDisplay').innerText = '0.00 AED';
+
+            // Hide discount section
+            const discountRow = document.getElementById('discountRow');
+            if (discountRow) {
+                discountRow.classList.add('d-none');
+            }
+
+            // Reset promo code button
+            const applyPromoBtn = document.getElementById('applyPromoBtn');
+            if (applyPromoBtn) {
+                applyPromoBtn.dataset.applied = 'false';
+                const promoBtnText = applyPromoBtn.querySelector('.btn-text');
+                if (promoBtnText) {
+                    promoBtnText.textContent = 'Apply';
+                }
+
+                // Clear promo code input
+                const promoInput = document.getElementById('promo_code');
+                if (promoInput) {
+                    promoInput.value = '';
+                }
+            }
+
+            // Clear map markers
+            if (pickupMarker) {
+                pickupMarker.setMap(null);
+                pickupMarker = null;
+            }
+            if (dropMarker) {
+                dropMarker.setMap(null);
+                dropMarker = null;
+            }
+
+            // Clear directions
+            if (directionsRenderer) {
+                directionsRenderer.setDirections({routes: []});
+            }
+
+            // Reset price calculation variables
+            latestDistanceKm = 0;
+            currentOriginalPrice = 0;
+            currentDiscountValue = 0;
+            currentPromotionData = null;
         },
         customClass: {
             popup: 'booking-success-popup',
@@ -942,13 +992,11 @@ function showBookingSuccessPopup() {
             content: 'booking-success-content'
         },
         willOpen: () => {
-            // Add event listener for the home button
             setTimeout(() => {
                 const openAppBtn = document.getElementById('openAppBtn');
 
                 if (openAppBtn) {
                     openAppBtn.addEventListener('click', () => {
-                        // Redirect to home page
                         window.location.href = "{{ route('home') }}";
                         Swal.close();
                     });
