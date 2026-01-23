@@ -37,7 +37,7 @@
 
       <!-- BOOK NOW (optional on mobile) -->
       <div class="mobile-header-actions header-actions d-flex gap-3">
-        <a href="#" class="btn btn-book theme-btn theme-btn2">BOOK NOW</a>
+        <a href="{{ route('book.now') }}" class="btn btn-book theme-btn theme-btn2">BOOK NOW</a>
       </div>
 
       <!-- TOGGLER -->

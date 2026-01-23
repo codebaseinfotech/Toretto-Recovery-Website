@@ -62,7 +62,7 @@
 
       <!-- BOOK NOW (optional on mobile) -->
       <div class="mobile-header-actions header-actions d-flex gap-3">
-        <a href="#" class="btn btn-book theme-btn theme-btn2">BOOK NOW</a>
+        <a href="{{ route('book.now') }}" class="btn btn-book theme-btn theme-btn2">BOOK NOW</a>
       </div>
 
       <!-- TOGGLER -->
@@ -94,7 +94,7 @@
       <li class="nav-item"><a class="nav-link" href="{{ route('contact') }}">CONTACT US</a></li>
       <li class="nav-item">
         <a class="nav-link dropdown-item" href="#" id="ajaxLogout">
-            <i class="fa-solid fa-right-from-bracket"></i> <span class="logout-div">LOGOUT </span> 
+            <i class="fa-solid fa-right-from-bracket"></i> <span class="logout-div">LOGOUT </span>
         </a>
       </li>
     </ul>
