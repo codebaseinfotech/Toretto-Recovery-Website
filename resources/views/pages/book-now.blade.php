@@ -391,11 +391,10 @@ const PRICE_API_BASE_URL = "{{ env('API_BASE_URL', '') }}";
 const API_BEARER_TOKEN = localStorage.getItem('auth_token') || '';
 
 const DRIVER_ICON_URL = "{{ asset('assets/images/driver-truck.png') }}";
-let latestDistanceKm = 0; // updated when distance is calculated
-let bookingSuccessToastShown = false;
-let currentOriginalPrice = 0; // Store original price
-let currentDiscountValue = 0; // Store discount value from promo
-let currentPromotionData = null; // Store full promotion data
+let latestDistanceKm = 0;
+let currentOriginalPrice = 0;
+let currentDiscountValue = 0;
+let currentPromotionData = null;
 
 let locationPermissionGranted = false;
 
@@ -1454,21 +1453,18 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
-            if (!bookingSuccessToastShown) {
-                const successMessage = `Thank you for choosing Toretto Recovery Services.
+            const successMessage = `Thank you for choosing Toretto Recovery Services.
 
-                Your nearest recovery driver is currently being assigned.
+            Your nearest recovery driver is currently being assigned.
 
-                To receive real-time updates, driver contact details, and live tracking, please continue using our mobile application.
+            To receive real-time updates, driver contact details, and live tracking, please continue using our mobile application.
 
-                Track your recovery vehicle in real time
+            Track your recovery vehicle in real time
 
-                [Open App / Download App]
+            [Open App / Download App]
 
-                Note: Service updates and driver communication are available only in the mobile app.`;
-                showToast(successMessage, 'success');
-                bookingSuccessToastShown = true;
-            }
+            Note: Service updates and driver communication are available only in the mobile app.`;
+            showToast(successMessage, 'success');
 
             if (bookingBtn && bookingBtnText && bookingBtnLoader) {
                 bookingBtn.disabled = false;
@@ -1483,8 +1479,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 bookingBtnLoader.classList.add('d-none');
             }
         }
+
+        if (bookingBtn && bookingBtnText && bookingBtnLoader) {
+            bookingBtn.disabled = false;
+            bookingBtnText.classList.remove('d-none');
+            bookingBtnLoader.classList.add('d-none');
+        }
     });
-}); // Close the DOMContentLoaded event
+});
 
 function checkPendingBookingData() {
     const pendingBooking = localStorage.getItem('pending_booking');
