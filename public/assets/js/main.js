@@ -73,17 +73,24 @@ $(document).ready(function () {
 
 
 // sticky header 
- $("#scroll-top").on("click", function () {
-        $("html, body").animate({ scrollTop: 0 }, 1500);
-        return false;
-    });
-    $(window).scroll(function () {
+$(window).scroll(function () {
+    if ($(window).width() <= 767) {
+        // Mobile: always fixed
+        $(".navbar").addClass("fixed-top");
+    } else {
+        // Desktop/tablet: scroll > 50px triggers stickiness
         if ($(this).scrollTop() > 50) {
             $(".navbar").addClass("fixed-top");
         } else {
             $(".navbar").removeClass("fixed-top");
         }
-    });
+    }
+});
+
+
+$(document).ready(function(){
+    $(window).trigger('scroll');
+});
 
     // booking page css 
    
