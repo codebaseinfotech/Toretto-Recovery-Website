@@ -93,7 +93,7 @@
                                 <label for="promo_code" class="form-label mb-1">Promo Code</label>
                                 <div class="input-icon position-relative">
                                     <i class="fa-solid fa-tag position-absolute" style="left: 12px; top: 50%; transform: translateY(-50%); color: #6c757d;"></i>
-                                    <input type="text" name="promo_code" id="promo_code" class="form-control ps-4" placeholder="Enter promo code">
+                                    <input type="text" name="promo_code" id="promo_code" class="form-control" placeholder="Enter promo code">
                                 </div>
                             </div>
                         </div>
@@ -131,6 +131,17 @@
                     <div class="price-item">
                         <span class="fw-bold">Grand Total:</span>
                         <span id="grandTotalDisplay" class="float-end fw-bold">0.00 AED</span>
+                    </div>
+                </div>
+
+                <div class="payment-method-section mb-4 p-3 bg-light rounded">
+                    <h5 class="mb-3">Payment Method</h5>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="payment_method" id="payment_cod" value="cod" required>
+                        <label class="form-check-label d-flex align-items-center gap-2" for="payment_cod">
+                            <span class="fw-bold">Cash on Delivery (COD)</span>
+                        </label>
                     </div>
                 </div>
 
