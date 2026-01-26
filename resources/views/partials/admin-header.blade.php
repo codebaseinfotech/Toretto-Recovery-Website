@@ -25,6 +25,11 @@
                 </a>
 
                 <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                    <a class="dropdown-item" href="{{ route('profile') }}">
+                    <i class="fa-solid fa-user"></i> My Profile
+                    </a>
+                </li>
                 <!-- <li>
                     <a class="dropdown-item" href="{{ route('my.booking') }}">
                     <i class="fa-solid fa-calendar-check"></i> My Bookings
@@ -77,27 +82,28 @@
   <div class="collapse mobile-slide-menu d-lg-none" id="mobile_nav">
   <div class="mobile-menu-inner">
 
-    <div class="mobile-menu-header d-flex justify-content-between align-items-center">
-        <a class="navbar-brand" href="{{ route('home') }}">
-          <img src="./assets/images/logo (1).png" alt="Toretto Recovery">
-        </a>
+        <div class="mobile-menu-header d-flex justify-content-between align-items-center">
+            <a class="navbar-brand" href="{{ route('home') }}">
+            <img src="{{ asset('assets/images/logo (1).png') }}" alt="Toretto Recovery">
+            </a>
 
-        <!-- CLOSE TOGGLER -->
-        <button class="btn close-menu" type="button" data-bs-toggle="collapse" data-bs-target="#mobile_nav">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
+            <!-- CLOSE TOGGLER -->
+            <button class="btn close-menu" type="button" data-bs-toggle="collapse" data-bs-target="#mobile_nav">
+            <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <ul class="navbar-nav text-start">
+            <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">HOME</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ route('about') }}">ABOUT US</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ route('contact') }}">CONTACT US</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ route('profile') }}">MY PROFILE</a></li>
+            <li class="nav-item">
+            <a class="nav-link dropdown-item" href="#" id="ajaxLogout">
+                <i class="fa-solid fa-right-from-bracket"></i> <span class="logout-div">LOGOUT </span>
+            </a>
+            </li>
+        </ul>
     </div>
-
-    <ul class="navbar-nav text-start">
-      <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">HOME</a></li>
-      <li class="nav-item"><a class="nav-link" href="{{ route('about') }}">ABOUT US</a></li>
-      <li class="nav-item"><a class="nav-link" href="{{ route('contact') }}">CONTACT US</a></li>
-      <li class="nav-item">
-        <a class="nav-link dropdown-item" href="#" id="ajaxLogout">
-            <i class="fa-solid fa-right-from-bracket"></i> <span class="logout-div">LOGOUT </span>
-        </a>
-      </li>
-    </ul>
-  </div>
 </div>
 </nav>

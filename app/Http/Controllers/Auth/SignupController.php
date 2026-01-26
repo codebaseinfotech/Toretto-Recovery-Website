@@ -26,7 +26,6 @@ class SignupController extends Controller
     {
         $request->validate([
             'first_name' => 'required|string',
-            'last_name'  => 'required|string',
             'email'      => 'nullable|email',
             'phone'     => 'required|string',
         ]);

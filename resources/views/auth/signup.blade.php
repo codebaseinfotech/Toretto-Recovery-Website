@@ -24,23 +24,13 @@
                         <form class="signup-card" id="signupForm" method="POST" action="{{ route('signup.register') }}" novalidate>
                             @csrf
                                 <div class="form-group">
-                                    <label>First Name</label>
+                                    <label>Full Name</label>
                                     <div class="input-icon">
                                         <i class="fa-regular fa-user"></i>
-                                        <input type="text" id="firstName" name="first_name" placeholder="Enter First name">
+                                        <input type="text" id="fullName" name="first_name" placeholder="Enter your full name">
                                     </div>
                                     <div class="invalid-feedback d-block"></div>
                                 </div>
-
-                                <div class="form-group">
-                                    <label>Last Name</label>
-                                    <div class="input-icon">
-                                        <i class="fa-regular fa-user"></i>
-                                        <input type="text" id="lastName" name="last_name" placeholder="Enter Last name">
-                                    </div>
-                                    <div class="invalid-feedback d-block"></div>
-                                </div>
-
 
                                 <div class="form-group">
                                     <label>Mobile Number</label>
@@ -151,8 +141,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     const form = document.getElementById('signupForm');
-    const firstName = document.getElementById('firstName');
-    const lastName = document.getElementById('lastName');
+    const fullName = document.getElementById('fullName');
     const mobileError = document.getElementById('errorMsg');
 
     const nameRegex = /^[A-Za-z\s]{2,}$/;
@@ -175,26 +164,15 @@ document.addEventListener('DOMContentLoaded', function () {
         e.preventDefault();
         let valid = true;
 
-        // First Name
-        if (!firstName.value.trim()) {
-            showError(firstName, 'First name is required');
+        // Full Name
+        if (!fullName.value.trim()) {
+            showError(fullName, 'Full name is required');
             valid = false;
-        } else if (!nameRegex.test(firstName.value)) {
-            showError(firstName, 'Enter a valid first name');
-            valid = false;
-        } else {
-            clearError(firstName);
-        }
-
-        // Last Name
-        if (!lastName.value.trim()) {
-            showError(lastName, 'Last name is required');
-            valid = false;
-        } else if (!nameRegex.test(lastName.value)) {
-            showError(lastName, 'Enter a valid last name');
+        } else if (!nameRegex.test(fullName.value)) {
+            showError(fullName, 'Enter a valid full name');
             valid = false;
         } else {
-            clearError(lastName);
+            clearError(fullName);
         }
 
         if (valid) {
@@ -242,8 +220,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 },
                 body: JSON.stringify({
                     phone: phone,
-                    first_name: firstName.value,
-                    last_name: lastName.value,
+                    first_name: fullName.value,  // Pass full name as first_name
+                    last_name: "",               // Pass empty string for last_name
                     email: document.getElementById('email').value,
                     referral_code: "",
                     country_code: countryCode
@@ -264,8 +242,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
                         const userData = {
                             phone: phone,
-                            first_name: firstName.value,
-                            last_name: lastName.value,
+                            first_name: fullName.value,
+                            last_name: "",
                             email: document.getElementById('email').value
                         };
                         localStorage.setItem('user_data', JSON.stringify(userData));

@@ -22,10 +22,14 @@ class PageController extends Controller
         return view('pages.contact');
     }
 
-    // Booking pages (after login)
     public function myBooking()
     {
         return view('pages.my-booking');
+    }
+
+    public function profile()
+    {
+        return view('pages.profile');
     }
 
     public function bookNow()

@@ -11,6 +11,7 @@ Route::controller(PageController::class)->group(function () {
     Route::get('/', 'home')->name('home');
     Route::get('/about', 'about')->name('about');
     Route::get('/contact', 'contact')->name('contact');
+    Route::get('/profile', 'profile')->name('profile');
 });
 
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
@@ -42,7 +43,7 @@ Route::post('/logout-ajax', function () {
     Session::forget(['token']);
     Session::invalidate();
     Session::regenerateToken();
-    
+
     return response()->json([
         'status'  => true,
         'message' => 'Logged out successfully'
