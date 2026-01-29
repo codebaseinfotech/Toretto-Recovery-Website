@@ -1,8 +1,39 @@
 @extends('layouts.main')
 
-@section('title', 'Home')
+@section('title', 'Car Recovery Dubai Marina | 24/7 Towing Service')
+
+@section('meta_description', '24/7 car recovery in Dubai Marina. Fast towing, roadside assistance & emergency vehicle recovery. Call WhatsApp +971523003423.')
 
 @section('content')
+
+<div class="seo-content-wrapper" style="position: absolute; left: -9999px; top: -9999px; width: 1px; height: 1px; overflow: hidden;">
+    <h1>24/7 Car Recovery Service in Dubai Marina</h1>
+
+    <h2>Trusted Car Recovery Service in Dubai</h2>
+    <p>
+        We provide fast and reliable car recovery services across Dubai including
+        DIP, Jebel Ali, Dubai Marina, JLT, JVC, Downtown Dubai, and Sheikh Zayed Road.
+        Our professional team ensures safe vehicle towing and emergency assistance
+        anytime, day or night.
+    </p>
+
+    <h2>24/7 Emergency Towing & Roadside Assistance</h2>
+    <p>
+        Whether your car breaks down on Sheikh Zayed Road, inside residential areas,
+        or parking basements, our 24/7 towing and roadside assistance team is ready
+        to help. We handle accident recovery, flat tires, battery boost, and
+        vehicle breakdown recovery.
+    </p>
+
+    <h2>Why Drivers Choose Toretto Recovery in Dubai</h2>
+    <ul>
+        <li>24/7 emergency car recovery service</li>
+        <li>Fast response time across Dubai Marina & nearby areas</li>
+        <li>Affordable and transparent pricing</li>
+        <li>Professional and experienced recovery team</li>
+        <li>Modern towing trucks for all vehicle types</li>
+    </ul>
+</div>
 
 {{-- HERO SECTION --}}
 <section class="hero-section">

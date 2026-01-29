@@ -7,7 +7,13 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon.png') }}">
-    <title>@yield('title', 'Toretto Recovery')</title>
+    <title>@yield('title', 'Car Recovery Dubai | 24/7 Towing Service')</title>
+
+    <meta name="description" content="@yield('meta_description', '24/7 car recovery service in Dubai. Fast towing & roadside assistance.')">
+
+    <meta name="keywords" content="car recovery Dubai, towing service Dubai, roadside assistance Dubai">
+
+    <meta name="robots" content="index, follow">
 
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/fonts.css') }}">
@@ -40,6 +46,14 @@
             margin-bottom: 10px;
         }
     </style>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-62X9L82MBP"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-62X9L82MBP');
+    </script>
 </head>
 
 <body>
