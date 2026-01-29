@@ -36,7 +36,7 @@
                                                 </p>
                                                 <div class="hero-btn wow animate__animated animate__fadeInUp" data-animation="fadeInUp" style="animation-delay: 1s;">
                                                     <a href="{{ route('book.now') }}" class="theme-btn">Book Now<i class="fas fa-arrow-right-long"></i></a>
-                                                    <a href="tel:+971 52 225 5021" class="theme-btn theme-btn2">Call / WhatsApp<i class="fas fa-arrow-right-long"></i></a>
+                                                    <a href="tel:+971 523003423" class="theme-btn theme-btn2">Call / WhatsApp<i class="fas fa-arrow-right-long"></i></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -60,7 +60,7 @@
                                                 </p>
                                                 <div class="hero-btn wow animate__animated animate__fadeInUp" data-animation="fadeInUp" style="animation-delay: 1s;">
                                                     <a href="{{ route('book.now') }}" class="theme-btn">Book Now<i class="fas fa-arrow-right-long"></i></a>
-                                                    <a href="tel:+971 52 225 5021" class="theme-btn theme-btn2">Call / WhatsApp<i class="fas fa-arrow-right-long"></i></a>
+                                                    <a href="tel:+971 523003423" class="theme-btn theme-btn2">Call / WhatsApp<i class="fas fa-arrow-right-long"></i></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -85,7 +85,7 @@
                                                 </p>
                                                 <div class="hero-btn wow animate__animated animate__fadeInUp" data-animation="fadeInUp">
                                                     <a href="{{ route('book.now') }}" class="theme-btn">Book Now<i class="fas fa-arrow-right-long"></i></a>
-                                                    <a href="tel:+971 52 225 5021" class="theme-btn theme-btn2">Call / WhatsApp<i class="fas fa-arrow-right-long"></i></a>
+                                                    <a href="tel:+971 523003423" class="theme-btn theme-btn2">Call / WhatsApp<i class="fas fa-arrow-right-long"></i></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -109,7 +109,7 @@
                                                 </p>
                                                 <div class="hero-btn wow animate__animated animate__fadeInUp" data-animation="fadeInUp" style="animation-delay: 1s;">
                                                     <a href="{{ route('book.now') }}" class="theme-btn">Book Now<i class="fas fa-arrow-right-long"></i></a>
-                                                    <a href="tel:+971 52 225 5021" class="theme-btn theme-btn2">Call / WhatsApp<i class="fas fa-arrow-right-long"></i></a>
+                                                    <a href="tel:+971 523003423" class="theme-btn theme-btn2">Call / WhatsApp<i class="fas fa-arrow-right-long"></i></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -134,7 +134,7 @@
                                                 </p>
                                                 <div class="hero-btn wow animate__animated animate__fadeInUp" data-animation="fadeInUp">
                                                     <a href="{{ route('book.now') }}" class="theme-btn">Book Now<i class="fas fa-arrow-right-long"></i></a>
-                                                    <a href="tel:+971 52 225 5021" class="theme-btn theme-btn2">Call / WhatsApp<i class="fas fa-arrow-right-long"></i></a>
+                                                    <a href="tel:+971 523003423" class="theme-btn theme-btn2">Call / WhatsApp<i class="fas fa-arrow-right-long"></i></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -158,7 +158,7 @@
                                                 </p>
                                                 <div class="hero-btn wow animate__animated animate__fadeInUp" data-animation="fadeInUp" style="animation-delay: 1s;">
                                                     <a href="{{ route('book.now') }}" class="theme-btn">Book Now<i class="fas fa-arrow-right-long"></i></a>
-                                                    <a href="tel:+971 52 225 5021" class="theme-btn theme-btn2">Call / WhatsApp<i class="fas fa-arrow-right-long"></i></a>
+                                                    <a href="tel:+971 523003423" class="theme-btn theme-btn2">Call / WhatsApp<i class="fas fa-arrow-right-long"></i></a>
                                                 </div>
                                             </div>
                                         </div>

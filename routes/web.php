@@ -11,7 +11,6 @@ Route::controller(PageController::class)->group(function () {
     Route::get('/', 'home')->name('home');
     Route::get('/about', 'about')->name('about');
     Route::get('/contact', 'contact')->name('contact');
-    Route::get('/profile', 'profile')->name('profile');
 });
 
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
@@ -27,6 +26,7 @@ Route::post('/signup-register', [SignupController::class, 'register'])->name('si
 Route::controller(PageController::class)->group(function () {
     Route::get('/book-now', 'bookNow')->name('book.now');
     Route::get('/my-booking', 'myBooking')->name('my.booking');
+    Route::get('/profile', 'profile')->name('profile');
 });
 
 
