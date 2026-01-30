@@ -1,6 +1,8 @@
 @extends('layouts.main')
 
-@section('title', 'My-Booking')
+@section('title', 'My Bookings | Car Recovery Dubai | 24/7 Towing & Roadside Assistance UAE')
+
+@section('meta_description', 'Manage your car recovery and towing service bookings with Toretto Recovery. Track your 24/7 emergency roadside assistance requests across Dubai and the UAE.')
 
 @section('content')
 
@@ -158,7 +160,7 @@
                 </div>
               </div>
             </div>
-            
+
 
           </div>
 
@@ -245,7 +247,7 @@
           </div>
 
       </div>
-          
+
   </div>
 </section>
 

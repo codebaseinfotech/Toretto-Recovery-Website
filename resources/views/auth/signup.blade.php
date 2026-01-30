@@ -1,6 +1,8 @@
 @extends('layouts.main')
 
-@section('title', 'SignUp')
+@section('title', 'Sign Up | Car Recovery Dubai | 24/7 Towing & Roadside Assistance UAE')
+
+@section('meta_description', 'Create your Toretto Recovery account to get 24/7 car recovery, vehicle towing, and emergency roadside assistance services across Dubai and the UAE.')
 
 @section('content')
 

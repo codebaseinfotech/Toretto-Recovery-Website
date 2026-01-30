@@ -1,6 +1,8 @@
 @extends('layouts.main')
 
-@section('title', 'Book-Now')
+@section('title', 'Book Now | Car Recovery Dubai | 24/7 Towing & Roadside Assistance UAE')
+
+@section('meta_description', 'Book your car recovery, vehicle towing, or roadside assistance service online with Toretto Recovery. 24/7 emergency service across Dubai and the UAE with fast response times.')
 
 @section('content')
 

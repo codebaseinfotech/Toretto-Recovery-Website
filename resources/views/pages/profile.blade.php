@@ -1,6 +1,8 @@
 @extends('layouts.main')
 
-@section('title', 'My Profile')
+@section('title', 'My Profile | Car Recovery Dubai | 24/7 Towing & Roadside Assistance UAE')
+
+@section('meta_description', 'Manage your Toretto Recovery profile for 24/7 car recovery, vehicle towing, and emergency roadside assistance services across Dubai and the UAE.')
 
 @section('content')
 

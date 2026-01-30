@@ -5,8 +5,8 @@
             <div class="header-top-contact">
                 <ul>
                     <li>
-                        <a href="mailto:support-torettorecovery.ae">
-                            <i class="fa-solid fa-envelope"></i> support-torettorecovery.ae
+                        <a href="mailto:support@torettorecovery.ae">
+                            <i class="fa-solid fa-envelope"></i> support@torettorecovery.ae
                         </a>
                     </li>
                     <li>

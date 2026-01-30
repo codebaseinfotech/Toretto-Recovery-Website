@@ -1,12 +1,12 @@
 @extends('layouts.main')
 
-@section('title', 'Car Recovery Dubai Marina | 24/7 Towing Service')
+@section('title', 'Car Recovery Dubai | 24/7 Towing & Roadside Assistance UAE')
 
-@section('meta_description', '24/7 car recovery in Dubai Marina. Fast towing, roadside assistance & emergency vehicle recovery. Call WhatsApp +971523003423.')
+@section('meta_description', 'Reliable 24/7 car recovery, vehicle towing, and emergency roadside assistance across Dubai and the UAE. Fast response, safe transport, affordable rates — call now!')
 
 @section('content')
 
-<div class="seo-content-wrapper" style="position: absolute; left: -9999px; top: -9999px; width: 1px; height: 1px; overflow: hidden;">
+{{-- <div class="seo-content-wrapper" style="position: absolute; left: -9999px; top: -9999px; width: 1px; height: 1px; overflow: hidden;">
     <h1>24/7 Car Recovery Service in Dubai Marina</h1>
 
     <h2>Trusted Car Recovery Service in Dubai</h2>
@@ -33,7 +33,7 @@
         <li>Professional and experienced recovery team</li>
         <li>Modern towing trucks for all vehicle types</li>
     </ul>
-</div>
+</div>  --}}
 
 {{-- HERO SECTION --}}
 <section class="hero-section">

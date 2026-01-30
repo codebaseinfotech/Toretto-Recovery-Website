@@ -1,6 +1,8 @@
 @extends('layouts.main')
 
-@section('title', 'About')
+@section('title', 'About Us | Car Recovery Dubai | 24/7 Towing & Roadside Assistance UAE')
+
+@section('meta_description', 'Learn about Toretto Recovery, Dubai's trusted car recovery service provider offering 24/7 towing, roadside assistance, and emergency vehicle recovery across the UAE.')
 
 @section('content')
 
@@ -42,7 +44,7 @@
                         </div>
                         <p class="about-text text-justify">
                             At Toretto Recovery, we specialize in providing fast, secure, and damage-free vehicle recovery services for all types of cars—from sedans and SUVs to luxury and high-performance vehicles.
-                        Based in Dubai Investment Park 2, our fleet includes 6 fully equipped recovery trucks, enabling us to offer immediate assistance anywhere in Dubai.
+                        Based in Dubai, our fleet includes 6 fully equipped recovery trucks, enabling us to offer immediate assistance anywhere in Dubai.
                         </p>
                         <p class="about-text text-justify">
                             With professional drivers, trained recovery technicians, and a commitment to top-quality service, we make sure your vehicle is handled with utmost care and precision.
@@ -192,7 +194,7 @@
                             <h1 class="site-title">Our <span> Fleet</span>
                             </h1>
                             <p class="text-gray-p">
-                                With a modern fleet of 6 advanced flatbed and wheel-lift recovery trucks, we can handle: 
+                                With a modern fleet of 6 advanced flatbed and wheel-lift recovery trucks, we can handle:
                             </p>
                             <div class="recovery-list">
                                 <ul>
@@ -209,7 +211,7 @@
                                 </ul>
                             </div>
                             <p class="text-gray-p">
-                                Each truck is equipped with safety tools and advanced systems for secure towing. 
+                                Each truck is equipped with safety tools and advanced systems for secure towing.
                             </p>
                         </div>
                     </div>

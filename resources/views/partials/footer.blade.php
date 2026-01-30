@@ -29,8 +29,8 @@
                                 <li><a href="tel:+971523003423"><i class="fas fa-phone"></i>+971 523003423</a></li>
 
                                 <li>
-                                    <a href="mailto:support-torettorecovery.ae">
-                                        <i class="fas fa-envelope"></i>support-torettorecovery.ae
+                                    <a href="mailto:support@torettorecovery.ae">
+                                        <i class="fas fa-envelope"></i>support@torettorecovery.ae
                                     </a>
                                 </li>
                             </ul>

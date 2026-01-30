@@ -1,6 +1,8 @@
 @extends('layouts.main')
 
-@section('title', 'Contact')
+@section('title', 'Contact Us | Car Recovery Dubai | 24/7 Towing & Roadside Assistance UAE')
+
+@section('meta_description', 'Contact Toretto Recovery for 24/7 car recovery, vehicle towing, and emergency roadside assistance in Dubai and across the UAE. Fast response, safe transport, affordable rates.')
 
 @section('content')
 
@@ -49,7 +51,7 @@
                             </div>
                             <div class="contact-info-content">
                                 <h5>Mail Us</h5>
-                                <p>support-torettorecovery.ae</p>
+                                <p>support@torettorecovery.ae</p>
                             </div>
                         </div>
                     </div>
@@ -57,7 +59,7 @@
             </div>
 
             <div class="contact-wrapper">
-                <div class="row gy-4">                
+                <div class="row gy-4">
                     <div class="col-lg-7 align-self-center">
                         <div class="contact-form">
                             <div class="contact-form-header">
@@ -107,7 +109,7 @@
                             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3018.4328143821667!2d55.19176099999999!3d24.9841868!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f738029535231%3A0xf12954b8856837fb!2sToretto%20Auto%20Services%20LLC%20-%20German%20%26%20American%20Car%20Experts%20in%20DIP%20%7C%20Car%20Repair%20%7C%20Car%20Wash%7C%20Oil%20Change%7C%20Tyre%20Service!5e1!3m2!1sen!2sin!4v1763747469392!5m2!1sen!2sin" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                         </div>
                     </div>
-                
+
                 </div>
             </div>
         </div>

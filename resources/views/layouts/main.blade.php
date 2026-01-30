@@ -7,9 +7,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon.png') }}">
-    <title>@yield('title', 'Car Recovery Dubai | 24/7 Towing Service')</title>
+    <title>@yield('title', 'Car Recovery Dubai | 24/7 Towing & Roadside Assistance UAE')</title>
 
-    <meta name="description" content="@yield('meta_description', '24/7 car recovery service in Dubai. Fast towing & roadside assistance.')">
+    <meta name="description" content="@yield('meta_description', 'Reliable 24/7 car recovery, vehicle towing, and emergency roadside assistance across Dubai and the UAE. Fast response, safe transport, affordable rates — call now!')">
 
     <meta name="keywords" content="car recovery Dubai, towing service Dubai, roadside assistance Dubai">
 
