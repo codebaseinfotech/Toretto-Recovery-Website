@@ -2,8 +2,6 @@
 
 @section('title', 'About Us | Car Recovery Dubai | 24/7 Towing & Roadside Assistance UAE')
 
-@section('meta_description', 'Learn about Toretto Recovery, Dubai's trusted car recovery service provider offering 24/7 towing, roadside assistance, and emergency vehicle recovery across the UAE.')
-
 @section('content')
 
 {{-- SITE BREADCRUMB SECTION --}}
@@ -171,7 +169,7 @@
 
                         <ul class="toretto-recovery-list">
                             <li>24/7 service availability</li>
-                            <li></i>Licensed & experienced recovery specialists</li>
+                            <li>Licensed & experienced recovery specialists</li>
                             <li>Expert handling for luxury, sports, and low-clearance vehicles</li>
                             <li>Professional off-road & sand recovery</li>
                             <li>Rapid response across all Dubai locations</li>
