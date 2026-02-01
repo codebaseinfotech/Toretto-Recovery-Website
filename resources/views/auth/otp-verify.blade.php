@@ -2,7 +2,7 @@
 
 @section('title', 'OTP Verification | Car Recovery Dubai | 24/7 Towing & Roadside Assistance UAE')
 
-@section('meta_description', 'Verify your account with OTP to access Toretto Recovery's 24/7 car recovery, vehicle towing, and emergency roadside assistance services across Dubai and the UAE.')
+@section('meta_description', 'Verify your account with OTP to access Toretto Recovery\'s 24/7 car recovery, vehicle towing, and emergency roadside assistance services across Dubai and the UAE.')
 
 @section('content')
 
