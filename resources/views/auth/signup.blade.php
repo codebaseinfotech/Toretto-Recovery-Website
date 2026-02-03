@@ -178,23 +178,18 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         if (valid) {
-            // Get phone number from localStorage (as input is disabled)
             let phone = localStorage.getItem('phone_for_verification') || '';
 
-            // Define userData here to make it available in the fetch headers
             let userData = JSON.parse(localStorage.getItem('user_data') || '{}');
 
-            // If not found in phone_for_verification, try user_data
             if (!phone) {
                 phone = userData.phone || ('971' + mobileInput.value);
             }
 
-            // Ensure phone has the country code prefix
             if (!phone.startsWith('971')) {
                 phone = mobileInput.value;
             }
 
-            // Show loader
             const submitBtn = document.getElementById('signupSubmitBtn');
             const btnText = submitBtn.querySelector('.btn-text');
             const btnLoader = submitBtn.querySelector('.btn-loader');
@@ -206,13 +201,11 @@ document.addEventListener('DOMContentLoaded', function () {
             const apiBaseUrl = document.querySelector('meta[name="api-base-url"]')?.getAttribute('content') ||
                               document.querySelector('#api-base-url')?.value ||
                               window.API_BASE_URL ||
-                              'https://larareactfreelancer.com/api';
+                              'https://admin.torettorecovery.ae/api';
 
-            // Get country code from dial code element
             const countryCodeElement = document.getElementById('dialCode');
             const countryCode = countryCodeElement ? countryCodeElement.textContent.replace('+', '') : '971';
 
-            // Get referral code
             const referralCode = document.getElementById('referralCode')?.value || '';
 
             window.ApiUtils.fetch(apiBaseUrl + '/v1/customer/register', {
@@ -222,8 +215,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 },
                 body: JSON.stringify({
                     phone: phone,
-                    first_name: fullName.value,  // Pass full name as first_name
-                    last_name: "",               // Pass empty string for last_name
+                    first_name: fullName.value,
+                    last_name: "",
                     email: document.getElementById('email').value,
                     referral_code: "",
                     country_code: countryCode

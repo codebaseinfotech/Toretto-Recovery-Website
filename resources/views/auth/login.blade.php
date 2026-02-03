@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Redirect to OTP page
                 if (data.redirect) {
                     // Store the phone number in localStorage for OTP verification
-                    const phoneWithPrefix = '971' + phoneInput.value.trim();
+                    const phoneWithPrefix = phoneInput.value.trim();
                     localStorage.setItem('phone_for_verification', phoneWithPrefix);
 
                     setTimeout(() => {

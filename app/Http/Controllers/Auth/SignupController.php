@@ -41,10 +41,10 @@ class SignupController extends Controller
             if ($request->wantsJson()) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'Something went wrong: ' . $e->getMessage()
+                    'message' => 'Something went wrong'
                 ], 500);
             }
-            return back()->withErrors(['register' => 'Something went wrong: ' . $e->getMessage()]);
+            return back()->withErrors(['register' => 'Something went wrong']);
         }
     }
 }
