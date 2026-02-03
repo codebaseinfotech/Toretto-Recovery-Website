@@ -48,11 +48,6 @@ class LoginController extends Controller
             );
 
             if ($response->failed()) {
-                Log::error('Send OTP failed', [
-                    'status' => $response->status(),
-                    'body'   => $response->body(),
-                ]);
-
                 return back()->withErrors([
                     'phone' => 'Failed to send OTP. Please try again.',
                 ]);
@@ -123,11 +118,6 @@ class LoginController extends Controller
             );
 
             if ($response->failed()) {
-                Log::error('OTP verification failed', [
-                    'status' => $response->status(),
-                    'body'   => $response->body(),
-                ]);
-
                 return response()->json([
                     'status'  => false,
                     'message' => 'Invalid OTP. Please check and try again.',

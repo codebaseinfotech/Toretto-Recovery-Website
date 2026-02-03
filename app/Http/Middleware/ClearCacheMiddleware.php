@@ -23,7 +23,5 @@ class ClearCacheMiddleware
         Artisan::call('config:clear');
 
         return $next($request);
-
-        \Log::info('Cache cleared.');
     }
 }
