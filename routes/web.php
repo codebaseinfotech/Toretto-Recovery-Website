@@ -11,6 +11,12 @@ Route::middleware('cache.clear')->group(function () {
         Route::get('/', 'home')->name('home');
         Route::get('/about', 'about')->name('about');
         Route::get('/contact', 'contact')->name('contact');
+        Route::get('/services', 'services')->name('services');
+        Route::get('/blogs', 'blogs')->name('blogs');
+        Route::get('/blogs/{slug}', 'blogsdata')->name('blogs.show');
+        Route::get('/our-services/{slug}', 'ourService')->name('our-service.ourservice');
+        Route::get('/areas-we-serve/{slug}', 'areasShow')->name('areas.show');
+
     });
 
     Route::get('/login', [LoginController::class, 'showLogin'])->name('login');

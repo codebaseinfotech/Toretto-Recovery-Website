@@ -69,13 +69,19 @@
                 <!-- Distance and Price Display -->
                 <div class="distance-price-display mb-3 mt-3">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="distance-box p-3 bg-light rounded">
                                 <h6>Distance</h6>
                                 <p id="distance" class="mb-0">0.00 km</p>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
+                            <div class="minutes-box p-3 bg-light rounded">
+                                <h6>ETA</h6>
+                                <p id="minutes" class="mb-0">0.00 minute</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
                             <div class="price-box p-3 bg-light rounded">
                                 <h6>Price</h6>
                                 <p id="price" class="mb-0">0.00 AED</p>
@@ -721,7 +727,16 @@ async function fetchPriceFromAPI(latitude, longitude, km) {
 
         const data = await response.json();
 
+        const distanceKm = data.data.distance_km;
+        const timeInHours = distanceKm / 60;
 
+        const minutesValue = Math.round(timeInHours * 60);
+
+        const minutesElement = document.getElementById('minutes');
+
+        if (minutesElement) {
+            minutesElement.innerText = minutesValue + ' mins';
+        }
 
         const price =
             (data && data.data && data.data.price) ??
@@ -732,6 +747,7 @@ async function fetchPriceFromAPI(latitude, longitude, km) {
             data?.total;
 
         if (price !== null && price !== undefined && !isNaN(parseFloat(price))) {
+
             const priceValue = parseFloat(price);
             currentOriginalPrice = priceValue; // Store original price
 
@@ -1052,6 +1068,8 @@ function drawRoute() {
 
                 // Update distance display
                 const distanceEl = document.getElementById("distance");
+                console.log(distanceEl);
+
                 if (distanceEl) {
                     distanceEl.innerText = latestDistanceKm.toFixed(2) + " km";
                 }

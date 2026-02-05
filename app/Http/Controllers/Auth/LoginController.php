@@ -1,10 +1,10 @@
 <?php
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
@@ -12,7 +12,6 @@ class LoginController extends Controller
     /**
      * Login page
      */
-
     public function showLogin()
     {
         return view('auth.login');
@@ -21,7 +20,6 @@ class LoginController extends Controller
     /**
      * Send OTP
      */
-
     public function sendOtp(Request $request)
     {
         $request->validate([
@@ -34,36 +32,33 @@ class LoginController extends Controller
 
         try {
             $response = Http::withHeaders([
-                'Accept'       => 'application/json',
+                'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
-                'Language'     => 'en',
-                'DeviceType'   => 'Android',
-                'DeviceID'     => '123456789',
-            ])->post(
-                config('services.api.base_url') . '/v1/customer/login',
+                'Language' => 'en',
+                'DeviceType' => 'Android',
+                'DeviceID' => '123456789',
+            ])->post(config('services.api.base_url').'/v1/customer/login',
                 [
-                    'phone'        => $phone,
+                    'phone' => $phone,
                     'country_code' => '971',
                 ]
             );
-
             if ($response->failed()) {
                 return back()->withErrors([
                     'phone' => 'Failed to send OTP. Please try again.',
                 ]);
             }
-
             return response()->json([
-                'status'   => true,
-                'message'  => 'OTP sent successfully.',
-                'data'     => [
+                'status' => true,
+                'message' => 'OTP sent successfully.',
+                'data' => [
                     'phone' => $phone,
                 ],
                 'redirect' => route('otp.form'),
             ]);
         } catch (\Throwable $e) {
             return response()->json([
-                'status'  => false,
+                'status' => false,
                 'message' => 'Something went wrong. Please try again.',
             ], 500);
         }
@@ -72,7 +67,6 @@ class LoginController extends Controller
     /**
      * OTP page
      */
-
     public function showOtp()
     {
         return view('auth.otp-verify');
@@ -81,12 +75,11 @@ class LoginController extends Controller
     /**
      * Verify OTP
      */
-
     public function verifyOtp(Request $request)
     {
         $request->validate([
-            'otp'       => 'required|digits:6',
-            'latitude'  => 'nullable',
+            'otp' => 'required|digits:6',
+            'latitude' => 'nullable',
             'longitude' => 'nullable',
         ]);
 
@@ -101,25 +94,25 @@ class LoginController extends Controller
 
         try {
             $response = Http::withHeaders([
-                'Accept'       => 'application/json',
+                'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
-                'Language'     => 'en',
-                'DeviceType'   => 'Android',
-                'DeviceID'     => '123456789',
+                'Language' => 'en',
+                'DeviceType' => 'Android',
+                'DeviceID' => '123456789',
             ])->post(
-                config('services.api.base_url') . '/v1/customer/verify-otp',
+                config('services.api.base_url').'/v1/customer/verify-otp',
                 [
                     'country_code' => '971',
-                    'phone'        => $phone,
-                    'otp'          => $request->otp,
-                    'latitude'     => $request->latitude,
-                    'longitude'    => $request->longitude,
+                    'phone' => $phone,
+                    'otp' => $request->otp,
+                    'latitude' => $request->latitude,
+                    'longitude' => $request->longitude,
                 ]
             );
 
             if ($response->failed()) {
                 return response()->json([
-                    'status'  => false,
+                    'status' => false,
                     'message' => 'Invalid OTP. Please check and try again.',
                 ], $response->status());
             }
@@ -128,7 +121,7 @@ class LoginController extends Controller
 
             if (! isset($json['status']) || $json['status'] !== true) {
                 return response()->json([
-                    'status'  => false,
+                    'status' => false,
                     'message' => $json['message'] ?? 'OTP verification failed.',
                 ], 400);
             }
@@ -137,7 +130,7 @@ class LoginController extends Controller
 
             if (! $data) {
                 return response()->json([
-                    'status'  => false,
+                    'status' => false,
                     'message' => 'Authentication failed. Please try again.',
                 ], 400);
             }
@@ -167,16 +160,16 @@ class LoginController extends Controller
             }
 
             return response()->json([
-                'status'   => true,
-                'message'  => 'Login successful!',
-                'token'    => $data['access_token'] ?? null,
-                'user'     => [
-                    'id'            => $apiUserData['id'] ?? $data['id'] ?? null,
-                    'name'          => $apiUserData['name'] ?? $data['name'] ?? null,
-                    'first_name'    => $apiUserData['first_name'] ?? null,
-                    'last_name'     => $apiUserData['last_name'] ?? null,
-                    'email'         => $apiUserData['email'] ?? null,
-                    'phone'         => $apiUserData['phone'] ?? $data['phone'] ?? null,
+                'status' => true,
+                'message' => 'Login successful!',
+                'token' => $data['access_token'] ?? null,
+                'user' => [
+                    'id' => $apiUserData['id'] ?? $data['id'] ?? null,
+                    'name' => $apiUserData['name'] ?? $data['name'] ?? null,
+                    'first_name' => $apiUserData['first_name'] ?? null,
+                    'last_name' => $apiUserData['last_name'] ?? null,
+                    'email' => $apiUserData['email'] ?? null,
+                    'phone' => $apiUserData['phone'] ?? $data['phone'] ?? null,
                     'is_registered' => $isRegistered,
                 ],
                 'redirect' => $redirectRoute,
@@ -184,7 +177,7 @@ class LoginController extends Controller
 
         } catch (\Throwable $e) {
             return response()->json([
-                'status'  => false,
+                'status' => false,
                 'message' => 'Something went wrong. Please try again.',
             ], 500);
         }

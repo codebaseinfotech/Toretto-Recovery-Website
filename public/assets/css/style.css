@@ -1407,17 +1407,13 @@ h3.service-title {
 @media (max-width: 767px) {
 }
 
-
-
-
-
-
 /* footer section end */
 
 /* media responsive start */
 @media(min-width: 1200px) {
     .container, .container-sm, .container-md, .container-lg, .container-xl {
-        max-width: 1200px
+        max-width: 1333px;
+        /* max-width: 1200px */
     }
 }
 @media(max-width: 991px){

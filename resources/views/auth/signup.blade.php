@@ -202,13 +202,18 @@ document.addEventListener('DOMContentLoaded', function () {
                               document.querySelector('#api-base-url')?.value ||
                               window.API_BASE_URL ||
                               'https://admin.torettorecovery.ae/api';
+            console.log('apiBaseUrl.................',apiBaseUrl);
 
             const countryCodeElement = document.getElementById('dialCode');
+            console.log(countryCodeElement,'countryCodeElement');
+
             const countryCode = countryCodeElement ? countryCodeElement.textContent.replace('+', '') : '971';
+            console.log(countryCode,'countryCode');
 
             const referralCode = document.getElementById('referralCode')?.value || '';
-
-            window.ApiUtils.fetch(apiBaseUrl + '/v1/customer/register', {
+            console.log(referralCode,'referralCode');
+            window.ApiUtils.fetch('http://192.168.1.73:8001/api/v1/customer/register', {
+            // window.ApiUtils.fetch(apiBaseUrl + '/v1/customer/register', {
                 method: 'POST',
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest'
@@ -219,7 +224,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     last_name: "",
                     email: document.getElementById('email').value,
                     referral_code: "",
-                    country_code: countryCode
+                    country_code: countryCode ?? ""
                 })
             })
             .then(response => response.json())
@@ -227,6 +232,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (btnText) btnText.classList.remove('d-none');
                 if (btnLoader) btnLoader.classList.add('d-none');
                 submitBtn.disabled = false;
+                console.log('apiData.......',apiData);
 
                 if (apiData.status === true || apiData.data?.access_token) {
                     const token = apiData.data?.access_token || apiData.access_token;

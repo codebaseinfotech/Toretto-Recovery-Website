@@ -118,11 +118,12 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .then(response => response.json())
         .then(data => {
+            alert(data)
             // Hide loader
             btn.disabled = false;
             btnText.classList.remove('d-none');
             btnLoader.classList.add('d-none');
-
+            window.location.href = data.redirect;
             if (data.status === true) {
                 // Show success toast
                 showToast(data.message, 'success');
