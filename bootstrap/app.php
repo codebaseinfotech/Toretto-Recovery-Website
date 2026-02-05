@@ -20,4 +20,9 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
-    })->create();
+    })
+    ->withBindings([
+        'path.storage' => function () {
+            return dirname(__DIR__) . '/storage';
+        },
+    ])->create();
