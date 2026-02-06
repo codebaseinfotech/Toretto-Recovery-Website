@@ -61,32 +61,34 @@ class PageController extends Controller
 
     public function blogs()
     {
-        $today = Carbon::today()->toDateString();
 
-        $blogs = DB::table('blogs')
-            ->where(function ($query) use ($today) {
+        return view('pages.coming_soon');
+        // $today = Carbon::today()->toDateString();
 
-                // DEFAULT no date check
-                $query->where('status', 'default')
+        // $blogs = DB::table('blogs')
+        //     ->where(function ($query) use ($today) {
 
-                    // ACTIVE date check
-                    ->orWhere(function ($q) use ($today) {
-                        $q->where('status', 'active')
-                            ->where(function ($q2) use ($today) {
-                                $q2->whereNull('publish_from')
-                                    ->orWhere('publish_from', '<=', $today);
-                            })
-                            ->where(function ($q2) use ($today) {
-                                $q2->whereNull('publish_to')
-                                    ->orWhere('publish_to', '>=', $today);
-                            });
-                    });
+        //         // DEFAULT no date check
+        //         $query->where('status', 'default')
 
-            })
-            ->orderBy('created_at', 'desc')
-            ->get();
+        //             // ACTIVE date check
+        //             ->orWhere(function ($q) use ($today) {
+        //                 $q->where('status', 'active')
+        //                     ->where(function ($q2) use ($today) {
+        //                         $q2->whereNull('publish_from')
+        //                             ->orWhere('publish_from', '<=', $today);
+        //                     })
+        //                     ->where(function ($q2) use ($today) {
+        //                         $q2->whereNull('publish_to')
+        //                             ->orWhere('publish_to', '>=', $today);
+        //                     });
+        //             });
 
-        return view('pages.blogs', compact('blogs'));
+        //     })
+        //     ->orderBy('created_at', 'desc')
+        //     ->get();
+
+        // return view('pages.blogs', compact('blogs'));
     }
 
     public function blogsdata($slug)
