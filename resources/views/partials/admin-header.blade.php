@@ -19,7 +19,8 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a class="dropdown-item" href="{{ route('our-service.ourservice', 'towing-service') }}">
+                            <a class="dropdown-item"
+                                href="{{ route('our-service.ourservice', 'towing-service-dubai') }}">
                                 Towing Service
                             </a>
                         </li>
@@ -182,7 +183,7 @@
 
                 <div class="header-actions d-flex align-items-center gap-3">
                     <a href="{{ route('book.now') }}" class="theme-btn">Book Now</a>
-                    <a href="tel:+971523003423" class="theme-btn theme-btn2">Call Now</a>
+                    <a href="tel:+971523003423" class="theme-btn ">Call Now</a>
                 </div>
 
             </div>
@@ -205,7 +206,7 @@
             <!-- BOOK NOW (optional on mobile) -->
             <div class="mobile-header-actions header-actions d-flex gap-3">
                 <a href="{{ route('book.now') }}" class="btn btn-book theme-btn">BOOK NOW</a>
-                <a href="tel:+971523003423" class="btn btn-book theme-btn theme-btn2">Call now</a>
+                <a href="tel:+971523003423" class="btn btn-book theme-btn ">Call now</a>
             </div>
 
             <!-- TOGGLER -->
@@ -236,13 +237,14 @@
                 <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">HOME</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('about') }}">ABOUT US</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('contact') }}">CONTACT US</a></li>
-                                <li class="nav-item has-dropdown">
+                <li class="nav-item has-dropdown">
                     <a class="nav-link service-toggle" href="javascript:void(0)">
                         OUR SERVICES
                     </a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a class="dropdown-item" href="{{ route('our-service.ourservice', 'towing-service') }}">
+                            <a class="dropdown-item"
+                                href="{{ route('our-service.ourservice', 'towing-service-dubai') }}">
                                 Towing Service
                             </a>
                         </li>
@@ -303,7 +305,8 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a class="dropdown-item" href="{{ route('our-service.ourservice', 'towing-service') }}">
+                            <a class="dropdown-item"
+                                href="{{ route('our-service.ourservice', 'towing-service-dubai') }}">
                                 Towing Service
                             </a>
                         </li>

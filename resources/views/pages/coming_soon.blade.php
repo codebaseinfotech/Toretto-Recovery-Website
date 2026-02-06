@@ -1,15 +1,15 @@
 @extends('layouts.main')
 
-@section('title', 'Flatbed Recovery | Car Recovery Dubai | 24/7 Towing & Roadside Assistance UAE')
+@section('title', 'AREAS WE SERVE | Car Recovery Dubai | 24/7 Towing & Roadside Assistance UAE')
 
 @section('content')
 
     <section class="site-breadcrumb" style="background: url('{{ asset('assets/images/contact-bg.jpg') }}');">
         <div class="container">
-            <h2 class="breadcrumb-title">Flatbed Recovery</h2>
+            <h2 class="breadcrumb-title">AREAS WE SERVE</h2>
             <ul class="breadcrumb-menu">
                 <li><a href="{{ route('home') }}">Home</a> <i class="fa fa-angle-double-right" aria-hidden="true"></i> </li>
-                <li class="active">Flatbed Recovery</li>
+                <li class="active">Areas We Serve</li>
             </ul>
         </div>
     </section>

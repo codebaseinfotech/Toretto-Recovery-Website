@@ -42,15 +42,15 @@
 
                             <div class="app-buttons">
                                 <a href="#" class="app-btn">
-                                    <img src="assets/images/app-store.png" alt="App Store">
+                                    <img src="{{ asset('assets/images/app-store.png') }}" alt="App Store">
                                 </a>
                                 <a href="#" class="app-btn">
-                                    <img src="assets/images/google-play.png" alt="Google Play">
+                                    <img src="{{ asset('assets/images/google-play.png') }}" alt="Google Play">
                                 </a>
                             </div>
 
                             <div class="qr-code">
-                                <img src="assets/images/qr-code.png" alt="QR Code">
+                                <img src="{{ asset('assets/images/qr-code.png') }}" alt="QR Code">
                             </div>
                         </div>
                     </div>

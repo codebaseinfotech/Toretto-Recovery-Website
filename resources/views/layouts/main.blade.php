@@ -11,6 +11,11 @@
 
     <meta name="description" content="@yield('meta_description', 'Reliable 24/7 car recovery, vehicle towing, and emergency roadside assistance across Dubai and the UAE. Fast response, safe transport, affordable rates — call now!')">
 
+    <meta property="og:title" content="@yield('title', 'Car Recovery Dubai | 24/7 Towing & Roadside Assistance UAE')">
+    <meta property="og:description" content="@yield('meta_description', 'Reliable 24/7 car recovery and towing across Dubai.')">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+
     <meta name="keywords" content="car recovery Dubai, towing service Dubai, roadside assistance Dubai">
 
     <meta name="robots" content="index, follow">
@@ -26,6 +31,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
     <style>
         .custom-toast-popup {
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -54,8 +60,9 @@
 
         gtag('config', 'G-62X9L82MBP');
     </script>
-</head>
 
+    @stack('schema')
+</head>
 <body>
 
 @include('partials.topbar')

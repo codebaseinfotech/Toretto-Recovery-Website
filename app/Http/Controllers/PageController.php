@@ -104,7 +104,7 @@ class PageController extends Controller
     public function ourService($slug)
     {
         $services = [
-            'towing-service',
+            'towing-service-dubai',
             'roadside-assistance',
             'recovery-service',
             'flatbed-recovery',
@@ -138,9 +138,15 @@ class PageController extends Controller
 
         abort_if(! array_key_exists($slug, $areaNames), 404);
 
-        return view('pages.areas.'.$slug, [
-            'areaName' => $areaNames[$slug],
-        ]);
+        if ($slug === 'dubai-palm-jumeirah') {
+            $slug = 'dubai-palm-jumeirah';
+
+            return view('pages.areas.' . $slug, [
+                'areaName' => $areaNames[$slug] ?? null,
+            ]);
+        }
+
+        return view('pages.coming_soon');
 
     }
 }

@@ -118,7 +118,6 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .then(response => response.json())
         .then(data => {
-            alert(data)
             // Hide loader
             btn.disabled = false;
             btnText.classList.remove('d-none');

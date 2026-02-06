@@ -14,9 +14,13 @@ Route::middleware('cache.clear')->group(function () {
         Route::get('/services', 'services')->name('services');
         Route::get('/blogs', 'blogs')->name('blogs');
         Route::get('/blogs/{slug}', 'blogsdata')->name('blogs.show');
-        Route::get('/our-services/{slug}', 'ourService')->name('our-service.ourservice');
         Route::get('/areas-we-serve/{slug}', 'areasShow')->name('areas.show');
 
+    });
+    Route::controller(PageController::class)->group(function () {
+        Route::get('/book-now', 'bookNow')->name('book.now');
+        Route::get('/my-booking', 'myBooking')->name('my.booking');
+        Route::get('/profile', 'profile')->name('profile');
     });
 
     Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
@@ -27,12 +31,6 @@ Route::middleware('cache.clear')->group(function () {
 
     Route::get('/signup', [SignupController::class, 'showSignup'])->name('signup.form');
     Route::post('/signup-register', [SignupController::class, 'register'])->name('signup.register');
-
-    Route::controller(PageController::class)->group(function () {
-        Route::get('/book-now', 'bookNow')->name('book.now');
-        Route::get('/my-booking', 'myBooking')->name('my.booking');
-        Route::get('/profile', 'profile')->name('profile');
-    });
 
     Route::get('/logout', function () {
         Session::forget(['token']);
@@ -52,4 +50,7 @@ Route::middleware('cache.clear')->group(function () {
             'message' => 'Logged out successfully',
         ]);
     })->name('logout.ajax');
+
+
+    Route::get('/{slug}', [PageController::class, 'ourService'])->name('our-service.ourservice');
 });
