@@ -45,7 +45,7 @@
                 <div class="col-lg-6">
                     <div class="about-left wow animate__animated ">
                         <div class="about-img">
-                            <img src="{{ asset('assets/images/001.jpeg') }}" alt="">
+                            <img src="{{ asset('assets/images/0001.jpeg') }}" alt="">
                         </div>
                         <div class="about-experience">
                             <div class="about-experience-icon">
