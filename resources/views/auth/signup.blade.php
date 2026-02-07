@@ -202,18 +202,13 @@ document.addEventListener('DOMContentLoaded', function () {
                               document.querySelector('#api-base-url')?.value ||
                               window.API_BASE_URL ||
                               'https://admin.torettorecovery.ae/api';
-            console.log('apiBaseUrl.................',apiBaseUrl);
 
             const countryCodeElement = document.getElementById('dialCode');
-            console.log(countryCodeElement,'countryCodeElement');
 
             const countryCode = countryCodeElement ? countryCodeElement.textContent.replace('+', '') : '971';
-            console.log(countryCode,'countryCode');
 
             const referralCode = document.getElementById('referralCode')?.value || '';
-            console.log(referralCode,'referralCode');
-            window.ApiUtils.fetch('http://192.168.1.73:8001/api/v1/customer/register', {
-            // window.ApiUtils.fetch(apiBaseUrl + '/v1/customer/register', {
+            window.ApiUtils.fetch(apiBaseUrl + '/v1/customer/register', {
                 method: 'POST',
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest'
