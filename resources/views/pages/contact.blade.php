@@ -68,38 +68,48 @@
                                     The Toretto Recovery team is available round-the-clock to assist you, whether it’s a breakdown, accident recovery, flat tyre, or emergency roadside help.
                                     Our specialists respond quickly and ensure safe, professional, and hassle-free service.</p>
                             </div>
-                            <div id="contact-form" action="" method="post">
+                            <form id="contact-form" method="POST" action="{{ route('contact.submit') }}">
+                                @csrf
+
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <input type="text" id="name" class="form-control py-2 px-4" placeholder="Your Name" autocomplete="off" name="Name" value="">
-                                        </div>
+                                        <input type="text" class="form-control py-2 px-4"
+                                            placeholder="Your Name" name="name" required>
+                                    </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <input type="email" id="Email" class="form-control py-2 px-4" placeholder="Enter Email" autocomplete="off" name="Email" value="">
-                                        </div>
+                                        <input type="email" class="form-control py-2 px-4"
+                                            placeholder="Enter Email" name="email" required>
+                                    </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <input type="text" id="phone" class="form-control py-2 px-4" placeholder="Your Phone No" name="Phone" value="">
-                                        </div>
+                                        <input type="text" class="form-control py-2 px-4"
+                                            placeholder="Your Phone No" name="phone" required>
+                                    </div>  
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <input type="text" id="Subject" class="form-control py-2 px-4" placeholder="Your Subject" name="Subject" value="">
-                                        </div>
+                                        <input type="text" class="form-control py-2 px-4"
+                                            placeholder="Your Subject" name="subject">
                                     </div>
+                                    </div>
+
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <textarea rows="5" cols="20" id="Message" class="form-control py-2 px-4" placeholder="Write Your Message" name="Message"></textarea>
-                                        </div>
+                                        <textarea rows="5" class="form-control py-2 px-4"
+                                            placeholder="Write Your Message" name="message"></textarea>
+                                    </div>
                                     </div>
                                 </div>
-                                <button type="submit" id="btnSubmit" class="theme-btn">
-                                    <span id="btnText">Send Message</span>
+
+                                <button type="submit" class="theme-btn mt-3">
+                                    Send Message
                                 </button>
-                            </div>
+                            </form>
+
                         </div>
                     </div>
 

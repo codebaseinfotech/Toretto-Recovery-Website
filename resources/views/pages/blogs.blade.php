@@ -14,7 +14,7 @@
         </div>
     </section>
 
-    <section class="feature-area ft-bg1  py-120">
+    <section class="feature-area ft-bg1 py-120">
         <div class="container">
             <div class="row">
 
@@ -24,29 +24,31 @@
 
                             {{-- IMAGE --}}
                             <div class="blog-image">
-                                <img src="{{ $blog->small_image ? asset('storage/' . $blog->small_image) : asset('assets/images/01.jpg') }}"
-                                    alt="{{ $blog->title }}">
+                                <img
+                                    src="{{ $blog['small_image_url'] ?? asset('assets/images/01.jpg') }}"
+                                    alt="{{ $blog['title'] ?? 'Blog Image' }}"
+                                >
 
                                 <span class="blog-date">
                                     <i class="fa fa-calendar"></i>
-                                    {{ \Carbon\Carbon::parse($blog->created_at)->format('d M Y') }}
+                                    {{ \Carbon\Carbon::parse($blog['publish_from'])->format('d M Y') }}
                                 </span>
                             </div>
 
                             {{-- CONTENT --}}
                             <div class="blog-content">
                                 <h4 class="blog-title">
-                                    {{ $blog->title }}
+                                    {{ $blog['title'] }}
                                 </h4>
 
                                 <p class="blog-excerpt">
-                                    {{ \Illuminate\Support\Str::limit(strip_tags($blog->content), 95) }}
+                                    {{ \Illuminate\Support\Str::limit(strip_tags($blog['content']), 95) }}
                                 </p>
 
-                                <a href="{{ route('blogs.show', $blog->slug) }}" class="read-more-btn">
+                                {{-- slug API ma nathi to id thi link --}}
+                                <a href="{{ url('blogs/'.$blog['slug']) }}" class="read-more-btn">
                                     Read More <i class="fa fa-arrow-right"></i>
                                 </a>
-
                             </div>
 
                         </div>

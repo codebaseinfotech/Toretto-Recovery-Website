@@ -15,6 +15,7 @@ Route::middleware('cache.clear')->group(function () {
         Route::get('/blogs', 'blogs')->name('blogs');
         Route::get('/blogs/{slug}', 'blogsdata')->name('blogs.show');
         Route::get('/areas-we-serve/{slug}', 'areasShow')->name('areas.show');
+        Route::post('/contact-us', 'submitFormContact')->name('contact.submit');
 
     });
     Route::controller(PageController::class)->group(function () {

@@ -15,8 +15,7 @@
     <meta property="og:description" content="@yield('meta_description', 'Reliable 24/7 car recovery and towing across Dubai.')">
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
-
-    <meta name="keywords" content="car recovery Dubai, towing service Dubai, roadside assistance Dubai">
+    <meta name="keywords" content="@yield('meta_keywords', 'car recovery Dubai, towing service Dubai, roadside assistance Dubai')">
 
     <meta name="robots" content="index, follow">
 
@@ -60,8 +59,8 @@
 
         gtag('config', 'G-62X9L82MBP');
     </script>
-
-    @stack('schema')
+    {{-- SEO / SCHEMA GOES HERE HEAD UNDER BAR --}}
+    @yield('schema')
 </head>
 <body>
 

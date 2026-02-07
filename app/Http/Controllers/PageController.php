@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Request;
 class PageController extends Controller
 {
     // Public pages
@@ -61,42 +62,23 @@ class PageController extends Controller
 
     public function blogs()
     {
+        $apiUrl = config('services.api.base_url').'/v1/common/blogs-get';
+        $response = Http::timeout(5)->get($apiUrl);
 
-        return view('pages.coming_soon');
-        // $today = Carbon::today()->toDateString();
-
-        // $blogs = DB::table('blogs')
-        //     ->where(function ($query) use ($today) {
-
-        //         // DEFAULT no date check
-        //         $query->where('status', 'default')
-
-        //             // ACTIVE date check
-        //             ->orWhere(function ($q) use ($today) {
-        //                 $q->where('status', 'active')
-        //                     ->where(function ($q2) use ($today) {
-        //                         $q2->whereNull('publish_from')
-        //                             ->orWhere('publish_from', '<=', $today);
-        //                     })
-        //                     ->where(function ($q2) use ($today) {
-        //                         $q2->whereNull('publish_to')
-        //                             ->orWhere('publish_to', '>=', $today);
-        //                     });
-        //             });
-
-        //     })
-        //     ->orderBy('created_at', 'desc')
-        //     ->get();
-
-        // return view('pages.blogs', compact('blogs'));
+         $blogs = $response->successful()
+        ? $response->json('data')
+        : [];
+        return view('pages.blogs', compact('blogs'));
     }
 
     public function blogsdata($slug)
     {
-        $blog = DB::table('blogs')
-            ->where('slug', $slug)
-            ->where('status', 'active')
-            ->first();
+        $apiUrl = config('services.api.base_url').'/v1/common/blogs-get/'.$slug;
+        $response = Http::timeout(5)->get($apiUrl);
+
+        $blog = $response->successful()
+            ? $response->json('data')
+            : [];
 
         abort_if(! $blog, 404);
 
@@ -118,7 +100,6 @@ class PageController extends Controller
 
         abort_if(! in_array($slug, $services), 404);
 
-        // services/towing-service.blade.php
         return view('pages.services.'.$slug);
     }
 
@@ -151,4 +132,28 @@ class PageController extends Controller
         return view('pages.coming_soon');
 
     }
+
+    public function submitFormContact(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'required|string|max:20',
+            'subject' => 'nullable|string|max:255',
+            'message' => 'nullable|string',
+        ]);
+
+        $apiUrl = config('services.api.base_url').'/v1/common/contact-us';
+
+        $response = Http::timeout(10)
+            ->post($apiUrl, $validated);
+
+        if ($response->successful()) {
+            return back()->with('success', 'Thank you for your message! We will get back to you soon.');
+        }
+
+        return back()->with('error', 'Failed to submit form. Please try again later.');
+    }
+
+
 }

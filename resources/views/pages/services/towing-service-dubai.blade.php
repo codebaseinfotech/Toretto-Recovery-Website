@@ -9,6 +9,78 @@
     recovery—call now for help.
 @endsection
 
+@section('meta_keywords', '24/7 Towing Service in Dubai, Emergency Car Recovery Dubai, Roadside Assistance UAE')
+
+@section('schema')
+    @verbatim
+        <script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+  "@type": "Service",
+  "serviceType": "Vehicle Towing Service",
+  "provider": {
+    "@type": "LocalBusiness",
+    "name": "Toretto Recovery"
+  },
+  "areaServed": {
+    "@type": "AdministrativeArea",
+    "name": "Dubai"
+  },
+  "availableChannel": {
+    "@type": "ServiceChannel",
+    "serviceLocation": {
+      "@type": "Place",
+      "name": "Dubai"
+    }
+  },
+  "description": "Professional 24/7 towing service in Dubai for cars, luxury vehicles, sports cars, motorcycles, SUVs, and commercial vehicles. Serving highways, homes, offices, basements, and off-road locations."
+},
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How much does towing cost in Dubai?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Towing costs depend on distance, vehicle type, and location. We provide clear pricing before dispatch."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can you tow luxury or sports cars safely?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. We use flatbed towing and specialized equipment designed for luxury and sports vehicles."
+      }
+    },
+
+    {
+      "@type": "Question",
+      "name": "Do you tow from basement parking?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. We regularly recover vehicles from basement and low-clearance parking areas across Dubai."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is your towing service available 24/7?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Our towing and recovery service operates 24 hours a day, 7 days a week."
+      }
+    }
+  ]
+}
+
+</script>
+    @endverbatim
+@endsection
+
+
+
 @section('content')
     <section class="site-breadcrumb" style="background: url('{{ asset('assets/images/contact-bg.jpg') }}');">
         <div class="container">
@@ -95,7 +167,7 @@
                 <!-- RIGHT CONTENT -->
                 <div class="col-lg-6 wow fade-in-right-20 right-content">
                     <div class="core-values-text">
-                        <span class="service-tag">Our expert team handles every vehicle type, including</span>
+                        <span class="service-tag">With professional Expert Recovery Team</span>
                         <div class="site-heading">
                             <h2 class="site-title">All Vehicles <span>We Tow</span> </h2>
                         </div>
@@ -121,24 +193,46 @@
             </div>
         </div>
     </section>
+    <section class="recovery-cta-wrapper recovery-cta-wrapper-color">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="cta-content">
+                        <h1 class="site-title">Sports & Luxury Vehicles Need <span>Specialist</span>Towing
+                        </h1>
 
-    <section class="luxury-hero-real">
-        <img src="{{ asset('assets/images/tow-truck-with-broken-car.jpg') }}" alt="Luxury Towing">
+                        <p class="text-gray-p">
+                            High-performance vehicles require extra care due to :
+                        </p>
 
-        <div class="hero-overlay">
-            <div class="hero-content">
-                <h2>Sports & Luxury Vehicles Need <span>Specialist</span> Towing</h2>
-                <p>High-performance vehicles require extra care due to:</p>
-                <ul class="service-list">
-                    <li style="color: #f8f9fb;">Extremely low ground clearance</li>
-                    <li style="color: #f8f9fb;">Sensitive suspension systems</li>
-                    <li style="color: #f8f9fb;">Carbon fiber or composite components</li>
-                    <li style="color: #f8f9fb;">High resale and repair value</li>
-                </ul>
+                        <div class="recovery-list">
+                            <ul>
+                                <li><img src="{{ asset('assets/images/Frame (14).png') }}" alt=""> Extremely low
+                                    ground clearance </li>
+                                <li><img src="{{ asset('assets/images/Frame (14).png') }}" alt=""> Sensitive
+                                    suspension systems
+                                </li>
 
-                <p>We use flatbed towing, soft straps, and angle-controlled loading, ensuring zero-contact damage. Your car
-                    is transported exactly as recommended by manufacturers.
-                </p>
+                            </ul>
+                            <div class="divider"></div>
+                            <ul>
+                                <li><img src="{{ asset('assets/images/Frame (14).png') }}" alt=""> Carbon fiber or
+                                    composite components
+                                </li>
+                                <li><img src="{{ asset('assets/images/Frame (14).png') }}" alt=""> High resale and
+                                    repair value
+                                </li>
+                            </ul>
+                        </div>
+                        <p class="text-gray-p">We use flatbed towing, soft straps, and angle-controlled loading, ensuring
+                            zero-contact damage. Your car
+                            is transported exactly as recommended by manufacturers.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-img-recover">
+                    <img src="{{ asset('assets/images/Emergency Towing Toronto - Towing.jpeg') }}" alt="">
+                </div>
             </div>
         </div>
     </section>
@@ -215,14 +309,17 @@
                             <h2 class="site-title">Everyday Incidents <span>We</span> Handle </h2>
                         </div>
                         <ul class="toretto-recovery-list">
-                            <li>Vehicle accident recovery: From minor fender-benders to major collisions, we safely remove
+                            <li><b>Vehicle accident recovery:</b> From minor fender-benders to major collisions, we safely
+                                remove
                                 and transport vehicles</li>
-                            <li>Engine or gearbox failures: Towed without causing further damage using modern equipment.
+                            <li><b>Engine or gearbox failures:</b> Towed without causing further damage using modern
+                                equipment.
                             </li>
-                            <li>Battery or electrical faults: Quick jump-starts or towing to garages.</li>
-                            <li>Flat tyres &amp; fuel run-outs: Immediate response with tools and fuel.</li>
-                            <li>Overheating engines: Safe recovery before further damage occurs.</li>
-                            <li>Off-road or desert recovery: Specialized equipment for sand, desert trails, or inaccessible
+                            <li><b>Battery or electrical faults:</b> Quick jump-starts or towing to garages.</li>
+                            <li><b>Flat tyres &amp; fuel run-outs:</b> Immediate response with tools and fuel.</li>
+                            <li><b>Overheating engines:</b> Safe recovery before further damage occurs.</li>
+                            <li><b>Off-road or desert recovery:</b> Specialized equipment for sand, desert trails, or
+                                inaccessible
                                 areas.</li>
                             <li>Vehicles that won't start at home, office, or malls: Fast and reliable towing to your
                                 preferred destination.</li>
@@ -347,11 +444,11 @@
                             <li>Call or WhatsApp us </li>
                             <li>Share your live location</li>
                             <li>We dispatch the correct tow truck</li>
-                            <li>Vehicle inspection and secure loading destination</li>
-                            <li>Delivery to home, garage, or desired .</li>
+                            <li>Vehicle inspection and secure loading.</li>
+                            <li>Delivery to home, garage, or desired destination.</li>
                         </ul>
-                        <a href="{{ route('book.now') }}" class="theme-btn mt-2">Book Now<i
-                                class="fa-solid fa-arrow-right-long"></i></a>
+                        <a href="tel:+971 523003423" class="theme-btn ">Call / WhatsApp<i
+                                class="fas fa-arrow-right-long"></i></a>
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -477,7 +574,7 @@
                     <a href="tel:+971523003423" class="cta-btn primary">
                         Call Now
                     </a>
-                    <a href="{{ route('our-service.ourservice', 'towing-service-dubai') }}" class="cta-btn secondary">
+                    <a href="{{ route('contact') }}" class="cta-btn secondary">
                         Get Guidance
                     </a>
                 </div>
@@ -488,5 +585,4 @@
     </section>
 
     <link rel="stylesheet" href="{{ asset('assets/css/service.css') }}">
-
 @endsection
