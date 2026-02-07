@@ -34,8 +34,8 @@
                             We handle luxury cars, sports vehicles & emergency towing with care.
                         </p>
 
-                        <div class="hero-actions d-flex gap-3">
-                            <a href="tel:+971523003423" class="btn btn-book theme-btn">Call Now</a>
+                        <div class="hero-actions d-flex gap-3 mb-2">
+                            <a href="tel:+971523003423" class="theme-btn">Call Now</a>
                             <a href="{{ route('contact') }}" class="btn-outline">
                                 Get Assistance
                             </a>

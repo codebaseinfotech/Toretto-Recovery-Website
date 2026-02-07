@@ -163,30 +163,27 @@
                             style="border-radius: 10px;" alt="">
                     </div>
                 </div>
-
-                <!-- RIGHT CONTENT -->
-                <div class="col-lg-6 wow fade-in-right-20 right-content">
-                    <div class="core-values-text">
+                <div class="col-lg-6">
+                    <div class="about-right wow animate__animated animate__fadeInRight" data-wow-delay=".25s">
                         <span class="service-tag">With professional Expert Recovery Team</span>
-                        <div class="site-heading">
-                            <h2 class="site-title">All Vehicles <span>We Tow</span> </h2>
+                        <div class="site-heading mb-3">
+                             <h2 class="site-title">All Vehicles <span>We Tow</span> </h2>
                         </div>
-                        <div class="core-values-list">
-                            <ul class="service-list">
-                                <li>Standard sedans and hatchbacks</li>
+
+                        <ul class="service-list">
+                           <li>Standard sedans and hatchbacks</li>
                                 <li>Luxury and sports cars (Ferrari, Lamborghini, Porsche, McLaren, Bentley)</li>
                                 <li>SUVs, 4x4s, and off-road models</li>
                                 <li>Electric and hybrid vehicles</li>
                                 <li>Motorcycles and superbikes</li>
                                 <li>Vans, pickups, and light commercial vehicles</li>
-                            </ul>
-                            <p>
+                        </ul>
+                        <p>
                                 Every <a href="https://torettorecovery.ae/" class="site-title-tagline"> <span>vehicle
                                         recovery services</span></a> is assessed before towing to ensure the correct method
                                 is
                                 used, preventing damage and guaranteeing safe transportation.
                             </p>
-                        </div>
                     </div>
                 </div>
 
@@ -246,7 +243,7 @@
                         <div class="site-heading mb-3">
                             <h2 class="site-title">Expertise Backed by <span>Safety</span></h2>
                         </div>
-                        <p>Safety is our top priority in every towing and recovery job. From the moment we assess your
+                        <p class="mb-3">Safety is our top priority in every towing and recovery job. From the moment we assess your
                             vehicle to secure loading and final delivery, we follow strict safety procedures to protect your
                             vehicle, our operators, and everyone on the road. Using certified professionals, modern
                             equipment, and proven recovery methods, we ensure every tow is handled carefully, responsibly,
@@ -324,7 +321,7 @@
                             <li>Vehicles that won't start at home, office, or malls: Fast and reliable towing to your
                                 preferred destination.</li>
                         </ul>
-                        <p>Every situation is handled with care, speed, and professional expertise, keeping your vehicle and
+                        <p class="mb-3">Every situation is handled with care, speed, and professional expertise, keeping your vehicle and
                             schedule safe.</p>
                     </div>
                 </div>
@@ -439,7 +436,7 @@
                         <div class="site-heading mb-3">
                             <h2 class="site-title"> <span>Our Towing</span> Process – Simple, Clear, Stress-Free </h2>
                         </div>
-                        <h3>Step-by-Step Assistance:</h3>
+                        <h3 class="mb-3">Step-by-Step Assistance:</h3>
                         <ul class="toretto-recovery-list">
                             <li>Call or WhatsApp us </li>
                             <li>Share your live location</li>

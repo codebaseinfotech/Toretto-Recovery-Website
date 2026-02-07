@@ -2220,8 +2220,7 @@ label {
 }
 
 @media screen and (width: 768px) {
-    .header-actions .theme-btn
-    {
+    .header-actions .theme-btn {
         padding: 2px 6px 2px 6px !important;
         font-size: 10px;
     }
@@ -2247,7 +2246,9 @@ label {
     .gap-1 {
         gap: 0.25rem !important;
     }
-    .container, .container-md, .container-sm {
+    .container,
+    .container-md,
+    .container-sm {
         max-width: 748px;
     }
     .header-actions {
@@ -3164,5 +3165,172 @@ label {
         transform: translateY(0);
         height: 6px;
         opacity: 0.6;
+    }
+}
+@media (max-width: 375px) {
+    /* Header height control */
+    .main-header {
+        padding: 8px 0 !important;
+    }
+
+    /* Container spacing */
+    .main-header .container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    /* Logo size */
+    .navbar-brand img {
+        max-width: 140px;
+        height: auto;
+    }
+
+    /* Header layout */
+    .main-header .d-flex {
+        flex-wrap: nowrap;
+    }
+
+    /* Right side buttons */
+    .main-header .gap-2 {
+        gap: 6px !important;
+    }
+
+    /* Book / Call buttons */
+    .main-header .btn {
+        padding: 10px 10px !important;
+        font-size: 10px !important;
+        white-space: nowrap;
+    }
+
+    /* Hamburger menu icon */
+    .mobile-menu-btn,
+    .navbar-toggler {
+        font-size: 22px;
+        padding: 4px 6px;
+    }
+}
+@media (max-width: 360px) {
+    .btn-book-now {
+        display: none;
+    }
+}
+@media (max-width: 380px) {
+    /* Header height control */
+    .main-header {
+        padding: 8px 0 !important;
+    }
+
+    /* Container spacing */
+    .main-header .container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    /* Logo size */
+    .navbar-brand img {
+        max-width: 140px;
+        height: auto;
+    }
+
+    /* Header layout */
+    .main-header .d-flex {
+        flex-wrap: nowrap;
+    }
+
+    /* Right side buttons */
+    .main-header .gap-2 {
+        gap: 6px !important;
+    }
+
+    /* Book / Call buttons */
+    .main-header .btn {
+        padding: 6px 5px !important;
+        font-size: 8px !important;
+        white-space: nowrap;
+    }
+
+    /* Hamburger menu icon */
+    .mobile-menu-btn,
+    .navbar-toggler {
+        font-size: 22px;
+        padding: 4px 6px;
+    }
+}
+@media (min-width: 769px) {
+    .desktop-header {
+        display: block;
+    }
+    .mobile-header {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .desktop-header {
+        display: none;
+    }
+    .mobile-header {
+        display: block;
+    }
+
+    .mobile-header {
+        padding: 8px 0;
+    }
+
+    .mobile-header .navbar-brand img {
+        max-width: 140px;
+    }
+
+    .mobile-header .header-actions {
+        gap: 8px;
+    }
+
+    .mobile-header .theme-btn {
+        padding: 6px 12px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .desktop-header .container {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .desktop-header .navbar-brand img {
+        max-width: 160px;
+        height: auto;
+    }
+    .desktop-header .navbar-nav {
+        gap: 12px;
+    }
+    .desktop-header .nav-link {
+        font-size: 14px;
+        padding: 6px 8px;
+    }
+
+    .desktop-header .header-actions .theme-btn {
+        padding: 8px 14px;
+        font-size: 13px;
+    }
+}
+@media (max-width: 1024px) {
+    .desktop-header {
+        display: none;
+    }
+    .mobile-header {
+        display: block;
+    }
+}
+@media (max-width: 1200px) {
+    .desktop-header {
+        display: none;
+    }
+    .mobile-header {
+        display: block;
+    }
+}
+@media (max-width: 320px) {
+       .navbar-brand img {
+        width: 58px;
     }
 }

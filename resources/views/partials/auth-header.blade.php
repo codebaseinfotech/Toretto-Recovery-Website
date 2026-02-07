@@ -12,13 +12,14 @@
                 <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">HOME</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('about') }}">ABOUT US</a></li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="{{ route('services') }}" id="servicesDropdown"
+                    <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown"
                         role="button">
                         OUR SERVICES
                     </a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a class="dropdown-item" href="{{ route('our-service.ourservice', 'towing-service-dubai') }}">
+                            <a class="dropdown-item"
+                                href="{{ route('our-service.ourservice', 'towing-service-dubai') }}">
                                 Towing Service
                             </a>
                         </li>
@@ -73,7 +74,7 @@
                 </li>
                 <li class="nav-item dropdown">
 
-                    <a class="nav-link dropdown-toggle" href="{{ route('services') }}" id="areasWeServe"
+                    <a class="nav-link dropdown-toggle" href="#" id="areasWeServe"
                         role="button">
                         AREAS WE SERVE
                     </a>
@@ -210,7 +211,8 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a class="dropdown-item" href="{{ route('our-service.ourservice', 'towing-service-dubai') }}">
+                            <a class="dropdown-item"
+                                href="{{ route('our-service.ourservice', 'towing-service-dubai') }}">
                                 Towing Service
                             </a>
                         </li>
@@ -271,57 +273,68 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a class="dropdown-item" href="{{ route('our-service.ourservice', 'towing-service-dubai') }}">
-                                Towing Service
+                            <a class="dropdown-item" href="{{ route('areas.show', 'dubai-palm-jumeirah') }}">
+                                Car Recovery Service in Dubai Palm Jumeira
                             </a>
                         </li>
 
                         <li>
-                            <a class="dropdown-item"
-                                href="{{ route('our-service.ourservice', 'roadside-assistance') }}">
-                                Roadside Assistance
+                            <a class="dropdown-item" href="{{ route('areas.show', 'dubai-marina') }}">
+                                Car Recovery Service in Dubai Marina
                             </a>
                         </li>
 
                         <li>
-                            <a class="dropdown-item"
-                                href="{{ route('our-service.ourservice', 'recovery-service') }}">
-                                Recovery Service
+                            <a class="dropdown-item" href="{{ route('areas.show', 'dubai-jebel-ali') }}">
+                                Car Recovery Service in Dubai Jebel Ali
                             </a>
                         </li>
 
                         <li>
-                            <a class="dropdown-item"
-                                href="{{ route('our-service.ourservice', 'flatbed-recovery') }}">
-                                Flatbed Recovery
+                            <a class="dropdown-item" href="{{ route('areas.show', 'dubai-deira') }}">
+                                Car Recovery Service in Dubai Deira
                             </a>
                         </li>
 
                         <li>
-                            <a class="dropdown-item"
-                                href="{{ route('our-service.ourservice', 'accidental-car-recovery') }}">
-                                Accidental Car Recovery
+                            <a class="dropdown-item" href="{{ route('areas.show', 'bur-dubai') }}">
+                                Car Recovery Service in Dubai Bur Dubai
                             </a>
                         </li>
 
                         <li>
-                            <a class="dropdown-item"
-                                href="{{ route('our-service.ourservice', 'luxury-sports-car-handling') }}">
-                                Luxury &amp; Sports Car Handling
+                            <a class="dropdown-item" href="{{ route('areas.show', 'dubai-investments-park') }}">
+                                Car Recovery Service in Dubai Investments Park
                             </a>
                         </li>
 
                         <li>
-                            <a class="dropdown-item"
-                                href="{{ route('our-service.ourservice', 'bike-motorcycle-recovery') }}">
-                                Bike / Motorcycle Recovery
+                            <a class="dropdown-item" href="{{ route('areas.show', 'dip') }}">
+                                Car Recovery Service in DIP
                             </a>
                         </li>
 
                         <li>
-                            <a class="dropdown-item"
-                                href="{{ route('our-service.ourservice', 'desert-pull-out-service') }}">
-                                Desert Pull Out Service
+                            <a class="dropdown-item" href="{{ route('areas.show', 'al-warqa') }}">
+                                Car Recovery Service in Dubai Al Warqa
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item" href="{{ route('areas.show', 'mirdif') }}">
+                                Car Recovery Service in Dubai Mirdif
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item" href="{{ route('areas.show', 'al-qusais') }}">
+                                Car Recovery Service in Dubai Al Qusais
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item" href="{{ route('areas.show', 'muhaisnah') }}">
+                                Car Recovery Service in Dubai Muhaisnah
                             </a>
                         </li>
                     </ul>
