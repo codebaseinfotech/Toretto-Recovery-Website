@@ -728,15 +728,27 @@ async function fetchPriceFromAPI(latitude, longitude, km) {
         const data = await response.json();
 
         const distanceKm = data.data.distance_km;
-        const timeInHours = distanceKm / 60;
+        const avgSpeed = 50;
 
-        const minutesValue = Math.round(timeInHours * 60);
+        const timeInHours = distanceKm / avgSpeed;
+        const minutesValue = Math.round(timeInHours * 60) + 10; 
+
+        let displayText = '';
+
+        if (minutesValue > 60) {
+            const h = Math.floor(minutesValue / 60);
+            const m = minutesValue % 60;
+            displayText = `${h} hr ${m} min`;
+        } else {
+            displayText = `${minutesValue} mins`;
+        }
 
         const minutesElement = document.getElementById('minutes');
 
         if (minutesElement) {
-            minutesElement.innerText = minutesValue + ' mins';
+            minutesElement.innerText = displayText;
         }
+
 
         const price =
             (data && data.data && data.data.price) ??
