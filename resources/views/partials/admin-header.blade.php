@@ -167,11 +167,11 @@
                                 <i class="fa-solid fa-user"></i> My Profile
                             </a>
                         </li>
-                        <!-- <li>
-                    <a class="dropdown-item" href="{{ route('my.booking') }}">
-                    <i class="fa-solid fa-calendar-check"></i> My Bookings
-                    </a>
-                </li> -->
+                        <!--<li>
+                                <a class="dropdown-item" href="{{ route('my.booking') }}">
+                                <i class="fa-solid fa-calendar-check"></i> My Bookings
+                                </a>
+                            </li> -->
                         <li>
                             <a class="dropdown-item" href="#" id="ajaxLogout">
                                 <i class="fa-solid fa-right-from-bracket"></i> <span>Logout</span>

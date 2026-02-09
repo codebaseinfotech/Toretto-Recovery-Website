@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 class PageController extends Controller
@@ -137,6 +135,7 @@ class PageController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'type' => 'nullable',
             'email' => 'required|email|max:255',
             'phone' => 'required|string|max:20',
             'subject' => 'nullable|string|max:255',
@@ -154,6 +153,5 @@ class PageController extends Controller
 
         return back()->with('error', 'Failed to submit form. Please try again later.');
     }
-
 
 }

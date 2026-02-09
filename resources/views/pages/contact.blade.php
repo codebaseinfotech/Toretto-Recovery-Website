@@ -88,7 +88,7 @@
                                         <div class="form-group">
                                         <input type="text" class="form-control py-2 px-4"
                                             placeholder="Your Phone No" name="phone" required>
-                                    </div>  
+                                    </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -96,7 +96,7 @@
                                             placeholder="Your Subject" name="subject">
                                     </div>
                                     </div>
-
+                                    <input type="hidden" name="type" value="contact Us Inquiry">
                                     <div class="col-md-12">
                                         <div class="form-group">
                                         <textarea rows="5" class="form-control py-2 px-4"

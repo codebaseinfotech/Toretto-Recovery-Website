@@ -15,27 +15,6 @@
     @verbatim
         <script type="application/ld+json">
 {
- "@context": "https://schema.org",
-  "@type": "Service",
-  "serviceType": "Vehicle Towing Service",
-  "provider": {
-    "@type": "LocalBusiness",
-    "name": "Toretto Recovery"
-  },
-  "areaServed": {
-    "@type": "AdministrativeArea",
-    "name": "Dubai"
-  },
-  "availableChannel": {
-    "@type": "ServiceChannel",
-    "serviceLocation": {
-      "@type": "Place",
-      "name": "Dubai"
-    }
-  },
-  "description": "Professional 24/7 towing service in Dubai for cars, luxury vehicles, sports cars, motorcycles, SUVs, and commercial vehicles. Serving highways, homes, offices, basements, and off-road locations."
-},
-{
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
@@ -73,22 +52,85 @@
       }
     }
   ]
-}
-
-</script>
+}</script>
     @endverbatim
 @endsection
 
-
-
 @section('content')
-    <section class="site-breadcrumb" style="background: url('{{ asset('assets/images/contact-bg.jpg') }}');">
+    <section class="site-breadcrumb contact-section" style="background: url('{{ asset('assets/images/contact-bg.jpg') }}');">
+
         <div class="container">
-            <h1 class="breadcrumb-title">Towing Service Dubai</h1>
-            <ul class="breadcrumb-menu">
-                <li><a href="{{ route('home') }}">Home</a> <i class="fa fa-angle-double-right" aria-hidden="true"></i> </li>
-                <li class="active">Towing Service Dubai</li>
-            </ul>
+            <div class="row align-items-center">
+
+                <!-- LEFT CONTENT -->
+                <div class="col-lg-5 mb-4 mb-lg-0">
+                    <div class="contact-img text-white">
+                        <h1 class="breadcrumb-title">
+                            <span>24/7 Towing Service in Dubai</span> — Fast, Safe & Always Available
+                        </h1>
+
+                        <ul class="breadcrumb-menu">
+                            <li>
+                                <a href="{{ route('home') }}">Home</a>
+                                <i class="fa fa-angle-double-right"></i>
+                            </li>
+                            <li class="active">Towing Service Dubai</li>
+                        </ul>
+
+                        <p class="mt-3">
+                            Day or night, accident or breakdown, Toretto Recovery is here to help.
+                            Our professional towing team is available 24/7 to recover your vehicle safely
+                            anywhere in Dubai.
+                        </p>
+
+                        <div class="hero-btn wow animate__animated animate__fadeInUp mt-3" data-animation="fadeInUp"
+                            style="animation-delay: 1s;">
+                            <a href="{{ route('book.now') }}" class="theme-btn">Book Now<i
+                                    class="fas fa-arrow-right-long"></i></a>
+                            <a href="tel:+971 523003423" class="theme-btn theme-btn2">Call / WhatsApp<i
+                                    class="fas fa-arrow-right-long"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT FORM CARD -->
+                <div class="col-lg-7">
+                    <div class="dark-form-card">
+
+                        <h3 class="form-title">Yourself</h3>
+
+                        <form method="POST" action="{{ route('contact.submit') }}">
+                            @csrf
+                            <div class="form-group">
+                                <input type="text" name="name" placeholder="Your name" required>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="email" name="email" placeholder="Email address" required>
+                            </div>
+                            <input type="hidden" name="type" value="Towing Service in Dubai Inquiry">
+
+                            <div class="form-group">
+                                <input type="text" name="phone" placeholder="Phone number" required>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="text" name="subject" placeholder="Your address">
+                            </div>
+
+                            <div class="form-group">
+                                <textarea rows="4" name="message" placeholder="Type a message"></textarea>
+                            </div>
+
+                            <button type="submit" class="theme-btn w-100 mt-3">
+                                Send Message
+                            </button>
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
         </div>
     </section>
 
@@ -167,29 +209,30 @@
                     <div class="about-right wow animate__animated animate__fadeInRight" data-wow-delay=".25s">
                         <span class="service-tag">With professional Expert Recovery Team</span>
                         <div class="site-heading mb-3">
-                             <h2 class="site-title">All Vehicles <span>We Tow</span> </h2>
+                            <h2 class="site-title">All Vehicles <span>We Tow</span> </h2>
                         </div>
 
                         <ul class="service-list">
-                           <li>Standard sedans and hatchbacks</li>
-                                <li>Luxury and sports cars (Ferrari, Lamborghini, Porsche, McLaren, Bentley)</li>
-                                <li>SUVs, 4x4s, and off-road models</li>
-                                <li>Electric and hybrid vehicles</li>
-                                <li>Motorcycles and superbikes</li>
-                                <li>Vans, pickups, and light commercial vehicles</li>
+                            <li>Standard sedans and hatchbacks</li>
+                            <li>Luxury and sports cars (Ferrari, Lamborghini, Porsche, McLaren, Bentley)</li>
+                            <li>SUVs, 4x4s, and off-road models</li>
+                            <li>Electric and hybrid vehicles</li>
+                            <li>Motorcycles and superbikes</li>
+                            <li>Vans, pickups, and light commercial vehicles</li>
                         </ul>
                         <p>
-                                Every <a href="https://torettorecovery.ae/" class="site-title-tagline"> <span>vehicle
-                                        recovery services</span></a> is assessed before towing to ensure the correct method
-                                is
-                                used, preventing damage and guaranteeing safe transportation.
-                            </p>
+                            Every <a href="https://torettorecovery.ae/" class="site-title-tagline"> <span>vehicle
+                                    recovery services</span></a> is assessed before towing to ensure the correct method
+                            is
+                            used, preventing damage and guaranteeing safe transportation.
+                        </p>
                     </div>
                 </div>
 
             </div>
         </div>
     </section>
+
     <section class="recovery-cta-wrapper recovery-cta-wrapper-color">
         <div class="container">
             <div class="row">
@@ -213,10 +256,12 @@
                             </ul>
                             <div class="divider"></div>
                             <ul>
-                                <li><img src="{{ asset('assets/images/Frame (14).png') }}" alt=""> Carbon fiber or
+                                <li><img src="{{ asset('assets/images/Frame (14).png') }}" alt=""> Carbon fiber
+                                    or
                                     composite components
                                 </li>
-                                <li><img src="{{ asset('assets/images/Frame (14).png') }}" alt=""> High resale and
+                                <li><img src="{{ asset('assets/images/Frame (14).png') }}" alt=""> High resale
+                                    and
                                     repair value
                                 </li>
                             </ul>
@@ -243,7 +288,8 @@
                         <div class="site-heading mb-3">
                             <h2 class="site-title">Expertise Backed by <span>Safety</span></h2>
                         </div>
-                        <p class="mb-3">Safety is our top priority in every towing and recovery job. From the moment we assess your
+                        <p class="mb-3">Safety is our top priority in every towing and recovery job. From the moment we
+                            assess your
                             vehicle to secure loading and final delivery, we follow strict safety procedures to protect your
                             vehicle, our operators, and everyone on the road. Using certified professionals, modern
                             equipment, and proven recovery methods, we ensure every tow is handled carefully, responsibly,
@@ -321,7 +367,8 @@
                             <li>Vehicles that won't start at home, office, or malls: Fast and reliable towing to your
                                 preferred destination.</li>
                         </ul>
-                        <p class="mb-3">Every situation is handled with care, speed, and professional expertise, keeping your vehicle and
+                        <p class="mb-3">Every situation is handled with care, speed, and professional expertise, keeping
+                            your vehicle and
                             schedule safe.</p>
                     </div>
                 </div>

@@ -731,7 +731,7 @@ async function fetchPriceFromAPI(latitude, longitude, km) {
         const avgSpeed = 50;
 
         const timeInHours = distanceKm / avgSpeed;
-        const minutesValue = Math.round(timeInHours * 60) + 10; 
+        const minutesValue = Math.round(timeInHours * 60) + 10;
 
         let displayText = '';
 
