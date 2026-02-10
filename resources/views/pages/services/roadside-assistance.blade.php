@@ -129,7 +129,7 @@
                 <div class="col-lg-7">
                     <div class="dark-form-card">
 
-                        <h3 class="form-title">Yourself</h3>
+                        <h3 class="form-title">Request services</h3>
 
                         <form method="POST" action="{{ route('contact.submit') }}">
                             @csrf

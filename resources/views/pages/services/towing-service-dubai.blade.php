@@ -97,7 +97,7 @@
                 <div class="col-lg-7">
                     <div class="dark-form-card">
 
-                        <h3 class="form-title">Yourself</h3>
+                        <h3 class="form-title">Request services</h3>
 
                         <form method="POST" action="{{ route('contact.submit') }}">
                             @csrf
@@ -300,7 +300,7 @@
                 <div class="col-lg-6">
                     <div class="about-left wow animate__animated animate__fadeInLeft">
                         <div class="about-img">
-                            <img src="{{ asset('assets/images/recovery towing service.jpg') }}" alt="">
+                            <img src="{{ asset('assets/images/recoverytowingservice.jpeg') }}" alt="">
                         </div>
                     </div>
                 </div>
@@ -376,7 +376,7 @@
                 <div class="col-lg-6">
                     <div class="about-left wow animate__animated animate__fadeInLeft">
                         <div class="about-img">
-                            <img src="{{ asset('assets/images/car towing service.jpg') }}" alt="">
+                            <img src="{{ asset('assets/images/cartowingservice.jpeg') }}" alt="">
                         </div>
                     </div>
                 </div>

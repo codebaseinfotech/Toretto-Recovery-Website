@@ -868,6 +868,11 @@ function showToast(message, type = 'success') {
                     type === 'warning' ? 'Attention Required' :
                     type === 'info' ? 'Information' : 'Service Status';
 
+    //  msg.includes('session')
+    if (type === 'error' && toastTitle === 'Booking Error') {
+        autoLogout();
+    }
+
     Swal.fire({
         toast: true,
         icon: swalIcon,
@@ -906,6 +911,37 @@ function showToast(message, type = 'success') {
                 }
             }
         }
+    });
+}
+
+function autoLogout() {
+    window.ApiUtils.fetch('{{ route("logout.ajax") }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute('content')
+        },
+        body: JSON.stringify({
+            _token: document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute('content')
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        localStorage.removeItem('auth_token');
+        localStorage.removeItem('user_data');
+
+        // optional delay so user toast joi sake
+        setTimeout(() => {
+            window.location.reload();
+        }, 1500);
+    })
+    .catch(err => {
+        console.error('Logout error:', err);
+        window.location.href = '{{ route("logout") }}';
     });
 }
 
