@@ -57,14 +57,16 @@
 @endsection
 
 @section('content')
-    <section class="site-breadcrumb contact-section" style="background: url('{{ asset('assets/images/contact-bg.jpg') }}');">
+    <section class="site-breadcrumb contact-section"
+        style="background: url('{{ asset('assets/images/contact-bg.jpg') }}');">
 
         <div class="container">
-            <div class="row align-items-center">
+            <div class="row align-items-center min-vh-75">
 
-                <!-- LEFT CONTENT -->
-                <div class="col-lg-5 mb-4 mb-lg-0">
-                    <div class="contact-img text-white">
+                <!-- LEFT TEXT (CENTERED) -->
+                <div class="col-lg-6 d-flex align-items-center">
+                    <div class="contact-img text-white hero-content">
+
                         <h1 class="breadcrumb-title">
                             <span>24/7 Towing Service in Dubai</span> — Fast, Safe & Always Available
                         </h1>
@@ -83,24 +85,27 @@
                             anywhere in Dubai.
                         </p>
 
-                        <div class="hero-btn wow animate__animated animate__fadeInUp mt-3" data-animation="fadeInUp"
-                            style="animation-delay: 1s;">
-                            <a href="{{ route('book.now') }}" class="theme-btn">Book Now<i
-                                    class="fas fa-arrow-right-long"></i></a>
-                            <a href="tel:+971 523003423" class="theme-btn theme-btn2">Call / WhatsApp<i
-                                    class="fas fa-arrow-right-long"></i></a>
+                        <div class="hero-btn mt-4">
+                            <a href="{{ route('book.now') }}" class="theme-btn">
+                                Book Now <i class="fas fa-arrow-right-long"></i>
+                            </a>
+                            <a href="tel:+971523003423" class="theme-btn theme-btn2">
+                                Call / WhatsApp <i class="fas fa-arrow-right-long"></i>
+                            </a>
                         </div>
+
                     </div>
                 </div>
 
-                <!-- RIGHT FORM CARD -->
-                <div class="col-lg-7">
-                    <div class="dark-form-card">
+                <!-- RIGHT FORM (SMALLER) -->
+                <div class="col-lg-4 offset-lg-2">
+                    <div class="dark-form-card small-form">
 
                         <h3 class="form-title">Request services</h3>
 
                         <form method="POST" action="{{ route('contact.submit') }}">
                             @csrf
+
                             <div class="form-group">
                                 <input type="text" name="name" placeholder="Your name" required>
                             </div>
@@ -108,6 +113,7 @@
                             <div class="form-group">
                                 <input type="email" name="email" placeholder="Email address" required>
                             </div>
+
                             <input type="hidden" name="type" value="Towing Service in Dubai Inquiry">
 
                             <div class="form-group">
@@ -133,6 +139,7 @@
             </div>
         </div>
     </section>
+
 
     <section class="about-area py-120">
         <div class="container">

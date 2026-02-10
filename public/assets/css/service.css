@@ -232,7 +232,7 @@
 }
 
 .hero-content {
-    max-width: 720px;
+    max-width: 620px;
     padding: 0 60px;
     margin-right: 5%; /* 👈 RIGHT spacing */
     color: #fff;
@@ -1951,4 +1951,23 @@
 .site-breadcrumb.contact-section > * {
     position: relative;
     z-index: 2;
+}
+
+/* Section height balance */
+.min-vh-75 {
+    min-height: 75vh;
+}
+
+/* Make form smaller */
+.small-form {
+    max-width: 420px;
+    margin-left: auto;
+}
+
+/* Mobile fix */
+@media (max-width: 991px) {
+    .small-form {
+        max-width: 100%;
+        margin-top: 30px;
+    }
 }
