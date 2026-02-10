@@ -1959,15 +1959,15 @@
 }
 
 /* Make form smaller */
-.small-form {
+/* .small-form {
     max-width: 420px;
     margin-left: auto;
-}
+} */
 
 /* Mobile fix */
-@media (max-width: 991px) {
+/* @media (max-width: 991px) {
     .small-form {
         max-width: 100%;
         margin-top: 30px;
     }
-}
+} */

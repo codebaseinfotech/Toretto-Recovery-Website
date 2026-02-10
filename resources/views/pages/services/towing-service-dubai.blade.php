@@ -57,15 +57,42 @@
 @endsection
 
 @section('content')
-    <section class="site-breadcrumb contact-section"
-        style="background: url('{{ asset('assets/images/contact-bg.jpg') }}');">
+
+    <style>
+        @media (min-width: 992px) {
+            .offset-lg-2 {
+                : 8.666667%;
+            }
+            .col-lg-7 {
+                flex: 0 0 auto;
+                width: 58.33333333%;
+            }
+            .col-lg-3 {
+                flex: 0 0 auto;
+                width: 30%;
+            }
+            .offset-lg-2 {
+                margin-left: 5.666667%;
+            }
+           .site-breadcrumb .breadcrumb-title{
+                font-size: 55px;
+            }
+            .breadcrumb-menu li a {
+                font-size: 16px;
+            }
+            .fastone {
+                font-size: 20px;
+            }
+        }
+    </style>
+    <section class="site-breadcrumb contact-section" style="background: url('{{ asset('assets/images/slider-2.jpg') }}');">
 
         <div class="container">
             <div class="row align-items-center min-vh-75">
 
                 <!-- LEFT TEXT (CENTERED) -->
-                <div class="col-lg-6 d-flex align-items-center">
-                    <div class="contact-img text-white hero-content">
+                <div class="col-lg-7 d-flex align-items-center">
+                    <div class="contact-img text-white">
 
                         <h1 class="breadcrumb-title">
                             <span>24/7 Towing Service in Dubai</span> — Fast, Safe & Always Available
@@ -79,7 +106,7 @@
                             <li class="active">Towing Service Dubai</li>
                         </ul>
 
-                        <p class="mt-3">
+                        <p class="mt-3 fastone">
                             Day or night, accident or breakdown, Toretto Recovery is here to help.
                             Our professional towing team is available 24/7 to recover your vehicle safely
                             anywhere in Dubai.
@@ -98,7 +125,7 @@
                 </div>
 
                 <!-- RIGHT FORM (SMALLER) -->
-                <div class="col-lg-4 offset-lg-2">
+                <div class="col-lg-3 offset-lg-2">
                     <div class="dark-form-card small-form">
 
                         <h3 class="form-title">Request services</h3>
