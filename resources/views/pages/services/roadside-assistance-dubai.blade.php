@@ -8,6 +8,7 @@
     Stranded on Dubai roads? Toretto Recovery provides 24/7 roadside assistance, including towing, battery jump-start, flat
     tire, fuel delivery, and car lockout services. Fast, reliable, and professional help across Dubai, Sharjah, and nearby
     Emirates.
+
 @endsection
 
 @section('meta_keywords', '24/7 Towing Service in Dubai, Emergency Car Recovery Dubai, Roadside Assistance UAE')
@@ -16,75 +17,76 @@
     @verbatim
         <script type="application/ld+json">
             {
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            "mainEntity": [
-                {
-                "@type": "Question",
-                "name": "How quickly can you reach me in Dubai?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Response times depend on your location and traffic, but most central Dubai calls are answered within 30-45 minutes. We provide accurate ETAs when you call."
-                }
-                },
-                {
-                "@type": "Question",
-                "name": "How much does roadside assistance cost in Dubai?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Costs vary by service type and location. Simple services like jump-starts or tire changes start around AED 150, while towing or complex recovery can exceed AED 500. We provide an upfront quote before sending a technician."
-                }
-                },
-                {
-                "@type": "Question",
-                "name": "Do you work with insurance companies?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Yes, we work with most major insurance providers in the UAE including AXA, Oman Insurance, RSA, Orient Insurance, and others. If your policy includes roadside coverage, we can often bill directly."
-                }
-                },
-                {
-                "@type": "Question",
-                "name": "Can you help with electric vehicles (EVs)?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Yes, all EVs are transported on flatbed trucks to prevent damage. We service Tesla, Nissan Leaf, BMW i-series, Audi e-tron, and other electric models."
-                }
-                },
-                {
-                "@type": "Question",
-                "name": "What if my car cannot be fixed on the spot?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "If on-site repair isn’t possible, we’ll tow your vehicle to your preferred service center or garage within Dubai/Sharjah at no extra charge. We can also recommend licensed repair centers if needed."
-                }
-                },
-                {
-                "@type": "Question",
-                "name": "Do you provide services outside Dubai?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Yes, we cover Sharjah, Ajman, and coordinate services in Abu Dhabi, RAK, Fujairah, and Umm Al Quwain through our partner network."
-                }
-                },
-                {
-                "@type": "Question",
-                "name": "Will you operate during bad weather?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Yes, we provide service during sandstorms, rain, and other adverse conditions. During severe weather advisories, response times may be slightly longer, but we always communicate realistic ETAs."
-                }
-                },
-                {
-                "@type": "Question",
-                "name": "Can I get a membership or package deal?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Yes, we offer annual membership packages for individuals, families, and corporate fleets. Benefits include unlimited roadside support, priority response, and discounted service rates."
-                }
-                }
-            ]
-            }
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How quickly can you reach me in Dubai?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Response times depend on your location and traffic, but most central Dubai calls are answered within 30-45 minutes. We provide accurate ETAs when you call."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much does roadside assistance cost in Dubai?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Costs vary by service type and location. Simple services like jump-starts or tire changes start around AED 150, while towing or complex recovery can exceed AED 500. We provide an upfront quote before sending a technician."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you work with insurance companies?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, we work with most major insurance providers in the UAE including AXA, Oman Insurance, RSA, Orient Insurance, and others. If your policy includes roadside coverage, we can often bill directly."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can you help with electric vehicles (EVs)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, all EVs are transported on flatbed trucks to prevent damage. We service Tesla, Nissan Leaf, BMW i-series, Audi e-tron, and other electric models."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What if my car cannot be fixed on the spot?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "If on-site repair isn’t possible, we’ll tow your vehicle to your preferred service center or garage within Dubai/Sharjah at no extra charge. We can also recommend licensed repair centers if needed."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you provide services outside Dubai?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, we cover Sharjah, Ajman, and coordinate services in Abu Dhabi, RAK, Fujairah, and Umm Al Quwain through our partner network."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Will you operate during bad weather?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, we provide service during sandstorms, rain, and other adverse conditions. During severe weather advisories, response times may be slightly longer, but we always communicate realistic ETAs."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I get a membership or package deal?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, we offer annual membership packages for individuals, families, and corporate fleets. Benefits include unlimited roadside support, priority response, and discounted service rates."
+      }
+    }
+  ]
+}
+
         </script>
     @endverbatim
 @endsection
@@ -95,30 +97,35 @@
             .offset-lg-2 {
                 : 8.666667%;
             }
+
             .col-lg-7 {
                 flex: 0 0 auto;
                 width: 58.33333333%;
             }
+
             .col-lg-3 {
                 flex: 0 0 auto;
                 width: 30%;
             }
+
             .offset-lg-2 {
                 margin-left: 5.666667%;
             }
-           .site-breadcrumb .breadcrumb-title{
+
+            .site-breadcrumb .breadcrumb-title {
                 font-size: 55px;
             }
+
             .breadcrumb-menu li a {
                 font-size: 16px;
             }
+
             .fastone {
                 font-size: 20px;
             }
         }
     </style>
-    <section class="site-breadcrumb contact-section"
-        style="background: url('{{ asset('assets/images/slider-2.jpg') }}');">
+    <section class="site-breadcrumb contact-section" style="background: url('{{ asset('assets/images/slider-2.jpg') }}');">
 
         <div class="container">
             <div class="row align-items-center min-vh-75">
@@ -140,9 +147,7 @@
                         </ul>
 
                         <p class="mt-3">
-                            24/7 Roadside Assistance Dubai – jab bhi, jahan bhi madad chahiye.
-                            Battery jump-start, tyre change, fuel delivery aur towing services turant available.
-                            Dubai ke har area mein fast, reliable aur affordable service.
+                            Stuck on the Road? One Call Away from Safety, Speed & Peace of Mind.
                         </p>
 
                         <div class="hero-btn mt-4">
@@ -152,6 +157,23 @@
                             <a href="tel:+971523003423" class="theme-btn theme-btn2">
                                 Call / WhatsApp <i class="fas fa-arrow-right-long"></i>
                             </a>
+                        </div>
+
+                        <div class="hero-stats mt-3 mb-3">
+                            <div class="stats-box">
+                                <h4>100%</h4>
+                                <p>Job Success Rate</p>
+                            </div>
+
+                            <div class="stats-box">
+                                <h4>10+ Years</h4>
+                                <p>Experience</p>
+                            </div>
+
+                            <div class="stats-box">
+                                <h4>1000+</h4>
+                                <p>Projects Completed</p>
+                            </div>
                         </div>
 
                     </div>
@@ -237,45 +259,88 @@
         </div>
     </section>
 
-    <section class="recovery-cta-wrapper">
-        <div class="container-fluid cta-wrapper p-0">
-            <div class=" container wow fadeInUp">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="cta-content" style="text-align: center;">
-                            <h2 class="site-title" style="color: #ffffff !important;">Over <span>10 Years</span> of Roadside
-                                Assistance Expertise in Dubai </h2>
-                            <p class="text-gray-p mt-2">With over 10 years of industry experience and modern recovery
-                                equipment, our skilled and
-                                insured technicians provide 24/7 emergency assistance to drivers and car owners stuck on the
-                                road.
-                            </p>
-                            <p class="text-gray-p">
-                                <b> We understand what it’s like to be stranded in traffic with a dead battery or waiting
-                                    for
-                                    help in 45-degree heat. That’s why our services are built around what truly matters to
-                                    you:</b>
-                            </p>
-                            <ul class="list-unstyled mt-3" style="color: #d3d3d3; text-align: left;">
-                                <li><b>Fast response times –</b>Our teams are strategically positioned across Dubai,
-                                    Sharjah, and nearby areas, so help is always nearby.</li>
-                                <li><b>Clear pricing – </b> You’ll know the cost upfront before any work begins.</li>
-                                <li><b>Professional service – </b> All technicians are trained, licensed, and treat your
-                                    vehicle with care.</li>
-                                <li><b>Available 24/7 – </b>Breakdowns don’t wait for business hours, and neither do we.
-                                </li>
-                                <li><b>Help for all vehicles – </b>From compact cars to SUVs, luxury vehicles to
-                                    motorcycles.</li>
-                                <li>At Toretto Recovery, our mission is simple: to make roadside emergencies as stress-free
-                                    as possible while keeping you safe and moving.</li>
-                            </ul>
-                            <div class="mt-2">
-                                <a href="{{ route('book.now') }}" class="theme-btn mt-2">Book Now<i
-                                        class="fa-solid fa-arrow-right-long"></i></a>
-                                <a href="tel:+971 523003423" class="theme-btn mt-2"> Call / WhatsApp<i
-                                        class="fa-solid fa-arrow-right-long"></i></a>
+
+    <section class="recovery-cta-wrapper recovery-cta-wrapper-color">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="cta-content">
+
+                        <h1 class="site-title">Over <span>10 Years</span> of Roadside
+                            Assistance Expertise in Dubai</h1>
+
+                        <p class="text-gray-p">
+                            With over 10 years of industry experience and modern recovery equipment, our skilled and insured
+                            technicians provide 24/7 emergency assistance to drivers and car owners stuck on the road.
+                        </p>
+                        <p>
+                            We understand what it’s like to be stranded in traffic with a dead battery or waiting for help
+                            in 45-degree heat. That’s why our services are built around what truly matters to you:
+                        </p>
+                        <div class="mt-2">
+                            <a href="{{ route('book.now') }}" class="theme-btn mt-2">Book Now<i
+                                    class="fa-solid fa-arrow-right-long"></i></a>
+                            <a href="tel:+971 523003423" class="theme-btn mt-2"> Call / WhatsApp<i
+                                    class="fa-solid fa-arrow-right-long"></i></a>
+                        </div>
+                    </div>
+                    <p class="text-gray-p">At Toretto Recovery, our mission is simple: to make roadside emergencies as
+                        stress-free as possible while keeping you safe and moving.</p>
+                </div>
+                <div class="col-lg-6 col-img-recover">
+                    <div class="recovery-features">
+
+                        <div class="feature-card">
+                            <div class="icon">
+                                <i class="fa-solid fa-bolt"></i>
+                            </div>
+                            <div class="content">
+                                <h5 class="h5-colors">Fast Response Times</h5>
+                                <p>Our teams are strategically positioned across Dubai, Sharjah, and nearby areas, so help
+                                    is always nearby.</p>
                             </div>
                         </div>
+
+                        <div class="feature-card">
+                            <div class="icon">
+                                <i class="fa-solid fa-tag"></i>
+                            </div>
+                            <div class="content">
+                                <h5 class="h5-colors">Clear Pricing</h5>
+                                <p>You’ll know the cost upfront before any work begins.</p>
+                            </div>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="icon">
+                                <i class="fa-solid fa-user-shield"></i>
+                            </div>
+                            <div class="content">
+                                <h5 class="h5-colors">Professional Service</h5>
+                                <p>All technicians are trained, licensed, and treat your vehicle with care.</p>
+                            </div>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="icon">
+                                <i class="fa-solid fa-clock"></i>
+                            </div>
+                            <div class="content">
+                                <h5 class="h5-colors">Available 24/7</h5>
+                                <p>Breakdowns don’t wait for business hours, and neither do we.</p>
+                            </div>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="icon">
+                                <i class="fa-solid fa-car"></i>
+                            </div>
+                            <div class="content">
+                                <h5 class="h5-colors">Help for all vehicles</h5>
+                                <p> From compact cars to SUVs, luxury vehicles to motorcycles.</p>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -287,7 +352,7 @@
 
             <div class="section-head text-center mb-5">
                 <span class="tag">24/7 Roadside Assistance</span>
-                <h2>Our Professional <span>Recovery Services</span></h2>
+                <h2>Our Services for <span>Roadside Assistance</span></h2>
                 <p>Wherever you are in Dubai, our expert team is ready to help — day or night.</p>
             </div>
 
@@ -302,11 +367,10 @@
                 <div class="service-text">
                     <h3>
                         <a href="{{ route('our-service.ourservice', 'towing-service-dubai') }}"
-                            style="color:#d70006">Emergency Car Towing Dubai</a>
+                            style="color:#d70006">Emergency Car Towing Dubai </a>
                     </h3>
 
-                    <p>
-                        Sometimes your car can't be fixed on the spot. When that happens, we'll safely tow your vehicle to
+                    <p>Sometimes your car can't be fixed on the spot. When that happens, we'll safely tow your vehicle to
                         wherever it needs to go—your preferred garage, home, or our secure storage facility.
                     </p>
 
@@ -327,10 +391,8 @@
                         </p>
 
                         <h5 class="service-subtitle-alt">What Sets Us Apart</h5>
-                        <p>
-                            Your car is secured properly for transport, we handle the paperwork for insurance if needed, and
-                            we communicate clearly about where we're taking your vehicle and when you'll arrive.
-                        </p>
+                        <p>Your car is secured properly for transport, we handle the paperwork for insurance if needed, and
+                            we communicate clearly about where we're taking your vehicle and when you'll arrive.</p>
                     </div>
                 </div>
             </div>
@@ -345,11 +407,8 @@
                             Dead Battery?<br>
                             Jump-Start & Battery Replacement
                         </h3>
-                        <p>
-                            Dubai’s extreme heat can drain car batteries quickly.
-                            Most batteries last only 2–3 years. Our team arrives fast
-                            to jump-start or replace your battery on the spot.
-                        </p>
+                        <p>A dead battery is one of the most common reasons people call us. Dubai's extreme heat is hard on
+                            car batteries—most only last 2-3 years here compared to 4-5 years in cooler climates.</p>
                         <p>Our technicians carry batteries suitable for most car makes and models. If your battery needs
                             replacing, we can often do it on the spot so you don't need a tow.</p>
                     </div>
@@ -357,7 +416,7 @@
                         <h4>Battery Services</h4>
                         <ul class="service-list check">
                             <li>Jump-start service to get your car running again</li>
-                            <li>Battery testing to check if replacement is needed</li>
+                            <li>Battery testing to check if it needs replacement</li>
                             <li>On-site battery replacement with quality brands</li>
                             <li>Battery terminal cleaning and maintenance</li>
                             <li>Warranty on replacement batteries</li>
@@ -367,13 +426,13 @@
                         <h4>Common Signs Your Battery Is Dying</h4>
                         <ul class="service-list check">
                             <li>Car struggles to start, especially in the morning</li>
-                            <li>Dashboard lights dim when turning the ignition</li>
-                            <li>Clicking sounds when starting the engine</li>
+                            <li>Dashboard lights dim when you turn the ignition</li>
+                            <li>You hear clicking sounds when starting</li>
                             <li>Battery is more than 2 years old</li>
-                            <li>Battery warning light appears on the dashboard</li>
+                            <li>Battery warning light appears on your dashboard</li>
+
                         </ul>
                     </div>
-
                 </div>
             </div>
 
@@ -402,8 +461,9 @@
 
                     <div class="service-extra">
                         <h4 class="service-subtitle">Safety First</h4>
-                        <p>Our team is trained in safety protocols and uses proper equipment to ensure your safety and the
-                            safety of others on the road.</p>
+                        <p>Our technicians set up warning triangles, wear reflective vests, and make sure you're in a safe
+                            location while we work. On busy highways, we coordinate with Dubai Police when necessary for
+                            everyone's safety.</p>
                     </div>
 
                     <h5 class="service-subheading">When to Call for a Flat Tire:</h5>
@@ -498,7 +558,6 @@
                             <li>High-capacity air compressors for tire pressure adjustments</li>
                             <li>4x4 recovery vehicles built for desert conditions</li>
                             <li>Experienced recovery specialists who know the terrain</li>
-
                         </ul>
                     </div>
 
