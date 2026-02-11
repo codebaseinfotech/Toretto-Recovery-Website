@@ -12,8 +12,7 @@
                 <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">HOME</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('about') }}">ABOUT US</a></li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown"
-                        role="button">
+                    <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button">
                         OUR SERVICES
                     </a>
                     <ul class="dropdown-menu">
@@ -26,7 +25,7 @@
 
                         <li>
                             <a class="dropdown-item"
-                                href="{{ route('our-service.ourservice', 'roadside-assistance') }}">
+                                href="{{ route('our-service.ourservice', 'roadside-assistance-dubai') }}">
                                 Roadside Assistance
                             </a>
                         </li>
@@ -74,8 +73,7 @@
                 </li>
                 <li class="nav-item dropdown">
 
-                    <a class="nav-link dropdown-toggle" href="#" id="areasWeServe"
-                        role="button">
+                    <a class="nav-link dropdown-toggle" href="#" id="areasWeServe" role="button">
                         AREAS WE SERVE
                     </a>
                     <ul class="dropdown-menu">
@@ -219,7 +217,7 @@
 
                         <li>
                             <a class="dropdown-item"
-                                href="{{ route('our-service.ourservice', 'roadside-assistance') }}">
+                                href="{{ route('our-service.ourservice', 'roadside-assistance-dubai') }}">
                                 Roadside Assistance
                             </a>
                         </li>

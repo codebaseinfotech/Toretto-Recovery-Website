@@ -13,8 +13,7 @@
                 <li class="nav-item"><a class="nav-link" href="{{ route('about') }}">ABOUT US</a></li>
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown"
-                        role="button">
+                    <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button">
                         OUR SERVICES
                     </a>
                     <ul class="dropdown-menu">
@@ -27,7 +26,7 @@
 
                         <li>
                             <a class="dropdown-item"
-                                href="{{ route('our-service.ourservice', 'roadside-assistance') }}">
+                                href="{{ route('our-service.ourservice', 'roadside-assistance-dubai') }}">
                                 Roadside Assistance
                             </a>
                         </li>
@@ -75,8 +74,7 @@
                 </li>
                 <li class="nav-item dropdown">
 
-                    <a class="nav-link dropdown-toggle" href="#" id="areasWeServe"
-                        role="button">
+                    <a class="nav-link dropdown-toggle" href="#" id="areasWeServe" role="button">
                         AREAS WE SERVE
                     </a>
                     <ul class="dropdown-menu">
@@ -251,7 +249,7 @@
 
                         <li>
                             <a class="dropdown-item"
-                                href="{{ route('our-service.ourservice', 'roadside-assistance') }}">
+                                href="{{ route('our-service.ourservice', 'roadside-assistance-dubai') }}">
                                 Roadside Assistance
                             </a>
                         </li>
@@ -383,27 +381,28 @@
     </div>
 </nav>
 <script>
-document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
 
-    document.querySelectorAll('.has-dropdown > .service-toggle').forEach(function (toggle) {
-        toggle.addEventListener('click', function (e) {
-            e.preventDefault();
+        document.querySelectorAll('.has-dropdown > .service-toggle').forEach(function(toggle) {
+            toggle.addEventListener('click', function(e) {
+                e.preventDefault();
 
-            const parent = this.closest('.has-dropdown');
-            const dropdown = parent.querySelector('.dropdown-menu');
+                const parent = this.closest('.has-dropdown');
+                const dropdown = parent.querySelector('.dropdown-menu');
 
-            // close other dropdowns
-            document.querySelectorAll('.has-dropdown .dropdown-menu').forEach(function (menu) {
-                if (menu !== dropdown) {
-                    menu.style.display = 'none';
-                }
+                // close other dropdowns
+                document.querySelectorAll('.has-dropdown .dropdown-menu').forEach(function(
+                    menu) {
+                    if (menu !== dropdown) {
+                        menu.style.display = 'none';
+                    }
+                });
+
+                // toggle current
+                dropdown.style.display =
+                    dropdown.style.display === 'block' ? 'none' : 'block';
             });
-
-            // toggle current
-            dropdown.style.display =
-                dropdown.style.display === 'block' ? 'none' : 'block';
         });
-    });
 
-});
+    });
 </script>

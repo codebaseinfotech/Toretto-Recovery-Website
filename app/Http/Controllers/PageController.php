@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+
 class PageController extends Controller
 {
     // Public pages
@@ -63,9 +64,10 @@ class PageController extends Controller
         $apiUrl = config('services.api.base_url').'/v1/common/blogs-get';
         $response = Http::timeout(5)->get($apiUrl);
 
-         $blogs = $response->successful()
+        $blogs = $response->successful()
         ? $response->json('data')
         : [];
+
         return view('pages.blogs', compact('blogs'));
     }
 
@@ -87,7 +89,7 @@ class PageController extends Controller
     {
         $services = [
             'towing-service-dubai',
-            'roadside-assistance',
+            'roadside-assistance-dubai',
             'recovery-service',
             'flatbed-recovery',
             'accidental-car-recovery',
@@ -122,7 +124,7 @@ class PageController extends Controller
         if ($slug === 'dubai-palm-jumeirah') {
             $slug = 'dubai-palm-jumeirah';
 
-            return view('pages.areas.' . $slug, [
+            return view('pages.areas.'.$slug, [
                 'areaName' => $areaNames[$slug] ?? null,
             ]);
         }
@@ -153,5 +155,4 @@ class PageController extends Controller
 
         return back()->with('error', 'Failed to submit form. Please try again later.');
     }
-
 }
