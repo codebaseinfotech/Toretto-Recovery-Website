@@ -803,33 +803,28 @@
 
             </div>
 
-            <!-- SERVICE AREAS -->
-            <div class="service-areas">
-                <h3>Service Areas We Cover</h3>
 
-                <div class="areas-grid">
-                    <div>
-                        <h5>Dubai Central</h5>
-                        <p>Business Bay, Downtown, DIFC, Dubai Marina, JBR, JLT, Tecom, Jumeirah</p>
-                    </div>
+            <h3 style="color: #d70006">Service Areas We Cover</h3>
+            <div class="hero-stats row mt-3 mb-3">
+                <div class="stats-box col-3">
+                    <h4>Dubai Central</h4>
+                    <p>Business Bay, Downtown, DIFC, Dubai Marina, JBR, JLT, Tecom, Jumeirah</p>
+                </div>
 
-                    <div>
-                        <h5>Dubai North</h5>
-                        <p>Deira, Bur Dubai, Al Qusais, Al Nahda, Muhaisnah, Mirdif</p>
-                    </div>
+                <div class="stats-box col-3">
+                    <h4>Dubai North</h4>
+                    <p>Deira, Bur Dubai, Al Qusais, Al Nahda, Muhaisnah, Mirdif</p>
+                </div>
 
-                    <div>
-                        <h5>Dubai South</h5>
-                        <p>DIP, Al Quoz, Jebel Ali, Motor City, Arabian Ranches</p>
-                    </div>
-
-                    <div>
-                        <h5>Sharjah & Other Emirates</h5>
-                        <p>Sharjah, Ajman, Abu Dhabi (partners), RAK, Fujairah, UAQ</p>
-                    </div>
+                <div class="stats-box col-3">
+                    <h4>Dubai South</h4>
+                    <p>DIP, Al Quoz, Jebel Ali, Motor City, Arabian Ranches</p>
+                </div>
+                <div class="stats-box col-3">
+                    <h4>Sharjah & Other Emirates</h4>
+                    <p>Sharjah, Ajman, Abu Dhabi (partners), RAK, Fujairah, UAQ</p>
                 </div>
             </div>
-
         </div>
     </section>
 
@@ -838,13 +833,12 @@
             <div class="row align-items-center">
 
                 <!-- LEFT CONTENT -->
-                <div class="col-lg-6">
+                <div class="col-lg-5">
                     <div class="safety-content">
 
                         <span class="safety-tag">Roadside Safety Guide</span>
 
-                        <h2 class="site-title">
-                            When You're Stuck on the Road,<br>
+                        <h2 class="site-title">When You're Stuck <br> on the Road,<br>
                             <span>Do It Instantly</span>
                         </h2>
 
@@ -887,7 +881,7 @@
                 </div>
 
                 <!-- RIGHT IMAGE -->
-                <div class="col-lg-6">
+                <div class="col-lg-7">
                     <div class="safety-image">
                         <img src="{{ asset('assets/images/RoadsideSafetyGuide.png') }}"
                             alt="Roadside Safety and Vehicle Recovery">

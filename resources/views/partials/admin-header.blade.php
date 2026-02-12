@@ -32,8 +32,8 @@
                         </li>
 
                         <li>
-                            <a class="dropdown-item" href="{{ route('our-service.ourservice', 'recovery-service') }}">
-                                Recovery Service
+                            <a class="dropdown-item" href="{{ route('our-service.ourservice', 'vehicle-recovery-service-dubai') }}">
+                               Vehicle Recovery Service
                             </a>
                         </li>
 
@@ -256,8 +256,8 @@
 
                         <li>
                             <a class="dropdown-item"
-                                href="{{ route('our-service.ourservice', 'recovery-service') }}">
-                                Recovery Service
+                                href="{{ route('our-service.ourservice', 'vehicle-recovery-service-dubai') }}">
+                                Vehicle Recovery Service
                             </a>
                         </li>
 

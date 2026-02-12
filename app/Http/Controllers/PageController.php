@@ -90,7 +90,7 @@ class PageController extends Controller
         $services = [
             'towing-service-dubai',
             'roadside-assistance-dubai',
-            'recovery-service',
+            'vehicle-recovery-service-dubai',
             'flatbed-recovery',
             'accidental-car-recovery',
             'luxury-sports-car-handling',
