@@ -185,7 +185,7 @@
     </div>
 
     <!-- MOBILE MENU -->
-    <div class="collapse mobile-slide-menu d-lg-none" id="mobile_nav">
+    <div class="collapse mobile-slide-menu d-xl-none" id="mobile_nav">
         <div class="mobile-menu-inner">
 
             <div class="mobile-menu-header d-flex justify-content-between align-items-center">
@@ -196,7 +196,7 @@
                 <!-- CLOSE TOGGLER -->
                 <button class="btn close-menu" type="button" data-bs-toggle="collapse"
                     data-bs-target="#mobile_nav">
-                    <i class="fa-solid fa-xmark"></i>
+                    <i class="fa-solid fa-xmark" style="font-size: 20px;"></i>
                 </button>
             </div>
 
