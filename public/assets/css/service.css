@@ -2831,3 +2831,473 @@
         font-size: 16px;
     }
 }
+.faqs2-area {
+    padding: 100px 0;
+    background: #0f0f0f;
+    color: #fff;
+}
+
+.faqs2-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.faqs2-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+}
+
+.faqs2-content {
+    flex: 1;
+}
+
+.faqs2-content h2 {
+    font-size: 36px;
+    margin-bottom: 40px;
+    font-weight: 700;
+    color: #d60006;
+}
+
+.faqs2-item {
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.faqs2-question {
+    width: 100%;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 18px;
+    text-align: left;
+    padding: 15px 0;
+    cursor: pointer;
+    position: relative;
+}
+
+.faqs2-question::after {
+    content: '+';
+    position: absolute;
+    right: 0;
+    font-size: 20px;
+}
+
+.faqs2-item.active .faqs2-question::after {
+    content: '-';
+}
+
+.faqs2-answer {
+    display: none;
+    padding-bottom: 15px;
+    color: #ccc;
+    line-height: 1.6;
+    font-size: 15px;
+}
+
+.faqs2-item.active .faqs2-answer {
+    display: block;
+}
+
+.faqs2-image {
+    flex: 1;
+}
+
+.faqs2-image img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+/* MOBILE */
+@media (max-width: 991px) {
+    .faqs2-wrapper {
+        flex-direction: column;
+    }
+
+    .faqs2-content h2 {
+        font-size: 28px;
+    }
+
+    .faqs2-image {
+        margin-top: 40px;
+    }
+}
+.wisdom-area,
+.commitment-area {
+    padding: 100px 0;
+    background: #f8f9fb;
+    color: #fff;
+}
+
+.wisdom-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.wisdom-title {
+    text-align: center;
+    font-size: 36px;
+    /* margin-bottom: 60px;
+    font-weight: 700; */
+}
+
+.wisdom-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.wisdom-card {
+    background: #1a1a1a;
+    padding: 30px;
+    border-radius: 12px;
+    transition: 0.3s ease;
+}
+
+.wisdom-card:hover {
+    transform: translateY(-8px);
+    background: #222;
+}
+
+.wisdom-card h4 {
+    margin-bottom: 15px;
+    color: #d70006;
+}
+
+.commitment-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.commitment-box {
+    background: #1a1a1a;
+    padding: 25px;
+    border-radius: 10px;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.commitment-box:hover {
+    background: #d70006;
+    color: #000;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+    .wisdom-grid,
+    .commitment-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    .wisdom-grid,
+    .commitment-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .wisdom-title {
+        font-size: 26px;
+    }
+}
+/* ===============================
+   ABOUT AREA CLEAN DESIGN
+=================================*/
+
+.about-areas {
+    padding: 120px 0;
+    background: linear-gradient(180deg, #141414 0%, #1a1a1a 100%);
+    color: #ffffff;
+}
+
+.wisdoam-container {
+    width: 85%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.wisdaom-title {
+    font-size: 40px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    position: relative;
+    color: #f5f5f5;
+}
+
+/* Gold underline accent */
+.wisdaom-title::after {
+    content: "";
+    width: 80px;
+    height: 3px;
+    background: #d70006; /* Softer luxury gold */
+    display: block;
+    margin-top: 15px;
+}
+
+/* Subtitle */
+.about-areas p {
+    font-size: 18px;
+    color: #bfbfbf;
+    margin-bottom: 50px;
+}
+
+/* Elegant Vertical Line Style */
+.sersssvice-list {
+    list-style: none;
+    padding-left: 40px;
+    margin: 0;
+    border-left: 2px solid rgba(212, 175, 55, 0.4);
+}
+
+.sersssvice-list li {
+    position: relative;
+    margin-bottom: 35px;
+    padding-left: 20px;
+    font-size: 16px;
+    line-height: 1.7;
+    color: #dcdcdc;
+    transition: 0.3s ease;
+}
+
+/* Gold circle indicator */
+.sersssvice-list li::before {
+    content: "";
+    position: absolute;
+    left: -51px;
+    top: 6px;
+    width: 14px;
+    height: 14px;
+    background: #d70006;
+    border-radius: 50%;
+    transition: 0.3s ease;
+}
+
+/* Hover effect */
+.sersssvice-list li:hover {
+    color: #ffffff;
+    transform: translateX(6px);
+}
+
+.sersssvice-list li:hover::before {
+    transform: scale(1.2);
+    background: #ffffff;
+}
+
+/* Bold heading inside list */
+.sersssvice-list li b {
+    color: #d70006;
+    font-weight: 600;
+}
+
+/* ===============================
+   RESPONSIVE
+=================================*/
+
+@media (max-width: 768px) {
+
+    .wisdaom-title {
+        font-size: 28px;
+    }
+
+    .about-areas p {
+        font-size: 15px;
+    }
+
+    .sersssvice-list {
+        padding-left: 25px;
+    }
+
+    .sersssvice-list li::before {
+        left: -36px;
+    }
+}
+/* ===============================
+   RAPID HELP SECTION
+=================================*/
+
+.rapid-help-section {
+    padding: 120px 0;
+    background: #ffffff;
+}
+
+.rapid-help-wrapper {
+    width: 90%;
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* Title */
+.rapid-help-title {
+    font-size: 40px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: #111;
+}
+
+/* Description */
+.rapid-help-description {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+/* Highlight Promise */
+.rapid-help-highlight {
+    font-size: 17px;
+    font-weight: 600;
+    color: #000;
+    margin-bottom: 20px;
+}
+
+/* Footer Text */
+.rapid-help-footer-text {
+    font-size: 16px;
+    color: #666;
+    max-width: 700px;
+    margin: 0 auto 50px;
+    line-height: 1.7;
+}
+
+/* Buttons Container */
+.rapid-help-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+/* Button Base */
+.rapid-btn {
+    padding: 14px 32px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: 0.3s ease;
+    display: inline-block;
+}
+
+/* Primary Button */
+.rapid-btn-primary {
+    background: #000;
+    color: #fff;
+}
+
+.rapid-btn-primary:hover {
+    background: #d4af37;
+    color: #000;
+}
+
+/* Outline Button */
+.rapid-btn-outline {
+    border: 2px solid #000;
+    color: #000;
+}
+
+.rapid-btn-outline:hover {
+    background: #000;
+    color: #fff;
+}
+
+/* ===============================
+   RESPONSIVE
+=================================*/
+
+@media (max-width: 768px) {
+
+    .rapid-help-title {
+        font-size: 28px;
+    }
+
+    .rapid-help-description,
+    .rapid-help-footer-text {
+        font-size: 15px;
+    }
+
+    .rapid-btn {
+        width: 100%;
+        max-width: 280px;
+    }
+}
+@media (max-width: 768px) {
+
+    .process-section {
+        padding: 40px 15px;
+    }
+
+    .main-heading h2 {
+        font-size: 22px;
+        text-align: center;
+        line-height: 1.4;
+    }
+
+    /* Steps Navigation - Horizontal Scroll */
+    .steps-nav {
+        display: flex;
+        overflow-x: auto;
+        gap: 15px;
+        padding: 15px 5px;
+        scroll-snap-type: x mandatory;
+    }
+
+    .steps-nav::-webkit-scrollbar {
+        display: none;
+    }
+
+    .step-item {
+        min-width: 90px;
+        text-align: center;
+        flex-shrink: 0;
+        scroll-snap-align: center;
+    }
+
+    .step-circle {
+        width: 45px;
+        height: 45px;
+        font-size: 16px;
+        margin: 0 auto 8px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .step-item p {
+        font-size: 13px;
+        line-height: 1.2;
+    }
+
+    /* Step Content */
+    .steps-content {
+        margin-top: 25px;
+    }
+
+    .step-content {
+        padding: 20px;
+        border-radius: 12px;
+    }
+
+    .step-content h4 {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    .step-subtitle {
+        font-size: 14px;
+        margin-bottom: 15px;
+    }
+
+    .modern-list {
+        padding-left: 18px;
+    }
+
+    .modern-list li {
+        font-size: 14px;
+        margin-bottom: 8px;
+        line-height: 1.5;
+    }
+}

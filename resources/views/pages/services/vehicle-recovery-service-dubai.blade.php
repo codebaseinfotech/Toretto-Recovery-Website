@@ -156,7 +156,6 @@
     </style>
 
     <section class="site-breadcrumb contact-section" style="background: url('{{ asset('assets/images/slider-2.jpg') }}');">
-
         <div class="container">
             <div class="row align-items-center min-vh-75">
 
@@ -416,6 +415,39 @@
             <!-- LEFT IMAGE -->
             <div class="solutions-image">
                 <img src="{{ asset('assets/images/vehicle-recovery-dubai.jpg') }}" alt="Complete Recovery Solutions">
+
+                                <!-- CARD 4 -->
+                <div class="solution-card mt-4">
+                    <h3>Off-Road Rescue Expertise</h3>
+                    <p><b>The desert presents unique challenges requiring specific knowledge:</b></p>
+                    <ul>
+                        <li><b>Operations throughout Al Qudra Lakes' perimeter</b> , where weekend adventurers frequently
+                            underestimate soft sand conditions.</li>
+                        <li>Extractions from <b>the Margham dune territory</b> , where slope angles and sand consistency
+                            demand experienced assessment.</li>
+                        <li>Mountain route assistance along <b>the Hatta highway approaches</b> where wadi crossings and
+                            gravel surfaces create traction challenges.</li>
+                        <li>Seasonal awareness of how <b> summer heat affects sand firmness</b> and winter moisture changes
+                            dune
+                            stability.</li>
+                    </ul>
+                </div>
+
+                <!-- CARD 5 -->
+                <div class="solution-card">
+                    <h3>Luxury & Exotic Automobile Handling</h3>
+                    <p><b>High-value machines demand exceptional care:</b></p>
+                    <ul>
+                        <li><b>Flatbed-only transport policy</b> for low-clearance supercars, eliminating any risk of
+                            undercarriage contact.</li>
+                        <li><b>Soft-strap securing systems</b> that protect painted surfaces, carbon fiber components, and
+                            custom bodywork.</li>
+                        <li><b>Climate-controlled enclosed trailers</b> available for rare classics or museum-quality pieces
+                            requiring environmental protection.</li>
+                        <li><b>Specialized operator training</b> on proper handling procedures for Ferrari, Lamborghini,
+                            Rolls-Royce, McLaren, and other prestigious marques.</li>
+                    </ul>
+                </div>
             </div>
             <!-- RIGHT CONTENT -->
             <div class="solutions-content">
@@ -477,38 +509,7 @@
                     </ul>
                 </div>
 
-                <!-- CARD 4 -->
-                <div class="solution-card">
-                    <h3>Off-Road Rescue Expertise</h3>
-                    <p><b>The desert presents unique challenges requiring specific knowledge:</b></p>
-                    <ul>
-                        <li><b>Operations throughout Al Qudra Lakes' perimeter</b> , where weekend adventurers frequently
-                            underestimate soft sand conditions.</li>
-                        <li>Extractions from <b>the Margham dune territory</b> , where slope angles and sand consistency
-                            demand experienced assessment.</li>
-                        <li>Mountain route assistance along <b>the Hatta highway approaches</b> where wadi crossings and
-                            gravel surfaces create traction challenges.</li>
-                        <li>Seasonal awareness of how <b> summer heat affects sand firmness</b> and winter moisture changes
-                            dune
-                            stability.</li>
-                    </ul>
-                </div>
 
-                <!-- CARD 5 -->
-                <div class="solution-card">
-                    <h3>Luxury & Exotic Automobile Handling</h3>
-                    <p><b>High-value machines demand exceptional care:</b></p>
-                    <ul>
-                        <li><b>Flatbed-only transport policy</b> for low-clearance supercars, eliminating any risk of
-                            undercarriage contact.</li>
-                        <li><b>Soft-strap securing systems</b> that protect painted surfaces, carbon fiber components, and
-                            custom bodywork.</li>
-                        <li><b>Climate-controlled enclosed trailers</b> available for rare classics or museum-quality pieces
-                            requiring environmental protection.</li>
-                        <li><b>Specialized operator training</b> on proper handling procedures for Ferrari, Lamborghini,
-                            Rolls-Royce, McLaren, and other prestigious marques.</li>
-                    </ul>
-                </div>
 
             </div>
         </div>
@@ -709,7 +710,9 @@
     </section>
 
     <section class="process-section">
-
+        <div class="main-heading">
+            <h2>The Toretto <span style="color: #e60000;">Process—What </span> Actually Happens</h2>
+        </div>
         <!-- Step Navigation -->
         <div class="steps-nav">
             <div class="step-item active" onclick="showStep(1)">
@@ -983,11 +986,17 @@
                         <h3>Every extraction we perform follows strict safety protocols:
                         </h3>
                         <ul class="service-list check">
-                          <li><b>Road safety management</b> including proper hazard triangle placement, reflective barriers, and traffic coordination when working on active highways.</li>
-                          <li><b>Personal safety</b> for stranded clients, particularly in extreme weather—we provide cool water in summer, warm beverages in winter, and always assess whether you're safer waiting in your automobile or our climate-controlled cab.</li>
-                          <li><b>Vehicle damage prevention</b> through proper lift point selection, appropriate strap usage, and careful maneuvering during loading.</li>
-                          <li><b>Environmental responsibility</b> including fluid spill containment if your automobile has leaked oil, coolant, or fuel.</li>
-                          <li><b>Authority coordination</b> with RTA traffic management when highway lane closures become necessary for safe operation.</li>
+                            <li><b>Road safety management</b> including proper hazard triangle placement, reflective
+                                barriers, and traffic coordination when working on active highways.</li>
+                            <li><b>Personal safety</b> for stranded clients, particularly in extreme weather—we provide cool
+                                water in summer, warm beverages in winter, and always assess whether you're safer waiting in
+                                your automobile or our climate-controlled cab.</li>
+                            <li><b>Vehicle damage prevention</b> through proper lift point selection, appropriate strap
+                                usage, and careful maneuvering during loading.</li>
+                            <li><b>Environmental responsibility</b> including fluid spill containment if your automobile has
+                                leaked oil, coolant, or fuel.</li>
+                            <li><b>Authority coordination</b> with RTA traffic management when highway lane closures become
+                                necessary for safe operation.</li>
 
                         </ul>
                         <a href="{{ route('book.now') }}" class="theme-btn mt-2">Book Now<i
@@ -1001,42 +1010,244 @@
         </div>
     </section>
 
-    <section class="emergency-cta">
-        <div class="container">
+    <section class="faqs2-area">
+        <div class="faqs2-container">
+            <div class="faqs2-wrapper">
 
-            <div class="cta-box">
+                <!-- LEFT CONTENT -->
+                <div class="faqs2-content">
+                    <h2>FAQ - Common Situations — Answered</h2>
 
-                <div class="cta-text">
-                    <h2>Ready to Get Back on the Road?</h2>
-                    <p class="cta-sub">
-                        Don't let a breakdown ruin your day. Whether you're dealing with a dead battery, flat tire, empty
-                        fuel tank, or locked keys, we're here to help.
-                    </p>
+                    <div class="faqs2-item">
+                        <button class="faqs2-question">
+                            What should I do immediately after breaking down on a highway?
+                        </button>
+                        <div class="faqs2-answer">
+                            <p>
+                                Activate hazard lights instantly. If mechanical failure allows, carefully navigate to the
+                                shoulder—even a narrow one provides crucial safety margin. If safe to exit, leave the
+                                automobile on the side away from traffic. Never stand behind your vehicle where approaching
+                                drivers might strike you. Call professional help immediately rather than attempting
+                                diagnosis in a dangerous environment.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="faqs2-item">
+                        <button class="faqs2-question">
+                            How long does desert extraction typically require?
+                        </button>
+                        <div class="faqs2-answer">
+                            <p>
+                                Assessment determines duration—anywhere from fifteen minutes for a simple stuck situation to
+                                two hours for severe entrapment. Factors include: sand depth around your wheels, automobile
+                                weight, dune angle, and whether previous recovery attempts caused deeper burial. Our
+                                operators provide realistic time estimates upon arrival.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="faqs2-item">
+                        <button class="faqs2-question">
+                            Can you extract my automobile from underground parking with extremely low overhead clearance?
+                        </button>
+                        <div class="faqs2-answer">
+                            <p>
+                                Yes, using specialized compact equipment designed for confined spaces. We coordinate with
+                                building management for access, identify proper routes avoiding height restrictions, and
+                                guarantee damage-free extraction. These operations require more time than open-air recovery
+                                but are completely routine for our experienced team.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="faqs2-item">
+                        <button class="faqs2-question">
+                            What precautions do you take with luxury and exotic automobiles?
+                        </button>
+                        <div class="faqs2-answer">
+                            <p>
+                                Flatbed-only transport eliminates any possibility of undercarriage contact. Soft securing
+                                straps protect painted surfaces. Our operators receive specific training on exotic marque
+                                handling procedures. We've successfully transported Ferraris, Lamborghinis, Rolls-Royces,
+                                McLarens, and rare classics without incident across thousands of operations.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="faqs2-item">
+                        <button class="faqs2-question">
+                            Do you operate during sandstorms or heavy rainfall?
+                        </button>
+                        <div class="faqs2-answer">
+                            <p>
+                                Twenty-four-hour operation continues regardless of weather conditions. During adverse
+                                weather, we implement enhanced safety protocols including reduced travel speeds, additional
+                                lighting, and extra communication with you about progress. Your emergency doesn't pause for
+                                weather—neither do we.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="faqs2-item">
+                        <button class="faqs2-question">
+                            How do I know you're licensed and insured?
+                        </button>
+                        <div class="faqs2-answer">
+                            <p>
+                                Our RTA operator credentials are available for verification upon request. Insurance
+                                documentation covering liability and automobile damage during transport can be provided. We
+                                carry comprehensive coverage specifically because professional operation demands
+                                professional protection.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="faqs2-item">
+                        <button class="faqs2-question">
+                            What payment methods do you accept?
+                        </button>
+                        <div class="faqs2-answer">
+                            <p>
+                                Cash, all major credit cards, direct bank transfer, and insurance billing. For corporate
+                                clients, we establish monthly invoicing arrangements.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="faqs2-image">
+                    <img src="{{ asset('assets/images/broken-down-car-on-roadside.jpg') }}" alt="Roadside Assistance">
                 </div>
 
-                <div class="cta-actions">
-                    <a href="tel:+971523003423" class="cta-btn primary">
-                        Call Now
-                    </a>
-                    <a href="{{ route('contact') }}" class="cta-btn secondary">
-                        Get Guidance
-                    </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="wisdom-area">
+        <div class="wisdom-container">
+            <h2 class="wisdom-title">Prevention Wisdom—Reducing Future Emergencies</h2>
+            <p class="text-aline mb-3" style="color: black;text-align: center;"><b>While we're always ready to help,
+                    avoiding breakdowns beats resolving them:</b></p>
+            <div class="wisdom-grid">
+
+                <div class="wisdom-card">
+                    <h4>Summer preparation</h4>
+                    <p>means checking cooling system health before heat peaks. Radiator leaks that barely matter in February
+                        become catastrophic in July.</p>
                 </div>
 
+                <div class="wisdom-card">
+                    <h4>Desert adventure essentials</h4>
+                    <p> include proper tire pressure reduction equipment, recovery boards, and realistic assessment of your
+                        automobile's capabilities versus terrain difficulty.</p>
+                </div>
+
+                <div class="wisdom-card">
+                    <h4>Warning sign recognition</h4>
+                    <p>like unusual engine sounds, dashboard warning lights, or performance changes that signal imminent
+                        problems before they become roadside emergencies.</p>
+                </div>
+
+                <div class="wisdom-card">
+                    <h4>Emergency kit basics</h4>
+                    <p>for your trunk: flashlight, water bottles, phone charger, reflective vest, basic tools. Simple items
+                        that dramatically improve your situation while waiting for help.</p>
+                </div>
+
+                <div class="wisdom-card">
+                    <h4>Maintenance schedules</h4>
+                    <p>actually followed prevent the majority of mechanical breakdowns. That oil change you've postponed? It
+                        matters more than you think.</p>
+                </div>
+
+                <div class="wisdom-card">
+                    <h4>Realistic range calculation</h4>
+                    <p>especially on routes where fuel stations are sparse. Highway consumption at speed exceeds city
+                        driving—plan accordingly.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <section class="about-areas py-120">
+        <div class="wisdoam-container">
+            <h2 class="wisdaom-title">Our Commitment to This Community</h2>
+            <p><b>Beyond emergency response, we actively contribute:</b></p>
+            <ul class="sersssvice-list">
+                <li><b>Motorsport event support</b> providing trackside extraction for racing series and enthusiast track
+                    days.</li>
+                <li><b>Classic automobile club partnerships</b> offering specialized handling for vintage and collector
+                    machines.</li>
+                <li><b>Educational workshops</b> teaching basic maintenance and breakdown prevention to interested groups.
+                </li>
+                <li><b>Environmental initiatives</b> ensuring proper disposal of fluids from damaged automobiles, preventing
+                    contamination.</li>
+                <li><b>Youth programs</b> introducing young people to professional automotive trades through internship
+                    opportunities.</li>
+            </ul>
+        </div>
+    </section>
+
+
+    <section class="rapid-help-section">
+        <div class="rapid-help-wrapper">
+
+            <div class="rapid-help-content">
+
+                <h2 class="rapid-help-title">Get Help Right Now</h2>
+
+                <p class="rapid-help-description">
+                    For non-emergency inquiries, fleet partnerships, or insurance coordination, visit our <a
+                        href="{{ route('contact') }}">Contact Page</a> and our team will respond promptly.
+                </p>
+                <p class="rapid-help-highlight">
+                    <strong>Response Promise:</strong> Human answer within 60 seconds.
+                    UUnit dispatched within 5 minutes. Help arriving as fast as safely possible.
+                </p>
+
+                <p class="rapid-help-footer-text">
+                    When your automobile stops, your life doesn't have to. One call brings professional solutions, delivered
+                    by people who genuinely know what they're doing.
+                </p>
+                <p><b>Toretto Recovery—Because getting stuck is temporary. Getting moving is our job.</b></p>
+                <p>Serving every road, highway, neighborhood, and trail across the emirate. Licensed operators. Modern
+                    equipment. Genuine expertise. 24/7/365.</p>
+            </div>
+
+            <div class="rapid-help-buttons">
+                <a href="tel:+971523003423" class="cta-btn primary">
+                    Emergency Hotline
+                </a>
+
+                <a href="{{ route('contact') }}" class="cta-btn secondary">
+                    Get Guidance
+                </a>
             </div>
 
         </div>
     </section>
 
+
     <link rel="stylesheet" href="{{ asset('assets/css/service.css') }}">
     <script>
-        document.querySelectorAll('.faq-question').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const item = btn.parentElement;
-                item.classList.toggle('active');
+        document.querySelectorAll('.faqs2-question').forEach(button => {
+            button.addEventListener('click', () => {
+                const currentItem = button.parentElement;
+
+                document.querySelectorAll('.faqs2-item').forEach(item => {
+                    if (item !== currentItem) {
+                        item.classList.remove('active');
+                    }
+                });
+
+                currentItem.classList.toggle('active');
             });
         });
     </script>
+
     <script>
         function showStep(step) {
 
@@ -1055,6 +1266,4 @@
                 .classList.add('active');
         }
     </script>
-
-
 @endsection

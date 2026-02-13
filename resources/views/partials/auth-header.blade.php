@@ -456,7 +456,7 @@
         border-radius: 10px;
     }
 
-    @media (max-width: 991px) {
+    @media (max-width: 1200px) {
         .navbar .dropdown-menu {
             max-height: 250px;
             overflow-y: auto;
