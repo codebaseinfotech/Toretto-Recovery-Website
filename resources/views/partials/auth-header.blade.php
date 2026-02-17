@@ -37,14 +37,14 @@
                         </li>
 
                         <li>
-                            <a class="dropdown-item" href="{{ route('our-service.ourservice', 'flatbed-recovery') }}">
+                            <a class="dropdown-item" href="{{ route('our-service.ourservice', 'flatbed-recovery-dubai') }}">
                                 Flatbed Recovery
                             </a>
                         </li>
 
                         <li>
                             <a class="dropdown-item"
-                                href="{{ route('our-service.ourservice', 'accidental-car-recovery') }}">
+                                href="{{ route('our-service.ourservice', 'accidental-car-recovery-dubai') }}">
                                 Accidental Car Recovery
                             </a>
                         </li>
@@ -231,14 +231,14 @@
 
                         <li>
                             <a class="dropdown-item"
-                                href="{{ route('our-service.ourservice', 'flatbed-recovery') }}">
+                                href="{{ route('our-service.ourservice', 'flatbed-recovery-dubai') }}">
                                 Flatbed Recovery
                             </a>
                         </li>
 
                         <li>
                             <a class="dropdown-item"
-                                href="{{ route('our-service.ourservice', 'accidental-car-recovery') }}">
+                                href="{{ route('our-service.ourservice', 'accidental-car-recovery-dubai') }}">
                                 Accidental Car Recovery
                             </a>
                         </li>
