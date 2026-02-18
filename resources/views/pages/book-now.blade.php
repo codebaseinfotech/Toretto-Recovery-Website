@@ -65,7 +65,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label>Drop Location</label>
+                            <label>Drop-off Location</label>
                             <div class="input-icon">
                                 <i class="fa-solid fa-location-crosshairs"></i>
                                 <input type="text" id="drop_location" name="drop_location"
@@ -489,7 +489,7 @@
                 map: map,
                 suppressMarkers: true,
                 polylineOptions: {
-                    strokeColor: 'red',
+                    strokeColor: 'black',
                     strokeWeight: 4
                 }
             });
@@ -1364,8 +1364,9 @@
                         showToast('Distance not calculated properly.', 'error');
                         return;
                     }
-
-                    // 🔵 START LOADER
+                    const pickupLocation = pickupElement.value;
+                    const dropLocation = dropElement.value;
+                    //  START LOADER
                     calculatePriceBtn.disabled = true;
                     calculatePriceBtnText.classList.add('d-none');
                     calculatePriceBtnLoader.classList.remove('d-none');
@@ -1376,7 +1377,18 @@
 
                         // IF NOT LOGIN → GO LOGIN
                         if (!token) {
-                            window.location.href = '{{ route('login') }}';
+                            const bookingData = {
+                                pickup_location: pickupLocation,
+                                drop_location: dropLocation,
+                                pickup_coords: pickupMarker ? { lat: pickupMarker.getPosition().lat(), lng: pickupMarker.getPosition().lng() } : null,
+                                drop_coords: dropMarker ? { lat: dropMarker.getPosition().lat(), lng: dropMarker.getPosition().lng() } : null,
+                                distance: latestDistanceKm,
+                                timestamp: Date.now()
+                            };
+
+                            localStorage.setItem('pending_booking', JSON.stringify(bookingData));
+
+                            window.location.href = '{{ route("login") }}';
                             return;
                         }
 
@@ -1433,7 +1445,21 @@
                             currentOriginalPrice.toFixed(2) + ' AED';
 
                         updateGrandTotal();
+                        const pickupLatLng = pickupMarker.getPosition();
 
+                        // try {
+                        //     await fetchPriceFromAPI(pickupLatLng.lat(), pickupLatLng.lng(), latestDistanceKm);
+                        //     showToast('Price calculated successfully!', 'success');
+                        // } catch (error) {
+
+                        //     showToast('Failed to calculate price. Please try again.', 'error');
+                        // } finally {
+                        //     if (calculatePriceBtnText && calculatePriceBtnLoader) {
+                        //         calculatePriceBtn.disabled = false;
+                        //         calculatePriceBtnText.classList.remove('d-none');
+                        //         calculatePriceBtnLoader.classList.add('d-none');
+                        //     }
+                        // }
                     } catch (error) {
 
                         console.error(error);
