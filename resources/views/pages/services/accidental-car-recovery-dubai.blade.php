@@ -184,8 +184,7 @@
     }
   ]
 }
-
-    </script>
+</script>
     @endverbatim
 @endsection
 
@@ -395,7 +394,7 @@
                         <div class="d-flex align-items-start mb-3">
                             <div
                                 style="min-width: 50px; height: 50px; background: #ffe5e5; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px;">
-                                <i class="fa-solid fa-square-parking" style="color: #d70006; font-size: 22px;"></i>
+                                <i class="fa-brands fa-searchengin" style="color: #d70006; font-size: 22px;"></i>
                             </div>
                             <div>
                                 <h4 style="color: #d70006; margin-bottom: 10px;">Post-Collision Mechanical Compromise</h4>
@@ -462,39 +461,55 @@
                     <div class="included-grid">
                         <div class="included-item">
                             <i class="fa-solid fa-truck-fast"></i>
-                            <p>Immediate dispatch for <strong>accident towing near me</strong> requests</p>
+                            <p>Immediate dispatch for <a class="text-link"
+                                    href="{{ route('our-service.ourservice', ['slug' => 'towing-service-dubai']) }}">accident
+                                    towing near me</a> requests</p>
                         </div>
                         <div class="included-item">
                             <i class="fa-solid fa-clock"></i>
-                            <p>24/7 response for <strong>24/7 accident car recovery Dubai</strong></p>
+                            <p>24/7 response for
+                                <a class="text-link" href="{{ route('home') }}">
+                                    24/7 accident car recovery Dubai
+                                </a>
+                            </p>
                         </div>
                         <div class="included-item">
                             <i class="fa-solid fa-shield-halved"></i>
-                            <p>Safe <strong>roadside assistance</strong> and <strong>accident recovery Dubai</strong></p>
+                            <p>Safe
+                                <a class="text-link"
+                                    href="{{ route('our-service.ourservice', ['slug' => 'roadside-assistance-dubai']) }}">accident
+                                    roadside assistance and accident recovery Dubai</a>
+                            </p>
                         </div>
                         <div class="included-item">
                             <i class="fa-solid fa-truck-ramp-box"></i>
-                            <p><strong>Flatbed towing</strong> for damaged vehicles and recovery after crash</p>
+                            <p>
+                                <a class="text-link" href="{{ route('home') }}">accident
+                                    Flatbed towing
+                                </a>
+                                for damaged vehicles and recovery after crash
+                            </p>
                         </div>
                         <div class="included-item">
                             <i class="fa-solid fa-handshake"></i>
-                            <p>Legal coordination with authorities for <strong>police approved car recovery</strong></p>
+                            <p>Legal coordination with authorities for <a class="text-link">police approved car recovery</a>
+                            </p>
                         </div>
                         <div class="included-item">
                             <i class="fa-solid fa-road"></i>
-                            <p>Highway support, including <strong>highway accident recovery Dubai</strong></p>
+                            <p>Highway support, including <a class="text-link">highway accident recovery Dubai</a></p>
                         </div>
                         <div class="included-item">
                             <i class="fa-solid fa-gem"></i>
-                            <p>High-end handling for <strong>luxury car accident recovery Dubai</strong></p>
+                            <p>High-end handling for <a class="text-link">luxury car accident recovery Dubai</a></p>
                         </div>
                         <div class="included-item">
                             <i class="fa-solid fa-car-burst"></i>
-                            <p>Specialist transport for <strong>sports car towing after accident</strong></p>
+                            <p>Specialist transport for <a class="text-link">sports car towing after accident</a></p>
                         </div>
                         <div class="included-item">
                             <i class="fa-solid fa-file-invoice-dollar"></i>
-                            <p>Insurance-friendly process for <strong>insurance accident towing</strong></p>
+                            <p>Insurance-friendly process for <a class="text-link">insurance accident towing</a></p>
                         </div>
                     </div>
                 </div>
@@ -506,8 +521,8 @@
     <section class="legal-compliance py-120" style="background: #1a1a1a; color: #fff;">
         <div class="container">
             <div class="site-heading text-center mb-5">
-                <p style="max-width: 800px; margin: 0 auto 0; color: #ccc; font-size: 24px;">Dubai maintains <span
-                        class="text-danger">strict
+                <p class="content-banner" style="max-width: 800px; margin: 0 auto 0; color: #ccc;">Dubai
+                    maintains <span class="text-danger ">strict
                         protocols</span>
                     for accident management to protect motorists, passengers, and other road users. A professional
                     accidental car
@@ -700,8 +715,7 @@
             <div class="site-heading text-center mb-5">
                 <h2 class="site-title">Common Operational <span>Challenges</span> – How Toretto Recovery Helps Clients
                 </h2>
-                <p style="max-width: 800px; margin: 20px auto 0; color: #666;">At Toretto Recovery, we understand that
-                    every
+                <p style="max-width: 800px; margin: 20px auto 0; color: #666;">At Toretto Recovery, we understand that every
                     accidental car recovery Dubai scenario comes with its own challenges. Our experience, licensing, and RTA
                     approval allow us to provide the best possible assistance in even the most difficult situations:</p>
             </div>
@@ -888,7 +902,8 @@
                 <div class="subsection-header text-center mb-5">
                     <h2 class="site-title">Comprehensive Service <span>Benefits</span></h2>
                     <p style="max-width: 900px; margin: 20px auto 0; color: #666; font-size: 17px;">
-                        24/7 Emergency accidental recovery delivers substantial advantages
+                        <a class="text-link" href="{{ route('home') }}">24/7 Emergency accidental recovery</a> delivers
+                        substantial advantages
                     </p>
                 </div>
 
@@ -906,8 +921,7 @@
                         <div class="flatbed-coverage-item">
                             <div class="flatbed-coverage-icon"> <i class="fa-solid fa-gavel"></i></div>
                             <h4>Legal Compliance Assurance</h4>
-                            <p class="flatbed-response-time">Ensures proper incident documentation, police coordination,
-                                and
+                            <p class="flatbed-response-time">Ensures proper incident documentation, police coordination, and
                                 regulatory adherence
                                 preventing fines, legal complications, or insurance claim denials.</p>
                         </div>
@@ -997,8 +1011,7 @@
                         <div class="limitation-item">
                             <h5 style="color: #856404;"><i class="fa-solid fa-dollar-sign"></i> Variable Cost Structures
                             </h5>
-                            <p style="color: #856404; margin: 0;">Emergency response to remote desert locations,
-                                specialized
+                            <p style="color: #856404; margin: 0;">Emergency response to remote desert locations, specialized
                                 luxury vehicle handling, or complex extraction scenarios may incur premium charges
                                 reflecting equipment requirements and operational complexity.</p>
                         </div>
@@ -1180,12 +1193,10 @@
     <section class="modern-features py-120" style="background: #1a1a1a; color: #fff;">
         <div class="container">
             <div class="site-heading text-center mb-5">
-                <h2 class="site-title" style="color: #fff;">Modern Convenience <span>Features</span> – How Toretto
-                    Recovery
+                <h2 class="site-title" style="color: #fff;">Modern Convenience <span>Features</span> – How Toretto Recovery
                     Supports Clients
                 </h2>
-                <p style="max-width: 800px; margin: 20px auto 0; color: #ccc;">As an experienced, licensed, and
-                    RTA-approved
+                <p style="max-width: 800px; margin: 20px auto 0; color: #ccc;">As an experienced, licensed, and RTA-approved
                     provider, Toretto Recovery integrates modern technology and customer-focused processes to make
                     accidental car recovery in Dubai as smooth and stress-free as possible.
                 </p>
