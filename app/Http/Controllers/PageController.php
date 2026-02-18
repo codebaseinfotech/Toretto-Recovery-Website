@@ -93,7 +93,7 @@ class PageController extends Controller
             'vehicle-recovery-service-dubai',
             'flatbed-recovery-dubai',
             'accidental-car-recovery-dubai',
-            'luxury-sports-car-handling',
+            'luxury-sports-car-handling-dubai',
             'bike-motorcycle-recovery',
             'desert-pull-out-service',
         ];

@@ -691,7 +691,7 @@
                                 <i class="fas fa-car-side"></i>
                             </div>
                             <h3>Low-Clearance <a class="flatbed-route"
-                                    href="{{ route('our-service.ourservice', ['slug' => 'luxury-sports-car-handling']) }}">Sports
+                                    href="{{ route('our-service.ourservice', ['slug' => 'luxury-sports-car-handling-dubai']) }}">Sports
                                     and
                                     Luxury Vehicles</a></h3>
                             <p>

@@ -51,7 +51,7 @@
 
                         <li>
                             <a class="dropdown-item"
-                                href="{{ route('our-service.ourservice', 'luxury-sports-car-handling') }}">
+                                href="{{ route('our-service.ourservice', 'luxury-sports-car-handling-dubai') }}">
                                 Luxury &amp; Sports Car Handling
                             </a>
                         </li>
@@ -245,7 +245,7 @@
 
                         <li>
                             <a class="dropdown-item"
-                                href="{{ route('our-service.ourservice', 'luxury-sports-car-handling') }}">
+                                href="{{ route('our-service.ourservice', 'luxury-sports-car-handling-dubai') }}">
                                 Luxury &amp; Sports Car Handling
                             </a>
                         </li>
