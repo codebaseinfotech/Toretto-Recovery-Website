@@ -7,23 +7,22 @@
     Recovery. 24/7 emergency service across Dubai and the UAE with fast response times.')
 
 @section('content')
-<style>
-.gm-ui-hover-effect{
-    background: none;
-    display: block;
-    border: 0px;
-    margin: 0px;
-    padding: 0px;
-    text-transform: none;
-    appearance: none;
-    position: relative;
-    cursor: pointer;
-    user-select: none;
-    width: 48px !important;
-    height: 21px !important;
-}
-
-</style>
+    <style>
+        .gm-ui-hover-effect {
+            background: none;
+            display: block;
+            border: 0px;
+            margin: 0px;
+            padding: 0px;
+            text-transform: none;
+            appearance: none;
+            position: relative;
+            cursor: pointer;
+            user-select: none;
+            width: 48px !important;
+            height: 21px !important;
+        }
+    </style>
 
     {{-- ROUTE SECTION --}}
     <section class="route-section" data-aos="fade-up" data-aos-duration="500">
@@ -395,6 +394,7 @@
         let pickupLng = null;
         let dropLat = null;
         let dropLng = null;
+        let mapReady = false;
 
         function checkLocationPermission() {
             if ('permissions' in navigator) {
@@ -493,6 +493,9 @@
                     strokeWeight: 4
                 }
             });
+            mapReady = true;
+            restorePendingBooking();
+
         }
 
         function initAutocomplete() {
@@ -560,6 +563,7 @@
                     }
                 });
             }
+
         }
 
         function onPickupChanged() {
@@ -739,7 +743,7 @@
                 const destination = dropLat + "," + dropLng;
 
                 const responsea = await window.ApiUtils.fetch(
-                    `${PRICE_API_BASE_URL}/v1/customer/distance?origin=${origin}&destination=${destination}`, {
+                    `${PRICE_API_BASE_URL}/v1/customer/distance?origin=${origin}&destination=${destination}&traffic_model=best_guess`, {
                         method: "GET",
                         headers: {
                             'Authorization': `Bearer ${token}`,
@@ -913,9 +917,9 @@
                 type === 'info' ? 'Information' : 'Service Status';
 
             //  msg.includes('session')
-            if (type === 'error' && toastTitle === 'Booking Error') {
-                autoLogout();
-            }
+            // if (type === 'error' && toastTitle === 'Booking Error') {
+            //     autoLogout();
+            // }
 
             Swal.fire({
                 toast: true,
@@ -1344,8 +1348,127 @@
             const calculatePriceBtnLoader = calculatePriceBtn ? calculatePriceBtn.querySelector(
                 '.btn-loader-price') : null;
 
+            // if (calculatePriceBtn) {
+            //     calculatePriceBtn.addEventListener('click', async function(e) {
+            //         e.preventDefault();
+            //         const pickupElement = document.getElementById('pickup_location');
+            //         const dropElement = document.getElementById('drop_location');
+
+            //         if (!pickupElement.value || !dropElement.value) {
+            //             showToast('Please enter both pickup and drop locations', 'error');
+            //             return;
+            //         }
+
+            //         if (!pickupMarker || !dropMarker) {
+            //             showToast('Please select valid pickup and drop locations.', 'error');
+            //             return;
+            //         }
+
+            //         if (latestDistanceKm <= 0) {
+            //             showToast('Distance not calculated properly.', 'error');
+            //             return;
+            //         }
+            //         const pickupLocation = pickupElement.value;
+            //         const dropLocation = dropElement.value;
+            //         //  START LOADER
+            //         calculatePriceBtn.disabled = true;
+            //         calculatePriceBtnText.classList.add('d-none');
+            //         calculatePriceBtnLoader.classList.remove('d-none');
+
+            //         try {
+
+            //             const token = getAuthToken();
+
+            //             // IF NOT LOGIN → GO LOGIN
+            //             if (!token) {
+            //                 const bookingData = {
+            //                     pickup_location: pickupLocation,
+            //                     drop_location: dropLocation,
+            //                     pickup_coords: pickupMarker ? { lat: pickupMarker.getPosition().lat(), lng: pickupMarker.getPosition().lng() } : null,
+            //                     drop_coords: dropMarker ? { lat: dropMarker.getPosition().lat(), lng: dropMarker.getPosition().lng() } : null,
+            //                     distance: latestDistanceKm,
+            //                     timestamp: Date.now()
+            //                 };
+
+            //                 localStorage.setItem('pending_booking', JSON.stringify(bookingData));
+
+            //                 window.location.href = '{{ route('login') }}';
+            //                 return;
+            //             }
+
+            //             const origin = pickupLat + "," + pickupLng;
+            //             const destination = dropLat + "," + dropLng;
+
+            //             const responseDistance = await window.ApiUtils.fetch(
+            //                 `${PRICE_API_BASE_URL}/v1/customer/distance?origin=${origin}&destination=${destination}&traffic_model=best_guess`, {
+            //                     method: "GET",
+            //                     headers: {
+            //                         'Authorization': `Bearer ${token}`,
+            //                         'Accept': 'application/json'
+            //                     }
+            //                 }
+            //             );
+
+            //             const distanceData = await responseDistance.json();
+            //             const result = distanceData.rows[0].elements[0];
+
+            //             const kmText = result.distance.text;
+            //             const minutes = result.duration_in_traffic.text;
+
+            //             document.getElementById("distance").innerText = kmText;
+            //             document.getElementById("minutes").innerText = minutes;
+
+            //             let kms = kmText.replace(/[^\d.]/g, "");
+
+            //             const responsePrice = await window.ApiUtils.fetch(
+            //                 `${PRICE_API_BASE_URL}/v1/customer/price/calculate`, {
+            //                     method: 'POST',
+            //                     headers: {
+            //                         'Authorization': 'Bearer ' + token
+            //                     },
+            //                     body: JSON.stringify({
+            //                         km: kms,
+            //                         latitude: pickupLat,
+            //                         longitude: pickupLng,
+            //                         drop_latitude: dropLat,
+            //                         drop_longitude: dropLng
+            //                     })
+            //                 }
+            //             );
+
+            //             const priceData = await responsePrice.json();
+
+            //             const price =
+            //                 priceData?.data?.price ??
+            //                 priceData?.price ??
+            //                 0;
+
+            //             currentOriginalPrice = parseFloat(price) || 0;
+
+            //             document.getElementById('price').innerText =
+            //                 currentOriginalPrice.toFixed(2) + ' AED';
+
+            //             updateGrandTotal();
+            //             const pickupLatLng = pickupMarker.getPosition();
+
+            //         } catch (error) {
+
+            //             console.error(error);
+            //             showToast('Something went wrong while calculating price.', 'error');
+
+            //         } finally {
+
+            //             // STOP LOADER ALWAYS
+            //             calculatePriceBtn.disabled = false;
+            //             calculatePriceBtnText.classList.remove('d-none');
+            //             calculatePriceBtnLoader.classList.add('d-none');
+            //         }
+            //     });
+            // }
             if (calculatePriceBtn) {
-                calculatePriceBtn.addEventListener('click', async function() {
+                calculatePriceBtn.addEventListener('click', async function(e) {
+
+                    e.preventDefault();
 
                     const pickupElement = document.getElementById('pickup_location');
                     const dropElement = document.getElementById('drop_location');
@@ -1355,54 +1478,16 @@
                         return;
                     }
 
-                    if (!pickupMarker || !dropMarker) {
-                        showToast('Please select valid pickup and drop locations.', 'error');
-                        return;
-                    }
+                    const token = getAuthToken();
 
-                    if (latestDistanceKm <= 0) {
-                        showToast('Distance not calculated properly.', 'error');
-                        return;
-                    }
-                    const pickupLocation = pickupElement.value;
-                    const dropLocation = dropElement.value;
-                    //  START LOADER
-                    calculatePriceBtn.disabled = true;
-                    calculatePriceBtnText.classList.add('d-none');
-                    calculatePriceBtnLoader.classList.remove('d-none');
+                    const origin = pickupLat + "," + pickupLng;
+                    const destination = dropLat + "," + dropLng;
 
                     try {
 
-                        const token = getAuthToken();
-
-                        // IF NOT LOGIN → GO LOGIN
-                        if (!token) {
-                            const bookingData = {
-                                pickup_location: pickupLocation,
-                                drop_location: dropLocation,
-                                pickup_coords: pickupMarker ? { lat: pickupMarker.getPosition().lat(), lng: pickupMarker.getPosition().lng() } : null,
-                                drop_coords: dropMarker ? { lat: dropMarker.getPosition().lat(), lng: dropMarker.getPosition().lng() } : null,
-                                distance: latestDistanceKm,
-                                timestamp: Date.now()
-                            };
-
-                            localStorage.setItem('pending_booking', JSON.stringify(bookingData));
-
-                            window.location.href = '{{ route("login") }}';
-                            return;
-                        }
-
-                        const origin = pickupLat + "," + pickupLng;
-                        const destination = dropLat + "," + dropLng;
-
-                        const responseDistance = await window.ApiUtils.fetch(
-                            `${PRICE_API_BASE_URL}/v1/customer/distance?origin=${origin}&destination=${destination}`, {
-                                method: "GET",
-                                headers: {
-                                    'Authorization': `Bearer ${token}`,
-                                    'Accept': 'application/json'
-                                }
-                            }
+                        // ✅ 1. Distance API (NO TOKEN)
+                        const responseDistance = await fetch(
+                            `${PRICE_API_BASE_URL}/v1/customer/distance?origin=${origin}&destination=${destination}&traffic_model=best_guess`
                         );
 
                         const distanceData = await responseDistance.json();
@@ -1410,69 +1495,39 @@
 
                         const kmText = result.distance.text;
                         const minutes = result.duration_in_traffic.text;
+                        const kms = kmText.replace(/[^\d.]/g, "");
 
                         document.getElementById("distance").innerText = kmText;
                         document.getElementById("minutes").innerText = minutes;
 
-                        let kms = kmText.replace(/[^\d.]/g, "");
+                        // ❌ 2. If NOT LOGIN → Save & Redirect
+                        if (!token) {
 
-                        const responsePrice = await window.ApiUtils.fetch(
-                            `${PRICE_API_BASE_URL}/v1/customer/price/calculate`, {
-                                method: 'POST',
-                                headers: {
-                                    'Authorization': 'Bearer ' + token
-                                },
-                                body: JSON.stringify({
-                                    km: kms,
-                                    latitude: pickupLat,
-                                    longitude: pickupLng,
-                                    drop_latitude: dropLat,
-                                    drop_longitude: dropLng
-                                })
-                            }
-                        );
+                            localStorage.setItem('pending_booking', JSON.stringify({
+                                pickup_location: pickupElement.value,
+                                drop_location: dropElement.value,
+                                pickup_lat: pickupLat,
+                                pickup_lng: pickupLng,
+                                drop_lat: dropLat,
+                                drop_lng: dropLng,
+                                km: kms,
+                                timestamp: Date.now()
+                            }));
 
-                        const priceData = await responsePrice.json();
+                            window.location.href = "{{ route('login') }}";
+                            return;
+                        }
 
-                        const price =
-                            priceData?.data?.price ??
-                            priceData?.price ??
-                            0;
+                        // ✅ 3. If LOGIN → Calculate Price
+                        await calculateFinalPrice(kms, token);
 
-                        currentOriginalPrice = parseFloat(price) || 0;
-
-                        document.getElementById('price').innerText =
-                            currentOriginalPrice.toFixed(2) + ' AED';
-
-                        updateGrandTotal();
-                        const pickupLatLng = pickupMarker.getPosition();
-
-                        // try {
-                        //     await fetchPriceFromAPI(pickupLatLng.lat(), pickupLatLng.lng(), latestDistanceKm);
-                        //     showToast('Price calculated successfully!', 'success');
-                        // } catch (error) {
-
-                        //     showToast('Failed to calculate price. Please try again.', 'error');
-                        // } finally {
-                        //     if (calculatePriceBtnText && calculatePriceBtnLoader) {
-                        //         calculatePriceBtn.disabled = false;
-                        //         calculatePriceBtnText.classList.remove('d-none');
-                        //         calculatePriceBtnLoader.classList.add('d-none');
-                        //     }
-                        // }
                     } catch (error) {
-
                         console.error(error);
-                        showToast('Something went wrong while calculating price.', 'error');
-
-                    } finally {
-
-                        // STOP LOADER ALWAYS
-                        calculatePriceBtn.disabled = false;
-                        calculatePriceBtnText.classList.remove('d-none');
-                        calculatePriceBtnLoader.classList.add('d-none');
+                        showToast('Something went wrong.', 'error');
                     }
                 });
+
+
             }
 
 
@@ -1978,6 +2033,203 @@
                     }
                 }
             );
+        }
+
+        async function calculateFinalPrice(kms, token) {
+
+            const responsePrice = await fetch(
+                `${PRICE_API_BASE_URL}/v1/customer/price/calculate`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        km: kms,
+                        latitude: pickupLat,
+                        longitude: pickupLng,
+                        drop_latitude: dropLat,
+                        drop_longitude: dropLng
+                    })
+                }
+            );
+
+            const priceData = await responsePrice.json();
+            const price = priceData?.data?.price ?? 0;
+
+            document.getElementById('price').innerText =
+                parseFloat(price).toFixed(2) + ' AED';
+        }
+
+        document.addEventListener("DOMContentLoaded", async function() {
+
+            const token = getAuthToken();
+            const pendingBooking = localStorage.getItem('pending_booking');
+
+            if (!token || !pendingBooking) return;
+
+            const data = JSON.parse(pendingBooking);
+
+            // 1️⃣ Set input values
+            document.getElementById('pickup_location').value = data.pickup_location;
+            document.getElementById('drop_location').value = data.drop_location;
+
+            // 2️⃣ Restore coordinates
+            pickupLat = data.pickup_lat;
+            pickupLng = data.pickup_lng;
+            dropLat = data.drop_lat;
+            dropLng = data.drop_lng;
+
+            // 3️⃣ Recalculate distance + price automatically
+            try {
+
+                const origin = pickupLat + "," + pickupLng;
+                const destination = dropLat + "," + dropLng;
+
+                const responseDistance = await fetch(
+                    `${PRICE_API_BASE_URL}/v1/customer/distance?origin=${origin}&destination=${destination}&traffic_model=best_guess`
+                );
+
+                const distanceData = await responseDistance.json();
+                const result = distanceData.rows[0].elements[0];
+
+                const kmText = result.distance.text;
+                const minutes = result.duration_in_traffic.text;
+                const kms = kmText.replace(/[^\d.]/g, "");
+
+                document.getElementById("distance").innerText = kmText;
+                document.getElementById("minutes").innerText = minutes;
+
+                await calculateFinalPrice(kms, token);
+
+                // ✅ Clear storage after success
+                localStorage.removeItem('pending_booking');
+
+            } catch (error) {
+                console.error(error);
+            }
+        });
+
+        function restorePendingBooking() {
+
+            const token = getAuthToken();
+            const pendingBooking = localStorage.getItem('pending_booking');
+
+            if (!token || !pendingBooking) return;
+
+            const data = JSON.parse(pendingBooking);
+
+            setPickupManually(
+                parseFloat(data.pickup_lat),
+                parseFloat(data.pickup_lng),
+                data.pickup_location
+            );
+
+            setDropManually(
+                parseFloat(data.drop_lat),
+                parseFloat(data.drop_lng),
+                data.drop_location
+            );
+
+            setTimeout(() => {
+                drawRoute();
+            }, 500);
+
+            localStorage.removeItem('pending_booking');
+        }
+
+        function setDropManually(lat, lng, address) {
+
+            dropLat = lat;
+            dropLng = lng;
+
+            if (dropMarker) {
+                dropMarker.setMap(null);
+            }
+
+            const position = new google.maps.LatLng(lat, lng);
+
+            dropMarker = new google.maps.Marker({
+                position: position,
+                map: map,
+                title: 'Drop',
+                icon: {
+                    url: "{{ asset('assets/images/pin.png') }}",
+                    scaledSize: new google.maps.Size(30, 30)
+                }
+            });
+
+            // ✅ Info Window Add
+            const dropInfoWindow = new google.maps.InfoWindow({
+                content: `
+            <div style="max-width:200px; font-size:13px; line-height:1.4;">
+                <strong>Drop:</strong><br>
+                ${address}
+            </div>
+        `
+            });
+
+            dropInfoWindow.open(map, dropMarker);
+
+            document.getElementById('drop_location').value = address;
+
+            // ✅ If pickup also exists → fit both markers
+            if (pickupMarker) {
+
+                const bounds = new google.maps.LatLngBounds();
+                bounds.extend(pickupMarker.getPosition());
+                bounds.extend(position);
+
+                map.fitBounds(bounds);
+
+                setTimeout(() => {
+                    drawRoute();
+                }, 400);
+
+            } else {
+
+                map.panTo(position);
+                map.setZoom(15);
+            }
+        }
+
+
+        function setPickupManually(lat, lng, address) {
+
+            pickupLat = lat;
+            pickupLng = lng;
+
+            if (pickupMarker) {
+                pickupMarker.setMap(null);
+            }
+
+            const position = new google.maps.LatLng(lat, lng);
+
+            pickupMarker = new google.maps.Marker({
+                position: position,
+                map: map,
+                title: 'Pickup',
+                icon: {
+                    url: "{{ asset('assets/images/pin.png') }}",
+                    scaledSize: new google.maps.Size(30, 30)
+                }
+            });
+
+            const pickupInfoWindow = new google.maps.InfoWindow({
+                content: `
+            <div style="max-width:200px; font-size:13px; line-height:1.4;">
+                <strong>Pickup:</strong><br>
+                ${address}
+            </div>
+        `
+            });
+
+            pickupInfoWindow.open(map, pickupMarker);
+
+            document.getElementById('pickup_location').value = address;
+
+            map.panTo(position);
+            map.setZoom(15);
         }
     </script>
 @endpush
