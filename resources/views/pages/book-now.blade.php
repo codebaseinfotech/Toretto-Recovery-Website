@@ -2056,7 +2056,10 @@
 
             const priceData = await responsePrice.json();
             const price = priceData?.data?.price ?? 0;
-
+            document.getElementById('totalPriceDisplay').innerText =
+                parseFloat(price).toFixed(2) + ' AED';
+            document.getElementById('grandTotalDisplay').innerText =
+                parseFloat(price).toFixed(2) + ' AED';
             document.getElementById('price').innerText =
                 parseFloat(price).toFixed(2) + ' AED';
         }
@@ -2085,7 +2088,6 @@
 
                 const origin = pickupLat + "," + pickupLng;
                 const destination = dropLat + "," + dropLng;
-
                 const responseDistance = await fetch(
                     `${PRICE_API_BASE_URL}/v1/customer/distance?origin=${origin}&destination=${destination}&traffic_model=best_guess`
                 );
