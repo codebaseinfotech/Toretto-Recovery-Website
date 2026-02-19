@@ -58,14 +58,14 @@
 
                         <li>
                             <a class="dropdown-item"
-                                href="{{ route('our-service.ourservice', 'bike-motorcycle-recovery') }}">
+                                href="{{ route('our-service.ourservice', 'bike-motorcycle-recovery-dubai') }}">
                                 Bike / Motorcycle Recovery
                             </a>
                         </li>
 
                         <li>
                             <a class="dropdown-item"
-                                href="{{ route('our-service.ourservice', 'desert-pull-out-service') }}">
+                                href="{{ route('our-service.ourservice', 'desert-pull-out-service-dubai') }}">
                                 Desert Pull Out Service
                             </a>
                         </li>
@@ -252,14 +252,14 @@
 
                         <li>
                             <a class="dropdown-item"
-                                href="{{ route('our-service.ourservice', 'bike-motorcycle-recovery') }}">
+                                href="{{ route('our-service.ourservice', 'bike-motorcycle-recovery-dubai') }}">
                                 Bike / Motorcycle Recovery
                             </a>
                         </li>
 
                         <li>
                             <a class="dropdown-item"
-                                href="{{ route('our-service.ourservice', 'desert-pull-out-service') }}">
+                                href="{{ route('our-service.ourservice', 'desert-pull-out-service-dubai') }}">
                                 Desert Pull Out Service
                             </a>
                         </li>

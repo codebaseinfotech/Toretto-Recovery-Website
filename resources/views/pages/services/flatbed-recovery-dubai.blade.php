@@ -563,7 +563,7 @@
                         </tr>
                         <tr>
                             <td><strong> <a
-                                        href="{{ route('our-service.ourservice', ['slug' => 'desert-pull-out-service']) }}"
+                                        href="{{ route('our-service.ourservice', ['slug' => 'desert-pull-out-service-dubai']) }}"
                                         class="text-success"
                                         style="font-size: 16px; font-weight: 600; color: #e10600; margin: 25px 0;">Stuck in
                                         desert near</a> Big Red during weekend safari

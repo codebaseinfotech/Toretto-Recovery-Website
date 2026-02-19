@@ -648,11 +648,11 @@
                     </p>
                 </div>
 
-                <div class="cta-actions">
-                    <a href="tel:+971523003423" class="cta-btn primary">
+                <div class="cta-actions header-actions d-flex align-items-center gap-3">
+                    <a href="tel:+971523003423" class="theme-btn">
                         Call Now
                     </a>
-                    <a href="{{ route('contact') }}" class="cta-btn secondary">
+                    <a href="{{ route('contact') }}" class="theme-btn theme-btn2">
                         Get Guidance
                     </a>
                 </div>

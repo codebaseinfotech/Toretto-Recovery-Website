@@ -94,8 +94,8 @@ class PageController extends Controller
             'flatbed-recovery-dubai',
             'accidental-car-recovery-dubai',
             'luxury-sports-car-handling-dubai',
-            'bike-motorcycle-recovery',
-            'desert-pull-out-service',
+            'bike-motorcycle-recovery-dubai',
+            'desert-pull-out-service-dubai',
         ];
 
         abort_if(! in_array($slug, $services), 404);

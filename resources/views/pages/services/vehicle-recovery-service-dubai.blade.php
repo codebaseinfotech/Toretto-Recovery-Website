@@ -335,7 +335,8 @@
                     self-rescue capability.</li>
                 <li><b>Parking structure incidents</b> including low-clearance situations, tight-space immobilization, or
                     underground access complications.</li>
-                <li><b>Highway breakdowns</b> on high-speed corridors like E11, E311, E611, or E44 where remaining stationary
+                <li><b>Highway breakdowns</b> on high-speed corridors like E11, E311, E611, or E44 where remaining
+                    stationary
                     poses serious safety risks.</li>
 
             </ul>
@@ -416,7 +417,7 @@
             <div class="solutions-image">
                 <img src="{{ asset('assets/images/vehicle-recovery-dubai.jpg') }}" alt="Complete Recovery Solutions">
 
-                                <!-- CARD 4 -->
+                <!-- CARD 4 -->
                 <div class="solution-card mt-4">
                     <h3>Off-Road Rescue Expertise</h3>
                     <p><b>The desert presents unique challenges requiring specific knowledge:</b></p>
@@ -1217,16 +1218,15 @@
                     equipment. Genuine expertise. 24/7.</p>
             </div>
 
-            <div class="rapid-help-buttons">
-                <a href="tel:+971523003423" class="cta-btn primary">
-                    Emergency Hotline
-                </a>
 
-                <a href="{{ route('contact') }}" class="cta-btn secondary">
+            <div class="cta-actions header-actions rapid-help-buttons d-flex align-items-center gap-3 mt-5">
+                <a href="tel:+971523003423" class="theme-btn">
+                    Call Now
+                </a>
+                <a href="{{ route('contact') }}" class="theme-btn theme-btn2">
                     Get Guidance
                 </a>
             </div>
-
         </div>
     </section>
 

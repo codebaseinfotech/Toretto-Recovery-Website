@@ -479,7 +479,7 @@
 
 .why-point span {
     position: absolute;
-    left: -40px;
+    left: -36px;
     top: 5px;
     width: 14px;
     height: 14px;
@@ -1053,7 +1053,7 @@
 
 .why-point span {
     position: absolute;
-    left: -40px;
+    left: -36px;
     top: 5px;
     width: 14px;
     height: 14px;
@@ -1081,6 +1081,9 @@
 
     .why-right {
         padding-left: 30px;
+    }
+    .why-point span{
+        left: -26px;
     }
 }
 
