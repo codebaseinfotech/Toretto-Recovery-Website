@@ -313,7 +313,7 @@
             <section class="about-area">
                 <div class="container">
                     <div class="row align-items-center">
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 imagebag">
                             <div class="about-left wow animate__animated animate__fadeInLeft">
                                 <div class="about-img">
                                     <img src="{{ asset('assets/images/bike-towing-dubai.jpg') }}" alt="">
@@ -463,10 +463,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-6 imagebag">
                     <div class="about-left-images wow animate__animated animate__fadeInLeft">
                         <div class="about-img">
-                            <img src="{{ asset('assets/images/bike-car.png') }}" alt="RTA Licensed Recovery Service Dubai">
+                            <img src="{{ asset('assets/images/accident-bike-recovery-dubai.jpg') }}" alt="RTA Licensed Recovery Service Dubai">
                         </div>
                     </div>
                 </div>
@@ -563,7 +563,7 @@
         <div class="container">
             <div class="row align-items-center">
                 <!-- Left: Content -->
-                <div class="col-lg-6">
+                <div class="col-lg-6 imagebag">
                     <div class="about-left-images wow animate__animated animate__fadeInLeft">
                         <div class="about-img">
                             <img src="{{ asset('assets/images/bike-recovery-dubai.jpg') }}"
@@ -720,7 +720,7 @@
     <section class="about-area bm-causes-section">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-6">
+                <div class="col-lg-6 imagebag">
                     <div class="about-left wow animate__animated animate__fadeInLeft">
                         <div class="about-img">
                             <img src="{{ asset('assets/images/quad-bike-loaded-recovery-dubai.jpg') }}" alt="">
@@ -856,7 +856,7 @@
         <div class="container">
             <!-- Hero: Image + Content -->
             <div class="row align-items-center bm-rapid-hero">
-                <div class="col-lg-6">
+                <div class="col-lg-6 imagebag">
                     <div class="about-left-images wow animate__animated animate__fadeInLeft">
                         <div class="about-img">
                             <img src="{{ asset('assets/images/young-handsome-man-motorcycle-travelling.jpg') }}"

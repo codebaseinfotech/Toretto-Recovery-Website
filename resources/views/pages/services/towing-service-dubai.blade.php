@@ -191,7 +191,7 @@
                                 class="fa-solid fa-arrow-right-long"></i></a>
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-6 imagebag">
                     <div class="about-left wow animate__animated animate__fadeInLeft">
                         <div class="about-img">
                             <img src="{{ asset('assets/images/tow-truck-with-broken-car.jpg') }}" alt="">
@@ -331,7 +331,7 @@
 
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-6 imagebag">
                     <div class="about-left wow animate__animated animate__fadeInLeft">
                         <div class="about-img">
                             <img src="{{ asset('assets/images/recoverytowingservice.jpeg') }}" alt="">
@@ -347,7 +347,7 @@
             <div class="row align-items-center">
 
 
-                <div class="col-lg-6">
+                <div class="col-lg-6 imagebag">
                     <div class="about-left wow animate__animated animate__fadeInLeft">
                         <div class="about-img">
                             <img src="{{ asset('assets/images/toretto-recovery-towing -service-in-dubai.jpg') }}"
@@ -407,7 +407,7 @@
                     </div>
                 </div>
 
-                <div class="col-lg-6">
+                <div class="col-lg-6 imagebag">
                     <div class="about-left wow animate__animated animate__fadeInLeft">
                         <div class="about-img">
                             <img src="{{ asset('assets/images/cartowingservice.jpeg') }}" alt="">

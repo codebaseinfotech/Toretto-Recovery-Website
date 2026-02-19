@@ -253,7 +253,7 @@
     <section class="about-area py-120">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-6">
+                <div class="col-lg-6 imagebag">
                     <div class="about-left wow animate__animated animate__fadeInLeft">
                         <div class="about-img">
                             <img src="{{ asset('assets/images/luxury-car-recovery-from-illegel-parked.jpg') }}"
@@ -805,7 +805,7 @@
             <div class="container">
                 <div class="row align-items-center">
                     <!-- Image side -->
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 imagebag">
                         <div class="about-left-images wow animate__animated animate__fadeInLeft">
                             <div class="about-img">
                                 <img src="{{ asset('assets/images/loading-luxury-car-dubai.jpg') }}"
@@ -1124,7 +1124,7 @@
                         </p>
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-6 imagebag">
                     <div class="about-left wow animate__animated animate__fadeInLeft">
                         <div class="about-img">
                             <img src="{{ asset('assets/images/suv-car-crush-recovery-from-high-way-toretto-recovery.jpg') }}"

@@ -295,7 +295,7 @@
     <section class="about-area py-120">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-6">
+                <div class="col-lg-6 imagebag">
                     <div class="about-left wow animate__animated animate__fadeInLeft">
                         <div class="about-img">
                             <img src="{{ asset('assets/images/01.jpg') }}" alt="">
@@ -310,7 +310,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-6 ">
                     <div class="about-right wow animate__animated animate__fadeInRight" data-wow-delay=".25s">
                         <div class="site-heading mb-3">
                             <span class="site-title-tagline"><i class="fa-solid fa-car"></i>About Us</span>

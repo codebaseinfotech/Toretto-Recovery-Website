@@ -278,7 +278,7 @@
                                 class="fa-solid fa-arrow-right-long"></i></a>
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-6 imagebag">
                     <div class="about-left wow animate__animated animate__fadeInLeft">
                         <div class="about-img">
                             <img src="{{ asset('assets/images/broken-car-dubai.jpg') }}" alt="">
@@ -621,7 +621,7 @@
                     </div>
                 </div>
 
-                <div class="col-lg-6">
+                <div class="col-lg-6 imagebag">
                     <div class="about-left wow animate__animated animate__fadeInLeft">
                         <div class="about-img">
                             <img src="{{ asset('assets/images/car-accident-on-evening-desert-safary.jpg') }}"
@@ -972,7 +972,7 @@
     <section class="about-area py-120">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-6">
+                <div class="col-lg-6 imagebag">
                     <div class="about-left wow animate__animated animate__fadeInLeft">
                         <div class="about-img">
                             <img src="{{ asset('assets/images/broken-car-dubai.jpg') }}" alt="">

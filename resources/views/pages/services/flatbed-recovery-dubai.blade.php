@@ -387,7 +387,7 @@
     <section class="flatbed-difference-section">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-6">
+                <div class="col-lg-6 imagebag">
                     <div class="about-left wow animate__animated animate__fadeInLeft">
                         <div class="about-img">
                             <img src="{{ asset('assets/images/accident-recovery-by-flatbed.jpg') }}"
@@ -860,7 +860,7 @@
     <section class="about-area py-120">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-6">
+                <div class="col-lg-6 imagebag">
                     <div class="about-left wow animate__animated animate__fadeInLeft">
                         <div class="about-img">
                             <img src="{{ asset('assets/images/treack.jpg') }}" alt="Flatbed Recovery Equipment">
@@ -957,7 +957,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-6 imagebag">
                     <div class="about-left wow animate__animated animate__fadeInLeft">
                         <div class="about-img">
                             <img src="{{ asset('assets/images/delivering-car-by-flatbed-tow-truck.jpg') }}"

@@ -19,7 +19,7 @@
 <section class="about-area py-120">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-6">
+                <div class="col-lg-6 imagebag">
                     <div class="about-left wow fade-in-left-20">
                         <div class="about-img">
                             <img src="{{ asset('assets/images/01.jpg') }}" alt="">
