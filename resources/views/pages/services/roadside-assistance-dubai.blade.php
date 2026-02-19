@@ -131,7 +131,7 @@
             <div class="row align-items-center min-vh-75">
 
                 <!-- LEFT CONTENT -->
-                <div class="col-lg-7 d-flex align-items-center">
+                <div class="col-lg-7 d-flex align-items-center justify-content-center">
                     <div class="contact-img text-white">
 
                         <h1 class="breadcrumb-title">
