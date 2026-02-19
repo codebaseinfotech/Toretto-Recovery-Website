@@ -335,7 +335,7 @@
                     self-rescue capability.</li>
                 <li><b>Parking structure incidents</b> including low-clearance situations, tight-space immobilization, or
                     underground access complications.</li>
-                <li><b>Highway breakdowns</b> on high-speed corridors like E11, E311, or E44 where remaining stationary
+                <li><b>Highway breakdowns</b> on high-speed corridors like E11, E311, E611, or E44 where remaining stationary
                     poses serious safety risks.</li>
 
             </ul>
@@ -700,7 +700,7 @@
                         <p><b>25-35 minute average arrival</b> across metro areas during normal conditions.</p>
                         <p><b>Coordinated desert response</b> using precise location sharing via WhatsApp or GPS
                             coordinates.</p>
-                        <p><b>24/7/365 operation</b> because breakdowns don't respect business hours, weekends, or holidays.
+                        <p><b>24/7 operation</b> because breakdowns don't respect business hours, weekends, or holidays.
                         </p>
                     </div>
                 </div>
@@ -1214,7 +1214,7 @@
                 </p>
                 <p><b>Toretto Recovery—Because getting stuck is temporary. Getting moving is our job.</b></p>
                 <p>Serving every road, highway, neighborhood, and trail across the emirate. Licensed operators. Modern
-                    equipment. Genuine expertise. 24/7/365.</p>
+                    equipment. Genuine expertise. 24/7.</p>
             </div>
 
             <div class="rapid-help-buttons">
