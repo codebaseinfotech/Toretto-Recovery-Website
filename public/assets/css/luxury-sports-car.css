@@ -37,7 +37,7 @@
 
 /* Hero Main Title (H1) */
 .hero-main-title {
-    font-size: 48px;
+    font-size: 60px;
     font-weight: 800;
     line-height: 1.2;
     color: #fff;
@@ -263,10 +263,6 @@
 
 /* Tablet (992px and below) */
 @media (max-width: 992px) {
-    .hero-main-title {
-        font-size: 38px;
-    }
-
     .hero-subtitle {
         font-size: 19px;
     }
@@ -301,10 +297,6 @@
 
 /* Mobile (768px and below) */
 @media (max-width: 768px) {
-    .hero-main-title {
-        font-size: 32px;
-    }
-
     .hero-subtitle {
         font-size: 17px;
     }
@@ -362,10 +354,6 @@
 
 /* Small Mobile (576px and below) */
 @media (max-width: 576px) {
-    .hero-main-title {
-        font-size: 28px;
-    }
-
     .hero-subtitle {
         font-size: 16px;
         margin-bottom: 20px;
@@ -1510,7 +1498,7 @@
     padding: 40px;
     border-radius: 18px;
     max-width: 480px;
-    margin-left: auto;
+    margin: auto;
 }
 
 /* TITLE */
@@ -3261,7 +3249,7 @@
     .accident-scenarios .row {
         margin: 0 -10px;
     }
-    
+
     .accident-scenarios .col-lg-6 {
         padding: 0 10px;
     }
@@ -3271,15 +3259,15 @@
     .accident-scenarios {
         padding: 60px 0;
     }
-    
+
     .scenario-card {
         padding: 25px !important;
     }
-    
+
     .scenario-card h4 {
         font-size: 16px !important;
     }
-    
+
     .scenario-card p {
         font-size: 14px;
     }
@@ -3290,12 +3278,12 @@
     .breadcrumb-title {
         font-size: 32px !important;
     }
-    
+
     .hero-stats {
         flex-direction: column;
         gap: 15px;
     }
-    
+
     .stats-box {
         width: 100%;
     }
@@ -3754,40 +3742,6 @@
 /* ======================================
    HERO BANNER REDESIGN STYLES
    ====================================== */
-
-/* Hero Content Wrapper */
-.hero-content-wrapper {
-    padding: 20px 0;
-}
-
-/* Hero Main Title (H1) */
-.hero-main-title {
-    font-size: 48px;
-    font-weight: 800;
-    line-height: 1.2;
-    color: #fff;
-    text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
-    margin-bottom: 20px;
-}
-
-/* Hero Subtitle (H2) */
-.hero-subtitle {
-    font-size: 22px;
-    font-weight: 600;
-    color: #fff;
-    text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
-    margin-bottom: 25px;
-}
-
-.hero-subtitle i {
-    margin-right: 10px;
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-}
 
 /* USP Highlights */
 .usp-highlights {
@@ -4453,10 +4407,6 @@
 
 /* Tablet (992px and below) */
 @media (max-width: 992px) {
-    .hero-main-title {
-        font-size: 38px;
-    }
-
     .hero-subtitle {
         font-size: 19px;
     }
@@ -4491,10 +4441,6 @@
 
 /* Mobile (768px and below) */
 @media (max-width: 768px) {
-    .hero-main-title {
-        font-size: 32px;
-    }
-
     .hero-subtitle {
         font-size: 17px;
     }
@@ -4552,10 +4498,6 @@
 
 /* Small Mobile (576px and below) */
 @media (max-width: 576px) {
-    .hero-main-title {
-        font-size: 28px;
-    }
-
     .hero-subtitle {
         font-size: 16px;
         margin-bottom: 20px;
@@ -4636,17 +4578,17 @@
         font-size: 32px !important;
         line-height: 1.3 !important;
     }
-    
+
     /* Hero/Breadcrumb title */
     .breadcrumb-title {
         font-size: 42px !important;
     }
-    
+
     /* Subsection headings */
     .subsection-header h2 {
         font-size: 28px !important;
     }
-    
+
     /* Card titles */
     .scenario-card h4,
     .included-item strong,
@@ -4666,33 +4608,28 @@
         line-height: 1.3 !important;
         margin-bottom: 15px !important;
     }
-    
+
     /* Hero/Breadcrumb title */
     .breadcrumb-title {
         font-size: 34px !important;
         line-height: 1.2 !important;
     }
-    
+
     /* Subsection headings */
     .subsection-header h2 {
         font-size: 24px !important;
     }
-    
-    /* Hero main title */
-    .hero-main-title {
-        font-size: 36px !important;
-    }
-    
+
     /* Hero subtitle */
     .hero-subtitle {
         font-size: 18px !important;
     }
-    
+
     /* Section heading text */
     .site-heading h2 {
         font-size: 26px !important;
     }
-    
+
     /* Card and component titles */
     .scenario-card h4,
     .trust-factor-card h4,
@@ -4700,19 +4637,19 @@
     .faq-text {
         font-size: 16px !important;
     }
-    
+
     .compliance-block h4,
     .step-content h4,
     .challenge-card h4,
     .feature-modern-card h4 {
         font-size: 17px !important;
     }
-    
+
     /* Coverage items */
     .flatbed-coverage-item h4 {
         font-size: 16px !important;
     }
-    
+
     /* Author section */
     .author-header h3 {
         font-size: 26px !important;
@@ -4728,34 +4665,34 @@
         line-height: 1.3 !important;
         margin-bottom: 12px !important;
     }
-    
+
     /* Hero/Breadcrumb title */
     .breadcrumb-title {
         font-size: 28px !important;
         line-height: 1.2 !important;
     }
-    
+
     /* Subsection headings */
     .subsection-header h2 {
         font-size: 20px !important;
     }
-    
+
     /* Hero main title */
     .hero-main-title {
-        font-size: 28px !important;
+        font-size: 40px !important;
         line-height: 1.2 !important;
     }
-    
+
     /* Hero subtitle */
     .hero-subtitle {
         font-size: 16px !important;
     }
-    
+
     /* Section heading text */
     .site-heading h2 {
         font-size: 22px !important;
     }
-    
+
     /* All card titles smaller */
     .scenario-card h4,
     .trust-factor-card h4,
@@ -4766,22 +4703,22 @@
     .flatbed-coverage-item h4 {
         font-size: 22px !important;
     }
-    
+
     /* FAQ questions */
     .faq-text {
         font-size: 15px !important;
     }
-    
+
     /* Location badges */
     .location-badge span {
         font-size: 14px !important;
     }
-    
+
     /* Author section */
     .author-header h3 {
         font-size: 22px !important;
     }
-    
+
     /* Author title */
     .author-title {
         font-size: 16px !important;
@@ -4795,15 +4732,11 @@
     .section-title {
         font-size: 20px !important;
     }
-    
+
     .breadcrumb-title {
         font-size: 24px !important;
     }
-    
-    .hero-main-title {
-        font-size: 24px !important;
-    }
-    
+
     .subsection-header h2,
     .site-heading h2 {
         font-size: 18px !important;

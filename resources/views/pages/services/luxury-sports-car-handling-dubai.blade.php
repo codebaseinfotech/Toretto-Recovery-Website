@@ -133,11 +133,11 @@
 
                 <!-- LEFT CONTENT -->
                 <div class="col-lg-7 d-flex align-items-center">
-                    <div class="hero-content-wrapper text-white">
+                    <div class="hero-content-wrapper text-white text-start">
 
                         <!-- Main Heading -->
-                        <h1 class="hero-main-title mb-3">
-                            Luxury & Sports Car Handling Dubai
+                        <h1 class="hero-main-title mb-3 wow animate__animated animate__fadeInDown">
+                            Luxury & Sports Car <br/> Handling Dubai
                         </h1>
 
 
@@ -150,9 +150,9 @@
                         </ul>
 
                         <!-- Subtitle -->
-                        <p class="mt-3 mb-3">
+                        <h2 class="mt-3 mb-3 text-white breadcrumb-subtitle">
                             Certified Recovery Specialists for High-Performance & Exotic Automobiles
-                        </p>
+                        </h2>
 
                         <!-- USP Highlights -->
                         <div class="usp-highlights mb-4">

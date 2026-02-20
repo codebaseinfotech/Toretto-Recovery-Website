@@ -22,7 +22,7 @@
 }
 
 .dp-hero-title {
-    font-size: 38px;
+    font-size: 60px;
     font-weight: 900;
     color: #fff;
     line-height: 1.2;
@@ -35,7 +35,7 @@
 }
 
 .dp-hero-subtitle {
-    font-size: 15px;
+    font-size: 32px;
     color: rgba(255, 255, 255, 0.7);
     line-height: 1.6;
     margin: 16px 0 0;
@@ -63,7 +63,7 @@
     padding: 40px;
     border-radius: 18px;
     max-width: 480px;
-    margin-left: auto;
+    margin: auto;
 }
 
 /* TITLE */
@@ -119,14 +119,6 @@
         padding: 6px 14px;
     }
 
-    .dp-hero-title {
-        font-size: 28px;
-    }
-
-    .dp-hero-subtitle {
-        font-size: 13.5px;
-    }
-
     .dp-hero-desc {
         font-size: 12.5px;
     }
@@ -140,11 +132,11 @@
     }
 
     .dp-hero-title {
-        font-size: 22px;
+        font-size: 40px;
     }
 
     .dp-hero-subtitle {
-        font-size: 12.5px;
+        font-size: 20px;
         padding-left: 12px;
     }
 
@@ -733,15 +725,15 @@
     .dp-section-title {
         font-size: 32px;
     }
-    
+
     .dp-risks-grid {
         grid-template-columns: repeat(2, 1fr);
     }
-    
+
     .dp-image-frame {
         margin-top: 30px;
     }
-    
+
     .dp-professional-section .dp-image-frame {
         margin-bottom: 30px;
         margin-top: 0;
@@ -752,16 +744,16 @@
     .dp-section-title {
         font-size: 28px;
     }
-    
+
     .dp-risks-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .dp-risk-conclusion-box {
         flex-direction: column;
         gap: 16px;
     }
-    
+
     .dp-content-section {
         padding: 60px 0;
     }
@@ -856,7 +848,7 @@
 
 .dp-vehicle-list-wrapper {
     background: #fff;
-    /* Optional: Add a subtle border or shadow wrapper if needed, 
+    /* Optional: Add a subtle border or shadow wrapper if needed,
        but user asked for "point wise" so distinct items are better. */
 }
 
@@ -919,12 +911,12 @@
         grid-template-columns: 1fr;
         gap: 24px;
     }
-    
+
     .dp-vehicle-list-item {
         padding-bottom: 20px;
         border-bottom: 1px solid rgba(0,0,0,0.06);
     }
-    
+
     .dp-vehicle-list-item:nth-last-child(2) {
         border-bottom: 1px solid rgba(0,0,0,0.06); /* Restore border for 2nd to last on mobile */
     }
@@ -1042,7 +1034,7 @@
     .dp-scenarios-section .col-lg-6:first-child {
         margin-bottom: 0;
     }
-    
+
     .dp-conditions-clean-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 30px;
@@ -1054,7 +1046,7 @@
         grid-template-columns: 1fr;
         gap: 30px;
     }
-    
+
     .dp-timeline-item {
         padding-left: 20px;
         margin-bottom: 30px;

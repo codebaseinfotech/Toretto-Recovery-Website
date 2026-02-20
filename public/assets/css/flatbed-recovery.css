@@ -2204,3 +2204,226 @@
         font-size: 13px;
     }
 }
+
+/* ======================================
+   PROBLEMS VS SOLUTIONS — Split Panel Accordion
+   ====================================== */
+.fb-pvs-section {
+    padding: 90px 0;
+    background: linear-gradient(180deg, #f8f8f8 0%, #fff 100%);
+}
+
+.fb-pvs-eyebrow {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #d70006;
+    margin-bottom: 12px;
+}
+
+.fb-pvs-title {
+    font-size: 38px;
+    font-weight: 800;
+    color: #111;
+    line-height: 1.25;
+}
+
+.fb-pvs-title span {
+    color: #d70006;
+}
+
+/* Accordion Container */
+.fb-pvs-accordion {
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+/* Each Item */
+.fb-pvs-item {
+    background: #fff;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    overflow: hidden;
+    transition: box-shadow 0.3s ease;
+}
+
+.fb-pvs-item:hover {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+/* Header (trigger) */
+.fb-pvs-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 24px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s ease;
+}
+
+.fb-pvs-header:hover {
+    background: #fafafa;
+}
+
+.fb-pvs-num {
+    font-size: 13px;
+    font-weight: 800;
+    color: #d70006;
+    letter-spacing: 1px;
+    width: 28px;
+    flex-shrink: 0;
+    opacity: 0.7;
+}
+
+.fb-pvs-q {
+    flex: 1;
+    font-size: 16px;
+    font-weight: 600;
+    color: #222;
+    line-height: 1.4;
+}
+
+.fb-pvs-arrow {
+    font-size: 12px;
+    color: #bbb;
+    transition: transform 0.35s ease, color 0.3s ease;
+    flex-shrink: 0;
+}
+
+.fb-pvs-open .fb-pvs-arrow {
+    transform: rotate(180deg);
+    color: #d70006;
+}
+
+/* Body (expandable) */
+.fb-pvs-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s ease;
+    padding: 0 24px;
+}
+
+.fb-pvs-open .fb-pvs-body {
+    max-height: 600px;
+    padding: 0 24px 24px;
+}
+
+/* Split Layout — Pain vs Fix */
+.fb-pvs-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.fb-pvs-pain {
+    background: #fff5f5;
+    border-left: 4px solid #d70006;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.fb-pvs-fix {
+    background: #f0faf0;
+    border-left: 4px solid #1a8d1a;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.fb-pvs-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.fb-pvs-pain .fb-pvs-label {
+    color: #c62828;
+}
+
+.fb-pvs-fix .fb-pvs-label {
+    color: #2e7d32;
+}
+
+.fb-pvs-pain .fb-pvs-label i,
+.fb-pvs-fix .fb-pvs-label i {
+    font-size: 14px;
+}
+
+.fb-pvs-pain p,
+.fb-pvs-fix p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #555;
+    margin: 0;
+}
+
+/* Link inside header */
+.fb-pvs-link {
+    color: #d70006;
+    text-decoration: none;
+    font-weight: 700;
+    border-bottom: 1px dashed #d70006;
+    transition: color 0.2s ease;
+}
+
+.fb-pvs-link:hover {
+    color: #a00;
+}
+
+/* Active item highlight */
+.fb-pvs-open {
+    box-shadow: 0 4px 24px rgba(215, 0, 6, 0.08);
+    border: 1px solid rgba(215, 0, 6, 0.12);
+}
+
+.fb-pvs-open .fb-pvs-num {
+    opacity: 1;
+}
+
+/* -------  Responsive  ------- */
+@media (max-width: 768px) {
+    .fb-pvs-section {
+        padding: 60px 0;
+    }
+    .fb-pvs-title {
+        font-size: 26px;
+    }
+    .fb-pvs-split {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+    .fb-pvs-header {
+        padding: 16px 16px;
+        gap: 12px;
+    }
+    .fb-pvs-q {
+        font-size: 14px;
+    }
+    .fb-pvs-body {
+        padding: 0 16px;
+    }
+    .fb-pvs-open .fb-pvs-body {
+        padding: 0 16px 16px;
+    }
+    .fb-pvs-pain,
+    .fb-pvs-fix {
+        padding: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .fb-pvs-title {
+        font-size: 22px;
+    }
+    .fb-pvs-num {
+        display: none;
+    }
+}

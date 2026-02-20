@@ -13,40 +13,40 @@
     @verbatim
         <script type="application/ld+json">
 
-{
-  "@context": "https://schema.org",
-  "@type": ["LocalBusiness", "AutomotiveBusiness"],
-  "name": "Toretto Desert Recovery Dubai",
-  "alternateName": "Toretto Desert Pull Out Service",
-  "description": "Professional desert pull out and recovery service in Dubai.
-               	15+ years of experience. Winch-assisted extraction, 24/7
-               	emergency response. Covering Al Qudra, Lahbab, Margham,
-               	Al Badayer and all Dubai desert areas.",
-  "url": "https://www.toretto.ae/desert-pull-out-service-dubai/",
-  "logo": "https://www.toretto.ae/images/toretto-logo.png",
-  "image": [
-    "https://www.toretto.ae/images/dubai-desert-pull-out-service-toretto.jpg",
-	"https://www.toretto.ae/images/toretto-recovery-team-dubai.jpg"
-  ],
-  "telephone": "+971-XX-XXX-XXXX",
-  "email": "recovery@toretto.ae",
-  "address": {
-	"@type": "PostalAddress",
-	"streetAddress": "[Street Address]",
-	"addressLocality": "Dubai",
-	"addressRegion": "Dubai",
-	"postalCode": "[Postal Code]",
-	"addressCountry": "AE"
-  },
-  "geo": {
-	"@type": "GeoCoordinates",
-	"latitude": "25.2048",
-	"longitude": "55.2708"
-  },
-  "areaServed": [
-    {"@type": "City", "name": "Dubai"}]
-}
-        </script>
+                                                {
+                                                  "@context": "https://schema.org",
+                                                  "@type": ["LocalBusiness", "AutomotiveBusiness"],
+                                                  "name": "Toretto Desert Recovery Dubai",
+                                                  "alternateName": "Toretto Desert Pull Out Service",
+                                                  "description": "Professional desert pull out and recovery service in Dubai.
+                                                                   15+ years of experience. Winch-assisted extraction, 24/7
+                                                                   emergency response. Covering Al Qudra, Lahbab, Margham,
+                                                                   Al Badayer and all Dubai desert areas.",
+                                                  "url": "https://www.toretto.ae/desert-pull-out-service-dubai/",
+                                                  "logo": "https://www.toretto.ae/images/toretto-logo.png",
+                                                  "image": [
+                                                    "https://www.toretto.ae/images/dubai-desert-pull-out-service-toretto.jpg",
+                                                    "https://www.toretto.ae/images/toretto-recovery-team-dubai.jpg"
+                                                  ],
+                                                  "telephone": "+971 523003423",
+                                                  "email": "recovery@toretto.ae",
+                                                  "address": {
+                                                    "@type": "PostalAddress",
+                                                    "streetAddress": "274 Street - Dubai Investment Park - 2 - Dubai",
+                                                    "addressLocality": "Dubai",
+                                                    "addressRegion": "Dubai",
+                                                    "postalCode": "[Postal Code]",
+                                                    "addressCountry": "AE"
+                                                  },
+                                                  "geo": {
+                                                    "@type": "GeoCoordinates",
+                                                    "latitude": "25.2048",
+                                                    "longitude": "55.2708"
+                                                  },
+                                                  "areaServed": [
+                                                    {"@type": "City", "name": "Dubai"}]
+                                                }
+                                                        </script>
     @endverbatim
 @endsection
 @section('content')
@@ -89,7 +89,7 @@
 
                 <!-- LEFT CONTENT -->
                 <div class="col-lg-7 d-flex align-items-center">
-                    <div class="hero-content-wrapper text-white">
+                    <div class="hero-content-wrapper text-start text-white">
 
                         <!-- Eyebrow Badge -->
                         <div class="dp-hero-eyebrow">
@@ -98,7 +98,7 @@
                         </div>
 
                         <!-- Main Heading -->
-                        <h1 class="dp-hero-title">
+                        <h1 class="dp-hero-title wow animate__animated animate__fadeInDown">
                             24/7 Emergency Desert
                             <span>Pull Out Service</span>
                         </h1>
@@ -112,9 +112,9 @@
                         </ul>
 
                         <!-- Subtitle -->
-                        <p class="dp-hero-subtitle">
+                        <h2 class="dp-hero-subtitle text-white">
                             Stuck in the Dubai Desert? Help Is Already on Its Way.
-                        </p>
+                        </h2>
 
                         <!-- CTA Section -->
                         <div class="hero-btn mt-4">

@@ -14,68 +14,69 @@
 @section('schema')
     @verbatim
         <script type="application/ld+json">
-           {
-                "@context": "https://schema.org",
-                    "@type": "FAQPage",
-                "mainEntity": [
-                    {
-                    "@type": "Question",
-                    "name": "What should I do immediately after breaking down on a highway?",
-                    "acceptedAnswer": {
-                        "@type": "Answer",
-                        "text": "Activate hazard lights instantly. If mechanical failure allows, carefully navigate to the shoulder—even a narrow one provides crucial safety margin. If safe to exit, leave the automobile on the side away from traffic. Never stand behind your vehicle where approaching drivers might strike you. Call professional help immediately rather than attempting diagnosis in a dangerous environment."
-                    }
-                    },
-                    {
-                    "@type": "Question",
-                    "name": "How long does desert extraction typically require?",
-                    "acceptedAnswer": {
-                        "@type": "Answer",
-                        "text": "Assessment determines duration—anywhere from fifteen minutes for a simple stuck situation to two hours for severe entrapment. Factors include: sand depth around your wheels, automobile weight, dune angle, and whether previous recovery attempts caused deeper burial. Our operators provide realistic time estimates upon arrival."
-                    }
-                    },
-                    {
-                    "@type": "Question",
-                    "name": "Can you extract my automobile from underground parking with extremely low overhead clearance?",
-                    "acceptedAnswer": {
-                        "@type": "Answer",
-                        "text": "Yes, using specialized compact equipment designed for confined spaces. We coordinate with building management for access, identify proper routes avoiding height restrictions, and guarantee damage-free extraction. These operations require more time than open-air recovery but are completely routine for our experienced team."
-                    }
-                    },
-                    {
-                    "@type": "Question",
-                    "name": "What precautions do you take with luxury and exotic automobiles?",
-                    "acceptedAnswer": {
-                        "@type": "Answer",
-                        "text": "Flatbed-only transport eliminates any possibility of undercarriage contact. Soft securing straps protect painted surfaces. Our operators receive specific training on exotic marque handling procedures. We've successfully transported Ferraris, Lamborghinis, Rolls-Royces, McLarens, and rare classics without incident across thousands of operations."
-                    }
-                    },
-                    {
-                    "@type": "Question",
-                    "name": "Do you operate during sandstorms or heavy rainfall?",
-                    "acceptedAnswer": {
-                        "@type": "Answer",
-                        "text": "Twenty-four-hour operation continues regardless of weather conditions. During adverse weather, we implement enhanced safety protocols including reduced travel speeds, additional lighting, and extra communication with you about progress. Your emergency doesn't pause for weather—neither do we."
-                    }
-                    },
-                    {
-                    "@type": "Question",
-                    "name": "How do I know you're licensed and insured?",
-                    "acceptedAnswer": {
-                        "@type": "Answer",
-                        "text": "Our RTA operator credentials are available for verification upon request. Insurance documentation covering liability and automobile damage during transport can be provided. We carry comprehensive coverage specifically because professional operation demands professional protection."
-                    }
-                    },
-                    {
-                    "@type": "Question",
-                    "name": "What payment methods do you accept?",
-                    "acceptedAnswer": {
-                        "@type": "Answer",
-                        "text": "Cash, all major credit cards, direct bank transfer, and insurance billing. For corporate clients, we establish monthly invoicing arrangements."
-                    }
-                    }
-                ]
-            }
+
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What should I do immediately after breaking down on a highway?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Activate hazard lights instantly. If mechanical failure allows, carefully navigate to the shoulder—even a narrow one provides crucial safety margin. If safe to exit, leave the automobile on the side away from traffic. Never stand behind your vehicle where approaching drivers might strike you. Call professional help immediately rather than attempting diagnosis in a dangerous environment."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How long does desert extraction typically require?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Assessment determines duration—anywhere from fifteen minutes for a simple stuck situation to two hours for severe entrapment. Factors include: sand depth around your wheels, automobile weight, dune angle, and whether previous recovery attempts caused deeper burial. Our operators provide realistic time estimates upon arrival."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can you extract my automobile from underground parking with extremely low overhead clearance?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, using specialized compact equipment designed for confined spaces. We coordinate with building management for access, identify proper routes avoiding height restrictions, and guarantee damage-free extraction. These operations require more time than open-air recovery but are completely routine for our experienced team."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What precautions do you take with luxury and exotic automobiles?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Flatbed-only transport eliminates any possibility of undercarriage contact. Soft securing straps protect painted surfaces. Our operators receive specific training on exotic marque handling procedures. We've successfully transported Ferraris, Lamborghinis, Rolls-Royces, McLarens, and rare classics without incident across thousands of operations."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you operate during sandstorms or heavy rainfall?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Twenty-four-hour operation continues regardless of weather conditions. During adverse weather, we implement enhanced safety protocols including reduced travel speeds, additional lighting, and extra communication with you about progress. Your emergency doesn't pause for weather—neither do we."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I know you're licensed and insured?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Our RTA operator credentials are available for verification upon request. Insurance documentation covering liability and automobile damage during transport can be provided. We carry comprehensive coverage specifically because professional operation demands professional protection."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What payment methods do you accept?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Cash, all major credit cards, direct bank transfer, and insurance billing. For corporate clients, we establish monthly invoicing arrangements."
+      }
+    }
+  ]
+}
 
         </script>
     @endverbatim
@@ -141,10 +142,6 @@
                 margin-left: 5.666667%;
             }
 
-            .site-breadcrumb .breadcrumb-title {
-                font-size: 55px;
-            }
-
             .breadcrumb-menu li a {
                 font-size: 16px;
             }
@@ -160,11 +157,11 @@
             <div class="row align-items-center min-vh-75">
 
                 <!-- LEFT CONTENT -->
-                <div class="col-lg-7 d-flex align-items-center">
-                    <div class="contact-img text-white">
+                <div class="col-lg-7 d-flex align-items-center justify-content-center">
+                    <div class="contact-img text-white text-start">
 
-                        <h1 class="breadcrumb-title">
-                            <span>Vehicle Recovery Dubai</span>
+                        <h1 class="breadcrumb-title wow animate__animated animate__fadeInDown">
+                            <span>Licensed & RTA-Approved Vehicle Recovery in Dubai </span>
                         </h1>
 
                         <ul class="breadcrumb-menu">
@@ -175,9 +172,9 @@
                             <li class="active">Vehicle Recovery Dubai</li>
                         </ul>
 
-                        <p class="mt-3">
+                        <h2 class="mt-3 text-white breadcrumb-subtitle">
                             Stuck on the Road? One Call Away from Safety, Speed & Peace of Mind.
-                        </p>
+                        </h2>
 
                         <div class="hero-btn mt-4">
                             <a href="{{ route('book.now') }}" class="theme-btn">
@@ -188,7 +185,7 @@
                             </a>
                         </div>
 
-                        <div class="hero-stats mt-3 mb-3">
+                        <div class="hero-stats mt-3 mb-3 justify-content-start">
                             <div class="stats-box">
                                 <h4>100%</h4>
                                 <p>Job Success Rate</p>
@@ -259,19 +256,16 @@
                     <div class="about-right wow animate__animated animate__fadeInRight" data-wow-delay=".25s">
                         <div class="site-heading mb-3">
                             <span class="site-title-tagline">Welcome to Vehicle Recovery</span>
-                            <h2 class="site-title"><span> Licensed & RTA-Approved </span> Vehicle Recovery in Dubai</h2>
+                            <h2 class="site-title"><span> Vehicle Recovery with Expert Handling, Fast Response &
+                                    <span>24/7 Emergency Service</span> at Your Location </span> </h2>
                         </div>
-                        <h3>Dubai Roads Don’t Forgive Breakdowns — We Deliver Fast, Professional Recovery Across the City
-                        </h3>
-                        <p class="mb-1">When your vehicle stops in extreme heat, fast highways, or remote areas, waiting
-                            is not an option. Our licensed recovery team arrives fast, clears the risk, and gets your
-                            vehicle safely where it needs to be—anytime, anywhere in Dubai.</p>
-                        <ul class="service-list check">
-                            <li>Immediate Dispatch</li>
-                            <li>All Vehicle Types </li>
-                            <li>City, Highway & Desert Recovery</li>
-                            <li>Call Now for Instant Recovery</li>
-                        </ul>
+                        <p class="mb-1">When your vehicle stops in extreme heat, on fast-moving highways, or in remote
+                            areas, waiting is not an option. Our licensed vehicle recovery team in Dubai is dispatched
+                            immediately to your exact location—reducing risk, managing the situation safely, and
+                            transporting your vehicle where it needs to go.</p>
+                        <p class="mt-2 mb-2">Available 24/7, we provide reliable recovery across the Dubai city roads,
+                            highways, and desert
+                            routes, ensuring professional care for every vehicle, anytime, anywhere in Dubai.</p>
                         <a href="{{ route('book.now') }}" class="theme-btn mt-2">Book Now<i
                                 class="fa-solid fa-arrow-right-long"></i></a>
                         <a href="tel:+971 523003423" class="theme-btn mt-2"> Call / WhatsApp<i
@@ -1172,7 +1166,6 @@
         </div>
     </section>
 
-
     <section class="about-areas py-120">
         <div class="wisdoam-container">
             <h2 class="wisdaom-title">Our Commitment to This Community</h2>
@@ -1191,7 +1184,6 @@
             </ul>
         </div>
     </section>
-
 
     <section class="rapid-help-section">
         <div class="rapid-help-wrapper">
