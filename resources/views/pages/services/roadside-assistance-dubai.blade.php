@@ -16,7 +16,7 @@
 @section('schema')
     @verbatim
         <script type="application/ld+json">
-            {
+                                   {
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
@@ -87,7 +87,7 @@
   ]
 }
 
-        </script>
+                                </script>
     @endverbatim
 @endsection
 
@@ -132,9 +132,9 @@
 
                 <!-- LEFT CONTENT -->
                 <div class="col-lg-7 d-flex align-items-center justify-content-center">
-                    <div class="contact-img text-white">
+                    <div class="contact-img text-start text-white">
 
-                        <h1 class="breadcrumb-title">
+                        <h1 class="breadcrumb-title wow animate__animated animate__fadeInDown">
                             <span>24/7 Roadside Assistance Dubai</span>
                         </h1>
 
@@ -146,9 +146,9 @@
                             <li class="active">Roadside Assistance Dubai</li>
                         </ul>
 
-                        <p class="mt-3">
+                        <h2 class="mt-3 text-white breadcrumb-subtitle">
                             Stuck on the Road? One Call Away from Safety, Speed & Peace of Mind.
-                        </p>
+                        </h2>
 
                         <div class="hero-btn mt-4">
                             <a href="{{ route('book.now') }}" class="theme-btn">

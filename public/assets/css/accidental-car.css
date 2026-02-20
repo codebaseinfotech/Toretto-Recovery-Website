@@ -37,7 +37,7 @@
 
 /* Hero Main Title (H1) */
 .hero-main-title {
-    font-size: 48px;
+    font-size: 60px;
     font-weight: 800;
     line-height: 1.2;
     color: #fff;
@@ -263,10 +263,6 @@
 
 /* Tablet (992px and below) */
 @media (max-width: 992px) {
-    .hero-main-title {
-        font-size: 38px;
-    }
-
     .hero-subtitle {
         font-size: 19px;
     }
@@ -301,10 +297,6 @@
 
 /* Mobile (768px and below) */
 @media (max-width: 768px) {
-    .hero-main-title {
-        font-size: 32px;
-    }
-
     .hero-subtitle {
         font-size: 17px;
     }
@@ -363,7 +355,7 @@
 /* Small Mobile (576px and below) */
 @media (max-width: 576px) {
     .hero-main-title {
-        font-size: 28px;
+        font-size: 40px;
     }
 
     .hero-subtitle {
@@ -3750,45 +3742,6 @@
 }
 
 
-
-/* ======================================
-   HERO BANNER REDESIGN STYLES
-   ====================================== */
-
-/* Hero Content Wrapper */
-.hero-content-wrapper {
-    padding: 20px 0;
-}
-
-/* Hero Main Title (H1) */
-.hero-main-title {
-    font-size: 48px;
-    font-weight: 800;
-    line-height: 1.2;
-    color: #fff;
-    text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
-    margin-bottom: 20px;
-}
-
-/* Hero Subtitle (H2) */
-.hero-subtitle {
-    font-size: 22px;
-    font-weight: 600;
-    color: #fff;
-    text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
-    margin-bottom: 25px;
-}
-
-.hero-subtitle i {
-    margin-right: 10px;
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-}
-
 /* USP Highlights */
 .usp-highlights {
     display: flex;
@@ -4478,10 +4431,6 @@
 
 /* Tablet (992px and below) */
 @media (max-width: 992px) {
-    .hero-main-title {
-        font-size: 38px;
-    }
-
     .hero-subtitle {
         font-size: 19px;
     }
@@ -4516,10 +4465,6 @@
 
 /* Mobile (768px and below) */
 @media (max-width: 768px) {
-    .hero-main-title {
-        font-size: 32px;
-    }
-
     .hero-subtitle {
         font-size: 17px;
     }
@@ -4577,10 +4522,6 @@
 
 /* Small Mobile (576px and below) */
 @media (max-width: 576px) {
-    .hero-main-title {
-        font-size: 28px;
-    }
-
     .hero-subtitle {
         font-size: 16px;
         margin-bottom: 20px;
@@ -4697,11 +4638,6 @@
         font-size: 24px !important;
     }
 
-    /* Hero main title */
-    .hero-main-title {
-        font-size: 36px !important;
-    }
-
     /* Hero subtitle */
     .hero-subtitle {
         font-size: 18px !important;
@@ -4759,12 +4695,6 @@
         font-size: 20px !important;
     }
 
-    /* Hero main title */
-    .hero-main-title {
-        font-size: 28px !important;
-        line-height: 1.2 !important;
-    }
-
     /* Hero subtitle */
     .hero-subtitle {
         font-size: 16px !important;
@@ -4819,13 +4749,66 @@
         font-size: 24px !important;
     }
 
-    .hero-main-title {
-        font-size: 24px !important;
-    }
-
     .subsection-header h2,
     .site-heading h2 {
         font-size: 18px !important;
     }
 }
 
+
+/* ======================================
+   CRITICAL RECOVERY SCENARIOS — Image
+   ====================================== */
+.ac-scenario-img-wrap {
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    max-height: 420px;
+}
+
+.ac-scenario-img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+}
+
+.ac-scenario-img-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 16px 24px;
+    background: linear-gradient(0deg, rgba(0,0,0,0.75) 0%, transparent 100%);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+}
+
+.ac-scenario-img-caption i {
+    color: #d70006;
+    font-size: 16px;
+}
+
+.ac-scenario-img-caption span {
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}
+
+@media (max-width: 768px) {
+    .ac-scenario-img-wrap {
+        max-height: 260px;
+    }
+    .ac-scenario-img {
+        height: 260px;
+    }
+    .ac-scenario-img-caption {
+        padding: 12px 16px;
+    }
+    .ac-scenario-img-caption span {
+        font-size: 12px;
+    }
+}

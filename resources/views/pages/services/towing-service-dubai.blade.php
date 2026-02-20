@@ -13,8 +13,28 @@
 
 @section('schema')
     @verbatim
-        <script type="application/ld+json">
+       <script type="application/ld+json">
 {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "serviceType": "Vehicle Towing Service",
+  "provider": {
+    "@type": "LocalBusiness",
+    "name": "Toretto Recovery"
+  },
+  "areaServed": {
+    "@type": "AdministrativeArea",
+    "name": "Dubai"
+  },
+  "availableChannel": {
+    "@type": "ServiceChannel",
+    "serviceLocation": {
+      "@type": "Place",
+      "name": "Dubai"
+    }
+  },
+  "description": "Professional 24/7 towing service in Dubai for cars, luxury vehicles, sports cars, motorcycles, SUVs, and commercial vehicles. Serving highways, homes, offices, basements, and off-road locations."
+},{
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
@@ -34,7 +54,6 @@
         "text": "Yes. We use flatbed towing and specialized equipment designed for luxury and sports vehicles."
       }
     },
-
     {
       "@type": "Question",
       "name": "Do you tow from basement parking?",
@@ -52,7 +71,11 @@
       }
     }
   ]
-}</script>
+}
+
+</script>
+
+
     @endverbatim
 @endsection
 
@@ -63,25 +86,23 @@
             .offset-lg-2 {
                 : 8.666667%;
             }
+
             .col-lg-7 {
                 flex: 0 0 auto;
                 width: 58.33333333%;
             }
+
             .col-lg-3 {
                 flex: 0 0 auto;
                 width: 30%;
             }
+
             .offset-lg-2 {
                 margin-left: 5.666667%;
             }
-           .site-breadcrumb .breadcrumb-title{
-                font-size: 55px;
-            }
+
             .breadcrumb-menu li a {
                 font-size: 16px;
-            }
-            .fastone {
-                font-size: 20px;
             }
         }
     </style>
@@ -92,9 +113,9 @@
 
                 <!-- LEFT TEXT (CENTERED) -->
                 <div class="col-lg-7 d-flex align-items-center">
-                    <div class="contact-img text-white">
+                    <div class="contact-img text-start text-white">
 
-                        <h1 class="breadcrumb-title">
+                        <h1 class="breadcrumb-title wow animate__animated animate__fadeInDown">
                             <span>24/7 Towing Service in Dubai</span> — Fast, Safe & Always Available
                         </h1>
 
@@ -106,11 +127,11 @@
                             <li class="active">Towing Service Dubai</li>
                         </ul>
 
-                        <p class="mt-3 fastone">
+                        <h2 class="mt-3 breadcrumb-subtitle text-white">
                             Day or night, accident or breakdown, Toretto Recovery is here to help.
                             Our professional towing team is available 24/7 to recover your vehicle safely
                             anywhere in Dubai.
-                        </p>
+                        </h2>
 
                         <div class="hero-btn mt-4">
                             <a href="{{ route('book.now') }}" class="theme-btn">
@@ -350,8 +371,7 @@
                 <div class="col-lg-6 imagebag">
                     <div class="about-left wow animate__animated animate__fadeInLeft">
                         <div class="about-img">
-                            <img src="{{ asset('assets/images/toretto-recovery-towing -service-in-dubai.jpg') }}"
-                                alt="">
+                            <img src="{{ asset('assets/images/toretto-recovery-towing -service-in-dubai.jpg') }}" alt="">
                         </div>
                     </div>
                 </div>

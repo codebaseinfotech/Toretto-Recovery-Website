@@ -68,6 +68,11 @@
     letter-spacing: 0.5px;
 }
 
+.site-breadcrumb .breadcrumb-title {
+    color: #fff;
+    font-size: 60px;
+}
+
 /* RESPONSIVE */
 @media (max-width: 768px) {
     .service-stats {
@@ -363,6 +368,27 @@
 
     .coverage-map iframe {
         height: 360px;
+    }
+
+    .site-breadcrumb .breadcrumb-title {
+        color: #fff;
+        font-size: 40px;
+    }
+
+    .site-breadcrumb .breadcrumb-subtitle {
+        font-size: 20px;
+    }
+
+    .site-breadcrumb .hero-stats{
+        display: grid;
+        grid-template-columns:  repeat(2 , 1fr);
+    }
+}
+
+@media(max-width:425px){
+    .site-breadcrumb .hero-stats{
+        display: grid;
+        grid-template-columns:  repeat(1 , 1fr);
     }
 }
 
@@ -1964,7 +1990,8 @@
 
 /* HERO STATS DESIGN */
 .hero-stats {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     justify-content: center;
     align-items: stretch;
     gap: 0;
@@ -1975,10 +2002,10 @@
 .stats-box {
     background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(6px);
-    padding: 25px 40px;
+    padding: 25px 20px;
     text-align: center;
     border: 1px solid rgba(255, 255, 255, 0.2);
-    min-width: 220px;
+    min-width: 190px;
     transition: 0.3s ease;
 }
 

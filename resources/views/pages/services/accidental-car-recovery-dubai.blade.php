@@ -8,8 +8,7 @@
 
 @section('schema')
     @verbatim
-        <script type="application/ld+json">
-    {
+        <script type="application/ld+json">{
   "@context": "https://schema.org",
   "@type": "Service",
   "serviceType": "Accidental Car Recovery Service",
@@ -98,7 +97,8 @@
   },
   "slogan": "RTA Licensed 24/7 Emergency Accident Recovery Across Dubai",
   "description": "Professional accidental car recovery service in Dubai with 14 years experience. RTA licensed, modern equipment fleet, luxury vehicle specialists, 24/7 emergency response with 20-45 minute arrival times."
-},{
+},
+{
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
@@ -231,10 +231,10 @@
 
                 <!-- LEFT CONTENT -->
                 <div class="col-lg-7 d-flex align-items-center">
-                    <div class="hero-content-wrapper text-white">
+                    <div class="hero-content-wrapper text-white text-start">
 
                         <!-- Main Heading -->
-                        <h1 class="hero-main-title mb-3">
+                        <h1 class="hero-main-title mb-3 wow animate__animated animate__fadeInDown">
                             24/7 Emergency Accidental Vehicle Recovery Across the Emirate
                         </h1>
 
@@ -248,9 +248,9 @@
                         </ul>
 
                         <!-- Subtitle -->
-                        <p class="mt-3 mb-3">
+                        <h2 class="mt-3 mb-3 text-white breadcrumb-subtitle">
                             Professional Response When It Matters Most
-                        </p>
+                        </h2>
 
                         <!-- USP Highlights -->
                         <div class="usp-highlights mb-4">
@@ -368,6 +368,11 @@
                     intervention to ensure safety and prevent further damage</p>
             </div>
 
+            <!-- Section Image -->
+            <div class="ac-scenario-img-wrap mb-5">
+                <img src="{{ asset('assets/images/critical-recovery-scenarios.jpg') }}" alt="Professional accident vehicle recovery - tow truck operator securing a damaged car for safe transport" class="ac-scenario-img" loading="lazy">
+            </div>
+
             <div class="row">
                 <div class="col-lg-6 col-md-6 mb-4">
                     <div class="scenario-card"
@@ -461,7 +466,7 @@
                     <div class="included-grid">
                         <div class="included-item">
                             <i class="fa-solid fa-truck-fast"></i>
-                            <p>Immediate dispatch for <a class="text-link"
+                            <p>Immediate dispatch for <a class="text-link" target="_blank"
                                     href="{{ route('our-service.ourservice', ['slug' => 'towing-service-dubai']) }}">accident
                                     towing near me</a> requests</p>
                         </div>
@@ -476,7 +481,7 @@
                         <div class="included-item">
                             <i class="fa-solid fa-shield-halved"></i>
                             <p>Safe
-                                <a class="text-link"
+                                <a class="text-link" target="_blank"
                                     href="{{ route('our-service.ourservice', ['slug' => 'roadside-assistance-dubai']) }}">accident
                                     roadside assistance and accident recovery Dubai</a>
                             </p>
