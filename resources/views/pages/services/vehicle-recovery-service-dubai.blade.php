@@ -11,10 +11,9 @@
 
 @section('meta_keywords', '24/7 Emergency Vehicle Recovery Dubai – Fast Help Across All Areas | Toretto recovery')
 
-@section('schema')
-    @verbatim
-        <script type="application/ld+json">
-
+@section('head')
+@verbatim
+<script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -77,9 +76,8 @@
     }
   ]
 }
-
-        </script>
-    @endverbatim
+</script>
+@endverbatim
 @endsection
 
 @section('content')
