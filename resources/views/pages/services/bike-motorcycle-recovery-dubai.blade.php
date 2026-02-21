@@ -193,7 +193,7 @@
                                 <input type="email" name="email" placeholder="Email address" required>
                             </div>
 
-                            <input type="hidden" name="type" value="Roadside Assistance in Dubai Inquiry">
+                            <input type="hidden" name="type" value="Emergency Motorcycle Recovery Dubai">
 
                             <div class="form-group">
                                 <input type="text" name="phone" placeholder="Phone number" required>
@@ -2450,7 +2450,8 @@
         </div>
     </section>
 
-    <link rel="stylesheet" href="{{ asset('assets/css/bike-motocycle.css') }}">
+   <link rel="stylesheet"
+      href="{{ asset('assets/css/bike-motocycle.css') }}?v={{ filemtime(public_path('assets/css/bike-motocycle.css')) }}">
 
     <script>
         // Urban Districts Accordion

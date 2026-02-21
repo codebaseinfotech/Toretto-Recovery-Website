@@ -1687,7 +1687,7 @@
     </section>
 
 
-    <link rel="stylesheet" href="{{ asset('assets/css/accidental-car.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/accidental-car.css') }}?v={{ filemtime(public_path('assets/css/accidental-car.css')) }}">
     <script>
         // Original FAQ functionality (if exists)
         document.querySelectorAll('.faq-question').forEach(btn => {

@@ -1324,7 +1324,8 @@
         </div>
     </section>
 
-    <link rel="stylesheet" href="{{ asset('assets/css/desert-pull-out.css') }}">
+    <link rel="stylesheet"
+      href="{{ asset('assets/css/desert-pull-out.css') }}?v={{ filemtime(public_path('assets/css/desert-pull-out.css')) }}">
 
     <script>
         // Urban Districts Accordion

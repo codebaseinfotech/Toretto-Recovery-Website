@@ -315,7 +315,7 @@
                                 <input type="email" name="email" placeholder="Email address" required>
                             </div>
 
-                            <input type="hidden" name="type" value="Vehicle Recovery in Dubai Inquiry">
+                            <input type="hidden" name="type" value="Expert flatbed recovery across Dubai">
 
                             <div class="form-group">
                                 <input type="text" name="phone" placeholder="Phone number" required>
@@ -1613,8 +1613,11 @@
     </section>
 
 
-    <link rel="stylesheet" href="{{ asset('assets/css/service.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/flatbed-recovery.css') }}">
+<link rel="stylesheet"
+      href="{{ asset('assets/css/service.css') }}?v={{ filemtime(public_path('assets/css/service.css')) }}">
+
+<link rel="stylesheet"
+      href="{{ asset('assets/css/flatbed-recovery.css') }}?v={{ filemtime(public_path('assets/css/flatbed-recovery.css')) }}">
     <script>
         document.querySelectorAll('.faqs2-question').forEach(button => {
             button.addEventListener('click', () => {

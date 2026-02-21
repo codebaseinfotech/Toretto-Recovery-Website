@@ -224,7 +224,7 @@
                                 <input type="email" name="email" placeholder="Email address" required>
                             </div>
 
-                            <input type="hidden" name="type" value="Roadside Assistance in Dubai Inquiry">
+                            <input type="hidden" name="type" value="Luxury & Sports Car Handling Specialist in Dubai">
 
                             <div class="form-group">
                                 <input type="text" name="phone" placeholder="Phone number" required>
@@ -1650,9 +1650,8 @@
         </div>
     </section>
 
-    <link rel="stylesheet" href="{{ asset('assets/css/luxury-sports-car.css') }}">
-
-
+<link rel="stylesheet"
+      href="{{ asset('assets/css/luxury-sports-car.css') }}?v={{ filemtime(public_path('assets/css/luxury-sports-car.css')) }}">
     <script>
         // Urban Districts Accordion
         const leAccordionItems = document.querySelectorAll('.le-accordion-item');

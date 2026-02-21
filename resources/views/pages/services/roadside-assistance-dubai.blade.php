@@ -1119,7 +1119,8 @@
         </div>
     </section>
 
-    <link rel="stylesheet" href="{{ asset('assets/css/service.css') }}">
+   <link rel="stylesheet"
+      href="{{ asset('assets/css/service.css') }}?v={{ filemtime(public_path('assets/css/service.css')) }}">
     <script>
         document.querySelectorAll('.faq-question').forEach(btn => {
             btn.addEventListener('click', () => {
