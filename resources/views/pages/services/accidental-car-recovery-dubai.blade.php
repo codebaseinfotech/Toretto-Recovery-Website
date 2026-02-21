@@ -237,7 +237,7 @@
 
                         <!-- Main Heading -->
                         <h1 class="hero-main-title mb-3 wow animate__animated animate__fadeInDown">
-                            24/7 Emergency Accidental Vehicle Recovery Across the Emirate
+                            24/7 Emergency Accidental Car Recovery Across the Emirate
                         </h1>
 
 

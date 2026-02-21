@@ -274,7 +274,7 @@
                 </div>
                 <div class="bm-stat-divider"></div>
                 <div class="bm-stat-box">
-                    <span class="bm-stat-num">15+</span>
+                    <span class="bm-stat-num">10+</span>
                     <span class="bm-stat-label">Years in UAE Roads</span>
                 </div>
                 <div class="bm-stat-divider"></div>

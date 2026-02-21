@@ -48,10 +48,12 @@
                         <h4 class="footer-widget-title">Download App</h4>
 
                         <div class="app-buttons">
-                            <a href="#" class="app-btn">
+                            <a target="_blank" href="https://apps.apple.com/in/app/fixmycar-uae/id6757262754"
+                                class="app-btn">
                                 <img src="{{ asset('assets/images/app-store.png') }}" alt="App Store">
                             </a>
-                            <a href="#" class="app-btn">
+                            <a target="_blank" href="https://play.google.com/store/apps/details?id=com.cb.fixmycaruae"
+                                class="app-btn">
                                 <img src="{{ asset('assets/images/google-play.png') }}" alt="Google Play">
                             </a>
                         </div>

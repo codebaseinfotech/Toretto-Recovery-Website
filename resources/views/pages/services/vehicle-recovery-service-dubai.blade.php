@@ -642,7 +642,7 @@
                     <div class="why-number">01</div>
                     <div class="why-content">
                         <h4>Experience That Actually Matters</h4>
-                        <p><b>Our operators average 15+ years in professional extraction, with comprehensive knowledge of
+                        <p><b>Our operators average 10+ years in professional extraction, with comprehensive knowledge of
                                 this emirate's unique demands:</b></p>
                         <p><b>Local road expertise</b>including flash flood response protocols for the rare but intense
                             rainfall events, summer heat vehicle failure patterns, and peak traffic hour navigation

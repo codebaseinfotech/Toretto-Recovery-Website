@@ -14,80 +14,80 @@
 @section('meta_keywords', '24/7 Towing Service in Dubai, Emergency Car Recovery Dubai, Roadside Assistance UAE')
 
 @section('head')
-@verbatim
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "How quickly can you reach me in Dubai?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Response times depend on your location and traffic, but most central Dubai calls are answered within 30-45 minutes. We provide accurate ETAs when you call."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How much does roadside assistance cost in Dubai?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Costs vary by service type and location. Simple services like jump-starts or tire changes start around AED 150, while towing or complex recovery can exceed AED 500. We provide an upfront quote before sending a technician."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Do you work with insurance companies?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes, we work with most major insurance providers in the UAE including AXA, Oman Insurance, RSA, Orient Insurance, and others. If your policy includes roadside coverage, we can often bill directly."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Can you help with electric vehicles (EVs)?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes, all EVs are transported on flatbed trucks to prevent damage. We service Tesla, Nissan Leaf, BMW i-series, Audi e-tron, and other electric models."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What if my car cannot be fixed on the spot?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "If on-site repair isn’t possible, we’ll tow your vehicle to your preferred service center or garage within Dubai/Sharjah at no extra charge. We can also recommend licensed repair centers if needed."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Do you provide services outside Dubai?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes, we cover Sharjah, Ajman, and coordinate services in Abu Dhabi, RAK, Fujairah, and Umm Al Quwain through our partner network."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Will you operate during bad weather?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes, we provide service during sandstorms, rain, and other adverse conditions. During severe weather advisories, response times may be slightly longer, but we always communicate realistic ETAs."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Can I get a membership or package deal?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes, we offer annual membership packages for individuals, families, and corporate fleets. Benefits include unlimited roadside support, priority response, and discounted service rates."
-      }
-    }
-  ]
-}
-</script>
-@endverbatim
+    @verbatim
+        <script type="application/ld+json">
+                        {
+                          "@context": "https://schema.org",
+                          "@type": "FAQPage",
+                          "mainEntity": [
+                            {
+                              "@type": "Question",
+                              "name": "How quickly can you reach me in Dubai?",
+                              "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Response times depend on your location and traffic, but most central Dubai calls are answered within 30-45 minutes. We provide accurate ETAs when you call."
+                              }
+                            },
+                            {
+                              "@type": "Question",
+                              "name": "How much does roadside assistance cost in Dubai?",
+                              "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Costs vary by service type and location. Simple services like jump-starts or tire changes start around AED 150, while towing or complex recovery can exceed AED 500. We provide an upfront quote before sending a technician."
+                              }
+                            },
+                            {
+                              "@type": "Question",
+                              "name": "Do you work with insurance companies?",
+                              "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Yes, we work with most major insurance providers in the UAE including AXA, Oman Insurance, RSA, Orient Insurance, and others. If your policy includes roadside coverage, we can often bill directly."
+                              }
+                            },
+                            {
+                              "@type": "Question",
+                              "name": "Can you help with electric vehicles (EVs)?",
+                              "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Yes, all EVs are transported on flatbed trucks to prevent damage. We service Tesla, Nissan Leaf, BMW i-series, Audi e-tron, and other electric models."
+                              }
+                            },
+                            {
+                              "@type": "Question",
+                              "name": "What if my car cannot be fixed on the spot?",
+                              "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "If on-site repair isn’t possible, we’ll tow your vehicle to your preferred service center or garage within Dubai/Sharjah at no extra charge. We can also recommend licensed repair centers if needed."
+                              }
+                            },
+                            {
+                              "@type": "Question",
+                              "name": "Do you provide services outside Dubai?",
+                              "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Yes, we cover Sharjah, Ajman, and coordinate services in Abu Dhabi, RAK, Fujairah, and Umm Al Quwain through our partner network."
+                              }
+                            },
+                            {
+                              "@type": "Question",
+                              "name": "Will you operate during bad weather?",
+                              "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Yes, we provide service during sandstorms, rain, and other adverse conditions. During severe weather advisories, response times may be slightly longer, but we always communicate realistic ETAs."
+                              }
+                            },
+                            {
+                              "@type": "Question",
+                              "name": "Can I get a membership or package deal?",
+                              "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Yes, we offer annual membership packages for individuals, families, and corporate fleets. Benefits include unlimited roadside support, priority response, and discounted service rates."
+                              }
+                            }
+                          ]
+                        }
+                        </script>
+    @endverbatim
 @endsection
 
 @section('content')
@@ -146,14 +146,14 @@
                         </ul>
 
                         <h2 class="mt-3 text-white breadcrumb-subtitle">
-                            Stuck on the Road? One Call Away from Safety, Speed & Peace of Mind.
+                            Breakdown or emergency? We deliver rapid roadside assistance you can trust.
                         </h2>
 
                         <div class="hero-btn mt-4">
                             <a href="{{ route('book.now') }}" target="_blank" class="theme-btn">
                                 Book Now <i class="fas fa-arrow-right-long"></i>
                             </a>
-                            <a href="tel:+971523003423"  class="theme-btn theme-btn2">
+                            <a href="tel:+971523003423" class="theme-btn theme-btn2">
                                 Call Now <i class="fas fa-arrow-right-long"></i>
                             </a>
                         </div>
@@ -804,22 +804,22 @@
 
 
             <h3 style="color: #d70006">Service Areas We Cover</h3>
-            <div class="hero-stats row mt-3 mb-3">
-                <div class="stats-box col-3">
+            <div class="hero-stats-cover row mt-3 mb-3">
+                <div class="stats-box-cover col-3">
                     <h4>Dubai Central</h4>
                     <p>Business Bay, Downtown, DIFC, Dubai Marina, JBR, JLT, Tecom, Jumeirah</p>
                 </div>
 
-                <div class="stats-box col-3">
+                <div class="stats-box-cover col-3">
                     <h4>Dubai North</h4>
                     <p>Deira, Bur Dubai, Al Qusais, Al Nahda, Muhaisnah, Mirdif</p>
                 </div>
 
-                <div class="stats-box col-3">
+                <div class="stats-box-cover col-3">
                     <h4>Dubai South</h4>
                     <p>DIP, Al Quoz, Jebel Ali, Motor City, Arabian Ranches</p>
                 </div>
-                <div class="stats-box col-3">
+                <div class="stats-box-cover col-3">
                     <h4>Sharjah & Other Emirates</h4>
                     <p>Sharjah, Ajman, Abu Dhabi (partners), RAK, Fujairah, UAQ</p>
                 </div>
@@ -858,7 +858,7 @@
                             <ul class="check-list">
                                 <li>
                                     Dial our <strong>24/7 Hotline:</strong>
-                                    <a href="tel:+971523003423" >+971 52 300 3423</a>
+                                    <a href="tel:+971523003423">+971 52 300 3423</a>
                                 </li>
                                 <li>Share your live location (Google Maps preferred)</li>
                                 <li>Explain the issue with your vehicle</li>
