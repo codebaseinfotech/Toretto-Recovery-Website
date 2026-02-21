@@ -3331,3 +3331,74 @@
         line-height: 1.5;
     }
 }
+.tw-coverage-hint {
+    font-size: 13px;
+    color: #999;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tw-coverage-hint i {
+    color: #d70006;
+    font-size: 14px;
+}
+
+.tw-loc-pin {
+    cursor: pointer;
+    transition: all 0.25s ease;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.tw-loc-pin i {
+    font-size: 12px;
+    color: #ccc;
+    transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.tw-loc-pin:hover {
+    color: #d70006 !important;
+    background: rgba(215, 0, 6, 0.06) !important;
+    border-color: rgba(215, 0, 6, 0.3) !important;
+    transform: translateY(-2px);
+}
+
+.tw-loc-pin:hover i {
+    color: #d70006;
+    transform: scale(1.2);
+}
+
+.tw-loc-active {
+    background: #d70006 !important;
+    color: #fff !important;
+    border-color: #d70006 !important;
+    box-shadow: 0 4px 14px rgba(215, 0, 6, 0.25);
+    transform: translateY(-2px);
+}
+
+.tw-loc-active i {
+    color: #fff !important;
+}
+
+.tw-loc-active::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    background: #d70006;
+    border-radius: 50%;
+    animation: tw-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes tw-pulse {
+    0%, 100% { opacity: 1; transform: translateX(-50%) scale(1); }
+    50% { opacity: 0.5; transform: translateX(-50%) scale(1.5); }
+}
+ 

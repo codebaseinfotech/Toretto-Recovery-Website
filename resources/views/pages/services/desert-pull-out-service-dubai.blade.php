@@ -10,11 +10,11 @@
 
 @section('meta_keywords', 'Stuck in Desert? 24/7 Pull Out & Recovery Service – Toretto')
 @section('head')
-    @verbatim
+@verbatim
         <script type="application/ld+json">
 {
     "@context": "https://schema.org",
-    "@type": ["LocalBusiness","AutomotiveBusiness","FAQPage"],
+    "@type": ["LocalBusiness","AutomotiveBusiness"],
     "name": "Toretto Desert Recovery Dubai",
     "alternateName": "Toretto Desert Pull Out Service",
     "description": "Professional desert pull out and recovery service in Dubai.
@@ -43,11 +43,82 @@
     "longitude": "55.2708"
     },
     "areaServed": [
-    {"@type": "City", "name": "Dubai"}],
-    "mainEntity": []
+    {"@type": "City", "name": "Dubai"}]
 }
 </script>
-    @endverbatim
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How quickly can you reach me in the desert?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Response time depends on your location and team availability. For major desert areas around Dubai such as Al Qudra, Lahbab, and Margham, arrival is typically within 30 to 60 minutes. For more remote locations, an honest time estimate is provided when you call. We prioritise realistic arrival times over over-promising."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can you recover rental cars?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Rental car recovery is handled regularly. We follow proper handling procedures required by rental providers and recommend informing your rental company, as most UAE-based rental companies are familiar with our service."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is a professional pull out safe for my vehicle?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, when done correctly it is significantly safer than amateur recovery attempts. Vehicle damage usually results from incorrect pull angles, misuse of tow points, or aggressive wheelspin. Our team uses vehicle-appropriate recovery methods for every situation, from small cars to fully loaded 4x4s."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you work at night and on weekends?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. We operate 24 hours a day, 7 days a week, including weekends and UAE public holidays. Night-time desert recoveries are common, especially from camping and overnight dune driving activities."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Will you confirm the price before you come?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. A confirmed price is always provided before dispatching a team. There are no surprise charges. If any on-site complications arise, they are discussed openly before proceeding."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which desert areas in Dubai do you cover?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Coverage includes Al Qudra Desert, Lahbab Red Dunes, Margham Desert, Al Badayer Desert, Dubai outskirts and border zones, desert-adjacent areas of Sharjah, and the Dubai–Hatta corridor. Location confirmation is available via WhatsApp."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What should I do and avoid while waiting for you?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Stay with your vehicle and do not walk for help. Turn off the engine if the temperature is high, use hazard lights if visibility is low, drink available water, and stay in the shade. Avoid repeated acceleration or reversing as it can cause damage and make recovery harder."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can you recover a vehicle that has rolled or is partially on its side?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Vehicle uprighting and recovery are handled using specialised equipment and methods. These situations require advance notice so the correct team and setup can be dispatched."
+      }
+    }
+  ]
+}
+</script>
+@endverbatim
 @endsection
 @section('content')
     <style>

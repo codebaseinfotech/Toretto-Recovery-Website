@@ -460,44 +460,87 @@
         <div class="container">
 
             <h3>Dubai Locations We Serve</h3>
-
+            <p class="tw-coverage-hint"><i class="fas fa-hand-pointer"></i> Click any location to view it on the map</p>
             <div class="coverage-wrap">
-
                 <!-- Locations -->
                 <div class="coverage-list">
-                    <span>Deira</span>
-                    <span>Bur Dubai</span>
-                    <span>Downtown Dubai</span>
-                    <span>Business Bay</span>
-
-                    <span>Dubai Marina</span>
-                    <span>JLT & JBR</span>
-                    <span>Palm Jumeirah</span>
-                    <span>Jumeirah 1, 2 & 3</span>
-
-                    <span>Al Barsha</span>
-                    <span>Al Quoz</span>
-                    <span>Dubai Silicon Oasis</span>
-                    <span>International City</span>
-
-                    <span>DIP & Jebel Ali</span>
-                    <span>Dubai Hills</span>
-                    <span>Arabian Ranches</span>
-                    <span>Motor City</span>
-                    <span>Sports City</span>
+                    <span class="tw-loc-pin tw-loc-active" data-lat="25.2760" data-lng="55.3300">
+                        <i class="fas fa-map-marker-alt"></i> Deira
+                    </span>
+                    <span class="tw-loc-pin" data-lat="25.2635" data-lng="55.2972">
+                        <i class="fas fa-map-marker-alt"></i> Bur Dubai
+                    </span>
+                    <span class="tw-loc-pin" data-lat="25.1975" data-lng="55.2744">
+                        <i class="fas fa-map-marker-alt"></i> Downtown Dubai
+                    </span>
+                    <span class="tw-loc-pin" data-lat="25.1850" data-lng="55.2600">
+                        <i class="fas fa-map-marker-alt"></i> Business Bay
+                    </span>
+                    <span class="tw-loc-pin" data-lat="25.0805" data-lng="55.1403">
+                        <i class="fas fa-map-marker-alt"></i> Dubai Marina
+                    </span>
+                    <span class="tw-loc-pin" data-lat="25.0687" data-lng="55.1400">
+                        <i class="fas fa-map-marker-alt"></i> JLT
+                    </span>
+                    <span class="tw-loc-pin" data-lat="25.0765" data-lng="55.1342">
+                        <i class="fas fa-map-marker-alt"></i> JBR
+                    </span>
+                    <span class="tw-loc-pin" data-lat="25.1122" data-lng="55.1390">
+                        <i class="fas fa-map-marker-alt"></i> Palm Jumeirah
+                    </span>
+                    <span class="tw-loc-pin" data-lat="25.2324" data-lng="55.2653">
+                        <i class="fas fa-map-marker-alt"></i> Jumeirah 1
+                    </span>
+                    <span class="tw-loc-pin" data-lat="25.2215" data-lng="55.2558">
+                        <i class="fas fa-map-marker-alt"></i> Jumeirah 2
+                    </span>
+                    <span class="tw-loc-pin" data-lat="25.2098" data-lng="55.2460">
+                        <i class="fas fa-map-marker-alt"></i> Jumeirah 3
+                    </span>
+                    <span class="tw-loc-pin" data-lat="25.1122" data-lng="55.2005">
+                        <i class="fas fa-map-marker-alt"></i> Al Barsha
+                    </span>
+                    <span class="tw-loc-pin" data-lat="25.1233" data-lng="55.2390">
+                        <i class="fas fa-map-marker-alt"></i> Al Quoz
+                    </span>
+                    <span class="tw-loc-pin" data-lat="25.1254" data-lng="55.3806">
+                        <i class="fas fa-map-marker-alt"></i> Dubai Silicon Oasis
+                    </span>
+                    <span class="tw-loc-pin" data-lat="25.1579" data-lng="55.4084">
+                        <i class="fas fa-map-marker-alt"></i> International City
+                    </span>
+                    <span class="tw-loc-pin" data-lat="24.9905" data-lng="55.1708">
+                        <i class="fas fa-map-marker-alt"></i> Dubai Investment Park
+                    </span>
+                    <span class="tw-loc-pin" data-lat="24.9857" data-lng="55.0657">
+                        <i class="fas fa-map-marker-alt"></i> Jebel Ali
+                    </span>
+                    <span class="tw-loc-pin" data-lat="25.1003" data-lng="55.2337">
+                        <i class="fas fa-map-marker-alt"></i> Dubai Hills
+                    </span>
+                    <span class="tw-loc-pin" data-lat="25.0525" data-lng="55.2650">
+                        <i class="fas fa-map-marker-alt"></i> Arabian Ranches
+                    </span>
+                    <span class="tw-loc-pin" data-lat="25.0403" data-lng="55.2387">
+                        <i class="fas fa-map-marker-alt"></i> Motor City
+                    </span>
+                    <span class="tw-loc-pin" data-lat="25.0351" data-lng="55.2194">
+                        <i class="fas fa-map-marker-alt"></i> Sports City
+                    </span>
                 </div>
 
                 <!-- Map -->
                 <div class="coverage-map">
-                    <iframe
-                        src="https://www.google.com/maps?q=Deira+Dubai|Bur+Dubai|Downtown+Dubai|Business+Bay|Dubai+Marina|JLT|JBR|Palm+Jumeirah|Jumeirah|Al+Barsha|Al+Quoz|Dubai+Silicon+Oasis|International+City|Jebel+Ali|Dubai+Hills|Arabian+Ranches|Motor+City|Sports+City&output=embed"
+                    <iframe id="tw-coverage-iframe"
+                        src="https://maps.google.com/maps?q=25.2760,55.3300&t=&z=14&ie=UTF8&iwloc=B&output=embed"
                         loading="lazy" referrerpolicy="no-referrer-when-downgrade">
                     </iframe>
                 </div>
-
             </div>
         </div>
     </section>
+
+
 
     <section class="towing-locations">
         <div class="container">
@@ -685,4 +728,20 @@
     </section>
 
     <link rel="stylesheet" href="{{ asset('assets/css/service.css') }}">
+    <script>
+        // Dynamic location → map interaction
+        document.querySelectorAll('.tw-loc-pin').forEach(pin => {
+            pin.addEventListener('click', () => {
+                const lat = pin.dataset.lat;
+                const lng = pin.dataset.lng;
+                // Update active state
+                document.querySelectorAll('.tw-loc-pin').forEach(p => p.classList.remove('tw-loc-active'));
+                pin.classList.add('tw-loc-active');
+                // Update iframe — red pin marker at exact coordinates
+                const iframe = document.getElementById('tw-coverage-iframe');
+                iframe.src =
+                    `https://maps.google.com/maps?q=${lat},${lng}&t=&z=14&ie=UTF8&iwloc=B&output=embed`;
+            });
+        });
+    </script>
 @endsection
