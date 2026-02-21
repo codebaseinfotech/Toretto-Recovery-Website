@@ -9,45 +9,44 @@
 @endsection
 
 @section('meta_keywords', 'Stuck in Desert? 24/7 Pull Out & Recovery Service – Toretto')
-@section('schema')
-    @verbatim
-        <script type="application/ld+json">
-
-                                                {
-                                                  "@context": "https://schema.org",
-                                                  "@type": ["LocalBusiness", "AutomotiveBusiness"],
-                                                  "name": "Toretto Desert Recovery Dubai",
-                                                  "alternateName": "Toretto Desert Pull Out Service",
-                                                  "description": "Professional desert pull out and recovery service in Dubai.
-                                                                   15+ years of experience. Winch-assisted extraction, 24/7
-                                                                   emergency response. Covering Al Qudra, Lahbab, Margham,
-                                                                   Al Badayer and all Dubai desert areas.",
-                                                  "url": "https://www.toretto.ae/desert-pull-out-service-dubai/",
-                                                  "logo": "https://www.toretto.ae/images/toretto-logo.png",
-                                                  "image": [
-                                                    "https://www.toretto.ae/images/dubai-desert-pull-out-service-toretto.jpg",
-                                                    "https://www.toretto.ae/images/toretto-recovery-team-dubai.jpg"
-                                                  ],
-                                                  "telephone": "+971 523003423",
-                                                  "email": "recovery@toretto.ae",
-                                                  "address": {
-                                                    "@type": "PostalAddress",
-                                                    "streetAddress": "274 Street - Dubai Investment Park - 2 - Dubai",
-                                                    "addressLocality": "Dubai",
-                                                    "addressRegion": "Dubai",
-                                                    "postalCode": "[Postal Code]",
-                                                    "addressCountry": "AE"
-                                                  },
-                                                  "geo": {
-                                                    "@type": "GeoCoordinates",
-                                                    "latitude": "25.2048",
-                                                    "longitude": "55.2708"
-                                                  },
-                                                  "areaServed": [
-                                                    {"@type": "City", "name": "Dubai"}]
-                                                }
-                                                        </script>
-    @endverbatim
+@section('head')
+@verbatim
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": ["LocalBusiness", "AutomotiveBusiness"],
+    "name": "Toretto Desert Recovery Dubai",
+    "alternateName": "Toretto Desert Pull Out Service",
+    "description": "Professional desert pull out and recovery service in Dubai.
+                    15+ years of experience. Winch-assisted extraction, 24/7
+                    emergency response. Covering Al Qudra, Lahbab, Margham,
+                    Al Badayer and all Dubai desert areas.",
+    "url": "https://www.toretto.ae/desert-pull-out-service-dubai/",
+    "logo": "https://www.toretto.ae/images/toretto-logo.png",
+    "image": [
+    "https://www.toretto.ae/images/dubai-desert-pull-out-service-toretto.jpg",
+    "https://www.toretto.ae/images/toretto-recovery-team-dubai.jpg"
+    ],
+    "telephone": "+971 523003423",
+    "email": "recovery@toretto.ae",
+    "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "274 Street - Dubai Investment Park - 2 - Dubai",
+    "addressLocality": "Dubai",
+    "addressRegion": "Dubai",
+    "postalCode": "[Postal Code]",
+    "addressCountry": "AE"
+    },
+    "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "25.2048",
+    "longitude": "55.2708"
+    },
+    "areaServed": [
+    {"@type": "City", "name": "Dubai"}]
+}
+</script>
+@endverbatim
 @endsection
 @section('content')
     <style>
