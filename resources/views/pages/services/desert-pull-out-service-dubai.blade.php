@@ -113,7 +113,7 @@
 
                         <!-- Subtitle -->
                         <h2 class="dp-hero-subtitle text-white">
-                            Stuck in the Dubai Desert? Help Is Already on Its Way.
+                            Standed in the Dubai Desert? Help Is Already on Its Way.
                         </h2>
 
                         <!-- CTA Section -->
