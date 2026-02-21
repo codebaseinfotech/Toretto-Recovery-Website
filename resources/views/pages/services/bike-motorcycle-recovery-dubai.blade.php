@@ -8,82 +8,81 @@
 @endsection
 
 @section('meta_keywords', 'Emergency Motorcycle Recovery Dubai | Highways, Desert, City — 24/7')
-@section('schema')
-    @verbatim
-        <script type="application/ld+json">
-                                                                                                        {
-                                                                                                          "@context": "https://schema.org",
-                                                                                                          "@type": "FAQPage",
-                                                                                                          "mainEntity": [
-                                                                                                            {
-                                                                                                              "@type": "Question",
-                                                                                                              "name": "Do you handle motorcycle recovery differently from car recovery?",
-                                                                                                              "acceptedAnswer": {
-                                                                                                                "@type": "Answer",
-                                                                                                                "text": "Yes. Toretto Recovery uses purpose-built motorcycle transport equipment — hydraulic tilt-decks, adjustable wheel chocks, padded frame-contact cam-straps, and manufacturer-verified loading protocols. Car recovery tools cause bodywork damage and frame stress on two-wheel vehicles. Every bike we transport is handled by specialist-trained technicians using motorcycle-specific rigs."
-                                                                                                              }
-                                                                                                            },
-                                                                                                            {
-                                                                                                              "@type": "Question",
-                                                                                                              "name": "What information should I have ready when calling Toretto Recovery in Dubai?",
-                                                                                                              "acceptedAnswer": {
-                                                                                                                "@type": "Answer",
-                                                                                                                "text": "Share your WhatsApp Live Location for fastest dispatch. Have your motorcycle make and model, the nature of the breakdown, whether injuries are involved, and your preferred delivery destination ready. Emirates ID and vehicle registration will be needed for documentation on arrival."
-                                                                                                              }
-                                                                                                            },
-                                                                                                            {
-                                                                                                              "@type": "Question",
-                                                                                                              "name": "Is my motorcycle insured during recovery transport in Dubai?",
-                                                                                                              "acceptedAnswer": {
-                                                                                                                "@type": "Answer",
-                                                                                                                "text": "Yes. Every motorcycle transported by Toretto Recovery is covered by our in-transit all-risks insurance policy from the moment our technician makes physical contact with your vehicle until signed delivery at the destination. A certificate of coverage can be emailed to you or your insurer before the job begins."
-                                                                                                              }
-                                                                                                            },
-                                                                                                            {
-                                                                                                              "@type": "Question",
-                                                                                                              "name": "Can Toretto Recovery rescue a motorcycle from the Dubai desert or off-road trails?",
-                                                                                                              "acceptedAnswer": {
-                                                                                                                "@type": "Answer",
-                                                                                                                "text": "Yes. We operate 4x4-equipped desert recovery units covering Al Qudra, Seih Al Salam, Hatta foothills, and private estate access roads. Desert response time is 45-70 minutes depending on location. Call us with your GPS coordinates for the fastest routing."
-                                                                                                              }
-                                                                                                            },
-                                                                                                            {
-                                                                                                              "@type": "Question",
-                                                                                                              "name": "What happens during an accident recovery from a Dubai road or highway?",
-                                                                                                              "acceptedAnswer": {
-                                                                                                                "@type": "Answer",
-                                                                                                                "text": "Toretto Recovery remains at the accident scene with you until Dubai Police complete the report and issue a case reference number. We document the scene, manage traffic safety, coordinate with your insurer, and only move the motorcycle after legal clearance is confirmed. We work with all major UAE insurers and submit documentation directly on your behalf."
-                                                                                                              }
-                                                                                                            },
-                                                                                                            {
-                                                                                                              "@type": "Question",
-                                                                                                              "name": "Do you offer fleet motorcycle recovery contracts for delivery companies in Dubai?",
-                                                                                                              "acceptedAnswer": {
-                                                                                                                "@type": "Answer",
-                                                                                                                "text": "Yes. Toretto Recovery holds commercial fleet contracts with delivery operators across Dubai. Fleet accounts receive priority dispatch, consolidated monthly invoicing, dedicated account management, and guaranteed maximum response times in a written service agreement."
-                                                                                                              }
-                                                                                                            },
-                                                                                                            {
-                                                                                                              "@type": "Question",
-                                                                                                              "name": "Can you transport a newly purchased motorcycle I cannot legally ride in Dubai?",
-                                                                                                              "acceptedAnswer": {
-                                                                                                                "@type": "Answer",
-                                                                                                                "text": "Yes. Unregistered or newly purchased motorcycles cannot be ridden on UAE public roads. Toretto Recovery collects from dealerships, private sellers, and auctions across all seven emirates and delivers with pre- and post-transport condition reports protecting both buyer and seller."
-                                                                                                              }
-                                                                                                            },
-                                                                                                            {
-                                                                                                              "@type": "Question",
-                                                                                                              "name": "What is Toretto Recovery's cancellation policy?",
-                                                                                                              "acceptedAnswer": {
-                                                                                                                "@type": "Answer",
-                                                                                                                "text": "If you cancel before our unit departs the base, no charge applies. If our team is already en route, a nominal call-out fee may apply to cover fuel and crew time. We never apply penalty charges for genuine self-resolution of a roadside problem."
-                                                                                                              }
-                                                                                                            }
-                                                                                                          ]
-                                                                                                        }
-
-                                                                                                                </script>
-    @endverbatim
+@section('head')
+@verbatim
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+    {
+        "@type": "Question",
+        "name": "Do you handle motorcycle recovery differently from car recovery?",
+        "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Toretto Recovery uses purpose-built motorcycle transport equipment — hydraulic tilt-decks, adjustable wheel chocks, padded frame-contact cam-straps, and manufacturer-verified loading protocols. Car recovery tools cause bodywork damage and frame stress on two-wheel vehicles. Every bike we transport is handled by specialist-trained technicians using motorcycle-specific rigs."
+        }
+    },
+    {
+        "@type": "Question",
+        "name": "What information should I have ready when calling Toretto Recovery in Dubai?",
+        "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Share your WhatsApp Live Location for fastest dispatch. Have your motorcycle make and model, the nature of the breakdown, whether injuries are involved, and your preferred delivery destination ready. Emirates ID and vehicle registration will be needed for documentation on arrival."
+        }
+    },
+    {
+        "@type": "Question",
+        "name": "Is my motorcycle insured during recovery transport in Dubai?",
+        "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Every motorcycle transported by Toretto Recovery is covered by our in-transit all-risks insurance policy from the moment our technician makes physical contact with your vehicle until signed delivery at the destination. A certificate of coverage can be emailed to you or your insurer before the job begins."
+        }
+    },
+    {
+        "@type": "Question",
+        "name": "Can Toretto Recovery rescue a motorcycle from the Dubai desert or off-road trails?",
+        "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. We operate 4x4-equipped desert recovery units covering Al Qudra, Seih Al Salam, Hatta foothills, and private estate access roads. Desert response time is 45-70 minutes depending on location. Call us with your GPS coordinates for the fastest routing."
+        }
+    },
+    {
+        "@type": "Question",
+        "name": "What happens during an accident recovery from a Dubai road or highway?",
+        "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Toretto Recovery remains at the accident scene with you until Dubai Police complete the report and issue a case reference number. We document the scene, manage traffic safety, coordinate with your insurer, and only move the motorcycle after legal clearance is confirmed. We work with all major UAE insurers and submit documentation directly on your behalf."
+        }
+    },
+    {
+        "@type": "Question",
+        "name": "Do you offer fleet motorcycle recovery contracts for delivery companies in Dubai?",
+        "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Toretto Recovery holds commercial fleet contracts with delivery operators across Dubai. Fleet accounts receive priority dispatch, consolidated monthly invoicing, dedicated account management, and guaranteed maximum response times in a written service agreement."
+        }
+    },
+    {
+        "@type": "Question",
+        "name": "Can you transport a newly purchased motorcycle I cannot legally ride in Dubai?",
+        "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Unregistered or newly purchased motorcycles cannot be ridden on UAE public roads. Toretto Recovery collects from dealerships, private sellers, and auctions across all seven emirates and delivers with pre- and post-transport condition reports protecting both buyer and seller."
+        }
+    },
+    {
+        "@type": "Question",
+        "name": "What is Toretto Recovery's cancellation policy?",
+        "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "If you cancel before our unit departs the base, no charge applies. If our team is already en route, a nominal call-out fee may apply to cover fuel and crew time. We never apply penalty charges for genuine self-resolution of a roadside problem."
+        }
+    }
+    ]
+}
+</script>
+@endverbatim
 @endsection
 @section('content')
     <style>
