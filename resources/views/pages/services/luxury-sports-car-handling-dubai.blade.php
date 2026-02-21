@@ -12,10 +12,10 @@
 @section('meta_keywords', 'With 15 years of experience, Toretto Recovery provides expert luxury & sports car handling in
     Dubai—safe transport, precision care & specialist recovery you can trust.')
 
-@section('schema')
-    @verbatim
-        <script type="application/ld+json">
-        {
+@section('head')
+@verbatim
+<script type="application/ld+json">
+{
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
@@ -85,9 +85,8 @@
     }
   ]
 }
-
-    </script>
-    @endverbatim
+</script>
+@endverbatim
 @endsection
 @section('content')
     <style>
