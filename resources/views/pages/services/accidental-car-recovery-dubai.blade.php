@@ -243,7 +243,7 @@
 
                         <ul class="breadcrumb-menu">
                             <li>
-                                <a href="{{ route('home') }}">Home</a>
+                                <a href="{{ route('home') }}" target="_blank">Home</a>
                                 <i class="fa fa-angle-double-right"></i>
                             </li>
                             <li class="active">Accidental Car Recovery</li>
@@ -288,7 +288,7 @@
 
                         <!-- CTA Section -->
                         <div class="hero-btn mt-4">
-                            <a href="{{ route('book.now') }}" class="theme-btn">
+                            <a href="{{ route('book.now') }}" target="_blank" class="theme-btn">
                                 Book Now <i class="fas fa-arrow-right-long"></i>
                             </a>
                             <a href="tel:+971523003423" class="theme-btn theme-btn2">
@@ -471,13 +471,13 @@
                         <div class="included-item">
                             <i class="fa-solid fa-truck-fast"></i>
                             <p>Immediate dispatch for <a class="text-link" target="_blank"
-                                    href="{{ route('our-service.ourservice', ['slug' => 'towing-service-dubai']) }}">accident
+                                    href="{{ route('our-service.ourservice',  ['slug' => 'towing-service-dubai']) }}">accident
                                     towing near me</a> requests</p>
                         </div>
                         <div class="included-item">
                             <i class="fa-solid fa-clock"></i>
                             <p>24/7 response for
-                                <a class="text-link" href="{{ route('home') }}">
+                                <a class="text-link" href="{{ route('home') }}" target="_blank">
                                     24/7 accident car recovery Dubai
                                 </a>
                             </p>
@@ -493,7 +493,7 @@
                         <div class="included-item">
                             <i class="fa-solid fa-truck-ramp-box"></i>
                             <p>
-                                <a class="text-link" href="{{ route('home') }}">accident
+                                <a class="text-link" href="{{ route('home') }}" target="_blank">accident
                                     Flatbed towing
                                 </a>
                                 for damaged vehicles and recovery after crash
@@ -913,7 +913,7 @@
                 <div class="subsection-header text-center mb-5">
                     <h2 class="site-title">Comprehensive Service <span>Benefits</span></h2>
                     <p style="max-width: 900px; margin: 20px auto 0; color: #666; font-size: 17px;">
-                        <a class="text-link" href="{{ route('home') }}">24/7 Emergency accidental recovery</a> delivers
+                        <a class="text-link" target="_blank" href="{{ route('home') }}">24/7 Emergency accidental recovery</a> delivers
                         substantial advantages
                     </p>
                 </div>

@@ -144,7 +144,7 @@
 
                         <ul class="breadcrumb-menu">
                             <li>
-                                <a href="{{ route('home') }}">Home</a>
+                                <a href="{{ route('home') }}" >Home</a>
                                 <i class="fa fa-angle-double-right"></i>
                             </li>
                             <li class="active">Professional Motorcycle Recovery</li>
@@ -158,7 +158,7 @@
 
                         <!-- CTA Section -->
                         <div class="hero-btn mt-4">
-                            <a href="{{ route('book.now') }}" class="theme-btn">
+                            <a href="{{ route('book.now') }}" target="_blank" class="theme-btn">
                                 Book Now <i class="fas fa-arrow-right-long"></i>
                             </a>
                             <a href="tel:+971523003423" class="theme-btn theme-btn2">
@@ -303,7 +303,7 @@
                 </span>
                 <h2 class="bm-science-title">
                     Why Motorcycle Recovery Is an
-                    Entirely Different Science from <a class="text-link"
+                    Entirely Different Science from <a class="text-link" target="_blank" target="_blank"
                         href="{{ route('our-service.ourservice', ['slug' => 'towing-service-dubai']) }}">Car
                         Towing</a>
                 </h2>
@@ -324,7 +324,7 @@
                                 <p class="mb-1">Every year, thousands of bike owners in Dubai make the costly mistake of
                                     calling a standard vehicle recovery operator when their motorcycle breaks down. Car tow
                                     trucks are engineered for four-point chassis loading — dragging a two-wheeler onto a
-                                    <a class="text-link"
+                                    <a class="text-link" target="_blank"
                                         href="{{ route('our-service.ourservice', ['slug' => 'flatbed-recovery']) }}">flatbed
                                         cover</a> without proper restraints can collapse the suspension, strip the
                                     fairings,
@@ -753,7 +753,7 @@
                     <div class="bm-district-icon"><i class="fas fa-building"></i></div>
                     <h4>Downtown Dubai & Business Bay</h4>
                     <p>High-density tower corridors, basement car parks, and restricted loading zones require
-                        small-footprint<a class="text-link" href="{{ route('home') }}"> recovery vehicles</a>. Our
+                        small-footprint<a class="text-link" target="_blank" href="{{ route('home') }}"> recovery vehicles</a>. Our
                         compact
                         motorcycle-specific units navigate underground
                         spaces standard trucks cannot access.</p>
@@ -1739,7 +1739,7 @@
                         <div class="bm-insurance-item-marker"><i class="fas fa-shield-halved"></i></div>
                         <div class="bm-insurance-item-body">
                             <h4>In-Transit All-Risks Cover</h4>
-                            <p>Your motorcycle's declared value is covered against <a class="text-link"
+                            <p>Your motorcycle's declared value is covered against <a class="text-link" target="_blank"
                                     href="{{ route('our-service.ourservice', ['slug' => 'accidental-car-recovery']) }}">accidental
                                     damage</a> during loading,
                                 transport, and unloading. Our insurer provides a certificate of coverage on request
@@ -1965,7 +1965,7 @@
                 <div class="bm-perspective-panel bm-perspective-panel--pros">
                     <div class="bm-perspective-panel-head">
                         <div class="bm-perspective-panel-badge"><i class="fas fa-circle-check"></i></div>
-                        <h3>Advantages of <a class="text-link" href="{{ route('home') }}">Professional Recovery</a></h3>
+                        <h3>Advantages of <a class="text-link" target="_blank" href="{{ route('home') }}">Professional Recovery</a></h3>
                     </div>
                     <ul>
                         <li><i class="fas fa-check"></i> Your motorcycle's structural integrity and paintwork are
@@ -2380,7 +2380,7 @@
                         <p>Yes — we hold commercial fleet contracts with several major delivery operators in Dubai. Fleet
                             accounts receive priority dispatch, consolidated monthly invoicing, dedicated account
                             management, and a guaranteed maximum response time written into the service agreement. If you
-                            operate a delivery fleet and experience frequent motorcycle breakdowns, <a class="text-link"
+                            operate a delivery fleet and experience frequent motorcycle breakdowns, <a class="text-link" target="_blank"
                                 href="{{ route('contact') }}">contact</a> our business
                             development team to discuss a tailored fleet recovery package that reduces your downtime cost.
                         </p>
@@ -2416,7 +2416,7 @@
                             delivery fleet rider who managed to push the bike to safety. If you cancel before our unit has
                             departed the base, no charge applies. If our team is already en route, a nominal call-out fee
                             may apply to cover fuel and crew time — this will be confirmed transparently when you cancel the
-                            job. We never apply penalty charges for genuine self-resolution of a <a class="text-link"
+                            job. We never apply penalty charges for genuine self-resolution of a <a class="text-link" target="_blank"
                                 href="{{ route('our-service.ourservice', ['slug' => 'roadside-assistance-dubai']) }}">roadside
                                 problem.</a></p>
                     </div>

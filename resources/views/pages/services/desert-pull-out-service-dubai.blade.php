@@ -14,7 +14,7 @@
 <script type="application/ld+json">
 {
     "@context": "https://schema.org",
-    "@type": ["LocalBusiness", "AutomotiveBusiness"],
+    "@type": ["LocalBusiness","AutomotiveBusiness","FAQPage"],
     "name": "Toretto Desert Recovery Dubai",
     "alternateName": "Toretto Desert Pull Out Service",
     "description": "Professional desert pull out and recovery service in Dubai.
@@ -34,7 +34,7 @@
     "streetAddress": "274 Street - Dubai Investment Park - 2 - Dubai",
     "addressLocality": "Dubai",
     "addressRegion": "Dubai",
-    "postalCode": "[Postal Code]",
+    "postalCode": "000000",
     "addressCountry": "AE"
     },
     "geo": {
@@ -120,7 +120,7 @@
                             <a href="tel:+971523003423" class="theme-btn">
                                 Call Now — Immediate Desert Assistance <i class="fas fa-phone"></i>
                             </a>
-                            <a href="https://wa.me/971523003423" target="_blank" class="theme-btn theme-btn2">
+                            <a href="https://wa.me/971523003423" class="theme-btn theme-btn2">
                                 Send WhatsApp Location <i class="fab fa-whatsapp"></i>
                             </a>
                         </div>

@@ -134,7 +134,7 @@
                         </h2>
 
                         <div class="hero-btn mt-4">
-                            <a href="{{ route('book.now') }}" class="theme-btn">
+                            <a href="{{ route('book.now') }}" target="_blank" class="theme-btn">
                                 Book Now <i class="fas fa-arrow-right-long"></i>
                             </a>
                             <a href="tel:+971523003423" class="theme-btn theme-btn2">
@@ -206,7 +206,7 @@
                             your
                             preferred location—fast, professional, and stress-free.</p>
 
-                        <a href="{{ route('book.now') }}" class="theme-btn mt-2">Book Now<i
+                        <a href="{{ route('book.now') }}" target="_blank" class="theme-btn mt-2">Book Now<i
                                 class="fa-solid fa-arrow-right-long"></i></a>
                         <a href="tel:+971 523003423" class="theme-btn mt-2"> Call / WhatsApp<i
                                 class="fa-solid fa-arrow-right-long"></i></a>
@@ -241,7 +241,7 @@
                                 equipment. Our operators are fully trained, certified, and insured to handle any situation
                                 safely and efficiently.
                             </p>
-                            <a href="{{ route('book.now') }}" class="theme-btn mt-2">Book Now</a>
+                            <a href="{{ route('book.now') }}" target="_blank" class="theme-btn mt-2">Book Now</a>
                         </div>
                     </div>
                 </div>
@@ -276,7 +276,7 @@
                             <li>Vans, pickups, and light commercial vehicles</li>
                         </ul>
                         <p>
-                            Every <a href="https://torettorecovery.ae/" class="site-title-tagline"> <span>vehicle
+                            Every <a href="https://torettorecovery.ae/" target="_blank" class="site-title-tagline"> <span>vehicle
                                     recovery services</span></a> is assessed before towing to ensure the correct method
                             is
                             used, preventing damage and guaranteeing safe transportation.
@@ -449,7 +449,7 @@
                 safely.
             </p>
             <p>Request Towing at Your Location</p>
-            <a href="{{ route('book.now') }}" class="theme-btn mt-2">Book Now<i
+            <a href="{{ route('book.now') }}" target="_blank" class="theme-btn mt-2">Book Now<i
                     class="fa-solid fa-arrow-right-long"></i></a>
         </div>
     </section>
@@ -672,7 +672,7 @@
                     <a href="tel:+971523003423" class="theme-btn">
                         Call Now
                     </a>
-                    <a href="{{ route('contact') }}" class="theme-btn theme-btn2">
+                    <a href="{{ route('contact') }}" target="_blank" class="theme-btn theme-btn2">
                         Get Guidance
                     </a>
                 </div>

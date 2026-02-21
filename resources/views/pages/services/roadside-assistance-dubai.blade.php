@@ -150,10 +150,10 @@
                         </h2>
 
                         <div class="hero-btn mt-4">
-                            <a href="{{ route('book.now') }}" class="theme-btn">
+                            <a href="{{ route('book.now') }}" target="_blank" class="theme-btn">
                                 Book Now <i class="fas fa-arrow-right-long"></i>
                             </a>
-                            <a href="tel:+971523003423" class="theme-btn theme-btn2">
+                            <a href="tel:+971523003423"  class="theme-btn theme-btn2">
                                 Call / WhatsApp <i class="fas fa-arrow-right-long"></i>
                             </a>
                         </div>
@@ -241,7 +241,7 @@
                             getting drivers back on the road safely and quickly.</p>
                         <p class="mb-1">No complicated apps. No confusing memberships. Just fast, reliable help when you
                             need it most.</p>
-                        <a href="{{ route('book.now') }}" class="theme-btn mt-2">Book Now<i
+                        <a href="{{ route('book.now') }}" target="_blank" class="theme-btn mt-2">Book Now<i
                                 class="fa-solid fa-arrow-right-long"></i></a>
                         <a href="tel:+971 523003423" class="theme-btn mt-2"> Call / WhatsApp<i
                                 class="fa-solid fa-arrow-right-long"></i></a>
@@ -250,7 +250,7 @@
                 <div class="col-lg-6 imagebag">
                     <div class="about-left wow animate__animated animate__fadeInLeft">
                         <div class="about-img">
-                            <img src="{{ asset('assets/images/Roadside_Assistance_01.jpeg') }}" alt="">
+                            <img src="{{ asset('assets/images/Roadside_Assistance_01.png') }}" alt="">
                         </div>
                     </div>
                 </div>
@@ -277,7 +277,7 @@
                             in 45-degree heat. That’s why our services are built around what truly matters to you:
                         </p>
                         <div class="mt-2">
-                            <a href="{{ route('book.now') }}" class="theme-btn mt-2">Book Now<i
+                            <a href="{{ route('book.now') }}" target="_blank" class="theme-btn mt-2">Book Now<i
                                     class="fa-solid fa-arrow-right-long"></i></a>
                             <a href="tel:+971 523003423" class="theme-btn mt-2"> Call / WhatsApp<i
                                     class="fa-solid fa-arrow-right-long"></i></a>
@@ -365,7 +365,7 @@
 
                 <div class="service-text">
                     <h3>
-                        <a href="{{ route('our-service.ourservice', 'towing-service-dubai') }}"
+                        <a target="_blank" href="{{ route('our-service.ourservice', 'towing-service-dubai') }}"
                             style="color:#d70006">Emergency Car Towing Dubai </a>
                     </h3>
 
@@ -858,7 +858,7 @@
                             <ul class="check-list">
                                 <li>
                                     Dial our <strong>24/7 Hotline:</strong>
-                                    <a href="tel:+971523003423">+971 52 300 3423</a>
+                                    <a href="tel:+971523003423" >+971 52 300 3423</a>
                                 </li>
                                 <li>Share your live location (Google Maps preferred)</li>
                                 <li>Explain the issue with your vehicle</li>
@@ -882,7 +882,7 @@
                 <!-- RIGHT IMAGE -->
                 <div class="col-lg-7">
                     <div class="safety-image">
-                        <img src="{{ asset('assets/images/RoadsideSafetyGuide.png') }}"
+                        <img src="{{ asset('assets/images/RoadsideSafetyGuide.jpeg') }}"
                             alt="Roadside Safety and Vehicle Recovery">
                     </div>
                 </div>
@@ -1109,7 +1109,7 @@
                     <a href="tel:+971523003423" class="theme-btn">
                         Call Now
                     </a>
-                    <a href="{{ route('contact') }}" class="theme-btn theme-btn2">
+                    <a href="{{ route('contact') }}" target="_blank" class="theme-btn theme-btn2">
                         Get Guidance
                     </a>
                 </div>

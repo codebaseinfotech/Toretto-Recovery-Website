@@ -196,7 +196,7 @@
 
                         <!-- CTA Section -->
                         <div class="hero-btn mt-4">
-                            <a href="{{ route('book.now') }}" class="theme-btn">
+                            <a href="{{ route('book.now') }}" target="_blank" class="theme-btn">
                                 Book Now <i class="fas fa-arrow-right-long"></i>
                             </a>
                             <a href="tel:+971523003423" class="theme-btn theme-btn2">
@@ -326,7 +326,7 @@
                                 style="font-weight: 700; color: #000;">specialist luxury car recovery is not an upgrade we
                                 offer — it is
                                 the foundation of how we operate</span>, delivering a truly professional <a
-                                class="text-link"
+                                class="text-link" target="_blank"
                                 href="{{ route('our-service.ourservice', ['slug' => 'towing-service-dubai']) }}">towing
                                 service across Dubai</a> for high-value vehicles.
                         </li>
@@ -384,7 +384,7 @@
                         <i class="fa-solid fa-car-burst"></i>
                     </div>
                     <div>
-                        <h3 class="specialist-h3">Precision <a class="text-link"
+                        <h3 class="specialist-h3">Precision <a class="text-link" target="_blank"
                                 href="{{ route('our-service.ourservice', ['slug' => 'accidental-car-recovery']) }}">Accident
                                 Recovery </a> &amp; Post-Collision Transport
                         </h3>
@@ -403,7 +403,7 @@
                         <div class="specialist-card-icon-wrap">
                             <i class="fa-solid fa-truck-ramp-box"></i>
                         </div>
-                        <h4 class="specialist-h4"><a class="text-link"
+                        <h4 class="specialist-h4"><a class="text-link" target="_blank"
                                 href="{{ route('our-service.ourservice', ['slug' => 'luxury-sports-car-handling-dubai']) }}">Enclosed
                                 Flatbed Transport</a> - The Gold Standard</h4>
                         <p>Our enclosed flatbed platforms are the correct and only appropriate solution for vehicles with
@@ -455,7 +455,7 @@
                         <i class="fa-solid fa-road-circle-check"></i>
                     </div>
                     <div>
-                        <h3 class="specialist-h3">Complete <a class="text-link"
+                        <h3 class="specialist-h3">Complete <a class="text-link" target="_blank"
                                 href="{{ route('our-service.ourservice', ['slug' => 'roadside-assistance-dubai']) }}">Roadside
                                 Assistance</a> - Beyond Recovery</h3>
                         <p class="specialist-block-intro">Not every emergency requires transport. Our full roadside
@@ -817,7 +817,7 @@
                             <h2 class="section-title">RTA Licensing &amp; Legal Authorisation</h2>
                             <p class="cred-rta-lead">Toretto Recovery operates as a fully licensed and RTA-approved
                                 breakdown
-                                and <a class="text-link"
+                                and <a class="text-link" target="_blank"
                                     href="{{ route('our-service.ourservice', ['slug' => 'towing-service-dubai']) }}">recovery
                                     service</a> provider company. This authorisation is not
                                 merely a compliance
@@ -1108,7 +1108,7 @@
                             <span class="specialist-eyebrow">Proven in the Field</span>
                             <h2 class="site-title mt-3">Real-World Scenarios: <span>How We Respond</span></h2>
                         </div>
-                        <h4 class="mb-3">Scenario: <a class="text-link" href="{{ route('book.now') }}">Supercar
+                        <h4 class="mb-3">Scenario: <a class="text-link" target="_blank" href="{{ route('book.now') }}">Supercar
                                 Breakdown
                             </a> on a Major Expressway</h4>
                         <p class="mb-3">A Porsche 911 GT3 RS develops a catastrophic tyre failure at high speed on E11
@@ -1285,7 +1285,7 @@
                         <i class="fa-solid fa-phone"></i>
                         <div>
                             <span class="lsc-faq-cta-label">Still have questions?</span>
-                            <a href="{{ route('book.now') }}" class="lsc-faq-cta-link">Call us 24/7 →</a>
+                            <a href="{{ route('book.now') }}"  target="_blank" class="lsc-faq-cta-link">Call us 24/7 →</a>
                         </div>
                     </div>
                 </div>
@@ -1585,7 +1585,7 @@
                     </div>
 
                     <div class="save-number-contact">
-                        <a href="{{ route('book.now') }}" class="save-number-btn">
+                        <a href="{{ route('book.now') }}" target="_blank" class="save-number-btn">
                             <i class="fa-solid fa-phone"></i> Book Now / Call 24/7
                         </a>
                         <a href="https://www.torettorecovery.ae" class="save-number-link" target="_blank">
@@ -1595,7 +1595,7 @@
 
                     <p class="save-number-note">For routine enquiries, service pre-registration, corporate fleet
                         agreements,
-                        or insurance pre-approval setup, <a class="text-link underline"
+                        or insurance pre-approval setup, <a class="text-link underline" target="_blank"
                             href="{{ route('contact') }}">contact us</a>
                         through
                         torettorecovery.ae. Registering your vehicle

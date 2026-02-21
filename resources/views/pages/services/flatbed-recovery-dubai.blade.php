@@ -288,7 +288,7 @@
                         </h2>
 
                         <div class="hero-btn mt-4">
-                            <a href="{{ route('book.now') }}" class="theme-btn">
+                            <a target="_blank" href="{{ route('book.now') }}" class="theme-btn">
                                 Book Now <i class="fas fa-arrow-right-long"></i>
                             </a>
                             <a href="tel:+971523003423" class="theme-btn theme-btn2">
@@ -351,7 +351,7 @@
                         <p> A standard tow truck can cause hidden drivetrain damage, scrape low-clearance bumpers, or
                             void warranties. That's why Dubai drivers choose professional flatbed recovery — where your
                             vehicle stays fully lifted, fully protected, and fully insured from pickup to delivery. </p>
-                        <p> At <a href="{{ route('home') }}" class="flatbed-route">Toretto Recovery</a>, we specialize
+                        <p> At <a target="_blank" href="{{ route('home') }}" class="flatbed-route">Toretto Recovery</a>, we specialize
                             in
                             damage-free flatbed transport across
                             Dubai — for luxury cars, sports vehicles, EVs, AWD/4WD systems, and <a target="_blank"
