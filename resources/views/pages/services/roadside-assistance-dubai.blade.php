@@ -13,10 +13,10 @@
 
 @section('meta_keywords', '24/7 Towing Service in Dubai, Emergency Car Recovery Dubai, Roadside Assistance UAE')
 
-@section('schema')
-    @verbatim
-        <script type="application/ld+json">
-                                   {
+@section('head')
+@verbatim
+<script type="application/ld+json">
+{
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
@@ -86,9 +86,8 @@
     }
   ]
 }
-
-                                </script>
-    @endverbatim
+</script>
+@endverbatim
 @endsection
 
 @section('content')
