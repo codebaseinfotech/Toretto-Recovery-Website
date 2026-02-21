@@ -10,7 +10,7 @@
     <title>@yield('title', 'Car Recovery Dubai | 24/7 Towing & Roadside Assistance UAE')</title>
 
     <meta name="description" content="@yield('meta_description', 'Reliable 24/7 car recovery, vehicle towing, and emergency roadside assistance across Dubai and the UAE. Fast response, safe transport, affordable rates — call now!')">
-
+    @yield('head')
     <meta property="og:title" content="@yield('title', 'Car Recovery Dubai | 24/7 Towing & Roadside Assistance UAE')">
     <meta property="og:description" content="@yield('meta_description', 'Reliable 24/7 car recovery and towing across Dubai.')">
     <meta property="og:type" content="website">
@@ -60,7 +60,7 @@
         gtag('config', 'G-62X9L82MBP');
     </script>
     {{-- SEO / SCHEMA GOES HERE HEAD UNDER BAR --}}
-    @yield('schema')
+    {{-- @yield('schema') --}}
 </head>
 <body>
 

@@ -5,10 +5,10 @@
 @section('meta_description',
     'Expert accident vehicle recovery service in Dubai. RTA approved, 24/7 emergency response,
     modern equipment fleet. Serving all areas with 20-45 min arrival. Get help now.')
-
-@section('schema')
-    @verbatim
-        <script type="application/ld+json">{
+@section('head')
+@verbatim
+<script type="application/ld+json">
+{
   "@context": "https://schema.org",
   "@type": "Service",
   "serviceType": "Accidental Car Recovery Service",
@@ -97,7 +97,9 @@
   },
   "slogan": "RTA Licensed 24/7 Emergency Accident Recovery Across Dubai",
   "description": "Professional accidental car recovery service in Dubai with 14 years experience. RTA licensed, modern equipment fleet, luxury vehicle specialists, 24/7 emergency response with 20-45 minute arrival times."
-},
+}
+</script>
+<script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -185,7 +187,7 @@
   ]
 }
 </script>
-    @endverbatim
+@endverbatim
 @endsection
 
 @section('content')
@@ -370,7 +372,9 @@
 
             <!-- Section Image -->
             <div class="ac-scenario-img-wrap mb-5">
-                <img src="{{ asset('assets/images/critical-recovery-scenarios.jpg') }}" alt="Professional accident vehicle recovery - tow truck operator securing a damaged car for safe transport" class="ac-scenario-img" loading="lazy">
+                <img src="{{ asset('assets/images/critical-recovery-scenarios.jpg') }}"
+                    alt="Professional accident vehicle recovery - tow truck operator securing a damaged car for safe transport"
+                    class="ac-scenario-img" loading="lazy">
             </div>
 
             <div class="row">
@@ -497,7 +501,8 @@
                         </div>
                         <div class="included-item">
                             <i class="fa-solid fa-handshake"></i>
-                            <p>Legal coordination with authorities for <a class="text-link">police approved car recovery</a>
+                            <p>Legal coordination with authorities for <a class="text-link">police approved car
+                                    recovery</a>
                             </p>
                         </div>
                         <div class="included-item">
@@ -720,7 +725,8 @@
             <div class="site-heading text-center mb-5">
                 <h2 class="site-title">Common Operational <span>Challenges</span> – How Toretto Recovery Helps Clients
                 </h2>
-                <p style="max-width: 800px; margin: 20px auto 0; color: #666;">At Toretto Recovery, we understand that every
+                <p style="max-width: 800px; margin: 20px auto 0; color: #666;">At Toretto Recovery, we understand that
+                    every
                     accidental car recovery Dubai scenario comes with its own challenges. Our experience, licensing, and RTA
                     approval allow us to provide the best possible assistance in even the most difficult situations:</p>
             </div>
@@ -926,7 +932,8 @@
                         <div class="flatbed-coverage-item">
                             <div class="flatbed-coverage-icon"> <i class="fa-solid fa-gavel"></i></div>
                             <h4>Legal Compliance Assurance</h4>
-                            <p class="flatbed-response-time">Ensures proper incident documentation, police coordination, and
+                            <p class="flatbed-response-time">Ensures proper incident documentation, police coordination,
+                                and
                                 regulatory adherence
                                 preventing fines, legal complications, or insurance claim denials.</p>
                         </div>
@@ -1016,7 +1023,8 @@
                         <div class="limitation-item">
                             <h5 style="color: #856404;"><i class="fa-solid fa-dollar-sign"></i> Variable Cost Structures
                             </h5>
-                            <p style="color: #856404; margin: 0;">Emergency response to remote desert locations, specialized
+                            <p style="color: #856404; margin: 0;">Emergency response to remote desert locations,
+                                specialized
                                 luxury vehicle handling, or complex extraction scenarios may incur premium charges
                                 reflecting equipment requirements and operational complexity.</p>
                         </div>
@@ -1198,10 +1206,12 @@
     <section class="modern-features py-120" style="background: #1a1a1a; color: #fff;">
         <div class="container">
             <div class="site-heading text-center mb-5">
-                <h2 class="site-title" style="color: #fff;">Modern Convenience <span>Features</span> – How Toretto Recovery
+                <h2 class="site-title" style="color: #fff;">Modern Convenience <span>Features</span> – How Toretto
+                    Recovery
                     Supports Clients
                 </h2>
-                <p style="max-width: 800px; margin: 20px auto 0; color: #ccc;">As an experienced, licensed, and RTA-approved
+                <p style="max-width: 800px; margin: 20px auto 0; color: #ccc;">As an experienced, licensed, and
+                    RTA-approved
                     provider, Toretto Recovery integrates modern technology and customer-focused processes to make
                     accidental car recovery in Dubai as smooth and stress-free as possible.
                 </p>
