@@ -14,8 +14,8 @@
     vehicle transport')
 
 @section('head')
-@verbatim
-<script type="application/ld+json">
+    @verbatim
+        <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "AutoRepair",
@@ -122,7 +122,7 @@
   }
 }
 </script>
-<script type="application/ld+json">
+        <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Service",
@@ -166,7 +166,7 @@
   }
 }
 </script>
-<script type="application/ld+json">
+        <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -222,7 +222,7 @@
   ]
 }
 </script>
-@endverbatim
+    @endverbatim
 @endsection
 
 @section('content')
@@ -292,7 +292,7 @@
                                 Book Now <i class="fas fa-arrow-right-long"></i>
                             </a>
                             <a href="tel:+971523003423" class="theme-btn theme-btn2">
-                                Call / WhatsApp <i class="fas fa-arrow-right-long"></i>
+                                Call Now <i class="fas fa-arrow-right-long"></i>
                             </a>
                         </div>
                     </div>
@@ -351,7 +351,8 @@
                         <p> A standard tow truck can cause hidden drivetrain damage, scrape low-clearance bumpers, or
                             void warranties. That's why Dubai drivers choose professional flatbed recovery — where your
                             vehicle stays fully lifted, fully protected, and fully insured from pickup to delivery. </p>
-                        <p> At <a target="_blank" href="{{ route('home') }}" class="flatbed-route">Toretto Recovery</a>, we specialize
+                        <p> At <a target="_blank" href="{{ route('home') }}" class="flatbed-route">Toretto Recovery</a>, we
+                            specialize
                             in
                             damage-free flatbed transport across
                             Dubai — for luxury cars, sports vehicles, EVs, AWD/4WD systems, and <a target="_blank"
@@ -416,7 +417,8 @@
                             vehicle drives on, gets winched aboard, or rolls into position. Then it sits completely flat and
                             stable—all four wheels resting naturally, exactly as if parked in your garage.
                         <p>
-                            During <a target="_blank" href="{{ route('our-service.ourservice', ['slug' => 'towing-service-dubai']) }}"
+                            During <a target="_blank"
+                                href="{{ route('our-service.ourservice', ['slug' => 'towing-service-dubai']) }}"
                                 class="text-danger"
                                 style="font-size: 19px; font-weight: 600; color: #e10600; margin: 25px 0;">transport across
                                 the city</a>, nothing drags. Nothing scrapes. The suspension sits neutral. The drivetrain
@@ -453,11 +455,14 @@
                         <div class="fb-pvs-split">
                             <div class="fb-pvs-pain">
                                 <div class="fb-pvs-label"><i class="fas fa-exclamation-triangle"></i> Pain Point</div>
-                                <p>Stuck in fast-moving lanes with cars passing at 120+ km/h. Fear of secondary accidents. Don't know how long you'll wait exposed to danger.</p>
+                                <p>Stuck in fast-moving lanes with cars passing at 120+ km/h. Fear of secondary accidents.
+                                    Don't know how long you'll wait exposed to danger.</p>
                             </div>
                             <div class="fb-pvs-fix">
                                 <div class="fb-pvs-label"><i class="fas fa-check-circle"></i> Our Solution</div>
-                                <p>Strategic positioning across the emirate ensures 15-20 minute arrival in central zones. Operators trained in high-speed highway safety protocols. Traffic coordination to create safe work zones.</p>
+                                <p>Strategic positioning across the emirate ensures 15-20 minute arrival in central zones.
+                                    Operators trained in high-speed highway safety protocols. Traffic coordination to create
+                                    safe work zones.</p>
                             </div>
                         </div>
                     </div>
@@ -474,11 +479,14 @@
                         <div class="fb-pvs-split">
                             <div class="fb-pvs-pain">
                                 <div class="fb-pvs-label"><i class="fas fa-exclamation-triangle"></i> Pain Point</div>
-                                <p>Worried traditional towing will damage AWD system. Concerned about voiding manufacturer warranty. Unsure if recovery operator understands your vehicle's value.</p>
+                                <p>Worried traditional towing will damage AWD system. Concerned about voiding manufacturer
+                                    warranty. Unsure if recovery operator understands your vehicle's value.</p>
                             </div>
                             <div class="fb-pvs-fix">
                                 <div class="fb-pvs-label"><i class="fas fa-check-circle"></i> Our Solution</div>
-                                <p>All-wheel-drive systems remain completely inactive on flatbed. Zero drivetrain engagement eliminates transmission damage risk. Manufacturer-approved methods protect your warranty.</p>
+                                <p>All-wheel-drive systems remain completely inactive on flatbed. Zero drivetrain engagement
+                                    eliminates transmission damage risk. Manufacturer-approved methods protect your
+                                    warranty.</p>
                             </div>
                         </div>
                     </div>
@@ -495,11 +503,14 @@
                         <div class="fb-pvs-split">
                             <div class="fb-pvs-pain">
                                 <div class="fb-pvs-label"><i class="fas fa-exclamation-triangle"></i> Pain Point</div>
-                                <p>Front splitter costs AED 8,000+ to replace. Standard ramps create approach angles that guarantee scraping. Previous towing experience left damage you're still upset about.</p>
+                                <p>Front splitter costs AED 8,000+ to replace. Standard ramps create approach angles that
+                                    guarantee scraping. Previous towing experience left damage you're still upset about.</p>
                             </div>
                             <div class="fb-pvs-fix">
                                 <div class="fb-pvs-label"><i class="fas fa-check-circle"></i> Our Solution</div>
-                                <p>Hydraulic tilt creates 8-10 degree approach angles. Successfully load vehicles with 80mm clearance without contact. Operators trained specifically on exotic and performance automobiles.</p>
+                                <p>Hydraulic tilt creates 8-10 degree approach angles. Successfully load vehicles with 80mm
+                                    clearance without contact. Operators trained specifically on exotic and performance
+                                    automobiles.</p>
                             </div>
                         </div>
                     </div>
@@ -516,11 +527,14 @@
                         <div class="fb-pvs-split">
                             <div class="fb-pvs-pain">
                                 <div class="fb-pvs-label"><i class="fas fa-exclamation-triangle"></i> Pain Point</div>
-                                <p>Already shaken from collision. Now stressed about getting vehicle moved. Insurance claim process feels overwhelming. Need documentation but don't know what to collect.</p>
+                                <p>Already shaken from collision. Now stressed about getting vehicle moved. Insurance claim
+                                    process feels overwhelming. Need documentation but don't know what to collect.</p>
                             </div>
                             <div class="fb-pvs-fix">
                                 <div class="fb-pvs-label"><i class="fas fa-check-circle"></i> Our Solution</div>
-                                <p>Comprehensive photo documentation from multiple angles. Complete paperwork for insurance filing. Direct coordination with assessment facilities. Walk you through claims process requirements.</p>
+                                <p>Comprehensive photo documentation from multiple angles. Complete paperwork for insurance
+                                    filing. Direct coordination with assessment facilities. Walk you through claims process
+                                    requirements.</p>
                             </div>
                         </div>
                     </div>
@@ -537,11 +551,14 @@
                         <div class="fb-pvs-split">
                             <div class="fb-pvs-pain">
                                 <div class="fb-pvs-label"><i class="fas fa-exclamation-triangle"></i> Pain Point</div>
-                                <p>Vehicle hasn't been driven in months. Tires are aged, fluids old. Any scratch destroys value you've spent years building. Can't risk damage from careless handling.</p>
+                                <p>Vehicle hasn't been driven in months. Tires are aged, fluids old. Any scratch destroys
+                                    value you've spent years building. Can't risk damage from careless handling.</p>
                             </div>
                             <div class="fb-pvs-fix">
                                 <div class="fb-pvs-label"><i class="fas fa-check-circle"></i> Our Solution</div>
-                                <p>Soft-strap securing at proper frame points only. Ultra-clean flatbed deck inspection before loading. Minimal-stress transport treating your classic like the investment it represents. Climate-controlled options for extreme weather protection.</p>
+                                <p>Soft-strap securing at proper frame points only. Ultra-clean flatbed deck inspection
+                                    before loading. Minimal-stress transport treating your classic like the investment it
+                                    represents. Climate-controlled options for extreme weather protection.</p>
                             </div>
                         </div>
                     </div>
@@ -558,11 +575,14 @@
                         <div class="fb-pvs-split">
                             <div class="fb-pvs-pain">
                                 <div class="fb-pvs-label"><i class="fas fa-exclamation-triangle"></i> Pain Point</div>
-                                <p>Tesla manual says "flatbed only" but unsure why. Worried about damaging expensive battery systems. Service center is 60km away. Traditional towing might void warranty.</p>
+                                <p>Tesla manual says "flatbed only" but unsure why. Worried about damaging expensive battery
+                                    systems. Service center is 60km away. Traditional towing might void warranty.</p>
                             </div>
                             <div class="fb-pvs-fix">
                                 <div class="fb-pvs-label"><i class="fas fa-check-circle"></i> Our Solution</div>
-                                <p>EV-specific protocols prevent motor rotation during transport. Battery management systems remain protected. Manufacturer guidelines followed exactly. Warranty protection guaranteed through approved methods.</p>
+                                <p>EV-specific protocols prevent motor rotation during transport. Battery management systems
+                                    remain protected. Manufacturer guidelines followed exactly. Warranty protection
+                                    guaranteed through approved methods.</p>
                             </div>
                         </div>
                     </div>
@@ -579,11 +599,14 @@
                         <div class="fb-pvs-split">
                             <div class="fb-pvs-pain">
                                 <div class="fb-pvs-label"><i class="fas fa-exclamation-triangle"></i> Pain Point</div>
-                                <p>It's 2 AM and you're in a remote location. Concerned about safety waiting alone. Worried no one will come at this hour. Don't know if your insurance covers night service.</p>
+                                <p>It's 2 AM and you're in a remote location. Concerned about safety waiting alone. Worried
+                                    no one will come at this hour. Don't know if your insurance covers night service.</p>
                             </div>
                             <div class="fb-pvs-fix">
                                 <div class="fb-pvs-label"><i class="fas fa-check-circle"></i> Our Solution</div>
-                                <p>True 24/7 operations, not answering service. Night response identical to daytime standards. Operators equipped with satellite communication for remote areas. Direct insurance coordination to clarify coverage.</p>
+                                <p>True 24/7 operations, not answering service. Night response identical to daytime
+                                    standards. Operators equipped with satellite communication for remote areas. Direct
+                                    insurance coordination to clarify coverage.</p>
                             </div>
                         </div>
                     </div>
@@ -600,11 +623,15 @@
                         <div class="fb-pvs-split">
                             <div class="fb-pvs-pain">
                                 <div class="fb-pvs-label"><i class="fas fa-exclamation-triangle"></i> Pain Point</div>
-                                <p>Spent AED 15,000 on custom aerodynamics. Standard recovery destroyed friend's similar setup. Body shop says repairs take 6 weeks minimum. Can't find recovery service that understands modifications.</p>
+                                <p>Spent AED 15,000 on custom aerodynamics. Standard recovery destroyed friend's similar
+                                    setup. Body shop says repairs take 6 weeks minimum. Can't find recovery service that
+                                    understands modifications.</p>
                             </div>
                             <div class="fb-pvs-fix">
                                 <div class="fb-pvs-label"><i class="fas fa-check-circle"></i> Our Solution</div>
-                                <p>Pre-coordination to understand specific clearances and modifications. Custom loading procedures for heavily modified vehicles. Experience with show cars, track cars, and custom builds. Additional protective padding for delicate components.</p>
+                                <p>Pre-coordination to understand specific clearances and modifications. Custom loading
+                                    procedures for heavily modified vehicles. Experience with show cars, track cars, and
+                                    custom builds. Additional protective padding for delicate components.</p>
                             </div>
                         </div>
                     </div>
@@ -621,11 +648,14 @@
                         <div class="fb-pvs-split">
                             <div class="fb-pvs-pain">
                                 <div class="fb-pvs-label"><i class="fas fa-exclamation-triangle"></i> Pain Point</div>
-                                <p>Engine temperature redlined. Smoke coming from hood. Don't know if it's safe to keep running. Afraid of causing permanent engine damage if driven further.</p>
+                                <p>Engine temperature redlined. Smoke coming from hood. Don't know if it's safe to keep
+                                    running. Afraid of causing permanent engine damage if driven further.</p>
                             </div>
                             <div class="fb-pvs-fix">
                                 <div class="fb-pvs-label"><i class="fas fa-check-circle"></i> Our Solution</div>
-                                <p>Immediate assessment of drivability vs. transport need. On-site coolant provision if minor issue allows driving. Flatbed recovery if engine damage risk exists. Transport directly to your preferred workshop or dealer.</p>
+                                <p>Immediate assessment of drivability vs. transport need. On-site coolant provision if
+                                    minor issue allows driving. Flatbed recovery if engine damage risk exists. Transport
+                                    directly to your preferred workshop or dealer.</p>
                             </div>
                         </div>
                     </div>
@@ -642,11 +672,15 @@
                         <div class="fb-pvs-split">
                             <div class="fb-pvs-pain">
                                 <div class="fb-pvs-label"><i class="fas fa-exclamation-triangle"></i> Pain Point</div>
-                                <p>Seller won't let you drive it off the lot. Insurance doesn't activate until tomorrow. Vehicle is pristine and you want it to stay that way. Need reliable inter-emirate transport.</p>
+                                <p>Seller won't let you drive it off the lot. Insurance doesn't activate until tomorrow.
+                                    Vehicle is pristine and you want it to stay that way. Need reliable inter-emirate
+                                    transport.</p>
                             </div>
                             <div class="fb-pvs-fix">
                                 <div class="fb-pvs-label"><i class="fas fa-check-circle"></i> Our Solution</div>
-                                <p>Long-distance flatbed transport across all seven emirates. Route planning for safest, smoothest highways. Real-time GPS tracking so you monitor progress. Scheduled pickup coordinating with seller's timing.</p>
+                                <p>Long-distance flatbed transport across all seven emirates. Route planning for safest,
+                                    smoothest highways. Real-time GPS tracking so you monitor progress. Scheduled pickup
+                                    coordinating with seller's timing.</p>
                             </div>
                         </div>
                     </div>
@@ -663,11 +697,14 @@
                         <div class="fb-pvs-split">
                             <div class="fb-pvs-pain">
                                 <div class="fb-pvs-label"><i class="fas fa-exclamation-triangle"></i> Pain Point</div>
-                                <p>Fuel gauge failed without warning. Nearest station is 8km away. Walking in 45°C heat isn't safe. Concerned about contamination if you carry fuel yourself.</p>
+                                <p>Fuel gauge failed without warning. Nearest station is 8km away. Walking in 45°C heat
+                                    isn't safe. Concerned about contamination if you carry fuel yourself.</p>
                             </div>
                             <div class="fb-pvs-fix">
                                 <div class="fb-pvs-label"><i class="fas fa-check-circle"></i> Our Solution</div>
-                                <p>Emergency fuel delivery directly to your location. High-octane options for performance engines. Diesel and petrol availability. If you prefer, flatbed to nearest station instead of on-road refueling.</p>
+                                <p>Emergency fuel delivery directly to your location. High-octane options for performance
+                                    engines. Diesel and petrol availability. If you prefer, flatbed to nearest station
+                                    instead of on-road refueling.</p>
                             </div>
                         </div>
                     </div>
@@ -684,11 +721,15 @@
                         <div class="fb-pvs-split">
                             <div class="fb-pvs-pain">
                                 <div class="fb-pvs-label"><i class="fas fa-exclamation-triangle"></i> Pain Point</div>
-                                <p>Grinding noises then complete loss of movement. Car won't shift into any gear. Located in residential area with narrow streets. Worried recovery truck can't navigate tight spaces.</p>
+                                <p>Grinding noises then complete loss of movement. Car won't shift into any gear. Located in
+                                    residential area with narrow streets. Worried recovery truck can't navigate tight
+                                    spaces.</p>
                             </div>
                             <div class="fb-pvs-fix">
                                 <div class="fb-pvs-label"><i class="fas fa-check-circle"></i> Our Solution</div>
-                                <p>Compact flatbed units for residential area access. Operators experienced in tight maneuvering. Transmission failure requires flatbed — no question. Transport to transmission specialist or dealer as you prefer.</p>
+                                <p>Compact flatbed units for residential area access. Operators experienced in tight
+                                    maneuvering. Transmission failure requires flatbed — no question. Transport to
+                                    transmission specialist or dealer as you prefer.</p>
                             </div>
                         </div>
                     </div>
@@ -705,11 +746,14 @@
                         <div class="fb-pvs-split">
                             <div class="fb-pvs-pain">
                                 <div class="fb-pvs-label"><i class="fas fa-exclamation-triangle"></i> Pain Point</div>
-                                <p>Drove through standing water during rare heavy rain. Engine hydrolocked and seized. Concerned about internal damage. Need transport to workshop for teardown inspection.</p>
+                                <p>Drove through standing water during rare heavy rain. Engine hydrolocked and seized.
+                                    Concerned about internal damage. Need transport to workshop for teardown inspection.</p>
                             </div>
                             <div class="fb-pvs-fix">
                                 <div class="fb-pvs-label"><i class="fas fa-check-circle"></i> Our Solution</div>
-                                <p>Understanding of water damage recovery requirements. Photos documenting water line on vehicle. No attempt to start which could worsen damage. Insurance documentation supporting flood damage claim.</p>
+                                <p>Understanding of water damage recovery requirements. Photos documenting water line on
+                                    vehicle. No attempt to start which could worsen damage. Insurance documentation
+                                    supporting flood damage claim.</p>
                             </div>
                         </div>
                     </div>
@@ -719,18 +763,23 @@
                 <div class="fb-pvs-item">
                     <div class="fb-pvs-header">
                         <span class="fb-pvs-num">14</span>
-                        <span class="fb-pvs-q"><a target="_blank" href="{{ route('our-service.ourservice', ['slug' => 'desert-pull-out-service-dubai']) }}" class="fb-pvs-link">Stuck in desert</a> near Big Red during weekend safari</span>
+                        <span class="fb-pvs-q"><a target="_blank"
+                                href="{{ route('our-service.ourservice', ['slug' => 'desert-pull-out-service-dubai']) }}"
+                                class="fb-pvs-link">Stuck in desert</a> near Big Red during weekend safari</span>
                         <i class="fas fa-chevron-down fb-pvs-arrow"></i>
                     </div>
                     <div class="fb-pvs-body">
                         <div class="fb-pvs-split">
                             <div class="fb-pvs-pain">
                                 <div class="fb-pvs-label"><i class="fas fa-exclamation-triangle"></i> Pain Point</div>
-                                <p>Vehicle buried to the axles in soft sand. Located 30km from paved roads. Mobile signal is intermittent. Tried digging but vehicle sinks deeper.</p>
+                                <p>Vehicle buried to the axles in soft sand. Located 30km from paved roads. Mobile signal is
+                                    intermittent. Tried digging but vehicle sinks deeper.</p>
                             </div>
                             <div class="fb-pvs-fix">
                                 <div class="fb-pvs-label"><i class="fas fa-check-circle"></i> Our Solution</div>
-                                <p>Off-road extraction specialists with heavy-duty winches. Sand recovery boards and proper anchoring equipment. Coordinate GPS location despite poor signal. Flatbed recovery once extracted to accessible area.</p>
+                                <p>Off-road extraction specialists with heavy-duty winches. Sand recovery boards and proper
+                                    anchoring equipment. Coordinate GPS location despite poor signal. Flatbed recovery once
+                                    extracted to accessible area.</p>
                             </div>
                         </div>
                     </div>
@@ -747,11 +796,15 @@
                         <div class="fb-pvs-split">
                             <div class="fb-pvs-pain">
                                 <div class="fb-pvs-label"><i class="fas fa-exclamation-triangle"></i> Pain Point</div>
-                                <p>Brake pedal went to floor with no pressure. Used emergency brake and engine braking to stop. Absolutely cannot drive vehicle. Located on Jumeirah Beach Road in moderate traffic.</p>
+                                <p>Brake pedal went to floor with no pressure. Used emergency brake and engine braking to
+                                    stop. Absolutely cannot drive vehicle. Located on Jumeirah Beach Road in moderate
+                                    traffic.</p>
                             </div>
                             <div class="fb-pvs-fix">
                                 <div class="fb-pvs-label"><i class="fas fa-check-circle"></i> Our Solution</div>
-                                <p>Understanding of brake system failures and safety protocols. Vehicle cannot be towed with wheels on ground safely. Flatbed ensures no brake operation needed during transport. Priority response for safety-critical mechanical failures.</p>
+                                <p>Understanding of brake system failures and safety protocols. Vehicle cannot be towed with
+                                    wheels on ground safely. Flatbed ensures no brake operation needed during transport.
+                                    Priority response for safety-critical mechanical failures.</p>
                             </div>
                         </div>
                     </div>
@@ -1551,6 +1604,10 @@
                         <li>Average response time in central areas: 17 minutes</li>
                     </ul>
                 </div>
+
+                <a href="tel:+971523003423" class="theme-btn theme-btn2">
+                    Call Now <i class="fas fa-arrow-right-long"></i>
+                </a>
             </div>
         </div>
     </section>

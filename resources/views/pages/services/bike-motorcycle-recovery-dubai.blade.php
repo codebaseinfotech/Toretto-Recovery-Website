@@ -9,8 +9,8 @@
 
 @section('meta_keywords', 'Emergency Motorcycle Recovery Dubai | Highways, Desert, City — 24/7')
 @section('head')
-@verbatim
-<script type="application/ld+json">
+    @verbatim
+        <script type="application/ld+json">
 {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -82,7 +82,7 @@
     ]
 }
 </script>
-@endverbatim
+    @endverbatim
 @endsection
 @section('content')
     <style>
@@ -144,7 +144,7 @@
 
                         <ul class="breadcrumb-menu">
                             <li>
-                                <a href="{{ route('home') }}" >Home</a>
+                                <a href="{{ route('home') }}">Home</a>
                                 <i class="fa fa-angle-double-right"></i>
                             </li>
                             <li class="active">Professional Motorcycle Recovery</li>
@@ -162,7 +162,7 @@
                                 Book Now <i class="fas fa-arrow-right-long"></i>
                             </a>
                             <a href="tel:+971523003423" class="theme-btn theme-btn2">
-                                Call / WhatsApp <i class="fas fa-arrow-right-long"></i>
+                                Call Now <i class="fas fa-arrow-right-long"></i>
                             </a>
                         </div>
 
@@ -753,7 +753,8 @@
                     <div class="bm-district-icon"><i class="fas fa-building"></i></div>
                     <h4>Downtown Dubai & Business Bay</h4>
                     <p>High-density tower corridors, basement car parks, and restricted loading zones require
-                        small-footprint<a class="text-link" target="_blank" href="{{ route('home') }}"> recovery vehicles</a>. Our
+                        small-footprint<a class="text-link" target="_blank" href="{{ route('home') }}"> recovery
+                            vehicles</a>. Our
                         compact
                         motorcycle-specific units navigate underground
                         spaces standard trucks cannot access.</p>
@@ -1965,7 +1966,8 @@
                 <div class="bm-perspective-panel bm-perspective-panel--pros">
                     <div class="bm-perspective-panel-head">
                         <div class="bm-perspective-panel-badge"><i class="fas fa-circle-check"></i></div>
-                        <h3>Advantages of <a class="text-link" target="_blank" href="{{ route('home') }}">Professional Recovery</a></h3>
+                        <h3>Advantages of <a class="text-link" target="_blank" href="{{ route('home') }}">Professional
+                                Recovery</a></h3>
                     </div>
                     <ul>
                         <li><i class="fas fa-check"></i> Your motorcycle's structural integrity and paintwork are
@@ -2380,8 +2382,8 @@
                         <p>Yes — we hold commercial fleet contracts with several major delivery operators in Dubai. Fleet
                             accounts receive priority dispatch, consolidated monthly invoicing, dedicated account
                             management, and a guaranteed maximum response time written into the service agreement. If you
-                            operate a delivery fleet and experience frequent motorcycle breakdowns, <a class="text-link" target="_blank"
-                                href="{{ route('contact') }}">contact</a> our business
+                            operate a delivery fleet and experience frequent motorcycle breakdowns, <a class="text-link"
+                                target="_blank" href="{{ route('contact') }}">contact</a> our business
                             development team to discuss a tailored fleet recovery package that reduces your downtime cost.
                         </p>
                     </div>
@@ -2416,7 +2418,8 @@
                             delivery fleet rider who managed to push the bike to safety. If you cancel before our unit has
                             departed the base, no charge applies. If our team is already en route, a nominal call-out fee
                             may apply to cover fuel and crew time — this will be confirmed transparently when you cancel the
-                            job. We never apply penalty charges for genuine self-resolution of a <a class="text-link" target="_blank"
+                            job. We never apply penalty charges for genuine self-resolution of a <a class="text-link"
+                                target="_blank"
                                 href="{{ route('our-service.ourservice', ['slug' => 'roadside-assistance-dubai']) }}">roadside
                                 problem.</a></p>
                     </div>

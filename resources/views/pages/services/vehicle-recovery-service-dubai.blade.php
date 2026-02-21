@@ -12,8 +12,8 @@
 @section('meta_keywords', '24/7 Emergency Vehicle Recovery Dubai – Fast Help Across All Areas | Toretto recovery')
 
 @section('head')
-@verbatim
-<script type="application/ld+json">
+    @verbatim
+        <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -77,7 +77,7 @@
   ]
 }
 </script>
-@endverbatim
+    @endverbatim
 @endsection
 
 @section('content')
@@ -179,7 +179,7 @@
                                 Book Now <i class="fas fa-arrow-right-long"></i>
                             </a>
                             <a href="tel:+971523003423" class="theme-btn theme-btn2">
-                                Call / WhatsApp <i class="fas fa-arrow-right-long"></i>
+                                Call Now <i class="fas fa-arrow-right-long"></i>
                             </a>
                         </div>
 
@@ -266,7 +266,7 @@
                             routes, ensuring professional care for every vehicle, anytime, anywhere in Dubai.</p>
                         <a href="{{ route('book.now') }}" target="_blank" class="theme-btn mt-2">Book Now<i
                                 class="fa-solid fa-arrow-right-long"></i></a>
-                        <a href="tel:+971 523003423" class="theme-btn mt-2"> Call / WhatsApp<i
+                        <a href="tel:+971 523003423" class="theme-btn mt-2"> Call Now<i
                                 class="fa-solid fa-arrow-right-long"></i></a>
                     </div>
                 </div>
@@ -306,14 +306,16 @@
                 </p>
             </div>
 
-            <h3 style="color: #ffffff;"> <a href="{{ route('home') }}" target="_blank">Toretto Recovery</a> responds to your emergency with
+            <h3 style="color: #ffffff;"> <a href="{{ route('home') }}" target="_blank">Toretto Recovery</a> responds to your
+                emergency with
                 precision, arriving with
                 the right equipment and expertise to resolve your situation safely. No judgment, no delays, just solutions.
             </h3>
 
             <h3>Understanding Professional Vehicle Extraction</h3>
             <p>Professional extraction means safely removing your immobilized automobile from wherever it's stranded through
-                our <a href="https://torettorecovery.ae/towing-service-dubai" target="_blank">professional towing service</a> and
+                our <a href="https://torettorecovery.ae/towing-service-dubai" target="_blank">professional towing
+                    service</a> and
                 transporting it to your chosen destination—whether that's home, your preferred workshop, or secure storage.
             </p>
 
@@ -515,7 +517,8 @@
             <div class="section-header">
                 <h2>Beyond <span style="color: #e10600">Extraction—Complete</span> Roadside Assistance</h2>
                 <p>In addition to recovery and towing, we provide fast <a
-                        href="https://torettorecovery.ae/roadside-assistance-dubai" target="_blank">roadside assistance in Dubai</a>
+                        href="https://torettorecovery.ae/roadside-assistance-dubai" target="_blank">roadside assistance in
+                        Dubai</a>
                     including battery jumpstarts, fuel delivery, tyre replacement, and lockout support.</p>
             </div>
 
@@ -994,7 +997,7 @@
                         </ul>
                         <a href="{{ route('book.now') }}" target="_blank" class="theme-btn mt-2">Book Now<i
                                 class="fa-solid fa-arrow-right-long"></i></a>
-                        <a href="tel:+971 523003423" class="theme-btn mt-2"> Call / WhatsApp<i
+                        <a href="tel:+971 523003423" class="theme-btn mt-2"> Call Now<i
                                 class="fa-solid fa-arrow-right-long"></i></a>
                     </div>
                 </div>
@@ -1192,7 +1195,8 @@
 
                 <p class="rapid-help-description">
                     For non-emergency inquiries, fleet partnerships, or insurance coordination, visit our <a
-                        href="{{ route('contact') }}" target="_blank">Contact Page</a> and our team will respond promptly.
+                        href="{{ route('contact') }}" target="_blank">Contact Page</a> and our team will respond
+                    promptly.
                 </p>
                 <p class="rapid-help-highlight">
                     <strong>Response Promise:</strong> Human answer within 60 seconds.

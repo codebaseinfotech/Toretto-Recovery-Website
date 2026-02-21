@@ -9,12 +9,13 @@
     precision care & specialist recovery you can trust.
 @endsection
 
-@section('meta_keywords', 'With 15 years of experience, Toretto Recovery provides expert luxury & sports car handling in
+@section('meta_keywords',
+    'With 15 years of experience, Toretto Recovery provides expert luxury & sports car handling in
     Dubai—safe transport, precision care & specialist recovery you can trust.')
 
 @section('head')
-@verbatim
-<script type="application/ld+json">
+    @verbatim
+        <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -86,7 +87,7 @@
   ]
 }
 </script>
-@endverbatim
+    @endverbatim
 @endsection
 @section('content')
     <style>
@@ -136,7 +137,7 @@
 
                         <!-- Main Heading -->
                         <h1 class="hero-main-title mb-3 wow animate__animated animate__fadeInDown">
-                            Luxury & Sports Car <br/> Handling Dubai
+                            Luxury & Sports Car <br /> Handling Dubai
                         </h1>
 
 
@@ -200,7 +201,7 @@
                                 Book Now <i class="fas fa-arrow-right-long"></i>
                             </a>
                             <a href="tel:+971523003423" class="theme-btn theme-btn2">
-                                Call / WhatsApp <i class="fas fa-arrow-right-long"></i>
+                                Call Now <i class="fas fa-arrow-right-long"></i>
                             </a>
                         </div>
                     </div>
@@ -1108,7 +1109,8 @@
                             <span class="specialist-eyebrow">Proven in the Field</span>
                             <h2 class="site-title mt-3">Real-World Scenarios: <span>How We Respond</span></h2>
                         </div>
-                        <h4 class="mb-3">Scenario: <a class="text-link" target="_blank" href="{{ route('book.now') }}">Supercar
+                        <h4 class="mb-3">Scenario: <a class="text-link" target="_blank"
+                                href="{{ route('book.now') }}">Supercar
                                 Breakdown
                             </a> on a Major Expressway</h4>
                         <p class="mb-3">A Porsche 911 GT3 RS develops a catastrophic tyre failure at high speed on E11
@@ -1285,7 +1287,9 @@
                         <i class="fa-solid fa-phone"></i>
                         <div>
                             <span class="lsc-faq-cta-label">Still have questions?</span>
-                            <a href="{{ route('book.now') }}"  target="_blank" class="lsc-faq-cta-link">Call us 24/7 →</a>
+                            <a href="tel:+971523003423" class="lsc-faq-cta-link">
+                                Call Now <i class="fas fa-arrow-right-long"></i>
+                            </a>
                         </div>
                     </div>
                 </div>

@@ -12,8 +12,8 @@
 @section('meta_keywords', '24/7 Towing Service in Dubai, Emergency Car Recovery Dubai, Roadside Assistance UAE')
 
 @section('head')
-@verbatim
-<script type="application/ld+json">
+    @verbatim
+        <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Service",
@@ -36,7 +36,7 @@
   "description": "Professional 24/7 towing service in Dubai for cars, luxury vehicles, sports cars, motorcycles, SUVs, and commercial vehicles. Serving highways, homes, offices, basements, and off-road locations."
 }
 </script>
-<script type="application/ld+json">
+        <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -76,7 +76,7 @@
   ]
 }
 </script>
-@endverbatim
+    @endverbatim
 @endsection
 
 @section('content')
@@ -138,7 +138,7 @@
                                 Book Now <i class="fas fa-arrow-right-long"></i>
                             </a>
                             <a href="tel:+971523003423" class="theme-btn theme-btn2">
-                                Call / WhatsApp <i class="fas fa-arrow-right-long"></i>
+                                Call Now <i class="fas fa-arrow-right-long"></i>
                             </a>
                         </div>
 
@@ -208,7 +208,7 @@
 
                         <a href="{{ route('book.now') }}" target="_blank" class="theme-btn mt-2">Book Now<i
                                 class="fa-solid fa-arrow-right-long"></i></a>
-                        <a href="tel:+971 523003423" class="theme-btn mt-2"> Call / WhatsApp<i
+                        <a href="tel:+971 523003423" class="theme-btn mt-2"> Call Now<i
                                 class="fa-solid fa-arrow-right-long"></i></a>
                     </div>
                 </div>
@@ -276,7 +276,8 @@
                             <li>Vans, pickups, and light commercial vehicles</li>
                         </ul>
                         <p>
-                            Every <a href="https://torettorecovery.ae/" target="_blank" class="site-title-tagline"> <span>vehicle
+                            Every <a href="https://torettorecovery.ae/" target="_blank" class="site-title-tagline">
+                                <span>vehicle
                                     recovery services</span></a> is assessed before towing to ensure the correct method
                             is
                             used, preventing damage and guaranteeing safe transportation.
@@ -371,7 +372,8 @@
                 <div class="col-lg-6 imagebag">
                     <div class="about-left wow animate__animated animate__fadeInLeft">
                         <div class="about-img">
-                            <img src="{{ asset('assets/images/toretto-recovery-towing -service-in-dubai.jpg') }}" alt="">
+                            <img src="{{ asset('assets/images/toretto-recovery-towing -service-in-dubai.jpg') }}"
+                                alt="">
                         </div>
                     </div>
                 </div>
@@ -545,7 +547,7 @@
                             <li>Vehicle inspection and secure loading.</li>
                             <li>Delivery to home, garage, or desired destination.</li>
                         </ul>
-                        <a href="tel:+971 523003423" class="theme-btn ">Call / WhatsApp<i
+                        <a href="tel:+971 523003423" class="theme-btn ">Call Now<i
                                 class="fas fa-arrow-right-long"></i></a>
                     </div>
                 </div>

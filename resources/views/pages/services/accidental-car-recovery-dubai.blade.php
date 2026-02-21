@@ -6,8 +6,8 @@
     'Expert accident vehicle recovery service in Dubai. RTA approved, 24/7 emergency response,
     modern equipment fleet. Serving all areas with 20-45 min arrival. Get help now.')
 @section('head')
-@verbatim
-<script type="application/ld+json">
+    @verbatim
+        <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Service",
@@ -99,7 +99,7 @@
   "description": "Professional accidental car recovery service in Dubai with 14 years experience. RTA licensed, modern equipment fleet, luxury vehicle specialists, 24/7 emergency response with 20-45 minute arrival times."
 }
 </script>
-<script type="application/ld+json">
+        <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -187,7 +187,7 @@
   ]
 }
 </script>
-@endverbatim
+    @endverbatim
 @endsection
 
 @section('content')
@@ -292,7 +292,7 @@
                                 Book Now <i class="fas fa-arrow-right-long"></i>
                             </a>
                             <a href="tel:+971523003423" class="theme-btn theme-btn2">
-                                Call / WhatsApp <i class="fas fa-arrow-right-long"></i>
+                                Call Now <i class="fas fa-arrow-right-long"></i>
                             </a>
                         </div>
                     </div>
@@ -471,7 +471,7 @@
                         <div class="included-item">
                             <i class="fa-solid fa-truck-fast"></i>
                             <p>Immediate dispatch for <a class="text-link" target="_blank"
-                                    href="{{ route('our-service.ourservice',  ['slug' => 'towing-service-dubai']) }}">accident
+                                    href="{{ route('our-service.ourservice', ['slug' => 'towing-service-dubai']) }}">accident
                                     towing near me</a> requests</p>
                         </div>
                         <div class="included-item">
@@ -913,7 +913,8 @@
                 <div class="subsection-header text-center mb-5">
                     <h2 class="site-title">Comprehensive Service <span>Benefits</span></h2>
                     <p style="max-width: 900px; margin: 20px auto 0; color: #666; font-size: 17px;">
-                        <a class="text-link" target="_blank" href="{{ route('home') }}">24/7 Emergency accidental recovery</a> delivers
+                        <a class="text-link" target="_blank" href="{{ route('home') }}">24/7 Emergency accidental
+                            recovery</a> delivers
                         substantial advantages
                     </p>
                 </div>

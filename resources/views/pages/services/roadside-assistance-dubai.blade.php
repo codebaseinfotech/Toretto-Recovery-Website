@@ -154,7 +154,7 @@
                                 Book Now <i class="fas fa-arrow-right-long"></i>
                             </a>
                             <a href="tel:+971523003423"  class="theme-btn theme-btn2">
-                                Call / WhatsApp <i class="fas fa-arrow-right-long"></i>
+                                Call Now <i class="fas fa-arrow-right-long"></i>
                             </a>
                         </div>
 
@@ -243,7 +243,7 @@
                             need it most.</p>
                         <a href="{{ route('book.now') }}" target="_blank" class="theme-btn mt-2">Book Now<i
                                 class="fa-solid fa-arrow-right-long"></i></a>
-                        <a href="tel:+971 523003423" class="theme-btn mt-2"> Call / WhatsApp<i
+                        <a href="tel:+971 523003423" class="theme-btn mt-2"> Call Now<i
                                 class="fa-solid fa-arrow-right-long"></i></a>
                     </div>
                 </div>
@@ -279,7 +279,7 @@
                         <div class="mt-2">
                             <a href="{{ route('book.now') }}" target="_blank" class="theme-btn mt-2">Book Now<i
                                     class="fa-solid fa-arrow-right-long"></i></a>
-                            <a href="tel:+971 523003423" class="theme-btn mt-2"> Call / WhatsApp<i
+                            <a href="tel:+971 523003423" class="theme-btn mt-2"> Call Now<i
                                     class="fa-solid fa-arrow-right-long"></i></a>
                         </div>
                     </div>
