@@ -10,8 +10,8 @@
 
 @section('meta_keywords', 'Stuck in Desert? 24/7 Pull Out & Recovery Service – Toretto')
 @section('head')
-@verbatim
-<script type="application/ld+json">
+    @verbatim
+        <script type="application/ld+json">
 {
     "@context": "https://schema.org",
     "@type": ["LocalBusiness","AutomotiveBusiness","FAQPage"],
@@ -43,10 +43,11 @@
     "longitude": "55.2708"
     },
     "areaServed": [
-    {"@type": "City", "name": "Dubai"}]
+    {"@type": "City", "name": "Dubai"}],
+    "mainEntity": []
 }
 </script>
-@endverbatim
+    @endverbatim
 @endsection
 @section('content')
     <style>
