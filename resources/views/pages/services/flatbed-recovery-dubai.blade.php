@@ -13,10 +13,10 @@
     'flatbed recovery dubai, car transport dubai, flatbed towing, luxury car recovery, damage-free
     vehicle transport')
 
-@section('schema')
-    @verbatim
-        <script type="application/ld+json">
-        {
+@section('head')
+@verbatim
+<script type="application/ld+json">
+{
   "@context": "https://schema.org",
   "@type": "AutoRepair",
   "name": "Toretto Recovery - Flatbed Vehicle Recovery Services",
@@ -120,7 +120,10 @@
     "ratingValue": "4.9",
     "reviewCount": "247"
   }
-},{
+}
+</script>
+<script type="application/ld+json">
+{
   "@context": "https://schema.org",
   "@type": "Service",
   "serviceType": "Flatbed Vehicle Recovery",
@@ -161,7 +164,10 @@
       "name": "Dubai, UAE"
     }
   }
-},{
+}
+</script>
+<script type="application/ld+json">
+{
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
@@ -215,10 +221,8 @@
     }
   ]
 }
-
-
-    </script>
-    @endverbatim
+</script>
+@endverbatim
 @endsection
 
 @section('content')
