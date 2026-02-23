@@ -624,7 +624,7 @@
 
                     <div class="why-point">
                         <span></span>
-                        <p>5+ years of towing & recovery experience across Dubai</p>
+                        <p>10+ years of towing & recovery experience across Dubai</p>
                     </div>
 
                     <div class="why-point">
