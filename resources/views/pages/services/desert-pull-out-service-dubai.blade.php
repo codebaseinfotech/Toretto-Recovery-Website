@@ -727,7 +727,7 @@
                             The UAE's climate creates recovery challenges that simply don't exist in most other
                             parts of the
                             world. Understanding those conditions — and how they change what works — is part of what
-                            15
+                            10
                             years of Dubai desert experience actually means.
                         </p>
                     </div>
