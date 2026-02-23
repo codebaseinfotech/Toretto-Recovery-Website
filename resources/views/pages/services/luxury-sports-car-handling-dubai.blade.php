@@ -5,12 +5,12 @@
 @endsection
 
 @section('meta_description')
-    With 15 years of experience, Toretto Recovery provides expert luxury & sports car handling in Dubai—safe transport,
+    With 10 years of experience, Toretto Recovery provides expert luxury & sports car handling in Dubai—safe transport,
     precision care & specialist recovery you can trust.
 @endsection
 
 @section('meta_keywords',
-    'With 15 years of experience, Toretto Recovery provides expert luxury & sports car handling in
+    'With 10 years of experience, Toretto Recovery provides expert luxury & sports car handling in
     Dubai—safe transport, precision care & specialist recovery you can trust.')
 
 @section('head')

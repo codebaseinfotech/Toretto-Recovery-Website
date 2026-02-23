@@ -130,12 +130,12 @@
                         <p class="dp-hero-desc">
                             There's nothing quite as disorienting as feeling your wheels sink into soft sand while the
                             desert stretches out around you in every direction. Toretto has been getting vehicles out of
-                            exactly this situation for over 15 years — hundreds of times, across every desert area in Dubai,
+                            exactly this situation for over 10 years — hundreds of times, across every desert area in Dubai,
                             in every season, at every hour.
                         </p>
 
                         <p class="dp-hero-desc mt-3">Toretto has been getting vehicles out of exactly this situation for
-                            over 15
+                            over 10
                             years. Not just
                             occasionally — hundreds of times, across every desert area in Dubai, in every season, at every
                             hour. When you call us, you're not getting a general roadside team making their best guess.
@@ -336,7 +336,7 @@
                             versus when it'll cause bodywork damage. Knowing whether to dig, plate, tow, or anchor first.
                         </p>
                         <p>These aren't things you figure out in the moment. They come from doing this, over and over,
-                            across real desert conditions. Toretto's team has built that judgment across more than 15 years
+                            across real desert conditions. Toretto's team has built that judgment across more than 10 years
                             of desert recovery work in Dubai. Every method we use is chosen specifically for your vehicle,
                             the sand type you're stuck in, and the situation on the ground.</p>
                     </div>

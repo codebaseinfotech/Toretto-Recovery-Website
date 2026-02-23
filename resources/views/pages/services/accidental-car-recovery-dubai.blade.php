@@ -96,7 +96,7 @@
     }
   },
   "slogan": "RTA Licensed 24/7 Emergency Accident Recovery Across Dubai",
-  "description": "Professional accidental car recovery service in Dubai with 14 years experience. RTA licensed, modern equipment fleet, luxury vehicle specialists, 24/7 emergency response with 20-45 minute arrival times."
+  "description": "Professional accidental car recovery service in Dubai with 10 years experience. RTA licensed, modern equipment fleet, luxury vehicle specialists, 24/7 emergency response with 20-45 minute arrival times."
 }
 </script>
         <script type="application/ld+json">
@@ -173,7 +173,7 @@
       "name": "How do I know you're properly licensed?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "We maintain full RTA authorization with continuous compliance verification. Our 14-year operational history demonstrates consistent adherence to regulatory standards and professional certification requirements."
+        "text": "We maintain full RTA authorization with continuous compliance verification. Our 10-year operational history demonstrates consistent adherence to regulatory standards and professional certification requirements."
       }
     },
     {
@@ -561,7 +561,7 @@
                         <ul class="compliance-list">
                             <li>Only RTA-licensed recovery companies are legally allowed to tow accident vehicles</li>
                             <li>Using unauthorized operators can lead to hefty fines and insurance claim issues</li>
-                            <li>Our 14+ years of experience means every recovery is fully compliant</li>
+                            <li>Our 10+ years of experience means every recovery is fully compliant</li>
                         </ul>
                     </div>
                 </div>
@@ -862,7 +862,7 @@
                     <div class="flatbed-coverage-item">
                         <h4>Regulatory Compliance & Licensing</h4>
                         <p class="flatbed-response-time">Verify full RTA authorization and current certification status.
-                            Our 14 years of continuous
+                            Our 10 years of continuous
                             operation demonstrate unwavering commitment to regulatory compliance and professional
                             standards.</p>
                     </div>
@@ -900,7 +900,7 @@
 
                     <div class="flatbed-coverage-item">
                         <h4>Comprehensive Experience</h4>
-                        <p class="flatbed-response-time">Our 14-year operational history encompasses thousands of
+                        <p class="flatbed-response-time">Our 10-year operational history encompasses thousands of
                             successful recoveries across every
                             imaginable scenario, from routine fender-benders to complex multi-vehicle incidents and
                             challenging environmental extractions.</p>
@@ -1599,7 +1599,7 @@
                         <i class="fa-solid fa-chevron-down faq-arrow"></i>
                     </button>
                     <div class="faq-answer">
-                        <p>We maintain full RTA authorization with continuous compliance verification. Our 14-year
+                        <p>We maintain full RTA authorization with continuous compliance verification. Our 10-year
                             operational history demonstrates consistent adherence to regulatory standards and professional
                             certification requirements.</p>
                     </div>
@@ -1641,7 +1641,7 @@
                             </div>
 
                             <p class="author-bio">
-                                With 14 years of dedicated experience in emergency vehicle recovery operations, Ahmed
+                                With 10 years of dedicated experience in emergency vehicle recovery operations, Ahmed
                                 Al-Mansouri has overseen thousands of successful accident recoveries across every
                                 environment and scenario imaginable. His comprehensive expertise spans luxury vehicle
                                 handling, complex multi-vehicle incident coordination, challenging environmental
