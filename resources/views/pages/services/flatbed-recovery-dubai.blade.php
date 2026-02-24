@@ -395,7 +395,7 @@
                 <div class="col-lg-6 imagebag">
                     <div class="about-left wow animate__animated animate__fadeInLeft">
                         <div class="about-img">
-                            <img src="{{ asset('assets/images/accident-recovery-by-flatbed.jpg') }}"
+                            <img src="{{ asset('assets/images/accident-recovery-by-flatbed.png') }}"
                                 alt="Flatbed Recovery Service Dubai">
                         </div>
                     </div>
@@ -1179,7 +1179,7 @@
                 <div class="col-lg-6 imagebag">
                     <div class="about-left wow animate__animated animate__fadeInLeft">
                         <div class="about-img">
-                            <img src="{{ asset('assets/images/delivering-car-by-flatbed-tow-truck.jpg') }}"
+                            <img src="{{ asset('assets/images/delivering-car-by-flatbed-tow-truck.png') }}"
                                 alt="">
                         </div>
                     </div>

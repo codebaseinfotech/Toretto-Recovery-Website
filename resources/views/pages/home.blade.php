@@ -298,7 +298,7 @@
                 <div class="col-lg-6 imagebag">
                     <div class="about-left wow animate__animated animate__fadeInLeft">
                         <div class="about-img">
-                            <img src="{{ asset('assets/images/01.jpg') }}" alt="">
+                            <img src="{{ asset('assets/images/01.png') }}" alt="">
                         </div>
                         <div class="about-experience">
                             <div class="about-experience-icon">
@@ -649,7 +649,7 @@
                     </div>
                 </div>
                 <div class="col-lg-6 col-img-recover">
-                    <img src="{{ asset('assets/images/recover.png') }}" alt="">
+                    <img src="{{ asset('assets/images/service-image.png') }}" alt="" style="border-radius: 10px;">
                 </div>
             </div>
         </div>

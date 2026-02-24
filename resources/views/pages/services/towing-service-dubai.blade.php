@@ -14,68 +14,68 @@
 @section('head')
     @verbatim
         <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Service",
-  "serviceType": "Vehicle Towing Service",
-  "provider": {
-    "@type": "LocalBusiness",
-    "name": "Toretto Recovery"
-  },
-  "areaServed": {
-    "@type": "AdministrativeArea",
-    "name": "Dubai"
-  },
-  "availableChannel": {
-    "@type": "ServiceChannel",
-    "serviceLocation": {
-      "@type": "Place",
-      "name": "Dubai"
-    }
-  },
-  "description": "Professional 24/7 towing service in Dubai for cars, luxury vehicles, sports cars, motorcycles, SUVs, and commercial vehicles. Serving highways, homes, offices, basements, and off-road locations."
-}
-</script>
+                                {
+                                  "@context": "https://schema.org",
+                                  "@type": "Service",
+                                  "serviceType": "Vehicle Towing Service",
+                                  "provider": {
+                                    "@type": "LocalBusiness",
+                                    "name": "Toretto Recovery"
+                                  },
+                                  "areaServed": {
+                                    "@type": "AdministrativeArea",
+                                    "name": "Dubai"
+                                  },
+                                  "availableChannel": {
+                                    "@type": "ServiceChannel",
+                                    "serviceLocation": {
+                                      "@type": "Place",
+                                      "name": "Dubai"
+                                    }
+                                  },
+                                  "description": "Professional 24/7 towing service in Dubai for cars, luxury vehicles, sports cars, motorcycles, SUVs, and commercial vehicles. Serving highways, homes, offices, basements, and off-road locations."
+                                }
+                                </script>
         <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "How much does towing cost in Dubai?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Towing costs depend on distance, vehicle type, and location. We provide clear pricing before dispatch."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Can you tow luxury or sports cars safely?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes. We use flatbed towing and specialized equipment designed for luxury and sports vehicles."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Do you tow from basement parking?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes. We regularly recover vehicles from basement and low-clearance parking areas across Dubai."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is your towing service available 24/7?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes. Our towing and recovery service operates 24 hours a day, 7 days a week."
-      }
-    }
-  ]
-}
-</script>
+                                {
+                                  "@context": "https://schema.org",
+                                  "@type": "FAQPage",
+                                  "mainEntity": [
+                                    {
+                                      "@type": "Question",
+                                      "name": "How much does towing cost in Dubai?",
+                                      "acceptedAnswer": {
+                                        "@type": "Answer",
+                                        "text": "Towing costs depend on distance, vehicle type, and location. We provide clear pricing before dispatch."
+                                      }
+                                    },
+                                    {
+                                      "@type": "Question",
+                                      "name": "Can you tow luxury or sports cars safely?",
+                                      "acceptedAnswer": {
+                                        "@type": "Answer",
+                                        "text": "Yes. We use flatbed towing and specialized equipment designed for luxury and sports vehicles."
+                                      }
+                                    },
+                                    {
+                                      "@type": "Question",
+                                      "name": "Do you tow from basement parking?",
+                                      "acceptedAnswer": {
+                                        "@type": "Answer",
+                                        "text": "Yes. We regularly recover vehicles from basement and low-clearance parking areas across Dubai."
+                                      }
+                                    },
+                                    {
+                                      "@type": "Question",
+                                      "name": "Is your towing service available 24/7?",
+                                      "acceptedAnswer": {
+                                        "@type": "Answer",
+                                        "text": "Yes. Our towing and recovery service operates 24 hours a day, 7 days a week."
+                                      }
+                                    }
+                                  ]
+                                }
+                                </script>
     @endverbatim
 @endsection
 
@@ -329,7 +329,7 @@
                     </div>
                 </div>
                 <div class="col-lg-6 col-img-recover">
-                    <img src="{{ asset('assets/images/Emergency Towing Toronto - Towing.jpeg') }}" alt="">
+                    <img src="{{ asset('assets/images/Emergency-Towing-Toronto-Towing.png') }}" alt="">
                 </div>
             </div>
         </div>
@@ -372,7 +372,7 @@
                 <div class="col-lg-6 imagebag">
                     <div class="about-left wow animate__animated animate__fadeInLeft">
                         <div class="about-img">
-                            <img src="{{ asset('assets/images/toretto-recovery-towing -service-in-dubai.jpg') }}"
+                            <img src="{{ asset('assets/images/toretto-recovery-towing-service-in-dubai.png') }}"
                                 alt="">
                         </div>
                     </div>
@@ -432,7 +432,7 @@
                 <div class="col-lg-6 imagebag">
                     <div class="about-left wow animate__animated animate__fadeInLeft">
                         <div class="about-img">
-                            <img src="{{ asset('assets/images/cartowingservice.jpeg') }}" alt="">
+                            <img src="{{ asset('assets/images/cartowingservice.png') }}" alt="">
                         </div>
                     </div>
                 </div>
@@ -546,8 +546,7 @@
         <div class="container">
             <div class="towing-grid">
                 <div class="towing-image">
-                    <img src="{{ asset('assets/images/toretto-recovery-towing -service-in-dubai.jpg') }}"
-                        alt="Special Location Towing">
+                    <img src="{{ asset('assets/images/recovery-towing.png') }}" alt="Special Location Towing">
                 </div>
                 <div class="towing-text">
                     <h2 style="color: #ffffff">Off-Road, On-Road & Special Location Towing</h2>
@@ -728,7 +727,7 @@
     </section>
 
     <link rel="stylesheet"
-      href="{{ asset('assets/css/service.css') }}?v={{ filemtime(public_path('assets/css/service.css')) }}">
+        href="{{ asset('assets/css/service.css') }}?v={{ filemtime(public_path('assets/css/service.css')) }}">
     <script>
         // Dynamic location → map interaction
         document.querySelectorAll('.tw-loc-pin').forEach(pin => {

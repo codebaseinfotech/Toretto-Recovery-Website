@@ -369,7 +369,7 @@
                     <!-- Right: Image -->
                     <div class="specialist-header-image-wrap">
                         <div class="specialist-header-img-inner">
-                            <img src="{{ asset('assets/images/low-tow-truck-towing-sports-car.jpg') }}"
+                            <img src="{{ asset('assets/images/low-tow-truck-towing-sports-car.png') }}"
                                 alt="Specialist luxury car flatbed transport Dubai" class="specialist-header-img"
                                 loading="lazy">
                         </div>
