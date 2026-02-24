@@ -377,7 +377,7 @@
 
 @push('map-script')
     <script>
-        const PRICE_API_BASE_URL = "{{ env('API_BASE_URL', '') }}";
+        const PRICE_API_BASE_URL = "{{ config('services.api.base_url') }}";
 
         const API_BEARER_TOKEN = localStorage.getItem('auth_token') || '';
 
