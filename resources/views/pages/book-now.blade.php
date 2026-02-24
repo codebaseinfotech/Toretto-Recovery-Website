@@ -433,8 +433,7 @@
 
             const script = document.createElement('script');
             // Modified callback to handle map initialization after API loads
-            script.src =
-                `https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAP_API') }}&libraries=places,directions,distance_matrix&callback=initMapAndAutocomplete`;
+            script.src =`https://maps.googleapis.com/maps/api/js?key={{ config('services.google_maps.key') }}&libraries=places,directions,distance_matrix&callback=initMapAndAutocomplete`;
             script.async = true;
             script.defer = true;
             document.head.appendChild(script);

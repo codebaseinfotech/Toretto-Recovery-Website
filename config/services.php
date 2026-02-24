@@ -38,5 +38,8 @@ return [
     'api' => [
         'base_url' => env('API_BASE_URL'),
     ],
-
+    
+    'google_maps' => [
+        'key' => env('GOOGLE_MAP_API'),
+    ],
 ];
