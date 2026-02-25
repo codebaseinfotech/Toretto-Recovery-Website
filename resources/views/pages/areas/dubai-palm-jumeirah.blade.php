@@ -495,7 +495,7 @@
 
                 <div class="pj-cov4-card">
                     <div class="pj-cov4-card-top">
-                        <div class="pj-cov4-icon"><i class="fas fa-fence"></i></div>
+                        <div class="pj-cov4-icon"><i class="fas fa-lock"></i></div>
                         <span class="pj-cov4-num">04</span>
                     </div>
                     <h3>Private Residential Villas</h3>
