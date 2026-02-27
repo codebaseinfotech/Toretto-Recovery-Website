@@ -916,9 +916,9 @@
                 type === 'info' ? 'Information' : 'Service Status';
 
             //  msg.includes('session')
-            // if (type === 'error' && toastTitle === 'Booking Error') {
-            //     autoLogout();
-            // }
+            if (type === 'error' && toastTitle === 'Unauthenticated' || toastTitle === 'Unauthorized') {
+                autoLogout();
+            }
 
             Swal.fire({
                 toast: true,
@@ -996,50 +996,195 @@
             Swal.fire({
                 title: '<strong style="font-size: 24px;">Thank You!</strong>',
                 html: `
-            <div style="text-align: center; max-width: 500px; margin: 0 auto; font-family: 'Avenir', sans-serif;">
-                <p style="font-size: 16px; margin-bottom: 15px; font-family: 'Avenir', sans-serif;">
-                    Thank you for choosing Toretto Recovery Services.
-                </p>
-                <p style="font-size: 16px; margin-bottom: 15px; font-family: 'Avenir', sans-serif;">
-                    Your nearest recovery driver is currently being assigned.
-                </p>
-                <p style="font-size: 16px; margin-bottom: 15px; font-family: 'Avenir', sans-serif;">
-                    To receive real-time updates, driver contact details, and live tracking, please continue using our mobile application.
-                </p>
-                <p style="font-size: 16px; margin-bottom: 20px; font-weight: bold; font-family: 'Avenir', sans-serif;">
-                    Track your recovery vehicle in real time
-                </p>
-                <div style="margin-bottom: 25px;">
-                    <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
-                        <a href="#" target="_blank" style="display: inline-block;">
-                            <img src="{{ asset('assets/images/google-play.png') }}" alt="Google Play" style="height: 50px; width: auto; transition: transform 0.2s;">
-                        </a>
-                        <a href="#" target="_blank" style="display: inline-block;">
-                            <img src="{{ asset('assets/images/app-store.png') }}" alt="App Store" style="height: 50px; width: auto; transition: transform 0.2s;">
-                        </a>
+                <style>
+                    .finding-wrap{
+                        display:flex;
+                        justify-content:center;
+                        margin: 8px 0 18px 0;
+                    }
+                    .finding{
+                        width: 120px;
+                        height: 120px;
+                        position: relative;
+                    }
+                    /* Pulsing ring */
+                    .pulse-ring{
+                        position:absolute;
+                        inset: 18px;
+                        border-radius: 50%;
+                        border: 2px solid rgba(220,53,69,.35);
+                        animation: ringPulse 1.4s ease-out infinite;
+                    }
+                    .pulse-ring:nth-child(2){
+                        inset: 28px;
+                        animation-delay: .3s;
+                        opacity:.8;
+                    }
+                    @keyframes ringPulse{
+                        0%{ transform: scale(.75); opacity:.8; }
+                        70%{ transform: scale(1.15); opacity:.15; }
+                        100%{ transform: scale(1.2); opacity:0; }
+                    }
+
+                    /* Center pin */
+                    .pin{
+                        position:absolute;
+                        left:50%;
+                        top:50%;
+                        transform: translate(-50%,-58%);
+                        width: 26px;
+                        height: 26px;
+                        background:#dc3545;
+                        border-radius: 50% 50% 50% 0;
+                        transform: translate(-50%,-58%) rotate(-45deg);
+                        box-shadow: 0 10px 20px rgba(220,53,69,.25);
+                    }
+                    .pin::after{
+                        content:'';
+                        position:absolute;
+                        width:10px;height:10px;
+                        background:#fff;
+                        border-radius:50%;
+                        left:50%;top:50%;
+                        transform: translate(-50%,-50%);
+                    }
+
+                    /* Orbit path + moving car */
+                    .orbit{
+                        position:absolute;
+                        inset: 6px;
+                        border-radius: 50%;
+                        border: 2px dashed rgba(0,0,0,.10);
+                    }
+                    .car-orbit{
+                        position:absolute;
+                        inset: 6px;
+                        border-radius:50%;
+                        animation: spin 1.2s linear infinite;
+                    }
+                    @keyframes spin{
+                        from { transform: rotate(0deg); }
+                        to { transform: rotate(360deg); }
+                    }
+
+                    .car{
+                        position:absolute;
+                        top: -6px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        width: 34px;
+                        height: 20px;
+                        filter: drop-shadow(0 4px 10px rgba(0,0,0,.12));
+                    }
+                    /* small “signal” dots */
+                    .signal{
+                        position:absolute;
+                        left:50%;
+                        top:14px;
+                        transform: translateX(-50%);
+                        display:flex;
+                        gap:6px;
+                        opacity:.75;
+                    }
+                    .signal span{
+                        width:6px;height:6px;border-radius:50%;
+                        background: rgba(220,53,69,.55);
+                        animation: blink 1s ease-in-out infinite;
+                    }
+                    .signal span:nth-child(2){ animation-delay: .15s; }
+                    .signal span:nth-child(3){ animation-delay: .3s; }
+                    @keyframes blink{
+                        0%, 100%{ transform: translateY(0); opacity:.25; }
+                        50%{ transform: translateY(-4px); opacity:1; }
+                    }
+
+                    .finding-text{
+                        margin-top: 6px;
+                        font-size: 16px;
+                        color:#666;
+                        font-family:'Avenir', sans-serif;
+                    }
+                </style>
+
+                <div style="text-align: center; max-width: 500px; margin: 0 auto; font-family: 'Avenir', sans-serif;">
+
+                    <!--  Finding Driver Loader -->
+                    <div class="finding-wrap">
+                        <div class="finding">
+                            <div class="pulse-ring"></div>
+                            <div class="pulse-ring"></div>
+
+                            <div class="orbit"></div>
+
+                            <div class="car-orbit">
+                                <!-- simple SVG car -->
+                                <svg class="car" viewBox="0 0 64 36" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M14 22L20 10C21 8 23 7 25 7H43C45 7 47 8 48 10L54 22" fill="#111"/>
+                                    <path d="M10 22H58C60 22 62 24 62 26V30C62 32 60 34 58 34H56" fill="#111"/>
+                                    <path d="M8 30V26C8 24 10 22 12 22H14" fill="#111"/>
+                                    <path d="M24 10H40" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".85"/>
+                                    <circle cx="20" cy="34" r="4" fill="#dc3545"/>
+                                    <circle cx="50" cy="34" r="4" fill="#dc3545"/>
+                                </svg>
+                            </div>
+
+                            <div class="pin"></div>
+
+                            <div class="signal">
+                                <span></span><span></span><span></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="finding-text"><b>Finding nearest driver…<b></div>
+
+                    <p style="font-size: 16px; margin-bottom: 15px;">
+                        Thank you for choosing Toretto Recovery Services.
+                    </p>
+                    <p style="font-size: 16px; margin-bottom: 15px;">
+                        Your nearest recovery driver is currently being assigned.
+                    </p>
+                    <p style="font-size: 16px; margin-bottom: 15px;">
+                        To receive real-time updates, driver contact details, and live tracking, please continue using our mobile application.
+                    </p>
+
+                    <p style="font-size: 16px; margin-bottom: 20px; font-weight: bold;">
+                        Track your recovery vehicle in real time
+                    </p>
+
+                    <div style="margin-bottom: 25px;">
+                        <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                            <a href="#" target="_blank" style="display: inline-block;">
+                                <img src="{{ asset('assets/images/google-play.png') }}" alt="Google Play" style="height: 50px; width: auto;">
+                            </a>
+                            <a href="#" target="_blank" style="display: inline-block;">
+                                <img src="{{ asset('assets/images/app-store.png') }}" alt="App Store" style="height: 50px; width: auto;">
+                            </a>
+                        </div>
+                    </div>
+
+                    <p style="font-size: 14px; margin-top: 20px; color: #666; text-align: center;">
+                        <em>Note: Service updates and driver communication are available only in the mobile app.</em>
+                    </p>
+
+                    <div style="margin-top: 25px;">
+                        <button id="openAppBtn" style="
+                            background-color: #dc3545;
+                            color: white;
+                            border: none;
+                            padding: 12px 30px;
+                            border-radius: 6px;
+                            cursor: pointer;
+                            font-size: 16px;
+                            font-family: 'Avenir', sans-serif;
+                            font-weight: bold;
+                            transition: background-color 0.3s;
+                            box-shadow: 0 2px 6px rgba(220,53,69,0.3);
+                        " onmouseover="this.style.backgroundColor='#c82333'; this.style.boxShadow='0 4px 12px rgba(220,53,69,0.4)';"
+                        onmouseout="this.style.backgroundColor='#dc3545'; this.style.boxShadow='0 2px 6px rgba(220,53,69,0.3)';">
+                            Go to Home Screen
+                        </button>
                     </div>
                 </div>
-                <p style="font-size: 14px; margin-top: 20px; color: #666; text-align: center; font-family: 'Avenir', sans-serif;">
-                    <em>Note: Service updates and driver communication are available only in the mobile app.</em>
-                </p>
-                <div style="margin-top: 25px;">
-                    <button id="openAppBtn" style="
-                        background-color: #dc3545;
-                        color: white;
-                        border: none;
-                        padding: 12px 30px;
-                        border-radius: 6px;
-                        cursor: pointer;
-                        font-size: 16px;
-                        font-family: 'Avenir', sans-serif;
-                        font-weight: bold;
-                        transition: background-color 0.3s;
-                        box-shadow: 0 2px 6px rgba(220,53,69,0.3);
-                    " onmouseover="this.style.backgroundColor='#c82333'; this.style.boxShadow='0 4px 12px rgba(220,53,69,0.4)';" onmouseout="this.style.backgroundColor='#dc3545'; this.style.boxShadow='0 2px 6px rgba(220,53,69,0.3)';">
-                        Go to Home Screen
-                    </button>
-                </div>
-            </div>
         `,
                 showConfirmButton: false,
                 showCloseButton: true,
