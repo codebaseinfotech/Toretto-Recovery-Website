@@ -180,7 +180,7 @@
 
                 {{-- RIGHT IMAGE --}}
                 <div class="pj-hero-img-wrap">
-                    <img src="{{ asset('assets/images/0001.jpeg') }}" alt="Car recovery service in Palm Jumeirah Dubai"
+                    <img src="{{ asset('assets/images/0001.jpg') }}" alt="Car recovery service in Palm Jumeirah Dubai"
                         class="pj-hero-img">
                     <div class="pj-hero-badge">
                         <div class="pj-badge-inner">
@@ -215,7 +215,7 @@
 
             {{-- Full-Width Image Banner --}}
             <div class="pj-sit2-img-wrap">
-                <img src="{{ asset('assets/images/roadside-assistance-dubai.jpg') }}"
+                <img src="{{ asset('assets/images/roadside-assistance-dubaia.jpg') }}"
                     alt="Emergency car recovery on Palm Jumeirah Dubai" class="pj-sit2-img">
                 <div class="pj-sit2-img-overlay">
                     <div class="pj-sit2-badge">
@@ -299,7 +299,7 @@
                     <p class="pj-svc3-sub">Here's how we support drivers across the island:</p>
                 </div>
                 <div class="pj-svc3-img-wrap">
-                    <img src="{{ asset('assets/images/luxury-car-recovery-from-illegel-parked.jpg') }}"
+                    <img src="{{ asset('assets/images/luxury-car-recovery-from-illegel-parkeda.jpg') }}"
                         alt="Luxury car recovery service Palm Jumeirah" class="pj-svc3-img">
                     <div class="pj-svc3-img-tag">
                         <i class="fas fa-shield-halved"></i>
@@ -575,6 +575,16 @@
                         recovery on Palm Jumeirah.
                     </p>
 
+                    <div class="pj-sit2-img-wrap mt-2">
+                        <img src="{{ asset('assets/images/bahraini-man-dealer-choosing-vehicle-salon_99043-4975.jpg') }}"
+                            alt="Emergency car recovery on Palm Jumeirah Dubai" class="pj-sit2-img">
+                        <div class="pj-sit2-img-overlay">
+                            <div class="pj-sit2-badge">
+                                <i class="fas fa-clock"></i>
+                                <span>Why Choose Us</span>
+                            </div>
+                        </div>
+                    </div>
                     <div class="pj-stats-row">
                         <div class="pj-stat">
                             <strong>24/7</strong>
@@ -648,6 +658,78 @@
         </div>
     </section>
 
+
+
+    <section class="pj-process-sections pj-bg" id="pjSection"
+        data-bg1="{{ asset('assets/images/young-business-man-trying-fix-his-car.jpg') }}"
+        data-bg2="{{ asset('assets/images/broken-car-recovery-palm-jumeira.png') }}"
+        data-bg3="{{ asset('assets/images/car-recovery-palm-jumeirah.jpg') }}"
+        data-bg4="{{ asset('assets/images/broken-car-recovery-dubai.avif') }}"
+        style="--pj-bg:url('{{ asset('assets/images/young-business-man-trying-fix-his-car.jpg') }}');">
+
+        <div class="container">
+            <div class="pj-box">
+                <div class="pj-head">
+                    <h2>Our Process</h2>
+                    {{-- <p>Swipe / Scroll to view steps</p> --}}
+                </div>
+
+                <div class="pj-scroll-wrap">
+                    <div class="pj-scroll" id="pjScroll">
+
+                        <!-- SLIDE 1 -->
+                        <article class="pj-slide" data-bg="1">
+                            <img src="{{ asset('assets/images/young-business-man-trying-fix-his-car.jpg') }}"
+                                alt="Step 1">
+                            <div class="pj-overlay">
+                                {{-- <span class="pj-step">STEP 01</span> --}}
+                                {{-- <h3>Call Us Instantly</h3> --}}
+                                {{-- <p>Share your location and car issue. Our team confirms quickly.</p> --}}
+                                <a href="{{ route('contact') }}" class="pj-btn">Get Help</a>
+                            </div>
+                        </article>
+
+                        <!-- SLIDE 2 -->
+                        <article class="pj-slide" data-bg="2">
+                            <img src="{{ asset('assets/images/broken-car-recovery-palm-jumeira.png') }}" alt="Step 2">
+                            <div class="pj-overlay">
+                                {{-- <span class="pj-step">STEP 02</span>
+                                <h3>We Dispatch Recovery</h3>
+                                <p>Nearest tow truck assigned with updates.</p> --}}
+                                <a href="{{ route('contact') }}" class="pj-btn">View Service</a>
+                            </div>
+                        </article>
+
+                        <!-- SLIDE 3 -->
+                        <article class="pj-slide" data-bg="3">
+                            <img src="{{ asset('assets/images/car-recovery-palm-jumeirah.jpg') }}" alt="Step 3">
+                            <div class="pj-overlay">
+                                {{-- <span class="pj-step">STEP 03</span>
+                                <h3>Safe Vehicle Pickup</h3>
+                                <p>We secure the vehicle and handle safely.</p> --}}
+                                <a href="{{ route('contact') }}" class="pj-btn">Learn More</a>
+                            </div>
+                        </article>
+
+                        <!-- SLIDE 4 -->
+                        <article class="pj-slide" data-bg="4">
+                            <img src="{{ asset('assets/images/broken-car-recovery-dubai.avif') }}" alt="Step 4">
+                            <div class="pj-overlay">
+                                {{-- <span class="pj-step">STEP 04</span>
+                                <h3>Drop to Destination</h3>
+                                <p>Delivered to your preferred location.</p> --}}
+                                <a href="{{ route('contact') }}" class="pj-btn">Book Now</a>
+                            </div>
+                        </article>
+
+                    </div>
+                </div>
+
+                {{-- <div class="pj-hint">Mobile: swipe • Desktop: mouse wheel = next slide</div> --}}
+            </div>
+        </div>
+    </section>
+
     {{-- ===================================
     SECTION 6 — PROCESS STEPS
     =================================== --}}
@@ -674,7 +756,8 @@
                     </div>
                     <div class="pj-proc6-content">
                         <div class="pj-proc6-icon"><i class="fas fa-phone-alt"></i></div>
-                        <h3><a class="text-link" href="{{ route('contact') }}" target="_blank">Contact</a> &amp; Location
+                        <h3><a class="text-link" href="{{ route('contact') }}" target="_blank">Contact</a> &amp;
+                            Location
                             Confirmation</h3>
                         <p>
                             Reach out via call or message and provide your exact location on Palm Jumeirah — whether
@@ -877,18 +960,19 @@
     <link rel="stylesheet" href="{{ asset('assets/css/areas.css') }}">
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const faqItems = document.querySelectorAll('.pj-faq-list .pj-faq-item');
 
-            faqItems.forEach(function (item) {
+            faqItems.forEach(function(item) {
                 const btn = item.querySelector('.pj-faq-q');
-                btn.addEventListener('click', function () {
+                btn.addEventListener('click', function() {
                     const isActive = item.classList.contains('active');
 
                     // Close all
-                    faqItems.forEach(function (el) {
+                    faqItems.forEach(function(el) {
                         el.classList.remove('active');
-                        el.querySelector('.pj-faq-q').setAttribute('aria-expanded', 'false');
+                        el.querySelector('.pj-faq-q').setAttribute('aria-expanded',
+                            'false');
                         el.querySelector('.pj-faq-icon i').className = 'fas fa-plus';
                     });
 
@@ -902,5 +986,97 @@
             });
         });
     </script>
+    <script>
+        (function() {
+            const section = document.getElementById("pjSection");
+            const scroller = document.getElementById("pjScroll");
+            if (!section || !scroller) return;
 
+            const slides = Array.from(scroller.querySelectorAll(".pj-slide"));
+            const total = slides.length;
+            let currentIndex = 0;
+            let autoTimer;
+
+            const bgMap = {
+                1: section.dataset.bg1,
+                2: section.dataset.bg2,
+                3: section.dataset.bg3,
+                4: section.dataset.bg4,
+            };
+
+            function setBg(idx) {
+                const url = bgMap[idx];
+                if (!url) return;
+                section.style.setProperty("--pj-bg", `url('${url}')`);
+            }
+
+            function goToSlide(index) {
+                const slideWidth = slides[0].getBoundingClientRect().width + 18;
+                scroller.scrollTo({
+                    left: index * slideWidth,
+                    behavior: "smooth"
+                });
+
+                const bgIndex = slides[index].getAttribute("data-bg");
+                setBg(bgIndex);
+                currentIndex = index;
+            }
+
+            function nextSlide() {
+                currentIndex++;
+                if (currentIndex >= total) {
+                    currentIndex = 0; // loop back
+                }
+                goToSlide(currentIndex);
+            }
+
+            function startAuto() {
+                autoTimer = setInterval(nextSlide, 2000); // 2 second
+            }
+
+            function resetAuto() {
+                clearInterval(autoTimer);
+                startAuto();
+            }
+
+            // Detect active slide when user scrolls manually
+            const io = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        currentIndex = slides.indexOf(entry.target);
+                        const idx = entry.target.getAttribute("data-bg");
+                        setBg(idx);
+                    }
+                });
+            }, {
+                root: scroller,
+                threshold: 0.6
+            });
+
+            slides.forEach(slide => io.observe(slide));
+
+            // Mouse wheel manual
+            scroller.addEventListener("wheel", (e) => {
+                if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+                e.preventDefault();
+                if (e.deltaY > 0) nextSlide();
+                else {
+                    currentIndex--;
+                    if (currentIndex < 0) currentIndex = total - 1;
+                    goToSlide(currentIndex);
+                }
+                resetAuto();
+            }, {
+                passive: false
+            });
+
+            // Touch swipe reset timer
+            scroller.addEventListener("scroll", resetAuto);
+
+            // Start
+            setBg(1);
+            startAuto();
+
+        })();
+    </script>
 @endsection
