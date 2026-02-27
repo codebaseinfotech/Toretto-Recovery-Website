@@ -658,8 +658,6 @@
         </div>
     </section>
 
-
-
     <section class="pj-process-sections pj-bg" id="pjSection"
         data-bg1="{{ asset('assets/images/young-business-man-trying-fix-his-car.jpg') }}"
         data-bg2="{{ asset('assets/images/broken-car-recovery-palm-jumeira.png') }}"
@@ -957,7 +955,8 @@
         </div>
     </section>
 
-    <link rel="stylesheet" href="{{ asset('assets/css/areas.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('assets/css/areas.css') }}?v={{ filemtime(public_path('assets/css/areas.css')) }}">
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
