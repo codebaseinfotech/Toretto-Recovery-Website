@@ -1599,7 +1599,11 @@
                 const pickupElement = document.getElementById('pickup_location');
                 const dropElement = document.getElementById('drop_location');
                 const promoElement = document.getElementById('promo_code');
-
+                console.log('Booking form submitted with values:', {
+                    pickup: pickupElement ? pickupElement.value : null,
+                    drop: dropElement ? dropElement.value : null,
+                    promo: promoElement ? promoElement.value : null
+                });
                 if (!pickupElement || !dropElement) {
                     showToast('Pickup or drop location elements not found', 'error');
                     return;
@@ -1619,7 +1623,10 @@
                     return;
                 }
 
-                if (latestDistanceKm <= 0) {
+                const distanceElement = document.getElementById('distance');
+                const distanceValue = distanceElement ? parseFloat(distanceElement.value) : 0;
+
+                if (distanceValue <= 0) {   
                     showToast(
                         'Distance could not be calculated. Please ensure both locations are valid.',
                         'error');
@@ -1646,7 +1653,7 @@
                             lat: dropMarker.getPosition().lat(),
                             lng: dropMarker.getPosition().lng()
                         } : null,
-                        distance: latestDistanceKm,
+                        distance: document.getElementById('distance') ? document.getElementById('distance').value : 0,
                         timestamp: Date.now()
                     };
 
@@ -1716,7 +1723,7 @@
                     dropoff_address: dropLocation,
                     dropoff_lat: dropLatLng.lat(),
                     dropoff_lng: dropLatLng.lng(),
-                    distance_km: latestDistanceKm
+                    distance_km: document.getElementById('distance') ? parseFloat(document.getElementById('distance').value) : 0,
                 };
 
                 if (promotionId) {
