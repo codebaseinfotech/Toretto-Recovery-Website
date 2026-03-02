@@ -32,13 +32,15 @@
                         </li>
 
                         <li>
-                            <a class="dropdown-item" href="{{ route('our-service.ourservice', 'vehicle-recovery-service-dubai') }}">
-                               Vehicle Recovery Service
+                            <a class="dropdown-item"
+                                href="{{ route('our-service.ourservice', 'vehicle-recovery-service-dubai') }}">
+                                Vehicle Recovery Service
                             </a>
                         </li>
 
                         <li>
-                            <a class="dropdown-item" href="{{ route('our-service.ourservice', 'flatbed-recovery-dubai') }}">
+                            <a class="dropdown-item"
+                                href="{{ route('our-service.ourservice', 'flatbed-recovery-dubai') }}">
                                 Flatbed Recovery
                             </a>
                         </li>
@@ -170,10 +172,15 @@
                                 <i class="fa-solid fa-calendar-check"></i> My Bookings
                                 </a>
                             </li> -->
-                        <li>
-                            <a class="dropdown-item" href="#" id="ajaxLogout">
+                        {{-- <li>
+                            <a class="dropdown-item ajaxLogout" href="#">
                                 <i class="fa-solid fa-right-from-bracket"></i> <span>Logout</span>
                             </a>
+                        </li> --}}
+                        <li id="logoutDropdownItem" class="d-none">
+                        <a class="dropdown-item ajaxLogout" href="javascript:void(0)">
+                            <i class="fa-solid fa-right-from-bracket"></i> <span>Logout</span>
+                        </a>
                         </li>
                     </ul>
                 </div>
@@ -371,10 +378,11 @@
                 </li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('blogs') }}">BLOGS</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('profile') }}">MY PROFILE</a></li>
-                <li class="nav-item">
-                    <a class="nav-link dropdown-item" href="#" id="ajaxLogout">
-                        <i class="fa-solid fa-right-from-bracket"></i> <span class="logout-div">LOGOUT </span>
-                    </a>
+                <li class="nav-item d-none" id="logoutItem">
+                <a class="nav-link dropdown-item ajaxLogout" href="javascript:void(0)">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span class="logout-div">LOGOUT</span>
+                </a>
                 </li>
             </ul>
         </div>
