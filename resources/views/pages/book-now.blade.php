@@ -775,6 +775,7 @@
                 let kms = kmText.replace(' km', '');
 
                 console.log("KMS:", kms);
+                console.log("minutes:", minutes);
 
 
                 const token = getAuthToken();
@@ -788,7 +789,8 @@
                         latitude: pickupLat,
                         longitude: pickupLng,
                         drop_latitude: dropLat,
-                        drop_longitude: dropLng
+                        drop_longitude: dropLng,
+                        minutes: minutes,
                     })
                 });
 
@@ -1558,7 +1560,7 @@
                         }
 
                         //  3. If LOGIN → Calculate Price
-                        await calculateFinalPrice(kms, token);
+                        await calculateFinalPrice(kms, token, minutes);
 
                     } catch (error) {
                         console.error(error);
@@ -2074,7 +2076,7 @@
             );
         }
 
-        async function calculateFinalPrice(kms, token) {
+        async function calculateFinalPrice(kms, token, minutes) {
             const responsePrice = await fetch(
                 `${PRICE_API_BASE_URL}/v1/customer/price/calculate`, {
                     method: 'POST',
@@ -2087,7 +2089,8 @@
                         latitude: pickupLat,
                         longitude: pickupLng,
                         drop_latitude: dropLat,
-                        drop_longitude: dropLng
+                        drop_longitude: dropLng,
+                        minutes: minutes
                     })
                 }
             );
@@ -2325,7 +2328,7 @@
                         window.location.href = "{{ route('login') }}";
                         return;
                     }
-                    await calculateFinalPrice(kmsNumber, token);
+                    await calculateFinalPrice(kmsNumber, token,minutes);
                     localStorage.removeItem('pending_booking'); //  clear after success
                 } else {
                     console.log("Could not parse distance:", kmText, result.distance);
