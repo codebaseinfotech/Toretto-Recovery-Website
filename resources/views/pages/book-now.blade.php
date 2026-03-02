@@ -260,7 +260,6 @@
             </div>
         </div>
     </div>
-
 @endsection
 
 
@@ -433,7 +432,8 @@
 
             const script = document.createElement('script');
             // Modified callback to handle map initialization after API loads
-            script.src =`https://maps.googleapis.com/maps/api/js?key={{ config('services.google_maps.key') }}&libraries=places,directions,distance_matrix&callback=initMapAndAutocomplete`;
+            script.src =
+                `https://maps.googleapis.com/maps/api/js?key={{ config('services.google_maps.key') }}&libraries=places,directions,distance_matrix&callback=initMapAndAutocomplete`;
             script.async = true;
             script.defer = true;
             document.head.appendChild(script);
@@ -737,6 +737,7 @@
         }
 
         async function fetchPriceFromAPI(latitude, longitude, km) {
+            console.log('fetchPriceFromAPI called with lat: ' + latitude + ', lng: ' + longitude + ', km: ' + km);
             try {
                 const origin = pickupLat + "," + pickupLng;
                 const destination = dropLat + "," + dropLng;
@@ -770,9 +771,10 @@
 
                 document.getElementById("distance").innerText = km;
                 document.getElementById("minutes").innerText = minutes;
-                let kmText = result.distance.text; // "120 km"
-                let kms = kmText.replace(/[^\d.]/g, ""); // 120
-                console.log("Calling Price API...", kmText);
+                let kmText = result.distance.text; // "120.39 km"
+                let kms = kmText.replace(' km', '');
+
+                console.log("KMS:", kms);
 
 
                 const token = getAuthToken();
@@ -802,6 +804,7 @@
                     data?.amount ??
                     data?.data?.total ??
                     data?.total;
+                console.log('Price from API:', price);
 
                 if (price !== null && price !== undefined && !isNaN(parseFloat(price))) {
 
@@ -821,6 +824,8 @@
 
                 const priceEl = document.getElementById('price');
                 const fallbackPrice = (50 + km * 12);
+                console.log('used this is not used', fallbackPrice);
+
                 currentOriginalPrice = fallbackPrice;
 
                 if (priceEl) priceEl.innerText = fallbackPrice.toFixed(2) + ' AED';
@@ -1300,24 +1305,33 @@
                         // Display the route on the map
                         directionsRenderer.setDirections(response);
 
-                        // Calculate distance from the route
-                        let totalDistance = 0;
-                        for (let i = 0; i < response.routes[0].legs.length; i++) {
-                            totalDistance += response.routes[0].legs[i].distance.value;
-                        }
+                        // // Calculate distance from the route
+                        // let totalDistance = 0;
+                        // for (let i = 0; i < response.routes[0].legs.length; i++) {
+                        //     totalDistance += response.routes[0].legs[i].distance.value;
+                        // }
 
-                        // Convert to km and update global variable
-                        latestDistanceKm = totalDistance / 1000;
+                        // // Convert to km and update global variable
+                        // latestDistanceKm = totalDistance / 1000;
 
-                        // Update distance display
-                        const distanceEl = document.getElementById("distance");
-                        console.log(distanceEl);
+                        // // Update distance display
+                        // const distanceEl = document.getElementById("distance");
+                        // console.log(distanceEl, 'distanceEl');
 
-                        if (distanceEl) {
-                            distanceEl.innerText = latestDistanceKm.toFixed(2) + " km";
-                        }
+                        // if (distanceEl) {
+                        //     distanceEl.innerText = latestDistanceKm.toFixed(2) + " km";
+                        // }
+                        directionsRenderer.setDirections(response);
+
+                        const pickupPos = pickupMarker.getPosition();
+                        const dropPos = dropMarker.getPosition();
+
+                        const origin = pickupPos.lat() + "," + pickupPos.lng();
+                        const destination = dropPos.lat() + "," + dropPos.lng();
+                        console.log('Origin:', origin, 'Destination:', destination);
 
                         map.fitBounds(response.routes[0].bounds);
+                        callDistanceApi(origin, destination);
                     } else {
                         // Handle error
                         showToast(
@@ -1491,124 +1505,6 @@
             const calculatePriceBtnText = calculatePriceBtn ? calculatePriceBtn.querySelector('.btn-text') : null;
             const calculatePriceBtnLoader = calculatePriceBtn ? calculatePriceBtn.querySelector(
                 '.btn-loader-price') : null;
-
-            // if (calculatePriceBtn) {
-            //     calculatePriceBtn.addEventListener('click', async function(e) {
-            //         e.preventDefault();
-            //         const pickupElement = document.getElementById('pickup_location');
-            //         const dropElement = document.getElementById('drop_location');
-
-            //         if (!pickupElement.value || !dropElement.value) {
-            //             showToast('Please enter both pickup and drop locations', 'error');
-            //             return;
-            //         }
-
-            //         if (!pickupMarker || !dropMarker) {
-            //             showToast('Please select valid pickup and drop locations.', 'error');
-            //             return;
-            //         }
-
-            //         if (latestDistanceKm <= 0) {
-            //             showToast('Distance not calculated properly.', 'error');
-            //             return;
-            //         }
-            //         const pickupLocation = pickupElement.value;
-            //         const dropLocation = dropElement.value;
-            //         //  START LOADER
-            //         calculatePriceBtn.disabled = true;
-            //         calculatePriceBtnText.classList.add('d-none');
-            //         calculatePriceBtnLoader.classList.remove('d-none');
-
-            //         try {
-
-            //             const token = getAuthToken();
-
-            //             // IF NOT LOGIN → GO LOGIN
-            //             if (!token) {
-            //                 const bookingData = {
-            //                     pickup_location: pickupLocation,
-            //                     drop_location: dropLocation,
-            //                     pickup_coords: pickupMarker ? { lat: pickupMarker.getPosition().lat(), lng: pickupMarker.getPosition().lng() } : null,
-            //                     drop_coords: dropMarker ? { lat: dropMarker.getPosition().lat(), lng: dropMarker.getPosition().lng() } : null,
-            //                     distance: latestDistanceKm,
-            //                     timestamp: Date.now()
-            //                 };
-
-            //                 localStorage.setItem('pending_booking', JSON.stringify(bookingData));
-
-            //                 window.location.href = '{{ route('login') }}';
-            //                 return;
-            //             }
-
-            //             const origin = pickupLat + "," + pickupLng;
-            //             const destination = dropLat + "," + dropLng;
-
-            //             const responseDistance = await window.ApiUtils.fetch(
-            //                 `${PRICE_API_BASE_URL}/v1/customer/distance?origin=${origin}&destination=${destination}&traffic_model=best_guess`, {
-            //                     method: "GET",
-            //                     headers: {
-            //                         'Authorization': `Bearer ${token}`,
-            //                         'Accept': 'application/json'
-            //                     }
-            //                 }
-            //             );
-
-            //             const distanceData = await responseDistance.json();
-            //             const result = distanceData.rows[0].elements[0];
-
-            //             const kmText = result.distance.text;
-            //             const minutes = result.duration_in_traffic.text;
-
-            //             document.getElementById("distance").innerText = kmText;
-            //             document.getElementById("minutes").innerText = minutes;
-
-            //             let kms = kmText.replace(/[^\d.]/g, "");
-
-            //             const responsePrice = await window.ApiUtils.fetch(
-            //                 `${PRICE_API_BASE_URL}/v1/customer/price/calculate`, {
-            //                     method: 'POST',
-            //                     headers: {
-            //                         'Authorization': 'Bearer ' + token
-            //                     },
-            //                     body: JSON.stringify({
-            //                         km: kms,
-            //                         latitude: pickupLat,
-            //                         longitude: pickupLng,
-            //                         drop_latitude: dropLat,
-            //                         drop_longitude: dropLng
-            //                     })
-            //                 }
-            //             );
-
-            //             const priceData = await responsePrice.json();
-
-            //             const price =
-            //                 priceData?.data?.price ??
-            //                 priceData?.price ??
-            //                 0;
-
-            //             currentOriginalPrice = parseFloat(price) || 0;
-
-            //             document.getElementById('price').innerText =
-            //                 currentOriginalPrice.toFixed(2) + ' AED';
-
-            //             updateGrandTotal();
-            //             const pickupLatLng = pickupMarker.getPosition();
-
-            //         } catch (error) {
-
-            //             console.error(error);
-            //             showToast('Something went wrong while calculating price.', 'error');
-
-            //         } finally {
-
-            //             // STOP LOADER ALWAYS
-            //             calculatePriceBtn.disabled = false;
-            //             calculatePriceBtnText.classList.remove('d-none');
-            //             calculatePriceBtnLoader.classList.add('d-none');
-            //         }
-            //     });
-            // }
             if (calculatePriceBtn) {
                 calculatePriceBtn.addEventListener('click', async function(e) {
 
@@ -1628,8 +1524,7 @@
                     const destination = dropLat + "," + dropLng;
 
                     try {
-
-                        // ✅ 1. Distance API (NO TOKEN)
+                        // //  1. Distance API (NO TOKEN)
                         const responseDistance = await fetch(
                             `${PRICE_API_BASE_URL}/v1/customer/distance?origin=${origin}&destination=${destination}&traffic_model=best_guess`
                         );
@@ -1662,7 +1557,7 @@
                             return;
                         }
 
-                        // ✅ 3. If LOGIN → Calculate Price
+                        //  3. If LOGIN → Calculate Price
                         await calculateFinalPrice(kms, token);
 
                     } catch (error) {
@@ -2180,7 +2075,6 @@
         }
 
         async function calculateFinalPrice(kms, token) {
-
             const responsePrice = await fetch(
                 `${PRICE_API_BASE_URL}/v1/customer/price/calculate`, {
                     method: 'POST',
@@ -2232,23 +2126,7 @@
 
                 const origin = pickupLat + "," + pickupLng;
                 const destination = dropLat + "," + dropLng;
-                const responseDistance = await fetch(
-                    `${PRICE_API_BASE_URL}/v1/customer/distance?origin=${origin}&destination=${destination}&traffic_model=best_guess`
-                );
-
-                const distanceData = await responseDistance.json();
-                const result = distanceData.rows[0].elements[0];
-
-                const kmText = result.distance.text;
-                const minutes = result.duration_in_traffic.text;
-                const kms = kmText.replace(/[^\d.]/g, "");
-
-                document.getElementById("distance").innerText = kmText;
-                document.getElementById("minutes").innerText = minutes;
-
-                await calculateFinalPrice(kms, token);
-
-                // ✅ Clear storage after success
+                callDistanceApi(origin, destination);
                 localStorage.removeItem('pending_booking');
 
             } catch (error) {
@@ -2305,7 +2183,7 @@
                 }
             });
 
-            // ✅ Info Window Add
+            //  Info Window Add
             const dropInfoWindow = new google.maps.InfoWindow({
                 content: `
             <div style="max-width:200px; font-size:13px; line-height:1.4;">
@@ -2319,7 +2197,7 @@
 
             document.getElementById('drop_location').value = address;
 
-            // ✅ If pickup also exists → fit both markers
+            //  If pickup also exists → fit both markers
             if (pickupMarker) {
 
                 const bounds = new google.maps.LatLngBounds();
@@ -2376,6 +2254,86 @@
 
             map.panTo(position);
             map.setZoom(15);
+        }
+        async function callDistanceApi(origin, destination) {
+
+            try {
+                const token = localStorage.getItem('auth_token'); //  define
+
+                const responseDistance = await fetch(
+                    `${PRICE_API_BASE_URL}/v1/customer/distance?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&traffic_model=best_guess`, {
+                        method: 'GET',
+                        headers: {
+                            'Accept': 'application/json',
+                            ...(token ? {
+                                'Authorization': 'Bearer ' + token
+                            } : {})
+                        }
+                    }
+                );
+
+                const data = await responseDistance.json(); //  ONLY ONCE
+                console.log("Distance API Response:", data);
+
+                if (!responseDistance.ok) {
+                    console.log("Distance API HTTP error:", responseDistance.status, data);
+                    return;
+                }
+
+                const result = data?.rows?.[0]?.elements?.[0];
+
+                //  status check (Google returns "OK" / "ZERO_RESULTS")
+                if (!result || result.status !== 'OK') {
+                    console.log("Distance API element error:", result);
+                    return;
+                }
+
+                const kmText = result.distance?.text || ''; // e.g. "149 km"
+                const minutes = result.duration_in_traffic?.text || result.duration?.text || '';
+
+                //  best: use meters if available
+                let kmsNumber = null;
+                if (typeof result.distance?.value === 'number') {
+                    kmsNumber = result.distance.value / 1000; // meters -> km
+                } else {
+                    // fallback: parse from text
+                    kmsNumber = parseFloat(kmText.replace(/[^\d.]/g, ""));
+                }
+
+                // UI update
+                const distanceEl = document.getElementById("distance");
+                const minutesEl = document.getElementById("minutes");
+                if (distanceEl) distanceEl.innerText = kmText || (kmsNumber?.toFixed(2) + " km");
+                if (minutesEl) minutesEl.innerText = minutes;
+
+                //  price calculation
+                if (kmsNumber !== null && !Number.isNaN(kmsNumber)) {
+                    const token = getAuthToken();
+                    if (!token) {
+
+                        localStorage.setItem('pending_booking', JSON.stringify({
+                            pickup_location: pickupElement.value,
+                            drop_location: dropElement.value,
+                            pickup_lat: pickupLat,
+                            pickup_lng: pickupLng,
+                            drop_lat: dropLat,
+                            drop_lng: dropLng,
+                            km: kms,
+                            timestamp: Date.now()
+                        }));
+
+                        window.location.href = "{{ route('login') }}";
+                        return;
+                    }
+                    await calculateFinalPrice(kmsNumber, token);
+                    localStorage.removeItem('pending_booking'); //  clear after success
+                } else {
+                    console.log("Could not parse distance:", kmText, result.distance);
+                }
+
+            } catch (e) {
+                console.error("Distance API call failed:", e);
+            }
         }
     </script>
 @endpush

@@ -302,6 +302,63 @@
 
         })();
     </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            const PRICE_API_BASE_URL = "{{ config('services.api.base_url') }}";
+            const token = localStorage.getItem('auth_token');
+            if (!token) return;
+
+            let alreadyLoggingOut = false;
+
+            async function checkSession() {
+                if (alreadyLoggingOut) return;
+
+                try {
+                    const response = await fetch(`${PRICE_API_BASE_URL}/v1/common/check-session`, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': 'Bearer ' + token,
+                            'Accept': 'application/json'
+                        }
+                    });
+
+                    const data = await response.json().catch(() => ({}));
+
+                    //  Only logout when REAL expiry
+                    if (response.status === 401 && data.message === 'Session expired') {
+                        alreadyLoggingOut = true;
+
+                        localStorage.removeItem('auth_token');
+                        localStorage.removeItem('user_data');
+                        localStorage.removeItem('login_time');
+
+                        window.location.href = "/login";
+                        return;
+                    }
+
+                    const logoutBtn = document.getElementById('ajaxLogout');
+                    const signinBtn = document.querySelector('.signin-button');
+
+                    if (token) {
+                        if (logoutBtn) logoutBtn.classList.remove('d-none');
+                        if (signinBtn) signinBtn.classList.add('d-none');
+                    } else {
+                        if (logoutBtn) logoutBtn.classList.add('d-none');
+                        if (signinBtn) signinBtn.classList.remove('d-none');
+                    }
+
+                } catch (e) {
+                    console.error('Session check error:', e);
+                }
+            }
+
+            checkSession();
+            setInterval(checkSession, 30000);
+
+        });
+    </script>
 </body>
 
 </html>
