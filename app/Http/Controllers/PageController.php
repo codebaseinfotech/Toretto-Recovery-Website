@@ -23,6 +23,87 @@ class PageController extends Controller
         return view('pages.contact');
     }
 
+    public function privacyPolicy(Request $request)
+    {
+        $type = $request->get('type', 'customer');
+        // customer / individual_driver / company_driver / company_owner
+
+        $apiUrl = config('services.api.base_url').'/v1/common/legal/privacy';
+
+        $title = 'Privacy Policy';
+        $content = null;
+        $effectiveDate = null;
+
+        try {
+            $response = Http::timeout(10)->acceptJson()->get($apiUrl, [
+                'type' => 'privacy_policy',   // or 'terms'
+                'role' => $type,
+            ]);
+
+            if ($response->ok()) {
+                $json = $response->json();
+                // dd($json);
+                if (isset($json['data'])) {
+                    $data = $json['data'];
+
+                    $title = $data['title'] ?? $title;
+                    $content = $data['content'] ?? null;
+                    $effectiveDate = $data['effective_date'] ?? null;
+                }
+            }
+
+        } catch (\Throwable $e) {
+            \Log::error('Privacy Policy API Error: '.$e->getMessage());
+        }
+
+        return view('pages.privacy_policy', [
+            'role' => $type,
+            'title' => $title,
+            'content' => $content,
+            'effective_date' => $effectiveDate,
+        ]);
+    }
+    public function termsAndConditions(Request $request)
+    {
+        $type = $request->get('type', 'customer');
+        // customer / individual_driver / company_driver / company_owner
+
+        $apiUrl = config('services.api.base_url').'/v1/common/legal/terms';
+
+        $title = 'Privacy Policy';
+        $content = null;
+        $effectiveDate = null;
+
+        try {
+            $response = Http::timeout(10)->acceptJson()->get($apiUrl, [
+                'type' => 'privacy_policy',   // or 'terms'
+                'role' => $type,
+            ]);
+
+            if ($response->ok()) {
+                $json = $response->json();
+                // dd($json);
+                if (isset($json['data'])) {
+                    $data = $json['data'];
+
+                    $title = $data['title'] ?? $title;
+                    $content = $data['content'] ?? null;
+                    $effectiveDate = $data['effective_date'] ?? null;
+                }
+            }
+
+        } catch (\Throwable $e) {
+            \Log::error('Privacy Policy API Error: '.$e->getMessage());
+        }
+
+        return view('pages.terms_and_conditions', [
+            'role' => $type,
+            'title' => $title,
+            'content' => $content,
+            'effective_date' => $effectiveDate,
+        ]);
+    }
+
     public function myBooking()
     {
         return view('pages.my-booking');

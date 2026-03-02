@@ -11,6 +11,8 @@ Route::middleware('cache.clear')->group(function () {
         Route::get('/', 'home')->name('home');
         Route::get('/about', 'about')->name('about');
         Route::get('/contact', 'contact')->name('contact');
+        Route::get('/privacy-policy', 'privacyPolicy')->name('privacy-policy');
+        Route::get('/terms-conditions', 'termsAndConditions')->name('terms-conditions');
         Route::get('/services', 'services')->name('services');
         Route::get('/blogs', 'blogs')->name('blogs');
         Route::get('/blogs/{slug}', 'blogsdata')->name('blogs.show');

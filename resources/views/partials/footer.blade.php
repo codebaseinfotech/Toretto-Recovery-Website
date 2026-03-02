@@ -24,6 +24,10 @@
 
                             <li><a href="{{ route('contact') }}" id="contact"><i
                                         class="fas fa-caret-right"></i>Contact Us</a></li>
+                            <li><a href="{{ route('privacy-policy') }}" id="privacy-policy"><i
+                                        class="fas fa-caret-right"></i>Privacy Policy</a></li>
+                            <li><a href="{{ route('terms-conditions') }}" id="terms-conditions"><i
+                                        class="fas fa-caret-right"></i>Terms & Conditions</a></li>
                         </ul>
                     </div>
                 </div>
