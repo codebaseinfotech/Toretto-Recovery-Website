@@ -28,7 +28,7 @@ class PageController extends Controller
         $type = $request->get('type', 'customer');
         // customer / individual_driver / company_driver / company_owner
 
-        $apiUrl = config('services.api.base_url').'/v1/common/legal/privacy';
+        $apiUrl = config('services.api.base_url') . '/v1/common/legal/privacy';
 
         $title = 'Privacy Policy';
         $content = null;
@@ -53,7 +53,7 @@ class PageController extends Controller
             }
 
         } catch (\Throwable $e) {
-            \Log::error('Privacy Policy API Error: '.$e->getMessage());
+            \Log::error('Privacy Policy API Error: ' . $e->getMessage());
         }
 
         return view('pages.privacy_policy', [
@@ -68,7 +68,7 @@ class PageController extends Controller
         $type = $request->get('type', 'customer');
         // customer / individual_driver / company_driver / company_owner
 
-        $apiUrl = config('services.api.base_url').'/v1/common/legal/terms';
+        $apiUrl = config('services.api.base_url') . '/v1/common/legal/terms';
 
         $title = 'Privacy Policy';
         $content = null;
@@ -93,7 +93,7 @@ class PageController extends Controller
             }
 
         } catch (\Throwable $e) {
-            \Log::error('Privacy Policy API Error: '.$e->getMessage());
+            \Log::error('Privacy Policy API Error: ' . $e->getMessage());
         }
 
         return view('pages.terms_and_conditions', [
@@ -142,26 +142,26 @@ class PageController extends Controller
 
     public function blogs()
     {
-        $apiUrl = config('services.api.base_url').'/v1/common/blogs-get';
+        $apiUrl = config('services.api.base_url') . '/v1/common/blogs-get';
         $response = Http::timeout(5)->get($apiUrl);
 
         $blogs = $response->successful()
-        ? $response->json('data')
-        : [];
+            ? $response->json('data')
+            : [];
 
         return view('pages.blogs', compact('blogs'));
     }
 
     public function blogsdata($slug)
     {
-        $apiUrl = config('services.api.base_url').'/v1/common/blogs-get/'.$slug;
+        $apiUrl = config('services.api.base_url') . '/v1/common/blogs-get/' . $slug;
         $response = Http::timeout(5)->get($apiUrl);
 
         $blog = $response->successful()
             ? $response->json('data')
             : [];
 
-        abort_if(! $blog, 404);
+        abort_if(!$blog, 404);
 
         return view('pages.blog_details', compact('blog'));
     }
@@ -179,9 +179,9 @@ class PageController extends Controller
             'desert-pull-out-service-dubai',
         ];
 
-        abort_if(! in_array($slug, $services), 404);
+        abort_if(!in_array($slug, $services), 404);
 
-        return view('pages.services.'.$slug);
+        return view('pages.services.' . $slug);
     }
 
     public function areasShow($slug)
@@ -200,15 +200,25 @@ class PageController extends Controller
             'muhaisnah' => 'Dubai Muhaisnah',
         ];
 
-        abort_if(! array_key_exists($slug, $areaNames), 404);
+        abort_if(!array_key_exists($slug, $areaNames), 404);
 
-        if ($slug === 'dubai-palm-jumeirah') {
-            $slug = 'dubai-palm-jumeirah';
+        // if ($slug === 'dubai-palm-jumeirah') {
+        //     $slug = 'dubai-palm-jumeirah';
+        // }
+        // if ($slug === 'dubai-marina') {
+        //     $slug = 'dubai-marina';
+        // }
+        // if ($slug === 'dubai-jebel-ali') {
+        //     $slug = 'dubai-jebel-ali';
+        // }
 
-            return view('pages.areas.'.$slug, [
-                'areaName' => $areaNames[$slug] ?? null,
-            ]);
-        }
+        // if ($slug === 'dubai-deira') {
+        //     $slug = 'dubai-deira';
+        // }
+
+        return view('pages.areas.' . $slug, [
+            'areaName' => $areaNames[$slug] ?? null,
+        ]);
 
         return view('pages.coming_soon');
 
@@ -225,7 +235,7 @@ class PageController extends Controller
             'message' => 'nullable|string',
         ]);
 
-        $apiUrl = config('services.api.base_url').'/v1/common/contact-us';
+        $apiUrl = config('services.api.base_url') . '/v1/common/contact-us';
 
         $response = Http::timeout(10)
             ->post($apiUrl, $validated);

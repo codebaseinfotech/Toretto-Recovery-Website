@@ -1,0 +1,681 @@
+/* ============================================================
+   DUBAI DEIRA — AREA PAGE STYLES
+   Prefix: de-
+   ============================================================ */
+
+/* ---------- Utility ---------- */
+.text-link { color: #d70006; }
+
+.breadcrumb-title-areas {
+    color: #fff;
+    font-size: 40px;
+}
+
+/* ---------- Eyebrow badge ---------- */
+.de-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(215,0,6,0.08);
+    color: #d70006;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 6px 16px;
+    border-radius: 20px;
+    border: 1px solid rgba(215,0,6,0.15);
+}
+.de-eyebrow.light {
+    background: rgba(255, 255, 255);
+    border-color: rgba(215,0,6,0.2);
+}
+
+/* ---------- Section header ---------- */
+.de-section-header { margin-bottom: 40px; }
+.de-section-header h2 {
+    font-size: 32px;
+    font-weight: 800;
+    color: #111;
+    margin: 12px 0 14px;
+    line-height: 1.25;
+}
+.de-section-header h2 span { color: #d70006; }
+.de-section-header p {
+    font-size: 15px;
+    color: #666;
+    max-width: 640px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+/* Dark section overrides */
+.de-services-section .de-section-header h2,
+.de-testimonials-section .de-section-header h2,
+.de-faq-section .de-section-header h2,
+.de-story-section h2 { color: #fff; }
+.de-services-section .de-section-header p,
+.de-testimonials-section .de-section-header p,
+.de-faq-section .de-section-header p { color: rgba(255,255,255,0.65); }
+
+/* ============================================================
+   SECTION 1 — HERO
+   ============================================================ */
+.de-hero-section {
+    padding: 60px 0 50px;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+}
+.de-hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+}
+.de-hero-text h2 {
+    font-size: 36px;
+    font-weight: 900;
+    color: #fff;
+    margin: 14px 0 18px;
+    line-height: 1.2;
+}
+.de-hero-text h2 span { color: #d70006; }
+.de-hero-subtitle {
+    font-size: 18px;
+    font-weight: 600;
+    color: #d70006;
+    margin: 0 0 16px;
+    letter-spacing: 0.5px;
+}
+.de-hero-text p {
+    font-size: 14.5px;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.8;
+    margin: 0 0 14px;
+}
+.de-hero-btns {
+    display: flex;
+    gap: 12px;
+    margin-top: 22px;
+}
+.de-btn-primary {
+    background: #d70006 !important;
+    color: #fff !important;
+    border-radius: 10px !important;
+    padding: 13px 28px !important;
+    font-weight: 700 !important;
+    font-size: 15px !important;
+    display: inline-flex !important;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.3s, transform 0.2s;
+}
+.de-btn-primary:hover { background: #b80005 !important; transform: translateY(-2px); }
+.de-btn-outline {
+    background: transparent !important;
+    color: #fff !important;
+    border: 2px solid rgba(255,255,255,0.2) !important;
+    border-radius: 10px !important;
+    padding: 13px 28px !important;
+    font-weight: 700 !important;
+    font-size: 15px !important;
+    display: inline-flex !important;
+    align-items: center;
+    gap: 8px;
+    transition: border-color 0.3s, background 0.3s;
+}
+.de-btn-outline:hover { border-color: #d70006 !important; background: rgba(215,0,6,0.08) !important; }
+
+.de-hero-badges {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+.de-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.7);
+}
+.de-badge i { color: #d70006; font-size: 13px; }
+
+.de-hero-img-wrap {
+    position: relative;
+    border-radius: 18px;
+    overflow: hidden;
+}
+.de-hero-img {
+    width: 100%;
+    height: 420px;
+    object-fit: cover;
+    border-radius: 18px;
+    border: 2px solid rgba(255,255,255,0.06);
+}
+
+/* ============================================================
+   SECTION 2 — WHAT IS CAR RECOVERY
+   ============================================================ */
+.de-what-section {
+    padding: 70px 0;
+    background: #fff;
+}
+.de-what-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+}
+.de-what-content h2 {
+    font-size: 30px;
+    font-weight: 800;
+    color: #111;
+    margin: 12px 0 18px;
+    line-height: 1.25;
+}
+.de-what-content h2 span { color: #d70006; }
+.de-what-content p {
+    font-size: 14.5px;
+    color: #555;
+    line-height: 1.8;
+    margin: 0 0 14px;
+}
+.de-what-content p:last-child { margin-bottom: 0; }
+.de-what-img {
+    width: 100%;
+    height: 380px;
+    object-fit: cover;
+    border-radius: 16px;
+    border: 3px solid #f0f0f0;
+}
+
+/* ============================================================
+   SECTION 3 — SERVICES
+   ============================================================ */
+.de-services-section {
+    padding: 70px 0;
+    background: #111;
+}
+.de-svc-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+}
+.de-svc-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    padding: 24px 18px;
+    text-align: center;
+    transition: background 0.3s, border-color 0.3s, transform 0.3s;
+    border-top: 3px solid transparent;
+}
+.de-svc-card:hover {
+    background: rgba(215,0,6,0.06);
+    border-top-color: #d70006;
+    transform: translateY(-3px);
+}
+.de-svc-icon {
+    width: 50px;
+    height: 50px;
+    background: rgba(215,0,6,0.12);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 14px;
+}
+.de-svc-icon i { font-size: 20px; color: #d70006; }
+.de-svc-card h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 8px;
+}
+.de-svc-card p {
+    font-size: 12.5px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.6;
+    margin: 0;
+}
+.de-svc-note {
+    text-align: center;
+    font-size: 13px;
+    color: rgba(255,255,255,0.45);
+    font-style: italic;
+    max-width: 650px;
+    margin: 0 auto;
+}
+
+/* ============================================================
+   SECTION 4 — WHY CHOOSE US
+   ============================================================ */
+.de-why-section {
+    padding: 70px 0;
+    background: #f9f9f9;
+}
+.de-why-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 24px;
+}
+.de-why-card {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: box-shadow 0.3s, transform 0.25s;
+}
+.de-why-card:hover {
+    box-shadow: 0 8px 30px rgba(215,0,6,0.06);
+    transform: translateY(-3px);
+}
+.de-why-img-wrap { overflow: hidden; }
+.de-why-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    transition: transform 0.4s;
+}
+.de-why-card:hover .de-why-img { transform: scale(1.04); }
+.de-why-content {
+    padding: 22px 20px;
+}
+.de-why-content h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #111;
+    margin: 0 0 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.de-why-content h3 i { color: #d70006; font-size: 16px; }
+.de-why-content p {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.7;
+    margin: 0;
+}
+
+/* Strip pills */
+.de-why-strip {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+}
+.de-why-pill {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 16px 24px;
+    transition: border-color 0.25s;
+}
+.de-why-pill:hover { border-color: rgba(215,0,6,0.25); }
+.de-why-pill i { font-size: 22px; color: #d70006; }
+.de-why-pill strong {
+    display: block;
+    font-size: 14px;
+    color: #111;
+    margin-bottom: 2px;
+}
+.de-why-pill span {
+    font-size: 12px;
+    color: #888;
+}
+
+/* ============================================================
+   SECTION 5 — TESTIMONIALS
+   ============================================================ */
+.de-testimonials-section {
+    padding: 70px 0;
+    background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%);
+}
+.de-testimonial-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    max-width: 860px;
+    margin: 0 auto;
+}
+.de-testimonial-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 28px 24px;
+    border-left: 4px solid #d70006;
+}
+.de-testimonial-stars {
+    margin-bottom: 14px;
+}
+.de-testimonial-stars i { color: #facc15; font-size: 14px; margin-right: 2px; }
+.de-testimonial-card p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.75;
+    margin: 0 0 18px;
+    font-style: italic;
+}
+.de-testimonial-author strong {
+    display: block;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+}
+.de-testimonial-author span {
+    font-size: 12px;
+    color: rgba(255,255,255,0.45);
+}
+
+/* ============================================================
+   SECTION 6 — COVERAGE AREAS
+   ============================================================ */
+.de-coverage-section {
+    padding: 70px 0;
+    background: #fff;
+}
+/* Split layout: cards + image */
+.de-cov-layout {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 36px;
+    align-items: start;
+    margin-bottom: 28px;
+}
+.de-cov-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+.de-cov-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #f8f8f8;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 14px 16px;
+    transition: border-color 0.25s, background 0.25s, transform 0.2s;
+}
+.de-cov-card:hover {
+    border-color: rgba(215,0,6,0.25);
+    background: rgba(215,0,6,0.03);
+    transform: translateY(-2px);
+}
+.de-cov-num {
+    min-width: 34px;
+    height: 34px;
+    background: rgba(215,0,6,0.08);
+    color: #d70006;
+    font-size: 12px;
+    font-weight: 800;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.de-cov-card h4 {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #111;
+    margin: 0 0 2px;
+}
+.de-cov-card p {
+    font-size: 11.5px;
+    color: #888;
+    line-height: 1.4;
+    margin: 0;
+}
+.de-cov-img-wrap {
+    position: sticky;
+    top: 100px;
+}
+.de-cov-img {
+    width: 100%;
+    height: 480px;
+    object-fit: cover;
+    border-radius: 16px;
+    border: 3px solid #f0f0f0;
+}
+.de-area-note {
+    text-align: center;
+    font-size: 13.5px;
+    color: #888;
+    max-width: 620px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+.de-area-note strong { color: #d70006; }
+
+/* ============================================================
+   SECTION 7 — REAL RECOVERY STORY
+   ============================================================ */
+.de-story-section {
+    padding: 70px 0;
+    background: #111;
+}
+.de-story-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+}
+.de-story-img {
+    width: 100%;
+    height: 360px;
+    object-fit: cover;
+    border-radius: 16px;
+    border: 2px solid rgba(255,255,255,0.08);
+}
+.de-story-content h2 {
+    font-size: 28px;
+    font-weight: 800;
+    color: #fff;
+    margin: 12px 0 18px;
+    line-height: 1.25;
+}
+.de-story-content h2 span { color: #d70006; }
+.de-story-content p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.8;
+    margin: 0 0 14px;
+}
+.de-story-content p:last-child { margin-bottom: 0; }
+.de-story-content strong { color: #d70006; }
+
+/* ============================================================
+   SECTION 8 — FAQ ACCORDION
+   ============================================================ */
+.de-faq-section {
+    padding: 70px 0;
+    background: linear-gradient(135deg, #0d0d0d 0%, #151515 100%);
+}
+.de-faq-list {
+    max-width: 780px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.de-faq-item {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: border-color 0.25s;
+}
+.de-faq-item.active { border-color: rgba(215,0,6,0.3); }
+.de-faq-q {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    text-align: left;
+}
+.de-faq-q span {
+    font-size: 15px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.85);
+    flex: 1;
+    transition: color 0.25s;
+}
+.de-faq-item.active .de-faq-q span { color: #d70006; }
+.de-faq-icon {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    background: rgba(215,0,6,0.12);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.25s;
+}
+.de-faq-icon i { font-size: 13px; color: #d70006; }
+.de-faq-item.active .de-faq-icon { background: #d70006; }
+.de-faq-item.active .de-faq-icon i { color: #fff; }
+.de-faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.3s ease;
+    padding: 0 24px;
+}
+.de-faq-item.active .de-faq-answer {
+    max-height: 300px;
+    padding: 0 24px 20px;
+}
+.de-faq-answer p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.75;
+    margin: 0;
+}
+
+/* ============================================================
+   SECTION 9 — CTA
+   ============================================================ */
+.de-cta-section {
+    padding: 60px 0;
+    background: #d70006;
+}
+.de-cta-block {
+    text-align: center;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 18px;
+    padding: 48px 40px;
+}
+.de-cta-block h2 {
+    font-size: 30px;
+    font-weight: 800;
+    color: #fff;
+    margin: 12px 0 20px;
+    line-height: 1.25;
+}
+.de-cta-block h2 span { color: rgba(255,255,255,0.85); }
+.de-cta-content {
+    max-width: 680px;
+    margin: 0 auto 24px;
+}
+.de-cta-content p {
+    font-size: 14.5px;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.8;
+    margin: 0 0 12px;
+}
+.de-cta-content p:last-child { margin-bottom: 0; }
+.de-cta-content strong { color: #fff; }
+.de-cta-highlight {
+    font-weight: 700;
+    font-style: italic;
+    color: rgba(255,255,255,0.9) !important;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    padding-top: 14px;
+    margin-top: 14px !important;
+}
+.de-cta-btns {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.de-cta-section .de-btn-primary {
+    background: #fff !important;
+    color: #d70006 !important;
+}
+.de-cta-section .de-btn-primary:hover {
+    background: #f0f0f0 !important;
+}
+.de-cta-section .de-btn-outline {
+    border-color: rgba(255,255,255,0.4) !important;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+/* Tablet */
+@media (max-width: 991px) {
+    .de-hero-grid { grid-template-columns: 1fr; gap: 30px; }
+    .de-what-grid { grid-template-columns: 1fr; gap: 30px; }
+    .de-svc-grid { grid-template-columns: repeat(3, 1fr); }
+    .de-why-grid { grid-template-columns: 1fr; }
+    .de-testimonial-grid { grid-template-columns: 1fr; }
+    .de-story-grid { grid-template-columns: 1fr; gap: 30px; }
+    .de-cov-layout { grid-template-columns: 1fr; }
+    .de-cov-cards { grid-template-columns: repeat(3, 1fr); }
+    .de-cov-img { height: 320px; }
+    .de-cta-block { padding: 36px 28px; }
+}
+
+/* Small tablet / large phone */
+@media (max-width: 768px) {
+    .breadcrumb-title-areas { font-size: 28px !important; }
+    .de-hero-text h2 { font-size: 28px; }
+    .de-section-header h2 { font-size: 26px; }
+    .de-what-content h2 { font-size: 26px; }
+    .de-story-content h2 { font-size: 24px; }
+    .de-svc-grid { grid-template-columns: repeat(2, 1fr); }
+    .de-why-strip { flex-direction: column; align-items: center; }
+    .de-cov-cards { grid-template-columns: repeat(2, 1fr); }
+    .de-cov-img { height: 280px; }
+    .de-what-img { height: 280px; }
+    .de-story-img { height: 280px; }
+}
+
+/* Mobile */
+@media (max-width: 575px) {
+    .breadcrumb-title-areas { font-size: 24px !important; }
+    .de-hero-section { padding: 40px 0 36px; }
+    .de-hero-text h2 { font-size: 24px; }
+    .de-hero-img { height: 280px; }
+    .de-section-header h2 { font-size: 22px; }
+    .de-what-content h2 { font-size: 22px; }
+    .de-cta-text h2 { font-size: 22px; }
+    .de-story-content h2 { font-size: 22px; }
+    .de-svc-grid { grid-template-columns: 1fr; }
+    .de-hero-btns { flex-direction: column; }
+    .de-cov-cards { grid-template-columns: 1fr; }
+    .de-faq-q { padding: 16px 18px; }
+    .de-faq-q span { font-size: 14px; }
+    .de-faq-item.active .de-faq-answer { padding: 0 18px 16px; }
+    .de-cta-block { padding: 28px 20px; }
+    .de-cta-block h2 { font-size: 22px; }
+    .de-hero-badges { flex-direction: column; }
+}

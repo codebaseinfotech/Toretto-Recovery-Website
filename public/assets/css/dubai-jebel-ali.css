@@ -1,0 +1,1070 @@
+/* ============================================================
+   JEBEL ALI — PAGE STYLES
+   All classes prefixed ja-*
+   ============================================================ */
+
+/* ---------- Utility ---------- */
+.text-link { color: #d70006; }
+
+.breadcrumb-title-areas {
+    color: #fff;
+    font-size: 40px;
+}
+
+/* Eyebrow label */
+.ja-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(215,0,6,0.08);
+    color: #d70006;
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 14px;
+}
+.ja-eyebrow.light {
+    background: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.75);
+}
+
+/* Section header */
+.ja-section-header {
+    margin-bottom: 40px;
+}
+.ja-section-header h2 {
+    font-size: 36px;
+    font-weight: 800;
+    color: #111;
+    margin: 8px 0 14px;
+    line-height: 1.25;
+}
+.ja-section-header h2 span { color: #d70006; }
+.ja-section-header p {
+    font-size: 15px;
+    color: #666;
+    max-width: 640px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+/* Dark section overrides */
+.ja-breakdowns-section .ja-section-header h2,
+.ja-how-section .ja-section-header h2,
+.ja-experience-section .ja-section-header h2 { color: #fff; }
+.ja-breakdowns-section .ja-section-header p,
+.ja-how-section .ja-section-header p,
+.ja-experience-section .ja-section-header p { color: rgba(255,255,255,0.65); }
+
+/* ============================================================
+   SECTION 1 — HERO
+   ============================================================ */
+.ja-hero-section {
+    padding: 70px 0 60px;
+    background: #fff;
+}
+.ja-hero-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 48px;
+    align-items: center;
+}
+.ja-hero-text h2 {
+    font-size: 36px;
+    font-weight: 800;
+    color: #111;
+    line-height: 1.2;
+    margin: 0 0 8px;
+}
+.ja-hero-text h2 span { color: #d70006; }
+.ja-hero-tagline {
+    font-size: 18px;
+    font-weight: 600;
+    color: #d70006;
+    margin-bottom: 16px;
+    font-style: italic;
+}
+.ja-hero-text > p {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.78;
+    margin: 0 0 14px;
+}
+.ja-trust-bullets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 20px;
+    margin-bottom: 28px;
+}
+.ja-trust-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+}
+.ja-trust-item i { color: #d70006; font-size: 14px; }
+.ja-hero-btns {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.ja-btn-primary {
+    background: #d70006 !important;
+    color: #fff !important;
+    border-radius: 8px !important;
+    padding: 13px 28px !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    display: inline-flex !important;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.3s, transform 0.2s;
+}
+.ja-btn-primary:hover { background: #b80005 !important; transform: translateY(-2px); }
+.ja-btn-secondary {
+    background: transparent !important;
+    color: #d70006 !important;
+    border: 2px solid #d70006 !important;
+    border-radius: 8px !important;
+    padding: 11px 24px !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    display: inline-flex !important;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+}
+.ja-btn-secondary:hover { background: #d70006 !important; color: #fff !important; transform: translateY(-2px); }
+
+/* Hero image */
+.ja-hero-img-wrap {
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.12);
+}
+.ja-hero-img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+}
+
+/* ============================================================
+   SECTION 2 — WHY JEBEL ALI IS DIFFERENT
+   ============================================================ */
+.ja-different-section {
+    padding: 70px 0;
+    background: #f9f9f9;
+}
+.ja-different-grid {
+    text-align: center;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+.ja-different-img-wrap {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+}
+.ja-different-img {
+    width: 100%;
+    height: 380px;
+    object-fit: cover;
+    display: block;
+}
+.ja-different-img-tag {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    background: rgba(215,0,6,0.9);
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+.ja-different-text h2 {
+    font-size: 28px;
+    font-weight: 800;
+    color: #111;
+    margin: 0 0 16px;
+    line-height: 1.25;
+}
+.ja-different-text h2 span { color: #d70006; }
+.ja-different-text > p {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.78;
+    margin: 0 0 14px;
+}
+.ja-diff-points {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+.ja-diff-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    padding: 10px 16px;
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid #eee;
+    transition: border-color 0.2s;
+}
+.ja-diff-item:hover { border-color: rgba(215,0,6,0.25); }
+.ja-diff-item i { color: #d70006; font-size: 15px; flex-shrink: 0; }
+
+/* ============================================================
+   SECTION 3 — COMMON BREAKDOWNS
+   ============================================================ */
+.ja-breakdowns-section {
+    padding: 70px 0;
+    background: #111;
+}
+
+/* Breakdowns header with image */
+.ja-bd-header {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 36px;
+    align-items: center;
+    margin-bottom: 40px;
+}
+.ja-bd-header-text h2 {
+    font-size: 36px;
+    font-weight: 800;
+    color: #fff;
+    margin: 8px 0 0;
+    line-height: 1.25;
+}
+.ja-bd-header-text h2 span { color: #d70006; }
+.ja-bd-header-img {
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 36px rgba(0,0,0,0.35);
+}
+.ja-bd-img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+}
+
+/* Detail list layout */
+.ja-bd-detail-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+.ja-bd-detail-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 28px 26px;
+    transition: border-color 0.3s, background 0.3s;
+    border-top: 3px solid transparent;
+}
+.ja-bd-detail-card:hover {
+    border-top-color: #d70006;
+    background: rgba(215,0,6,0.04);
+}
+.ja-bd-detail-top {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+}
+.ja-bd-icon {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    background: rgba(215,0,6,0.15);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.ja-bd-icon i { font-size: 20px; color: #d70006; }
+.ja-bd-detail-top h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 4px;
+    line-height: 1.3;
+}
+.ja-bd-tag {
+    display: inline-block;
+    background: rgba(215,0,6,0.12);
+    color: #d70006;
+    padding: 3px 10px;
+    border-radius: 5px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.ja-bd-detail-card > p {
+    font-size: 13.5px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.7;
+    margin: 0 0 14px;
+}
+.ja-bd-detail-card h5 {
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.8);
+    margin: 16px 0 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+.ja-bd-points {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.ja-bd-points li {
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.6;
+    padding-left: 20px;
+    position: relative;
+}
+.ja-bd-points li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 7px;
+    width: 8px;
+    height: 8px;
+    background: #d70006;
+    border-radius: 50%;
+}
+.ja-bd-note {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.7;
+    margin: 14px 0 0;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    font-style: italic;
+}
+.ja-bd-note strong { color: #d70006; font-style: normal; }
+
+/* ============================================================
+   SECTION 4 — SERVICES
+   ============================================================ */
+.ja-svc-section {
+    padding: 70px 0;
+    background: #fff;
+}
+.ja-svc-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+.ja-svc-detail-card {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 16px;
+    padding: 28px 26px;
+    border-top: 3px solid transparent;
+    transition: transform 0.3s, box-shadow 0.3s, border-top-color 0.3s;
+}
+.ja-svc-detail-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 36px rgba(0,0,0,0.07);
+    border-top-color: #d70006;
+}
+.ja-svc-detail-top {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+}
+.ja-svc-icon {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    background: rgba(215,0,6,0.08);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.ja-svc-icon i { font-size: 22px; color: #d70006; }
+.ja-svc-detail-top h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: #111;
+    margin: 0;
+    line-height: 1.3;
+}
+.ja-svc-detail-card > p {
+    font-size: 13.5px;
+    color: #666;
+    line-height: 1.7;
+    margin: 0 0 14px;
+}
+.ja-svc-points {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.ja-svc-points li {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.6;
+    padding-left: 20px;
+    position: relative;
+}
+.ja-svc-points li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 7px;
+    width: 8px;
+    height: 8px;
+    background: #d70006;
+    border-radius: 50%;
+}
+.ja-svc-note {
+    font-size: 13px;
+    color: #888;
+    line-height: 1.7;
+    margin: 14px 0 0;
+    padding-top: 12px;
+    border-top: 1px solid #f0f0f0;
+    font-style: italic;
+}
+.ja-svc-note strong { color: #d70006; font-style: normal; }
+
+/* ============================================================
+   SECTION 5 — HOW IT WORKS (COMPREHENSIVE)
+   ============================================================ */
+.ja-how-section {
+    padding: 70px 0;
+    background: #111;
+}
+.ja-how-block {
+    margin-bottom: 48px;
+}
+.ja-how-block:last-child { margin-bottom: 0; }
+.ja-how-sub-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 22px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    line-height: 1.3;
+}
+.ja-how-sub-title i { color: #d70006; font-size: 18px; }
+.ja-how-footnote {
+    font-size: 13px;
+    color: rgba(255,255,255,0.45);
+    margin: 16px 0 0;
+    font-style: italic;
+}
+.ja-how-footnote strong { color: #d70006; font-style: normal; }
+.ja-how-intro {
+    font-size: 14px;
+    color: rgba(255,255,255,0.6);
+    margin: 0 0 16px;
+}
+
+/* Steps */
+.ja-steps {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    margin-bottom: 10px;
+}
+.ja-step {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    padding: 26px 20px;
+    text-align: center;
+    transition: background 0.3s, transform 0.3s;
+    position: relative;
+}
+.ja-step:hover {
+    background: rgba(215,0,6,0.08);
+    transform: translateY(-4px);
+}
+.ja-step-num {
+    font-size: 36px;
+    font-weight: 900;
+    color: #d70006;
+    opacity: 0.2;
+    line-height: 1;
+    margin-bottom: 14px;
+}
+.ja-step-body h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+.ja-step-body h3 i { color: #d70006; font-size: 14px; }
+.ja-step-body p {
+    font-size: 12.5px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.65;
+    margin: 0;
+}
+
+/* Response time strip */
+.ja-response-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+}
+.ja-resp-item {
+    background: rgba(215,0,6,0.08);
+    border: 1px solid rgba(215,0,6,0.18);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+}
+.ja-resp-item strong {
+    display: block;
+    font-size: 22px;
+    font-weight: 800;
+    color: #d70006;
+    line-height: 1;
+    margin-bottom: 6px;
+}
+.ja-resp-item span {
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+/* Safety list (inline) */
+.ja-safety-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.ja-safety-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 12px 18px;
+    transition: border-color 0.25s;
+}
+.ja-safety-row:hover { border-color: rgba(215,0,6,0.2); }
+.ja-safety-row i { font-size: 16px; flex-shrink: 0; }
+.ja-safety-do i { color: #22c55e; }
+.ja-safety-dont i { color: #ef4444; }
+.ja-safety-row span {
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+    font-weight: 500;
+}
+
+/* Cost grid */
+.ja-cost-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+.ja-cost-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.7);
+    transition: border-color 0.25s;
+}
+.ja-cost-item:hover { border-color: rgba(215,0,6,0.25); }
+.ja-cost-item i { color: #d70006; font-size: 14px; }
+.ja-cost-notes {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.ja-cost-notes p {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.55);
+    margin: 0;
+}
+.ja-cost-notes p i { color: #d70006; font-size: 12px; }
+
+/* Prevention cards */
+.ja-prevent-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 16px;
+}
+.ja-prevent-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    padding: 24px 22px;
+    border-top: 3px solid transparent;
+    transition: border-top-color 0.3s;
+}
+.ja-prevent-card:hover { border-top-color: #d70006; }
+.ja-prevent-card h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.ja-prevent-card h4 i { color: #d70006; font-size: 16px; }
+.ja-prevent-points {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.ja-prevent-points li {
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.6;
+    padding-left: 20px;
+    position: relative;
+}
+.ja-prevent-points li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 7px;
+    width: 8px;
+    height: 8px;
+    background: #d70006;
+    border-radius: 50%;
+}
+
+/* ============================================================
+   SECTION 6 — COVERAGE AREAS
+   ============================================================ */
+.ja-coverage-section {
+    padding: 70px 0;
+    background: #f9f9f9;
+}
+.ja-cov-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+.ja-cov-detail-card {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 14px;
+    padding: 26px 22px;
+    border-top: 3px solid transparent;
+    transition: border-top-color 0.25s, box-shadow 0.25s, transform 0.25s;
+}
+.ja-cov-detail-card:hover {
+    border-top-color: #d70006;
+    box-shadow: 0 8px 28px rgba(215,0,6,0.06);
+    transform: translateY(-3px);
+}
+.ja-cov-detail-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+.ja-cov-num {
+    font-size: 28px;
+    font-weight: 900;
+    color: #d70006;
+    opacity: 0.15;
+    line-height: 1;
+    min-width: 36px;
+}
+.ja-cov-detail-top h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #111;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    line-height: 1.3;
+}
+.ja-cov-detail-top h4 i { color: #d70006; font-size: 14px; }
+.ja-cov-detail-card > p {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.7;
+    margin: 0;
+}
+.ja-cov-closing {
+    text-align: center;
+    font-size: 14px;
+    color: #555;
+    line-height: 1.7;
+    margin: 32px 0 0;
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.ja-cov-closing strong { color: #d70006; }
+
+/* ============================================================
+   SECTION 7 — WHY LOCAL EXPERIENCE MATTERS
+   ============================================================ */
+.ja-experience-section {
+    padding: 70px 0;
+    background: #111;
+}
+.ja-exp-block {
+    margin-bottom: 50px;
+}
+.ja-exp-block:last-child { margin-bottom: 0; }
+
+/* Sub A: When to Call — split grid */
+.ja-exp-call-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+}
+.ja-exp-call-left h2 {
+    font-size: 28px;
+    font-weight: 800;
+    color: #fff;
+    margin: 12px 0 16px;
+    line-height: 1.25;
+}
+.ja-exp-call-left h2 span { color: #d70006; }
+.ja-exp-call-left > p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.6);
+    margin: 0 0 16px;
+}
+.ja-exp-call-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.ja-exp-call-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: rgba(255,255,255,0.75);
+    font-weight: 500;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 10px 16px;
+}
+.ja-exp-call-list li i { color: #d70006; font-size: 14px; }
+.ja-exp-call-warn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #ef4444;
+    margin: 0;
+}
+.ja-exp-call-warn i { font-size: 16px; }
+.ja-exp-call-img {
+    width: 100%;
+    height: 380px;
+    object-fit: cover;
+    border-radius: 16px;
+    border: 2px solid rgba(255,255,255,0.08);
+}
+
+/* Sub B: Content paragraphs */
+.ja-exp-content {
+    max-width: 820px;
+    margin: 0 auto;
+}
+.ja-exp-content p {
+    font-size: 14.5px;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.8;
+    margin: 0 0 18px;
+}
+.ja-exp-content p:last-child { margin-bottom: 0; }
+.ja-exp-closing {
+    padding-top: 16px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+}
+.ja-exp-closing strong { color: #d70006; }
+
+/* ============================================================
+   SECTION 9 — FAQ ACCORDION
+   ============================================================ */
+.ja-faq-section {
+    padding: 70px 0;
+    background: #111;
+}
+.ja-faq-section .ja-section-header h2 { color: #fff; }
+
+/* Intro CTA block */
+.ja-faq-intro {
+    text-align: center;
+    max-width: 680px;
+    margin: 0 auto 50px;
+}
+.ja-faq-intro h2 {
+    font-size: 28px;
+    font-weight: 800;
+    color: #fff;
+    margin: 12px 0 18px;
+    line-height: 1.25;
+}
+.ja-faq-intro h2 span { color: #d70006; }
+.ja-faq-intro p {
+    font-size: 14.5px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.8;
+    margin: 0 0 12px;
+}
+.ja-faq-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #d70006;
+    color: #fff;
+    padding: 14px 32px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    margin-top: 12px;
+    transition: background 0.3s, transform 0.2s;
+}
+.ja-faq-cta-btn:hover {
+    background: #b80005;
+    transform: translateY(-2px);
+    color: #fff;
+}
+.ja-faq-block { margin-top: 0; }
+.ja-faq-list {
+    max-width: 780px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.ja-faq-item {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.25s, box-shadow 0.25s;
+}
+.ja-faq-item.active {
+    border-color: rgba(215,0,6,0.25);
+    box-shadow: 0 4px 20px rgba(215,0,6,0.06);
+}
+.ja-faq-q {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 20px 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    gap: 16px;
+    transition: background 0.2s;
+}
+.ja-faq-q:hover { background: rgba(215,0,6,0.04); }
+.ja-faq-q span {
+    font-size: 15px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.4;
+    flex: 1;
+}
+.ja-faq-item.active .ja-faq-q span { color: #d70006; }
+.ja-faq-icon {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    background: rgba(215,0,6,0.12);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.25s;
+}
+.ja-faq-icon i { font-size: 13px; color: #d70006; }
+.ja-faq-item.active .ja-faq-icon { background: #d70006; }
+.ja-faq-item.active .ja-faq-icon i { color: #fff; }
+.ja-faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.3s ease;
+    padding: 0 24px;
+}
+.ja-faq-item.active .ja-faq-answer {
+    max-height: 300px;
+    padding: 0 24px 20px;
+}
+.ja-faq-answer p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.75;
+    margin: 0;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 16px;
+}
+
+/* ============================================================
+   SECTION 10 — CTA
+   ============================================================ */
+.ja-cta-section {
+    padding: 60px 0;
+    background: linear-gradient(135deg, #111 0%, #1a1a1a 100%);
+}
+.ja-cta-grid {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 36px;
+    background: rgba(215,0,6,0.06);
+    border: 1px solid rgba(215,0,6,0.18);
+    border-radius: 18px;
+    padding: 44px 48px;
+}
+.ja-cta-text { flex: 1; }
+.ja-cta-text h2 {
+    font-size: 28px;
+    font-weight: 800;
+    color: #fff;
+    margin: 0 0 12px;
+    line-height: 1.25;
+}
+.ja-cta-text h2 span { color: #d70006; }
+.ja-cta-text p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.7;
+    margin: 0;
+}
+.ja-cta-right {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 220px;
+}
+.ja-cta-btn-primary {
+    background: #d70006 !important;
+    color: #fff !important;
+    border-radius: 10px !important;
+    padding: 14px 28px !important;
+    font-weight: 700 !important;
+    font-size: 15px !important;
+    text-align: center;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.3s, transform 0.2s;
+}
+.ja-cta-btn-primary:hover { background: #b80005 !important; transform: translateY(-2px); }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+/* Tablet */
+@media (max-width: 991px) {
+    .ja-hero-grid { grid-template-columns: 1fr; gap: 30px; }
+    .ja-different-grid { grid-template-columns: 1fr; gap: 30px; }
+    .ja-different-img { height: 280px; }
+    .ja-bd-header { grid-template-columns: 1fr; gap: 24px; }
+    .ja-svc-detail-grid { grid-template-columns: 1fr; }
+    .ja-steps { grid-template-columns: repeat(3, 1fr); }
+    .ja-response-strip { grid-template-columns: repeat(2, 1fr); }
+    .ja-prevent-grid { grid-template-columns: 1fr; }
+    .ja-cov-detail-grid { grid-template-columns: repeat(2, 1fr); }
+    .ja-exp-call-grid { grid-template-columns: 1fr; gap: 24px; }
+    .ja-cta-grid { flex-direction: column; text-align: center; padding: 32px 28px; }
+    .ja-cta-right { align-items: center; min-width: unset; width: 100%; max-width: 300px; }
+}
+
+/* Small tablet / large phone */
+@media (max-width: 768px) {
+    .breadcrumb-title-areas { font-size: 28px !important; }
+    .ja-hero-text h2 { font-size: 28px; }
+    .ja-section-header h2 { font-size: 26px; }
+    .ja-bd-header-text h2 { font-size: 26px; }
+    .ja-how-sub-title { font-size: 18px; }
+    .ja-bd-detail-list { grid-template-columns: 1fr; }
+    .ja-steps { grid-template-columns: repeat(2, 1fr); }
+    .ja-exp-call-left h2 { font-size: 24px; }
+    .ja-safety-list { flex-direction: column; }
+}
+
+/* Mobile */
+@media (max-width: 575px) {
+    .breadcrumb-title-areas { font-size: 24px !important; }
+    .ja-hero-section { padding: 40px 0 36px; }
+    .ja-hero-text h2 { font-size: 24px; }
+    .ja-section-header h2 { font-size: 22px; }
+    .ja-different-text h2 { font-size: 22px; }
+    .ja-cta-text h2 { font-size: 22px; }
+    .ja-bd-header-text h2 { font-size: 22px; }
+    .ja-how-sub-title { font-size: 16px; }
+    .ja-svc-detail-grid { grid-template-columns: 1fr; }
+    .ja-steps { grid-template-columns: 1fr; }
+    .ja-response-strip { grid-template-columns: 1fr; }
+    .ja-cov-detail-grid { grid-template-columns: 1fr; }
+    .ja-exp-call-left h2 { font-size: 22px; }
+    .ja-hero-btns { flex-direction: column; }
+    .ja-faq-q { padding: 16px 18px; }
+    .ja-faq-q span { font-size: 14px; }
+    .ja-faq-item.active .ja-faq-answer { padding: 0 18px 16px; }
+    .ja-cta-grid { padding: 24px 20px; }
+}
