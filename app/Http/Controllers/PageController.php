@@ -116,7 +116,18 @@ class PageController extends Controller
 
     public function bookNow()
     {
-        return view('pages.book-now');
+        $apiUrl = config('services.api.base_url') . '/v1/common/config';
+
+        // API Call
+        $response = Http::get($apiUrl);
+        $settings = [];
+
+        if ($response->successful()) {
+            $settings = $response->json()['data'] ?? [];
+        }
+        $settings = $settings['general_settings'];
+
+        return view('pages.book-now', compact('settings'));
     }
 
     // Auth pages

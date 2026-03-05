@@ -151,6 +151,23 @@
                             <span class="fw-bold">Total Price:</span>
                             <span id="totalPriceDisplay" class="float-end">0.00 AED</span>
                         </div>
+                        @if (!empty($settings['show_platform_fee']) && $settings['show_platform_fee'])
+                            <div class="price-item mb-2">
+                                <span class="fw-bold">Platform Fee:</span>
+                                <span id="platform_fee_amount" class="float-end">
+                                    {{ $settings['platform_fee_amount'] }} AED
+                                </span>
+                            </div>
+                        @endif
+
+                        @if (!empty($settings['show_tax']) && $settings['show_tax'])
+                            <div class="price-item mb-2">
+                                <span class="fw-bold">Government tax:</span>
+                                <span id="tax_amount" class="float-end">
+                                    {{ $settings['tax_amount'] }} AED
+                                </span>
+                            </div>
+                        @endif
 
                         <div class="price-item mb-2 d-none" id="discountRow">
                             <span class="fw-bold">Discounted Price:</span>
@@ -796,8 +813,15 @@
             updateGrandTotal();
 
             document.getElementById('totalPriceDisplay').innerText = currentOriginalPrice.toFixed(2) + ' AED';
-            document.getElementById('grandTotalDisplay').innerText = currentOriginalPrice.toFixed(2) + ' AED';
             document.getElementById('price').innerText = currentOriginalPrice.toFixed(2) + ' AED';
+
+            const platform_fee_amount = document.getElementById("platform_fee_amount");
+            const tax_amount = document.getElementById("tax_amount");
+            // get numeric values
+            const platformFee = parseFloat(platform_fee_amount.innerText) || 0;
+            const taxAmount = parseFloat(tax_amount.innerText) || 0;
+            const TotalAmount = platformFee + taxAmount + currentOriginalPrice;
+            document.getElementById('grandTotalDisplay').innerText = TotalAmount.toFixed(2) + ' AED';
         }
 
         async function callDistanceApi(origin, destination) {
@@ -1354,11 +1378,12 @@
                     promotionId = promoElement.dataset.promotionId;
                 }
 
-               // DOM values
+                // DOM values
                 const totalPrice = document.getElementById("grandTotalDisplay")?.innerText || "";
                 const etaMinutes = document.getElementById("minutes")?.innerText || "";
                 const basePrice = document.getElementById("price")?.innerText || "";
-                const discountAmountDisplay = document.getElementById("discountAmountDisplay")?.innerText || "";
+                const discountAmountDisplay = document.getElementById("discountAmountDisplay")
+                    ?.innerText || "";
 
                 // remove text like "AED" or "mins"
                 const cleanTotalPrice = parseFloat(totalPrice.replace(/[^\d.]/g, ""));
@@ -1375,7 +1400,8 @@
                     dropoff_lat: dropLatLng.lat(),
                     dropoff_lng: dropLatLng.lng(),
                     distance_km: distanceValue,
-
+                    platform_fee: parseFloat(platform_fee_amount.innerText) ?? 0,
+                    tax: parseFloat(tax_amount.innerText) ?? 0,
                     // extra values
                     total_price: cleanTotalPrice,
                     price: cleanBasePrice,
@@ -1384,7 +1410,7 @@
                 };
 
                 console.log("Booking Payload:", bookingPayload);
-                
+
                 if (promotionId) bookingPayload.promotion_id = promotionId;
 
                 try {
@@ -1603,23 +1629,49 @@
                     if (dtype === 'percentage' || dtype === 'percent') {
                         discountAmount = (original * dval) / 100;
                     } else {
-                        // fixed amount
-                        discountAmount = dval;
+                        discountAmount = dval; // fixed
                     }
+
+                    // discount cap (optional)
+                    if (discountAmount > original) discountAmount = original;
 
                     finalPrice = original - discountAmount;
                     if (finalPrice < 0) finalPrice = 0;
 
                     if (discountRow) discountRow.classList.remove('d-none');
+
+                    const platform_fee_amount = document.getElementById("platform_fee_amount");
+                    const tax_amount = document.getElementById("tax_amount");
+
+                    // numeric values (handles "AED")
+                    const platformFee = parseFloat((platform_fee_amount?.innerText || "0").replace("AED", "").trim()) || 0;
+                    const taxAmount = parseFloat((tax_amount?.innerText || "0").replace("AED", "").trim()) || 0;
+
+                    // ✅ TOTAL after discount
+                    const TotalAmount = finalPrice + platformFee + taxAmount;
+
+                    console.log('original', original);
+                    console.log('discountAmount', discountAmount);
+                    console.log('finalPrice', finalPrice);
+                    console.log('TotalAmount', TotalAmount);
+
                     if (discountAmountEl) discountAmountEl.innerText = discountAmount.toFixed(2) + ' AED';
+
+                    // update grand total element (if you have it)
+                    const gt = document.getElementById("grandTotalDisplay");
+                    if (gt) gt.innerText = TotalAmount.toFixed(2) + " AED";
                 } else {
                     if (discountRow) discountRow.classList.add('d-none');
                 }
             } else {
                 if (discountRow) discountRow.classList.add('d-none');
             }
+            const platformFee = parseFloat((platform_fee_amount?.innerText || "0").replace("AED", "").trim()) || 0;
+            const taxAmount = parseFloat((tax_amount?.innerText || "0").replace("AED", "").trim()) || 0;
 
-            grandTotalEl.innerText = finalPrice.toFixed(2) + ' AED';
+            // ✅ TOTAL after discount
+            const TotalAmount = finalPrice + platformFee + taxAmount;
+            grandTotalEl.innerText = TotalAmount.toFixed(2) + ' AED';
 
             // Debug
             console.log('updateGrandTotal', {
