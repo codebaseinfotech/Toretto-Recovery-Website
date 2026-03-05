@@ -372,6 +372,36 @@
             cursor: not-allowed;
         }
     </style>
+    <style>
+        .dash-car-wrap {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: #fff;
+            border: 6px solid #35c759;
+            /* online default */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, .25);
+            overflow: hidden;
+        }
+
+        .dash-car-wrap.busy {
+            border-color: #ff3b30;
+        }
+
+        .dash-car-wrap.offline {
+            border-color: #8e8e93;
+        }
+
+        .dash-car-wrap img {
+            width: 36px;
+            height: 36px;
+            object-fit: contain;
+            display: block;
+        }
+    </style>
 @endpush
 
 @push('map-script')
@@ -506,23 +536,54 @@
             }, 800);
         }
 
+        // function initMap() {
+        //     const uaeCenter = {
+        //         lat: 24.4539,
+        //         lng: 54.3773
+        //     };
+        //     map = new google.maps.Map(document.getElementById('map'), {
+        //         zoom: 6,
+        //         center: uaeCenter,
+        //         restriction: {
+        //             latLngBounds: {
+        //                 north: 26.0555,
+        //                 south: 22.4969,
+        //                 west: 51.5795,
+        //                 east: 56.3967
+        //             },
+        //             strictBounds: true
+        //         }
+        //     });
+
+        //     directionsService = new google.maps.DirectionsService();
+        //     directionsRenderer = new google.maps.DirectionsRenderer({
+        //         map: map,
+        //         suppressMarkers: true,
+        //         polylineOptions: {
+        //             strokeColor: 'black',
+        //             strokeWeight: 4
+        //         }
+        //     });
+
+        //     mapReady = true;
+
+        //     //  ONLY ONE restore place (here)
+        //     restorePendingBooking();
+        // }
         function initMap() {
-            const uaeCenter = {
-                lat: 24.4539,
-                lng: 54.3773
-            };
+            //  World center
+            const worldCenter = {
+                lat: 20.5937,
+                lng: 78.9629
+            }; // India center (you can change)
+
             map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 6,
-                center: uaeCenter,
-                restriction: {
-                    latLngBounds: {
-                        north: 26.0555,
-                        south: 22.4969,
-                        west: 51.5795,
-                        east: 56.3967
-                    },
-                    strictBounds: true
-                }
+                zoom: 3, //  world view
+                center: worldCenter,
+                mapTypeControl: true,
+                streetViewControl: false,
+                fullscreenControl: true
+                //  REMOVE restriction (so all countries show)
             });
 
             directionsService = new google.maps.DirectionsService();
@@ -537,8 +598,9 @@
 
             mapReady = true;
 
-            //  ONLY ONE restore place (here)
+            // ONLY ONE restore place (here)
             restorePendingBooking();
+            startDashAutoDrivers();
         }
 
         function initAutocomplete() {
@@ -1292,6 +1354,18 @@
                     promotionId = promoElement.dataset.promotionId;
                 }
 
+               // DOM values
+                const totalPrice = document.getElementById("grandTotalDisplay")?.innerText || "";
+                const etaMinutes = document.getElementById("minutes")?.innerText || "";
+                const basePrice = document.getElementById("price")?.innerText || "";
+                const discountAmountDisplay = document.getElementById("discountAmountDisplay")?.innerText || "";
+
+                // remove text like "AED" or "mins"
+                const cleanTotalPrice = parseFloat(totalPrice.replace(/[^\d.]/g, ""));
+                const cleanBasePrice = parseFloat(basePrice.replace(/[^\d.]/g, ""));
+                const cleanMinutes = parseFloat(etaMinutes.replace(/[^\d.]/g, ""));
+                const discountPrice = parseFloat(discountAmountDisplay.replace(/[^\d.]/g, ""));
+
                 const bookingPayload = {
                     service_type_id: 1,
                     pickup_address: pickupElement.value,
@@ -1300,9 +1374,17 @@
                     dropoff_address: dropElement.value,
                     dropoff_lat: dropLatLng.lat(),
                     dropoff_lng: dropLatLng.lng(),
-                    distance_km: distanceValue
+                    distance_km: distanceValue,
+
+                    // extra values
+                    total_price: cleanTotalPrice,
+                    price: cleanBasePrice,
+                    eta_minutes: cleanMinutes,
+                    discountPrice: discountPrice,
                 };
 
+                console.log("Booking Payload:", bookingPayload);
+                
                 if (promotionId) bookingPayload.promotion_id = promotionId;
 
                 try {
@@ -1461,7 +1543,7 @@
             }
         }
 
-        // ✅ Click handler (event delegation) — always works
+        // Click handler (event delegation) — always works
         document.addEventListener('click', function(e) {
             const btn = e.target.closest('#applyPromoBtn');
             if (!btn) return;
@@ -1547,5 +1629,263 @@
                 promo: currentPromotionData
             });
         }
+        const DASH_MAP_DATA_PATH = "/v1/common/dashboard/map-data";
+        const DASH_MAP_DATA_URL = `${PRICE_API_BASE_URL}${DASH_MAP_DATA_PATH}`;
+        const DASH_CAR_ICON_URL = `{{ asset('assets/images/ic_truck1.png') }}`;
+
+        let dashMarkers = {}; // {id: google.maps.Marker}
+        let dashInfoWindow = null; // one infowindow
+        let dashTimer = null;
+        let dashStarted = false; // setInterval handle
+
+        async function initDashMarkerLibrary() {
+            try {
+                if (!window.google || !google.maps || !google.maps.importLibrary) return false;
+                const lib = await google.maps.importLibrary("marker");
+                DashAdvancedMarkerElement = lib.AdvancedMarkerElement;
+                return true;
+            } catch (e) {
+                console.error("initDashMarkerLibrary error:", e);
+                return false;
+            }
+        }
+
+        function startDashAutoDrivers() {
+            try {
+                if (dashStarted) return;
+                dashStarted = true;
+
+                if (!map || !window.google || !google.maps) {
+                    dashStarted = false;
+                    setTimeout(startDashAutoDrivers, 500);
+                    return;
+                }
+
+                if (!dashInfoWindow) dashInfoWindow = new google.maps.InfoWindow();
+
+                // first call
+                refreshDrivers();
+
+                // auto refresh each 5 sec
+                dashTimer = setInterval(refreshDrivers, 5000);
+
+                console.log("✅ Auto driver tracking started:", DASH_MAP_DATA_URL);
+            } catch (e) {
+                dashStarted = false;
+                console.error("startDashAutoDrivers error:", e);
+            }
+        }
+
+        function stopDashAutoDrivers() {
+            try {
+                if (dashTimer) {
+                    clearInterval(dashTimer);
+                    dashTimer = null;
+                }
+                dashStarted = false;
+            } catch (e) {
+                console.error("stopDashAutoDrivers error:", e);
+            }
+        }
+
+        async function refreshDrivers() {
+            try {
+                if (!map) return;
+
+                console.log("✅ refreshDrivers called:", new Date().toLocaleTimeString());
+
+                const resp = await fetch(DASH_MAP_DATA_URL, {
+                    method: "GET",
+                    headers: {
+                        "Accept": "application/json"
+                    }
+                });
+
+                console.log("✅ map-data status:", resp.status);
+                if (!resp.ok) return;
+
+                const json = await resp.json();
+                const drivers = Array.isArray(json) ? json : (json.data || json.drivers || []);
+
+                if (!Array.isArray(drivers)) return;
+
+                updateDriverCarMarkers(drivers);
+
+            } catch (e) {
+                console.error("refreshDrivers error:", e);
+            }
+        }
+
+        function buildCarCardSvg(status, carImageUrl) {
+
+            const ring = status === "busy" ? "#ff3b30" : (status === "offline" ? "#8e8e93" : "#35c759");
+
+            const safeImg = String(carImageUrl || "")
+                .replace(/&/g, "&amp;")
+                .replace(/"/g, "&quot;");
+
+            const svg = `
+<svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 72 72">
+
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- outer ring -->
+  <circle cx="36" cy="36" r="28"
+      fill="#ffffff"
+      stroke="${ring}"
+      stroke-width="6"
+      filter="url(#shadow)"/>
+
+  <!-- white center -->
+  <circle cx="36" cy="36" r="23" fill="#ffffff"/>
+
+  <!-- truck image -->
+  <image
+      x="18"
+      y="18"
+      width="36"
+      height="36"
+      xlink:href="${safeImg}"
+      href="${safeImg}"
+      preserveAspectRatio="xMidYMid meet"
+  />
+
+</svg>`;
+
+            const encoded = encodeURIComponent(svg.trim())
+                .replace(/'/g, "%27")
+                .replace(/"/g, "%22");
+
+            return `data:image/svg+xml;charset=UTF-8,${encoded}`;
+        }
+
+        function getDriverStatus(d) {
+            if (d && d.has_active_job) return "busy";
+            if (d && d.is_online) return "online";
+            return "offline";
+        }
+
+        function getRingColor(status) {
+            if (status === "busy") return "#ff3b30"; // red
+            if (status === "offline") return "#8e8e93"; // gray
+            return "#35c759"; // green
+        }
+
+        /*  CREATE/UPDATE markers on map (ONLY cars) */
+        function updateDriverCarMarkers(drivers) {
+            try {
+                if (!map || !window.google || !google.maps) return;
+
+                const activeIds = new Set();
+
+                drivers.forEach((d) => {
+                    const id = (d && (d.id ?? d.driver_id)) ?? null;
+                    if (id === null) return;
+
+                    if (!d.current_lat || !d.current_lng) return;
+
+                    const lat = parseFloat(d.current_lat);
+                    const lng = parseFloat(d.current_lng);
+                    if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
+
+                    activeIds.add(String(id));
+
+                    const status = getDriverStatus(d);
+                    // const iconUrl = buildCarCardSvg(status, DASH_CAR_ICON_URL);
+                    const iconUrl = DASH_CAR_ICON_URL;
+
+                    const pos = {
+                        lat,
+                        lng
+                    };
+
+                    const title = d.full_name || "Driver";
+                    const vehicleText = (d.vehicle_type || "Truck") + " • " + (d.vehicle_number || "N/A");
+                    const mobile = d.mobile || "N/A";
+
+                    const infoHtml = `
+                <div style="min-width:210px">
+                    <div style="font-weight:800;margin-bottom:4px">${escapeHtml(title)}</div>
+                    <div style="font-size:12px;color:#666">${escapeHtml(vehicleText)}</div>
+                    <div style="font-size:12px;color:#666;margin-top:6px">📞 ${escapeHtml(mobile)}</div>
+                </div>
+            `;
+
+                    if (dashMarkers[String(id)]) {
+                        dashMarkers[String(id)].setPosition(pos);
+                        dashMarkers[String(id)].setIcon({
+                            url: iconUrl,
+                            scaledSize: new google.maps.Size(56, 56),
+                            anchor: new google.maps.Point(28, 28),
+                        });
+
+                        google.maps.event.clearListeners(dashMarkers[String(id)], "click");
+                        dashMarkers[String(id)].addListener("click", () => {
+                            dashInfoWindow.setContent(infoHtml);
+                            dashInfoWindow.open(map, dashMarkers[String(id)]);
+                        });
+
+                    } else {
+                        const marker = new google.maps.Marker({
+                            map: map,
+                            position: pos,
+                            title: title,
+                            icon: {
+                                url: DASH_CAR_ICON_URL,
+                                scaledSize: new google.maps.Size(40, 40),
+                                anchor: new google.maps.Point(20, 20)
+                            }
+                        });
+
+                        marker.addListener("click", () => {
+                            dashInfoWindow.setContent(infoHtml);
+                            dashInfoWindow.open(map, marker);
+                        });
+
+                        dashMarkers[String(id)] = marker;
+                    }
+                });
+
+                // remove cars not present now (ONLY car markers remove)
+                Object.keys(dashMarkers).forEach((id) => {
+                    if (!activeIds.has(id)) {
+                        dashMarkers[id].setMap(null);
+                        delete dashMarkers[id];
+                    }
+                });
+
+                console.log("✅ Driver car markers:", Object.keys(dashMarkers).length);
+
+                // ❌ IMPORTANT: Do NOT fitBounds/center/zoom here (else pickup/drop route disturb)
+
+            } catch (e) {
+                console.error("updateDriverCarMarkers error:", e);
+            }
+        }
+
+        function escapeHtml(str) {
+            return String(str ?? "")
+                .replaceAll("&", "&amp;")
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;")
+                .replaceAll('"', "&quot;")
+                .replaceAll("'", "&#039;");
+        }
+
+        /* Auto start after map is ready (no change to your initMap) */
+        (function bootAutoDrivers() {
+            const tryStart = () => {
+                if (mapReady && map) {
+                    startDashAutoDrivers();
+                    return;
+                }
+                setTimeout(tryStart, 500);
+            };
+            tryStart();
+        })();
     </script>
 @endpush
