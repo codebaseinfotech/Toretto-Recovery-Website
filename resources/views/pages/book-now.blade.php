@@ -728,7 +728,7 @@
         }
 
         /* ------------------ Route + Distance + Price ------------------ */
-        function drawRoute() {
+        async function drawRoute() {
             console.log("called");
 
             if (!pickupMarker || !dropMarker || !map) {
@@ -757,7 +757,7 @@
             console.log("origin:", origin);
             console.log("destination:", destination);
 
-            callDistanceApi(origin, destination);
+            await callDistanceApi(origin, destination);
         }
 
         async function calculateFinalPrice(kms, token, minutes) {
@@ -807,37 +807,44 @@
             try {
                 const token = getAuthToken();
 
+                if (!origin || !destination) {  
+                    console.log("Origin or destination missing", {
+                        origin,
+                        destination
+                    });
+                    showToast("Please select valid pickup and drop locations.", "error");
+                    return false;
+                }
+
                 const responseDistance = await fetch(
                     `${PRICE_API_BASE_URL}/v1/customer/distance?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&traffic_model=best_guess`
                 );
 
                 const data = await responseDistance.json();
-
                 console.log('Distance API full response:', data);
-                console.log('data.data:', data?.data);
 
                 if (!responseDistance.ok) {
                     showToast(data?.message || "Distance API request failed.", "error");
-                    return;
+                    return false;
                 }
 
-                const result = data && data.data ? data.data : null;
+                const result = data?.data || null;
 
-                if (!result) {
-                    console.log('Result is undefined/null:', data);
+                if (!data?.status || !result) {
+                    console.log('Invalid result:', result);
                     showToast(data?.message || "Unable to calculate route. Try different locations.", "error");
-                    return;
+                    return false;
                 }
 
-                if (!result.distance || !result.distance.text) {
-                    console.log('Distance missing:', result);
+                if (!result.distance?.text) {
+                    console.log('Distance text missing:', result);
                     showToast("Unable to calculate route. Try different locations.", "error");
-                    return;
+                    return false;
                 }
 
                 latestRoutePolyline = result.polyline || null;
 
-                const kmText = (result.distance.text || '').trim();
+                const kmText = (result.distance?.text || '').trim();
                 const minutes = (
                     result.duration_in_traffic?.text ||
                     result.duration?.text ||
@@ -868,7 +875,7 @@
                         latestDistanceKm
                     });
                     showToast("Unable to calculate route. Try different locations.", "error");
-                    return;
+                    return false;
                 }
 
                 const distanceEl = document.getElementById("distance");
@@ -916,9 +923,12 @@
                     console.log("Skipping price calculation: token missing");
                 }
 
+                return true;
+
             } catch (e) {
                 console.error("Distance API call failed:", e);
                 showToast("Something went wrong while calculating route.", "error");
+                return false;
             }
         }
         /* ------------------ Pending Booking Restore (LOGIN FLOW) ------------------ */
@@ -1356,6 +1366,7 @@
 
             // Calculate Price button
             const calculatePriceBtn = document.getElementById('calculatePriceBtn');
+
             if (calculatePriceBtn) {
                 calculatePriceBtn.addEventListener('click', async function(e) {
                     e.preventDefault();
@@ -1373,24 +1384,36 @@
                         return;
                     }
 
-                    const origin = pickupMarker.getPosition().lat() + "," + pickupMarker.getPosition()
-                        .lng();
-                    const destination = dropMarker.getPosition().lat() + "," + dropMarker.getPosition()
-                        .lng();
+                    const pickupPos = pickupMarker.getPosition();
+                    const dropPos = dropMarker.getPosition();
 
-                    await callDistanceApi(origin, destination);
+                    if (!pickupPos || !dropPos) {
+                        showToast('Invalid pickup or drop location.', 'error');
+                        return;
+                    }
+
+                    const origin = pickupPos.lat() + "," + pickupPos.lng();
+                    const destination = dropPos.lat() + "," + dropPos.lng();
+
+                    const success = await callDistanceApi(origin, destination);
+
+                    if (!success) {
+                        return;
+                    }
 
                     const token = getAuthToken();
+
                     if (!token) {
                         localStorage.setItem('pending_booking', JSON.stringify({
                             pickup_location: pickupElement.value,
                             drop_location: dropElement.value,
-                            pickup_lat: pickupMarker.getPosition().lat(),
-                            pickup_lng: pickupMarker.getPosition().lng(),
-                            drop_lat: dropMarker.getPosition().lat(),
-                            drop_lng: dropMarker.getPosition().lng(),
+                            pickup_lat: pickupPos.lat(),
+                            pickup_lng: pickupPos.lng(),
+                            drop_lat: dropPos.lat(),
+                            drop_lng: dropPos.lng(),
                             timestamp: Date.now()
                         }));
+
                         window.location.href = "{{ route('login') }}";
                         return;
                     }
