@@ -553,6 +553,7 @@
                 }
             }, 800);
         }
+
         function initMap() {
             //  World center
             const worldCenter = {
@@ -761,15 +762,7 @@
 
         async function calculateFinalPrice(kms, token, minutes) {
             try {
-                console.log("calculateFinalPrice() called", {
-                    kms,
-                    minutes,
-                    pickupLat,
-                    pickupLng,
-                    dropLat,
-                    dropLng
-                });
-
+                
                 const responsePrice = await fetch(`${PRICE_API_BASE_URL}/v1/customer/price/calculate`, {
                     method: 'POST',
                     headers: {
@@ -786,18 +779,15 @@
                     })
                 });
 
-                console.log("Price API raw response:", responsePrice);
-
                 const priceData = await responsePrice.json();
-                console.log("Price API JSON:", priceData);
 
                 const price = priceData?.data?.price ?? 0;
 
-                currentOriginalPrice = parseFloat(price) || 0;
+                currentOriginalPrice = price || 0;
                 updateGrandTotal();
 
-                document.getElementById('totalPriceDisplay').innerText = currentOriginalPrice.toFixed(2) + ' AED';
-                document.getElementById('price').innerText = currentOriginalPrice.toFixed(2) + ' AED';
+                document.getElementById('totalPriceDisplay').innerText = currentOriginalPrice + ' AED';
+                document.getElementById('price').innerText = currentOriginalPrice + ' AED';
 
                 const platform_fee_amount = document.getElementById("platform_fee_amount");
                 const tax_amount = document.getElementById("tax_amount");
@@ -806,7 +796,7 @@
                 const taxAmount = parseFloat(tax_amount?.innerText) || 0;
                 const TotalAmount = platformFee + taxAmount + currentOriginalPrice;
 
-                document.getElementById('grandTotalDisplay').innerText = TotalAmount.toFixed(2) + ' AED';
+                document.getElementById('grandTotalDisplay').innerText = TotalAmount + ' AED';
 
             } catch (error) {
                 console.error("calculateFinalPrice() failed:", error);
@@ -816,8 +806,7 @@
         async function callDistanceApi(origin, destination) {
             try {
                 const token = getAuthToken();
-                console.log("Auth token exists:", !!token);
-
+                
                 const responseDistance = await fetch(
                     `${PRICE_API_BASE_URL}/v1/customer/distance?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&traffic_model=best_guess`
                 );
@@ -834,37 +823,23 @@
                     !result.distance ||
                     result.distance.value == null
                 ) {
-                    console.log("Distance API invalid result:", result);
                     showToast("Unable to calculate route. Try different locations.", "error");
                     return;
                 }
-
-                console.log("Distance API parsed result:", result);
                 latestRoutePolyline = result.polyline || null;
                 const kmText = result.distance?.text || '';
                 const minutes = result.duration_in_traffic?.text || result.duration?.text || '';
-
                 let kmsNumber = null;
-                if (typeof result.distance?.value === 'number') {
-                    kmsNumber = result.distance.value / 1000;
-                } else {
-                    kmsNumber = parseFloat((kmText || '').replace(/[^\d.]/g, ""));
+
+                if (kmText) {
+                    kmsNumber = parseFloat(kmText.replace(' km', '').trim());
                 }
 
                 latestDistanceKm = Number.isFinite(kmsNumber) ? kmsNumber : 0;
-                console.log("Distance parsed values:", {
-                    kmText,
-                    minutes,
-                    kmsNumber,
-                    latestDistanceKm,
-                    polyline: latestRoutePolyline,
-                    start_address: result.start_address,
-                    end_address: result.end_address
-                });
-                document.getElementById("distance").innerText =
-                    kmText || (latestDistanceKm.toFixed(2) + " km");
-                document.getElementById("minutes").innerText = minutes || 'N/A';
 
+                document.getElementById("distance").innerText = kmText;
+                document.getElementById("minutes").innerText = minutes || 'N/A';
+                                
                 // remove old polyline
                 if (routePolyline) {
                     routePolyline.setMap(null);
@@ -897,13 +872,9 @@
                 }
 
                 if (token && latestDistanceKm > 0) {
-                    console.log("Calling calculateFinalPrice()", {
-                        latestDistanceKm,
-                        minutes
-                    });
                     await calculateFinalPrice(latestDistanceKm, token, minutes);
                 } else {
-                    console.log("Skipping calculateFinalPrice()", {
+                    console.log("Skipping", {
                         hasToken: !!token,
                         latestDistanceKm
                     });
@@ -1665,9 +1636,9 @@
             if (!grandTotalEl) return;
 
             // Total (original)
-            const original = parseFloat(currentOriginalPrice) || 0;
+            const original = currentOriginalPrice || 0;
 
-            if (totalPriceEl) totalPriceEl.innerText = original.toFixed(2) + ' AED';
+            if (totalPriceEl) totalPriceEl.innerText = original + ' AED';
 
             let finalPrice = original;
             let discountAmount = 0;
@@ -1709,19 +1680,14 @@
                     const platformFee = parseFloat((platform_fee_amount?.innerText || "0").replace("AED", "").trim()) || 0;
                     const taxAmount = parseFloat((tax_amount?.innerText || "0").replace("AED", "").trim()) || 0;
 
-                    // ✅ TOTAL after discount
+                    //  TOTAL after discount
                     const TotalAmount = finalPrice + platformFee + taxAmount;
 
-                    console.log('original', original);
-                    console.log('discountAmount', discountAmount);
-                    console.log('finalPrice', finalPrice);
-                    console.log('TotalAmount', TotalAmount);
-
-                    if (discountAmountEl) discountAmountEl.innerText = discountAmount.toFixed(2) + ' AED';
+                    if (discountAmountEl) discountAmountEl.innerText = discountAmount + ' AED';
 
                     // update grand total element (if you have it)
                     const gt = document.getElementById("grandTotalDisplay");
-                    if (gt) gt.innerText = TotalAmount.toFixed(2) + " AED";
+                    if (gt) gt.innerText = TotalAmount + " AED";
                 } else {
                     if (discountRow) discountRow.classList.add('d-none');
                 }
@@ -1731,17 +1697,9 @@
             const platformFee = parseFloat((platform_fee_amount?.innerText || "0").replace("AED", "").trim()) || 0;
             const taxAmount = parseFloat((tax_amount?.innerText || "0").replace("AED", "").trim()) || 0;
 
-            // ✅ TOTAL after discount
+            //  TOTAL after discount
             const TotalAmount = finalPrice + platformFee + taxAmount;
-            grandTotalEl.innerText = TotalAmount.toFixed(2) + ' AED';
-
-            // Debug
-            console.log('updateGrandTotal', {
-                original,
-                finalPrice,
-                discountAmount,
-                promo: currentPromotionData
-            });
+            grandTotalEl.innerText = TotalAmount + ' AED';
         }
         const DASH_MAP_DATA_PATH = "/v1/common/dashboard/map-data";
         const DASH_MAP_DATA_URL = `${PRICE_API_BASE_URL}${DASH_MAP_DATA_PATH}`;
@@ -1782,8 +1740,6 @@
 
                 // auto refresh each 5 sec
                 dashTimer = setInterval(refreshDrivers, 5000);
-
-                console.log("✅ Auto driver tracking started:", DASH_MAP_DATA_URL);
             } catch (e) {
                 dashStarted = false;
                 console.error("startDashAutoDrivers error:", e);
@@ -1805,9 +1761,6 @@
         async function refreshDrivers() {
             try {
                 if (!map) return;
-
-                // console.log("✅ refreshDrivers called:", new Date().toLocaleTimeString());
-
                 const resp = await fetch(DASH_MAP_DATA_URL, {
                     method: "GET",
                     headers: {
@@ -1815,7 +1768,7 @@
                     }
                 });
 
-                console.log("✅ map-data status:", resp.status);
+                console.log(" map-data status:", resp.status);
                 if (!resp.ok) return;
 
                 const json = await resp.json();
@@ -1971,10 +1924,6 @@
                         delete dashMarkers[id];
                     }
                 });
-
-                // console.log("✅ Driver car markers:", Object.keys(dashMarkers).length);
-
-                // ❌ IMPORTANT: Do NOT fitBounds/center/zoom here (else pickup/drop route disturb)
 
             } catch (e) {
                 console.error("updateDriverCarMarkers error:", e);
