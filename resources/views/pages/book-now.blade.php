@@ -762,7 +762,7 @@
 
         async function calculateFinalPrice(kms, token, minutes) {
             try {
-                
+
                 const responsePrice = await fetch(`${PRICE_API_BASE_URL}/v1/customer/price/calculate`, {
                     method: 'POST',
                     headers: {
@@ -806,49 +806,80 @@
         async function callDistanceApi(origin, destination) {
             try {
                 const token = getAuthToken();
-                
+
                 const responseDistance = await fetch(
                     `${PRICE_API_BASE_URL}/v1/customer/distance?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&traffic_model=best_guess`
                 );
+
                 const data = await responseDistance.json();
+                console.log('Distance API full response:', data);
+
                 if (!responseDistance.ok) {
+                    showToast(data?.message || "Distance API request failed.", "error");
                     return;
                 }
 
                 const result = data?.data;
 
-                if (
-                    !data?.status ||
-                    !result ||
-                    !result.distance ||
-                    result.distance.value == null
-                ) {
+                if (!data?.status || !result || !result.distance?.text) {
+                    console.log('Invalid result:', result);
                     showToast("Unable to calculate route. Try different locations.", "error");
                     return;
                 }
-                latestRoutePolyline = result.polyline || null;
-                const kmText = result.distance?.text || '';
-                const minutes = result.duration_in_traffic?.text || result.duration?.text || '';
-                let kmsNumber = null;
 
-                if (kmText) {
-                    kmsNumber = parseFloat(kmText.replace(' km', '').trim());
+                latestRoutePolyline = result.polyline || null;
+
+                const kmText = (result.distance?.text || '').trim();
+                const minutes = (
+                    result.duration_in_traffic?.text ||
+                    result.duration?.text ||
+                    ''
+                ).trim();
+
+                let kmsNumber = null;
+                const cleanDistance = kmText.toLowerCase().replace(/,/g, '').trim();
+
+                if (cleanDistance.includes('km')) {
+                    kmsNumber = parseFloat(cleanDistance.replace('km', '').trim());
+                } else if (cleanDistance.includes('m')) {
+                    kmsNumber = parseFloat(cleanDistance.replace('m', '').trim()) / 1000;
                 }
 
                 latestDistanceKm = Number.isFinite(kmsNumber) ? kmsNumber : 0;
 
-                document.getElementById("distance").innerText = kmText;
-                document.getElementById("minutes").innerText = minutes || 'N/A';
-                                
-                // remove old polyline
+                console.log('kmText:', kmText);
+                console.log('cleanDistance:', cleanDistance);
+                console.log('kmsNumber:', kmsNumber);
+                console.log('latestDistanceKm:', latestDistanceKm);
+
+                if (latestDistanceKm <= 0) {
+                    console.log('Distance parse failed:', {
+                        kmText,
+                        cleanDistance,
+                        kmsNumber,
+                        latestDistanceKm
+                    });
+                    showToast("Unable to calculate route. Try different locations.", "error");
+                    return;
+                }
+
+                const distanceEl = document.getElementById("distance");
+                const minutesEl = document.getElementById("minutes");
+
+                if (distanceEl) {
+                    distanceEl.innerText = kmText || 'N/A';
+                }
+
+                if (minutesEl) {
+                    minutesEl.innerText = minutes || 'N/A';
+                }
+
                 if (routePolyline) {
                     routePolyline.setMap(null);
                     routePolyline = null;
                 }
 
-                // draw new polyline
                 if (result.polyline && map && google?.maps?.geometry?.encoding) {
-
                     const path = google.maps.geometry.encoding.decodePath(result.polyline);
 
                     routePolyline = new google.maps.Polyline({
@@ -871,20 +902,17 @@
                     });
                 }
 
-                if (token && latestDistanceKm > 0) {
+                if (token) {
                     await calculateFinalPrice(latestDistanceKm, token, minutes);
                 } else {
-                    console.log("Skipping", {
-                        hasToken: !!token,
-                        latestDistanceKm
-                    });
+                    console.log("Skipping price calculation: token missing");
                 }
 
             } catch (e) {
                 console.error("Distance API call failed:", e);
+                showToast("Something went wrong while calculating route.", "error");
             }
         }
-
         /* ------------------ Pending Booking Restore (LOGIN FLOW) ------------------ */
         function restorePendingBooking() {
 
