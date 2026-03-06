@@ -441,7 +441,8 @@
 
         let pickupAutocomplete, dropAutocomplete;
         let map, pickupMarker, dropMarker, directionsRenderer, directionsService;
-
+        let routePolyline = null;
+        let latestRoutePolyline = null;
         /* ------------------ Helpers ------------------ */
         function getAuthToken() {
             const localStorageToken = localStorage.getItem('auth_token');
@@ -552,41 +553,6 @@
                 }
             }, 800);
         }
-
-        // function initMap() {
-        //     const uaeCenter = {
-        //         lat: 24.4539,
-        //         lng: 54.3773
-        //     };
-        //     map = new google.maps.Map(document.getElementById('map'), {
-        //         zoom: 6,
-        //         center: uaeCenter,
-        //         restriction: {
-        //             latLngBounds: {
-        //                 north: 26.0555,
-        //                 south: 22.4969,
-        //                 west: 51.5795,
-        //                 east: 56.3967
-        //             },
-        //             strictBounds: true
-        //         }
-        //     });
-
-        //     directionsService = new google.maps.DirectionsService();
-        //     directionsRenderer = new google.maps.DirectionsRenderer({
-        //         map: map,
-        //         suppressMarkers: true,
-        //         polylineOptions: {
-        //             strokeColor: 'black',
-        //             strokeWeight: 4
-        //         }
-        //     });
-
-        //     mapReady = true;
-
-        //     //  ONLY ONE restore place (here)
-        //     restorePendingBooking();
-        // }
         function initMap() {
             //  World center
             const worldCenter = {
@@ -762,101 +728,187 @@
 
         /* ------------------ Route + Distance + Price ------------------ */
         function drawRoute() {
-            if (!pickupMarker || !dropMarker || !map || !directionsService || !directionsRenderer) return;
+            console.log("called");
+
+            if (!pickupMarker || !dropMarker || !map) {
+                console.log("stopped: pickupMarker/dropMarker/map missing", {
+                    pickupMarker,
+                    dropMarker,
+                    map
+                });
+                return;
+            }
 
             const pickupPos = pickupMarker.getPosition();
             const dropPos = dropMarker.getPosition();
 
-            directionsRenderer.setDirections({
-                routes: []
-            });
+            if (!pickupPos || !dropPos) {
+                console.log("stopped: pickupPos/dropPos missing", {
+                    pickupPos,
+                    dropPos
+                });
+                return;
+            }
 
-            directionsService.route({
-                origin: pickupPos,
-                destination: dropPos,
-                travelMode: google.maps.TravelMode.DRIVING
-            }, (response, status) => {
-                if (status === google.maps.DirectionsStatus.OK && response.routes.length > 0) {
-                    directionsRenderer.setDirections(response);
-                    map.fitBounds(response.routes[0].bounds);
+            const origin = pickupPos.lat() + "," + pickupPos.lng();
+            const destination = dropPos.lat() + "," + dropPos.lng();
 
-                    const origin = pickupPos.lat() + "," + pickupPos.lng();
-                    const destination = dropPos.lat() + "," + dropPos.lng();
-                    callDistanceApi(origin, destination);
-                } else {
-                    showToast("Unable to calculate route. Try different locations.", "error");
-                }
-            });
+            console.log("origin:", origin);
+            console.log("destination:", destination);
+
+            callDistanceApi(origin, destination);
         }
 
         async function calculateFinalPrice(kms, token, minutes) {
-            const responsePrice = await fetch(`${PRICE_API_BASE_URL}/v1/customer/price/calculate`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': 'Bearer ' + token,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    km: kms,
-                    latitude: pickupLat,
-                    longitude: pickupLng,
-                    drop_latitude: dropLat,
-                    drop_longitude: dropLng,
-                    minutes: minutes
-                })
-            });
+            try {
+                console.log("calculateFinalPrice() called", {
+                    kms,
+                    minutes,
+                    pickupLat,
+                    pickupLng,
+                    dropLat,
+                    dropLng
+                });
 
-            const priceData = await responsePrice.json();
-            const price = priceData?.data?.price ?? 0;
+                const responsePrice = await fetch(`${PRICE_API_BASE_URL}/v1/customer/price/calculate`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        km: kms,
+                        latitude: pickupLat,
+                        longitude: pickupLng,
+                        drop_latitude: dropLat,
+                        drop_longitude: dropLng,
+                        minutes: minutes
+                    })
+                });
 
-            currentOriginalPrice = parseFloat(price) || 0;
-            updateGrandTotal();
+                console.log("Price API raw response:", responsePrice);
 
-            document.getElementById('totalPriceDisplay').innerText = currentOriginalPrice.toFixed(2) + ' AED';
-            document.getElementById('price').innerText = currentOriginalPrice.toFixed(2) + ' AED';
+                const priceData = await responsePrice.json();
+                console.log("Price API JSON:", priceData);
 
-            const platform_fee_amount = document.getElementById("platform_fee_amount");
-            const tax_amount = document.getElementById("tax_amount");
-            // get numeric values
-            const platformFee = parseFloat(platform_fee_amount.innerText) || 0;
-            const taxAmount = parseFloat(tax_amount.innerText) || 0;
-            const TotalAmount = platformFee + taxAmount + currentOriginalPrice;
-            document.getElementById('grandTotalDisplay').innerText = TotalAmount.toFixed(2) + ' AED';
+                const price = priceData?.data?.price ?? 0;
+
+                currentOriginalPrice = parseFloat(price) || 0;
+                updateGrandTotal();
+
+                document.getElementById('totalPriceDisplay').innerText = currentOriginalPrice.toFixed(2) + ' AED';
+                document.getElementById('price').innerText = currentOriginalPrice.toFixed(2) + ' AED';
+
+                const platform_fee_amount = document.getElementById("platform_fee_amount");
+                const tax_amount = document.getElementById("tax_amount");
+
+                const platformFee = parseFloat(platform_fee_amount?.innerText) || 0;
+                const taxAmount = parseFloat(tax_amount?.innerText) || 0;
+                const TotalAmount = platformFee + taxAmount + currentOriginalPrice;
+
+                document.getElementById('grandTotalDisplay').innerText = TotalAmount.toFixed(2) + ' AED';
+
+            } catch (error) {
+                console.error("calculateFinalPrice() failed:", error);
+            }
         }
 
         async function callDistanceApi(origin, destination) {
             try {
                 const token = getAuthToken();
+                console.log("Auth token exists:", !!token);
 
                 const responseDistance = await fetch(
                     `${PRICE_API_BASE_URL}/v1/customer/distance?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&traffic_model=best_guess`
                 );
-
                 const data = await responseDistance.json();
-                if (!responseDistance.ok) return;
+                if (!responseDistance.ok) {
+                    return;
+                }
 
-                const result = data?.rows?.[0]?.elements?.[0];
-                if (!result || result.status !== 'OK') return;
+                const result = data?.data;
 
+                if (
+                    !data?.status ||
+                    !result ||
+                    !result.distance ||
+                    result.distance.value == null
+                ) {
+                    console.log("Distance API invalid result:", result);
+                    showToast("Unable to calculate route. Try different locations.", "error");
+                    return;
+                }
+
+                console.log("Distance API parsed result:", result);
+                latestRoutePolyline = result.polyline || null;
                 const kmText = result.distance?.text || '';
                 const minutes = result.duration_in_traffic?.text || result.duration?.text || '';
 
-                // Use value if exists (meters)
                 let kmsNumber = null;
                 if (typeof result.distance?.value === 'number') {
                     kmsNumber = result.distance.value / 1000;
                 } else {
-                    kmsNumber = parseFloat(kmText.replace(/[^\d.]/g, ""));
+                    kmsNumber = parseFloat((kmText || '').replace(/[^\d.]/g, ""));
                 }
 
                 latestDistanceKm = Number.isFinite(kmsNumber) ? kmsNumber : 0;
+                console.log("Distance parsed values:", {
+                    kmText,
+                    minutes,
+                    kmsNumber,
+                    latestDistanceKm,
+                    polyline: latestRoutePolyline,
+                    start_address: result.start_address,
+                    end_address: result.end_address
+                });
+                document.getElementById("distance").innerText =
+                    kmText || (latestDistanceKm.toFixed(2) + " km");
+                document.getElementById("minutes").innerText = minutes || 'N/A';
 
-                document.getElementById("distance").innerText = kmText || (latestDistanceKm.toFixed(2) + " km");
-                document.getElementById("minutes").innerText = minutes;
+                // remove old polyline
+                if (routePolyline) {
+                    routePolyline.setMap(null);
+                    routePolyline = null;
+                }
+
+                // draw new polyline
+                if (result.polyline && map && google?.maps?.geometry?.encoding) {
+
+                    const path = google.maps.geometry.encoding.decodePath(result.polyline);
+
+                    routePolyline = new google.maps.Polyline({
+                        path: path,
+                        geodesic: true,
+                        strokeColor: "#000000",
+                        strokeOpacity: 1,
+                        strokeWeight: 4,
+                        map: map
+                    });
+
+                    const bounds = new google.maps.LatLngBounds();
+                    path.forEach(point => bounds.extend(point));
+                    map.fitBounds(bounds);
+                } else {
+                    console.log("Polyline not drawn", {
+                        hasPolyline: !!result.polyline,
+                        hasMap: !!map,
+                        hasGeometry: !!google?.maps?.geometry?.encoding
+                    });
+                }
 
                 if (token && latestDistanceKm > 0) {
+                    console.log("Calling calculateFinalPrice()", {
+                        latestDistanceKm,
+                        minutes
+                    });
                     await calculateFinalPrice(latestDistanceKm, token, minutes);
+                } else {
+                    console.log("Skipping calculateFinalPrice()", {
+                        hasToken: !!token,
+                        latestDistanceKm
+                    });
                 }
+
             } catch (e) {
                 console.error("Distance API call failed:", e);
             }
@@ -864,21 +916,31 @@
 
         /* ------------------ Pending Booking Restore (LOGIN FLOW) ------------------ */
         function restorePendingBooking() {
+
             const token = getAuthToken();
             const pendingBooking = localStorage.getItem('pending_booking');
-
-            if (!token || !pendingBooking || !mapReady) return;
+            if (!token || !pendingBooking || !mapReady) {
+                return;
+            }
 
             const data = JSON.parse(pendingBooking);
 
-            // validate coords
             if (!data.pickup_lat || !data.pickup_lng || !data.drop_lat || !data.drop_lng) {
                 localStorage.removeItem('pending_booking');
                 return;
             }
 
-            setPickupManually(parseFloat(data.pickup_lat), parseFloat(data.pickup_lng), data.pickup_location);
-            setDropManually(parseFloat(data.drop_lat), parseFloat(data.drop_lng), data.drop_location);
+            setPickupManually(
+                parseFloat(data.pickup_lat),
+                parseFloat(data.pickup_lng),
+                data.pickup_location
+            );
+
+            setDropManually(
+                parseFloat(data.drop_lat),
+                parseFloat(data.drop_lng),
+                data.drop_location
+            );
 
             setTimeout(() => {
                 drawRoute();
@@ -1191,8 +1253,7 @@
                             Go to Home Screen
                         </button>
                     </div>
-                </div>
-        `,
+                </div>`,
                 showConfirmButton: false,
                 showCloseButton: true,
                 width: '600px',
@@ -1407,6 +1468,7 @@
                     price: cleanBasePrice,
                     eta_minutes: cleanMinutes,
                     discountPrice: discountPrice,
+                    polyline: latestRoutePolyline
                 };
 
                 console.log("Booking Payload:", bookingPayload);
@@ -1744,7 +1806,7 @@
             try {
                 if (!map) return;
 
-                console.log("✅ refreshDrivers called:", new Date().toLocaleTimeString());
+                // console.log("✅ refreshDrivers called:", new Date().toLocaleTimeString());
 
                 const resp = await fetch(DASH_MAP_DATA_URL, {
                     method: "GET",
@@ -1910,7 +1972,7 @@
                     }
                 });
 
-                console.log("✅ Driver car markers:", Object.keys(dashMarkers).length);
+                // console.log("✅ Driver car markers:", Object.keys(dashMarkers).length);
 
                 // ❌ IMPORTANT: Do NOT fitBounds/center/zoom here (else pickup/drop route disturb)
 
