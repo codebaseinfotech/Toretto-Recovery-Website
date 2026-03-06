@@ -812,24 +812,32 @@
                 );
 
                 const data = await responseDistance.json();
+
                 console.log('Distance API full response:', data);
+                console.log('data.data:', data?.data);
 
                 if (!responseDistance.ok) {
                     showToast(data?.message || "Distance API request failed.", "error");
                     return;
                 }
 
-                const result = data?.data;
+                const result = data && data.data ? data.data : null;
 
-                if (!data?.status || !result || !result.distance?.text) {
-                    console.log('Invalid result:', result);
+                if (!result) {
+                    console.log('Result is undefined/null:', data);
+                    showToast(data?.message || "Unable to calculate route. Try different locations.", "error");
+                    return;
+                }
+
+                if (!result.distance || !result.distance.text) {
+                    console.log('Distance missing:', result);
                     showToast("Unable to calculate route. Try different locations.", "error");
                     return;
                 }
 
                 latestRoutePolyline = result.polyline || null;
 
-                const kmText = (result.distance?.text || '').trim();
+                const kmText = (result.distance.text || '').trim();
                 const minutes = (
                     result.duration_in_traffic?.text ||
                     result.duration?.text ||
