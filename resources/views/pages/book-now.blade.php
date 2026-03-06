@@ -728,7 +728,7 @@
         }
 
         /* ------------------ Route + Distance + Price ------------------ */
-        async function drawRoute() {
+        function drawRoute() {
             console.log("called");
 
             if (!pickupMarker || !dropMarker || !map) {
@@ -757,7 +757,7 @@
             console.log("origin:", origin);
             console.log("destination:", destination);
 
-            await callDistanceApi(origin, destination);
+            callDistanceApi(origin, destination);
         }
 
         async function calculateFinalPrice(kms, token, minutes) {
@@ -807,15 +807,6 @@
             try {
                 const token = getAuthToken();
 
-                if (!origin || !destination) {  
-                    console.log("Origin or destination missing", {
-                        origin,
-                        destination
-                    });
-                    showToast("Please select valid pickup and drop locations.", "error");
-                    return false;
-                }
-
                 const responseDistance = await fetch(
                     `${PRICE_API_BASE_URL}/v1/customer/distance?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&traffic_model=best_guess`
                 );
@@ -825,69 +816,48 @@
 
                 if (!responseDistance.ok) {
                     showToast(data?.message || "Distance API request failed.", "error");
-                    return false;
+                    return;
                 }
 
-                const result = data?.data || null;
+                const result = data?.data;
 
-                if (!data?.status || !result) {
+                if (!data?.status || !result || !result.distance?.text) {
                     console.log('Invalid result:', result);
-                    showToast(data?.message || "Unable to calculate route. Try different locations.", "error");
-                    return false;
-                }
-
-                if (!result.distance?.text) {
-                    console.log('Distance text missing:', result);
                     showToast("Unable to calculate route. Try different locations.", "error");
-                    return false;
+                    return;
                 }
 
                 latestRoutePolyline = result.polyline || null;
 
-                const kmText = (result.distance?.text || '').trim();
-                const minutes = (
-                    result.duration_in_traffic?.text ||
-                    result.duration?.text ||
-                    ''
-                ).trim();
+                const kmText = result.distance?.text || '';
+                const minutes = result.duration_in_traffic?.text || result.duration?.text || '';
 
                 let kmsNumber = null;
-                const cleanDistance = kmText.toLowerCase().replace(/,/g, '').trim();
 
-                if (cleanDistance.includes('km')) {
-                    kmsNumber = parseFloat(cleanDistance.replace('km', '').trim());
-                } else if (cleanDistance.includes('m')) {
-                    kmsNumber = parseFloat(cleanDistance.replace('m', '').trim()) / 1000;
+                if (kmText) {
+                    if (kmText.toLowerCase().includes('km')) {
+                        kmsNumber = parseFloat(
+                            kmText.toLowerCase().replace('km', '').replace(/,/g, '').trim()
+                        );
+                    } else if (kmText.toLowerCase().includes('m')) {
+                        kmsNumber = parseFloat(
+                            kmText.toLowerCase().replace('m', '').replace(/,/g, '').trim()
+                        ) / 1000;
+                    }
                 }
 
                 latestDistanceKm = Number.isFinite(kmsNumber) ? kmsNumber : 0;
 
                 console.log('kmText:', kmText);
-                console.log('cleanDistance:', cleanDistance);
-                console.log('kmsNumber:', kmsNumber);
                 console.log('latestDistanceKm:', latestDistanceKm);
 
                 if (latestDistanceKm <= 0) {
-                    console.log('Distance parse failed:', {
-                        kmText,
-                        cleanDistance,
-                        kmsNumber,
-                        latestDistanceKm
-                    });
-                    showToast("Unable to calculate route. Try different locations.", "error");
-                    return false;
+                    showToast("Unable to calculate route. Distance not found.", "error");
+                    return;
                 }
 
-                const distanceEl = document.getElementById("distance");
-                const minutesEl = document.getElementById("minutes");
-
-                if (distanceEl) {
-                    distanceEl.innerText = kmText || 'N/A';
-                }
-
-                if (minutesEl) {
-                    minutesEl.innerText = minutes || 'N/A';
-                }
+                document.getElementById("distance").innerText = kmText || 'N/A';
+                document.getElementById("minutes").innerText = minutes || 'N/A';
 
                 if (routePolyline) {
                     routePolyline.setMap(null);
@@ -923,14 +893,12 @@
                     console.log("Skipping price calculation: token missing");
                 }
 
-                return true;
-
             } catch (e) {
                 console.error("Distance API call failed:", e);
                 showToast("Something went wrong while calculating route.", "error");
-                return false;
             }
         }
+
         /* ------------------ Pending Booking Restore (LOGIN FLOW) ------------------ */
         function restorePendingBooking() {
 
@@ -1366,7 +1334,6 @@
 
             // Calculate Price button
             const calculatePriceBtn = document.getElementById('calculatePriceBtn');
-
             if (calculatePriceBtn) {
                 calculatePriceBtn.addEventListener('click', async function(e) {
                     e.preventDefault();
@@ -1384,36 +1351,24 @@
                         return;
                     }
 
-                    const pickupPos = pickupMarker.getPosition();
-                    const dropPos = dropMarker.getPosition();
+                    const origin = pickupMarker.getPosition().lat() + "," + pickupMarker.getPosition()
+                        .lng();
+                    const destination = dropMarker.getPosition().lat() + "," + dropMarker.getPosition()
+                        .lng();
 
-                    if (!pickupPos || !dropPos) {
-                        showToast('Invalid pickup or drop location.', 'error');
-                        return;
-                    }
-
-                    const origin = pickupPos.lat() + "," + pickupPos.lng();
-                    const destination = dropPos.lat() + "," + dropPos.lng();
-
-                    const success = await callDistanceApi(origin, destination);
-
-                    if (!success) {
-                        return;
-                    }
+                    await callDistanceApi(origin, destination);
 
                     const token = getAuthToken();
-
                     if (!token) {
                         localStorage.setItem('pending_booking', JSON.stringify({
                             pickup_location: pickupElement.value,
                             drop_location: dropElement.value,
-                            pickup_lat: pickupPos.lat(),
-                            pickup_lng: pickupPos.lng(),
-                            drop_lat: dropPos.lat(),
-                            drop_lng: dropPos.lng(),
+                            pickup_lat: pickupMarker.getPosition().lat(),
+                            pickup_lng: pickupMarker.getPosition().lng(),
+                            drop_lat: dropMarker.getPosition().lat(),
+                            drop_lng: dropMarker.getPosition().lng(),
                             timestamp: Date.now()
                         }));
-
                         window.location.href = "{{ route('login') }}";
                         return;
                     }
