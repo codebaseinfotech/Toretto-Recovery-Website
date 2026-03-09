@@ -282,19 +282,17 @@
                     if (res.status === 401) {
                         window.location.href = "{{ route('logout') }}";
                     }
+
                 } catch (e) {
-                    // ignore
+                    console.log("modify-last-login failed");
                 }
             }
 
-            //  1) call immediately (DOMContentLoaded miss thaye to pan)
-            callModifyLastLogin();
-
-            //  2) normal page load
-            document.addEventListener('DOMContentLoaded', callModifyLastLogin);
-
-            //  3) when navigating back/forward (BFCache)
-            // window.addEventListener('pageshow', callModifyLastLogin);
+            //  Only once when page load
+            document.addEventListener('DOMContentLoaded', function() {
+                callModifyLastLogin();
+                console.log('modify-last-login-working');
+            });
 
         })();
     </script>

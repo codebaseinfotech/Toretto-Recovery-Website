@@ -554,23 +554,69 @@
             }, 800);
         }
 
+        // function initMap() {
+        //     //  World center
+        //     const worldCenter = {
+        //         lat: 20.5937,
+        //         lng: 78.9629
+        //     }; // India center (you can change)
+
+        //     map = new google.maps.Map(document.getElementById('map'), {
+        //         zoom: 3, //  world view
+        //         center: worldCenter,
+        //         mapTypeControl: true,
+        //         streetViewControl: false,
+        //         fullscreenControl: true
+        //         //  REMOVE restriction (so all countries show)
+        //     });
+
+        //     directionsService = new google.maps.DirectionsService();
+        //     directionsRenderer = new google.maps.DirectionsRenderer({
+        //         map: map,
+        //         suppressMarkers: true,
+        //         polylineOptions: {
+        //             strokeColor: 'black',
+        //             strokeWeight: 4
+        //         }
+        //     });
+
+        //     mapReady = true;
+
+        //     // ONLY ONE restore place (here)
+        //     restorePendingBooking();
+        //     startDashAutoDrivers();
+        // }
         function initMap() {
-            //  World center
-            const worldCenter = {
-                lat: 20.5937,
-                lng: 78.9629
-            }; // India center (you can change)
+
+            // Dubai center
+            const dubaiCenter = {
+                lat: 25.2048,
+                lng: 55.2708
+            };
+
+            // Dubai bounds restriction
+            const dubaiBounds = {
+                north: 25.3875,
+                south: 24.7433,
+                west: 54.8970,
+                east: 55.6510
+            };
 
             map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 3, //  world view
-                center: worldCenter,
+                zoom: 11,
+                center: dubaiCenter,
                 mapTypeControl: true,
                 streetViewControl: false,
-                fullscreenControl: true
-                //  REMOVE restriction (so all countries show)
+                fullscreenControl: true,
+
+                restriction: {
+                    latLngBounds: dubaiBounds,
+                    strictBounds: true
+                }
             });
 
             directionsService = new google.maps.DirectionsService();
+
             directionsRenderer = new google.maps.DirectionsRenderer({
                 map: map,
                 suppressMarkers: true,
@@ -582,7 +628,6 @@
 
             mapReady = true;
 
-            // ONLY ONE restore place (here)
             restorePendingBooking();
             startDashAutoDrivers();
         }
@@ -1250,6 +1295,7 @@
                     // Reset all displays
                     document.getElementById('distance').innerText = '0.00 km';
                     document.getElementById('price').innerText = '0.00 AED';
+                    document.getElementById('minutes').innerText = '0.00 mins';
                     document.getElementById('totalPriceDisplay').innerText = '0.00 AED';
                     document.getElementById('grandTotalDisplay').innerText = '0.00 AED';
 
@@ -1263,16 +1309,18 @@
                     const applyPromoBtn = document.getElementById('applyPromoBtn');
                     if (applyPromoBtn) {
                         applyPromoBtn.dataset.applied = 'false';
+
                         const promoBtnText = applyPromoBtn.querySelector('.btn-text');
                         if (promoBtnText) {
                             promoBtnText.textContent = 'Apply';
                         }
+                    }
 
-                        // Clear promo code input
-                        const promoInput = document.getElementById('promo_code');
-                        if (promoInput) {
-                            promoInput.value = '';
-                        }
+                    // Clear promo code input
+                    const promoInput = document.getElementById('promo_code');
+                    if (promoInput) {
+                        promoInput.value = '';
+                        delete promoInput.dataset.promotionId;
                     }
 
                     // Clear map markers
@@ -1280,9 +1328,16 @@
                         pickupMarker.setMap(null);
                         pickupMarker = null;
                     }
+
                     if (dropMarker) {
                         dropMarker.setMap(null);
                         dropMarker = null;
+                    }
+
+                    // Clear custom route polyline
+                    if (routePolyline) {
+                        routePolyline.setMap(null);
+                        routePolyline = null;
                     }
 
                     // Clear directions
@@ -1292,11 +1347,27 @@
                         });
                     }
 
-                    // Reset price calculation variables
+                    // Reset lat lng values
+                    pickupLat = null;
+                    pickupLng = null;
+                    dropLat = null;
+                    dropLng = null;
+
+                    // Reset route values
                     latestDistanceKm = 0;
+                    latestRoutePolyline = null;
                     currentOriginalPrice = 0;
                     currentDiscountValue = 0;
                     currentPromotionData = null;
+
+                    // Reset map position
+                    if (map) {
+                        map.setCenter({
+                            lat: 25.2048,
+                            lng: 55.2708
+                        });
+                        map.setZoom(11);
+                    }
                 },
                 customClass: {
                     popup: 'booking-success-popup',
