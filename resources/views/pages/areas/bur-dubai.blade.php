@@ -354,7 +354,7 @@
                 <div class="col-lg-6 imagebag">
                     <div class="about-left wow animate__animated animate__fadeInLeft">
                         <div class="about-img">
-                            <img src="{{ asset('assets/images/tow-truck-with-broken-car.jpg') }}" alt="">
+                            <img src="{{ asset('assets/images/cheap-car-recovery-dubai.jpg') }}" alt="">
                         </div>
                     </div>
                 </div>
@@ -362,14 +362,42 @@
         </div>
     </section>
 
+    <section class="recovery-gallery">
+        <div class="container">
+
+            <div class="gallery-title text-center">
+                <h2>Our Recovery Services</h2>
+                <p>Professional car recovery service across Dubai</p>
+            </div>
+
+            <div class="gallery-grid">
+
+                <div class="gallery-item">
+                    <img src="{{ asset('assets/images/car-recovery-in-bur-dubai-area.jpg') }}" alt="Car Recovery">
+                </div>
+
+                <div class="gallery-item">
+                    <img src="{{ asset('assets/images/car-recovery-in-bur-dubai.jpg') }}" alt="Recovery Service">
+                </div>
+
+                <div class="gallery-item">
+                    <img src="{{ asset('assets/images/tow-truck-service-dubai.jpg') }}" alt="Vehicle Recovery">
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
     <section class="bur-situations-section">
         <div class="container">
-            <div class="bur-situations-wrap">
+            <div class="">
+            {{-- <div class="bur-situations-wrap"> --}}
 
-                <div class="bur-situations-image">
-                    <img src="{{ asset('assets/images/tow-truck-with-broken-car.jpg') }}"
+                {{-- <div class="bur-situations-image">
+                    <img src="{{ asset('assets/images/car-recovery-in-bur-dubai-area.jpg') }}"
                         alt="Common car recovery situations in Bur Dubai">
-                </div>
+                </div> --}}
 
                 <div class="bur-situations-content">
                     <div class="bur-situations-head">
