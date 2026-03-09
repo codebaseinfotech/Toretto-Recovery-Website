@@ -1160,7 +1160,7 @@
                                 <i class="bi bi-clock-fill"></i>
                             </div>
                             <div>
-                                <h4> Response Time Commitment</h4>
+                                <h4 style="color: #fff"> Response Time Commitment</h4>
                                 <p>
                                     Our average response time in Bur Dubai is
                                     <strong>20–30 minutes</strong>.In high-traffic periods we'll give you a realistic
