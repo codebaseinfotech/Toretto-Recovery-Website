@@ -247,29 +247,41 @@
     </script>
     <script>
         (function() {
+            console.log('[modify-last-login] script loaded');
 
             function getAuthToken() {
-                const el = document.querySelector('meta[name="api-token"]');
-                return el ? (el.getAttribute('content') || '') : '';
+                const tokens = (localStorage.getItem('auth_token') || '').trim();
+                return tokens;
             }
 
             function getApiBaseUrl() {
                 const el = document.querySelector('meta[name="api-base-url"]');
-                return el ? (el.getAttribute('content') || '') : '';
+                const baseUrl = el ? (el.getAttribute('content') || '').trim() : '';
+                return baseUrl;
             }
 
             async function callModifyLastLogin() {
-                const token = getAuthToken();
-                if (!token) return;
+
+                const tokens = getAuthToken();
+                if (!tokens) {
+                    console.log('[modify-last-login] tokens missing, API not called');
+                    return;
+                }
 
                 const baseUrl = (getApiBaseUrl() || '').replace(/\/$/, '');
-                if (!baseUrl) return;
+                if (!baseUrl) {
+                    console.log('[modify-last-login] base url missing, API not called');
+                    return;
+                }
+
+                const apiUrl = `${baseUrl}/v1/modify-last-login`;
+                console.log('[modify-last-login] hitting URL:', apiUrl);
 
                 try {
-                    const res = await fetch(`${baseUrl}/v1/modify-last-login`, {
+                    const res = await fetch(apiUrl, {
                         method: 'POST',
                         headers: {
-                            'Authorization': 'Bearer ' + token,
+                            'Authorization': 'Bearer ' + tokens,
                             'Content-Type': 'application/json',
                             'Accept': 'application/json',
                         },
@@ -279,21 +291,27 @@
                         cache: 'no-store',
                     });
 
+                    console.log('[modify-last-login] response status:', res.status);
+
+                    const responseText = await res.text();
+                    console.log('[modify-last-login] response body:', responseText);
+
                     if (res.status === 401) {
+                        console.log('[modify-last-login] unauthorized, redirect logout');
                         window.location.href = "{{ route('logout') }}";
+                        return;
                     }
 
+                    console.log('[modify-last-login] API call completed');
                 } catch (e) {
-                    console.log("modify-last-login failed");
+                    console.log('[modify-last-login] request failed:', e);
                 }
             }
 
-            //  Only once when page load
             document.addEventListener('DOMContentLoaded', function() {
+                console.log('[modify-last-login] DOMContentLoaded fired');
                 callModifyLastLogin();
-                console.log('modify-last-login-working');
             });
-
         })();
     </script>
 
