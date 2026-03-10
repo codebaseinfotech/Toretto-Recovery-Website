@@ -1505,8 +1505,8 @@
                 // remove text like "AED" or "mins"
                 const cleanTotalPrice = parseFloat(totalPrice.replace(/[^\d.]/g, ""));
                 const cleanBasePrice = parseFloat(basePrice.replace(/[^\d.]/g, ""));
-                const cleanMinutes = parseFloat(etaMinutes.replace(/[^\d.]/g, ""));
                 const discountPrice = parseFloat(discountAmountDisplay.replace(/[^\d.]/g, ""));
+                const cleanMinutes = convertToMinutes(etaMinutes);
 
                 const bookingPayload = {
                     service_type_id: 1,
@@ -1555,7 +1555,25 @@
                 }
             });
         });
+        function convertToMinutes(timeText) {
+            if (!timeText) return 0;
 
+            let hours = 0;
+            let minutes = 0;
+
+            const hourMatch = timeText.match(/(\d+)\s*h/i);
+            const minMatch = timeText.match(/(\d+)\s*m/i);
+
+            if (hourMatch) {
+                hours = parseInt(hourMatch[1]);
+            }
+
+            if (minMatch) {
+                minutes = parseInt(minMatch[1]);
+            }
+
+            return (hours * 60) + minutes;
+        }
         function setPromoButtonUI(isApplied) {
             const btn = document.getElementById('applyPromoBtn');
             const promoInput = document.getElementById('promo_code');
