@@ -107,8 +107,7 @@
     {{-- BREADCRUMB --}}
     <section class="site-breadcrumb" style="background:url('{{ asset('assets/images/contact-bg.jpg') }}')">
         <div class="container">
-            <h1 class="breadcrumb-title-areas">Car Recovery Service in Palm Jumeirah — <br /> 24/7 Emergency Vehicle
-                Assistance
+            <h1 class="breadcrumb-title-areas">Car Recovery Service in Palm Jumeirah
             </h1>
             <ul class="breadcrumb-menu">
                 <li>
@@ -135,8 +134,7 @@
                 <div class="pj-hero-content">
                     <span class="pj-eyebrow"><i class="fas fa-map-marker-alt"></i> Palm Jumeirah, Dubai</span>
                     <h1 class="pj-hero-title">
-                        Car Recovery Service in Palm Jumeirah
-                        <span>— 24/7 Emergency Vehicle Assistance</span>
+                        24/7 Emergency Vehicle Assistance
                     </h1>
                     <p class="pj-hero-tagline">Stranded on Palm Jumeirah? We'll get you moving — fast.</p>
                     <p class="pj-hero-desc">

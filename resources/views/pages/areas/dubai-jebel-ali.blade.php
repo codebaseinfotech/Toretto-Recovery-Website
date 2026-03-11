@@ -104,7 +104,7 @@
     {{-- BREADCRUMB --}}
     <section class="site-breadcrumb" style="background:url('{{ asset('assets/images/contact-bg.jpg') }}')">
         <div class="container">
-            <h1 class="breadcrumb-title-areas">Car Recovery in Dubai Jebel Ali — <br />24/7 Fast Towing & Roadside Assistance
+            <h1 class="breadcrumb-title-areas">Car Recovery in Dubai Jebel Ali
             </h1>
             <ul class="breadcrumb-menu">
                 <li><a href="{{ route('home') }}">Home</a><i class="fa fa-angle-double-right"></i></li>
@@ -123,8 +123,7 @@
         <div class="container">
             <div class="ja-hero-grid">
                 <div class="ja-hero-text">
-                    <span class="ja-eyebrow"><i class="fas fa-bolt"></i> 24/7 Emergency Recovery</span>
-                    <h2>Car Recovery in <span>Dubai Jebel Ali</span></h2>
+                    <h2> 24/7 <span> Emergency Recovery</span></h2>
                     <p class="ja-hero-tagline">What Really Happens When Your Vehicle Breaks Down</p>
                     <p>If your car stops working in Jebel Ali, panic kicks in fast. It's hot. Trucks keep flying past you.
                         Your phone battery drops. And suddenly, Google searches don't feel helpful anymore.</p>

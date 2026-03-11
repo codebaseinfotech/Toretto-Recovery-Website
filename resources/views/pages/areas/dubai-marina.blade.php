@@ -133,7 +133,7 @@
     {{-- BREADCRUMB --}}
     <section class="site-breadcrumb" style="background:url('{{ asset('assets/images/contact-bg.jpg') }}')">
         <div class="container">
-            <h1 class="breadcrumb-title-areas">Car Recovery Dubai Marina — <br />24/7 Emergency Assistance</h1>
+            <h1 class="breadcrumb-title-areas">Car Recovery Dubai Marina</h1>
             <ul class="breadcrumb-menu">
                 <li>
                     <a href="{{ route('home') }}">Home</a>

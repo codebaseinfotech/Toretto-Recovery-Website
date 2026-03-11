@@ -101,7 +101,7 @@
     {{-- BREADCRUMB --}}
     <section class="site-breadcrumb" style="background:url('{{ asset('assets/images/contact-bg.jpg') }}')">
         <div class="container">
-            <h1 class="breadcrumb-title-areas">Car Recovery in Deira, Dubai — <br />24/7 Emergency Towing Service</h1>
+            <h1 class="breadcrumb-title-areas">Car Recovery in Deira, Dubai</h1>
             <ul class="breadcrumb-menu">
                 <li><a href="{{ route('home') }}">Home</a><i class="fa fa-angle-double-right"></i></li>
                 <li><a href="{{ route('home') }}">Areas We Serve</a><i class="fa fa-angle-double-right"></i></li>
@@ -118,8 +118,7 @@
             <div class="de-hero-grid">
                 <div class="de-hero-text">
                     <span class="de-eyebrow"><i class="fas fa-location-dot"></i> Deira, Dubai</span>
-                    <h2>Car Recovery in <span>Deira, Dubai</span></h2>
-                    <h3 class="de-hero-subtitle">24/7 Emergency Towing Service</h3>
+                    <h2>24/7 <span>Emergency Towing Service</span></h2>
                     <p>When your car breaks down on Al Rigga Road or you find yourself stuck in the basement parking of Deira City Centre at midnight, you need help fast — not in an hour. That's exactly what Toretto Recovery is here for.</p>
                     <p>We provide car recovery near you and emergency towing service across Deira and all of Dubai — 24 hours a day, 7 days a week. From the busy lanes near Naif Souq to the waterfront stretch along Baniyas Road, our team reaches you quickly with the right equipment and zero damage to your vehicle.</p>
                     <p>With 6 advanced recovery trucks and trained technicians on the road, we handle everything from a simple battery failure to full <a class="text-link" href="{{ route('home') }}" target="_blank">vehicle recovery after a highway accident</a>. Whether you drive a Corolla or a Lamborghini, we treat every car with equal care and precision.</p>
@@ -268,7 +267,7 @@
                              class="de-why-img">
                     </div>
                     <div class="de-why-content">
-                        <h3><i class="fas fa-truck-moving"></i> Fleet of 6 Recovery Trucks</h3>
+                        <h3><i class="fas fa-truck-moving"></i> <a href="https://torettorecovery.ae/flatbed-recovery-dubai" class="text-link" >Fleet of 6 Recovery Trucks</a></h3>
                         <p>Our fleet includes flatbed trucks, wheel-lift vehicles, and low-clearance recovery units — each fitted with safety straps, GPS, and communication tools. We send the right truck for every situation.</p>
                     </div>
                 </div>
@@ -279,7 +278,7 @@
                              class="de-why-img">
                     </div>
                     <div class="de-why-content">
-                        <h3><i class="fas fa-gem"></i> Luxury & Sports Car Specialists</h3>
+                        <h3><i class="fas fa-gem"></i> <a href="https://torettorecovery.ae/luxury-sports-car-handling-dubai" class="text-link"> Luxury & Sports Car Specialists</a></h3>
                         <p>Low-riding supercars and luxury sedans need damage-free flatbed towing. Our technicians are trained specifically for high-value vehicles — Ferrari, Rolls-Royce, Porsche, Mercedes — handled with absolute care.</p>
                     </div>
                 </div>
@@ -599,8 +598,6 @@
                 <span class="de-eyebrow light"><i class="fas fa-bolt"></i> Get Help Now</span>
                 <h2>Book Car Recovery in <span>Deira Right Now</span></h2>
                 <div class="de-cta-content">
-                    <p>If you're stranded anywhere in Deira — whether it's near Gold Souk, Al Mamzar, Abu Hail, or on a busy connector road — Toretto Recovery is one call away.</p>
-                    <p>We respond fast, we quote honestly, and we get your vehicle to where it needs to go — safely and without fuss.</p>
                     <p>Call us now for immediate dispatch. Visit our website at <strong>Toretto Recovery</strong> or request a quote directly. Our team is available <strong>24/7, every day of the year.</strong></p>
                     <p class="de-cta-highlight">Don't wait on the side of the road. Get fast, professional emergency towing in Deira from a team that treats your car the way it deserves to be treated.</p>
                 </div>
