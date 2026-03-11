@@ -205,50 +205,9 @@
                 });
             }
         };
-
-        // // Check if user is logged in and hide sign-in button
-        // document.addEventListener('DOMContentLoaded', () => {
-        //     const logoutLink = document.querySelector('.ajaxLogout');
-        //     if (!logoutLink) return;
-
-        //     logoutLink.addEventListener('click', async (e) => {
-        //         e.preventDefault();
-        //         e.stopPropagation(); // dropdown inside click issue fix
-
-        //         const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-
-        //         try {
-        //             const res = await fetch("{{ route('logout.ajax') }}", {
-        //                 method: "POST",
-        //                 headers: {
-        //                     "X-CSRF-TOKEN": csrf,
-        //                     "Accept": "application/json",
-        //                     "Content-Type": "application/json"
-        //                 },
-        //                 credentials: "same-origin" // important for session cookie
-        //             });
-
-        //             // even if response not json, logout should still clear local storage
-        //             localStorage.removeItem('auth_token');
-        //             localStorage.removeItem('user_data');
-
-        //             // redirect to login/home
-        //             window.location.href = "{{ url('/') }}";
-        //         } catch (err) {
-        //             console.error("Logout error:", err);
-
-        //             // fallback
-        //             localStorage.removeItem('auth_token');
-        //             localStorage.removeItem('user_data');
-        //             window.location.href = "{{ route('logout') }}";
-        //         }
-        //     });
-        // });
     </script>
     <script>
         (function() {
-            console.log('[modify-last-login] script loaded');
-
             function getAuthToken() {
                 const tokens = (localStorage.getItem('auth_token') || '').trim();
                 return tokens;
@@ -264,18 +223,15 @@
 
                 const tokens = getAuthToken();
                 if (!tokens) {
-                    console.log('[modify-last-login] tokens missing, API not called');
                     return;
                 }
 
                 const baseUrl = (getApiBaseUrl() || '').replace(/\/$/, '');
                 if (!baseUrl) {
-                    console.log('[modify-last-login] base url missing, API not called');
                     return;
                 }
 
                 const apiUrl = `${baseUrl}/v1/modify-last-login`;
-                console.log('[modify-last-login] hitting URL:', apiUrl);
 
                 try {
                     const res = await fetch(apiUrl, {
@@ -291,91 +247,135 @@
                         cache: 'no-store',
                     });
 
-                    console.log('[modify-last-login] response status:', res.status);
-
                     const responseText = await res.text();
-                    console.log('[modify-last-login] response body:', responseText);
 
                     if (res.status === 401) {
-                        console.log('[modify-last-login] unauthorized, redirect logout');
                         window.location.href = "{{ route('logout') }}";
                         return;
                     }
-
-                    console.log('[modify-last-login] API call completed');
                 } catch (e) {
                     console.log('[modify-last-login] request failed:', e);
                 }
             }
 
             document.addEventListener('DOMContentLoaded', function() {
-                console.log('[modify-last-login] DOMContentLoaded fired');
                 callModifyLastLogin();
             });
         })();
     </script>
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-
-            const PRICE_API_BASE_URL = "{{ config('services.api.base_url') }}";
+            const API_URL = "{{ config('services.api.base_url') }}";
             const signinBtn = document.querySelector('.signin-button');
 
-            const logoutNavItem = document.getElementById('logoutItem'); // top nav logout
-            const logoutDropdownItem = document.getElementById('logoutDropdownItem'); // dropdown logout li
-            const logoutLinks = document.querySelectorAll('.ajaxLogout'); // ALL logout links
+            const logoutNavItem = document.getElementById('logoutItem');
+            const logoutDropdownItem = document.getElementById('logoutDropdownItem');
+            const logoutLinks = document.querySelectorAll('.ajaxLogout');
 
-            function setAuthUI(isLoggedIn) {
-                // show/hide logout items
-                if (logoutNavItem) logoutNavItem.classList.toggle('d-none', !isLoggedIn);
-                if (logoutDropdownItem) logoutDropdownItem.classList.toggle('d-none', !isLoggedIn);
+            let alreadyLoggingOut = false;
+            let sessionInterval = null;
 
-                // show/hide signin button
-                if (signinBtn) signinBtn.classList.toggle('d-none', isLoggedIn);
+            function getApiToken() {
+                return (localStorage.getItem('auth_token') || '').trim();
             }
 
-            // Initial UI
-            const token = localStorage.getItem('auth_token');
-            setAuthUI(!!token);
+            function setAuthUI(isLoggedIn) {
+                if (logoutNavItem) {
+                    logoutNavItem.classList.toggle('d-none', !isLoggedIn);
+                }
 
-            // Session check (optional) - only if token exists
-            let alreadyLoggingOut = false;
+                if (logoutDropdownItem) {
+                    logoutDropdownItem.classList.toggle('d-none', !isLoggedIn);
+                }
+
+                if (signinBtn) {
+                    signinBtn.classList.toggle('d-none', isLoggedIn);
+                }
+            }
+
+            function clearSessionInterval() {
+                if (sessionInterval) {
+                    clearInterval(sessionInterval);
+                    sessionInterval = null;
+                }
+            }
+
+            function logoutUser(redirectTo = "/login") {
+                if (alreadyLoggingOut) return;
+
+                alreadyLoggingOut = true;
+                clearSessionInterval();
+
+                localStorage.removeItem('auth_token');
+                setAuthUI(false);
+
+                if (window.location.pathname !== redirectTo) {
+                    window.location.replace(redirectTo);
+                }
+            }
 
             async function checkSession() {
-                const t = localStorage.getItem('auth_token');
-                if (!t || alreadyLoggingOut) return;
+                if (document.visibilityState !== 'visible') return;
+
+                const API_TOKEN = getApiToken();
+
+                if (!API_TOKEN || alreadyLoggingOut) return;
 
                 try {
-                    const res = await fetch(`${PRICE_API_BASE_URL}/v1/common/check-session`, {
+                    const res = await fetch(`${API_URL}/v1/common/check-session`, {
                         method: 'GET',
                         headers: {
-                            'Authorization': 'Bearer ' + t,
+                            'Authorization': `Bearer ${API_TOKEN}`,
                             'Accept': 'application/json'
                         }
                     });
 
-                    const data = await res.json().catch(() => ({}));
-                    if (res.status === 401 && data.message === 'Session expired') {
-                        alreadyLoggingOut = true;
-                        localStorage.clear();
-                        setAuthUI(false);
-                        window.location.href = "/login";
+                    let data = {};
+                    try {
+                        data = await res.json();
+                    } catch (e) {
+                        data = {};
                     }
-                } catch (e) {
-                    console.error('Session check error:', e);
+
+                    console.log('check-session status:', res.status);
+                    console.log('check-session response:', data);
+
+                    if (res.status === 401 && data.message === 'Session expired') {
+                        logoutUser('/login');
+                        return;
+                    }
+
+                    if (res.status === 401 && data.message === 'Unauthenticated') {
+                        console.warn('Unauthenticated request. Auto logout skipped.');
+                        return;
+                    }
+                } catch (error) {
+                    console.error('Session check error:', error);
                 }
             }
 
-            if (token) {
-                checkSession();
-                setInterval(checkSession, 30000);
+            const API_TOKEN = getApiToken();
+            setAuthUI(!!API_TOKEN);
+
+            if (API_TOKEN && window.location.pathname !== '/login') {
+                setTimeout(() => {
+                    checkSession();
+                    sessionInterval = setInterval(checkSession, 30000);
+                }, 2000);
             }
 
-            // Logout click for ALL logout links
+            document.addEventListener('visibilitychange', function() {
+                if (document.visibilityState === 'visible') {
+                    checkSession();
+                }
+            });
+
             logoutLinks.forEach((btn) => {
-                btn.addEventListener('click', async (e) => {
+                btn.addEventListener('click', async function(e) {
                     e.preventDefault();
                     e.stopPropagation();
+
+                    if (alreadyLoggingOut) return;
 
                     try {
                         await fetch("{{ route('logout.ajax') }}", {
@@ -383,7 +383,7 @@
                             headers: {
                                 "X-CSRF-TOKEN": document.querySelector(
                                     'meta[name="csrf-token"]')?.getAttribute(
-                                    'content'),
+                                    'content') || '',
                                 "Accept": "application/json"
                             },
                             credentials: "same-origin"
@@ -392,12 +392,9 @@
                         console.error("Logout error:", err);
                     }
 
-                    localStorage.clear();
-                    setAuthUI(false);
-                    window.location.href = "/login";
+                    logoutUser('/login');
                 });
             });
-
         });
     </script>
 </body>
