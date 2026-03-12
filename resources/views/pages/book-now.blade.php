@@ -554,69 +554,30 @@
             }, 800);
         }
 
-        // function initMap() {
-        //     //  World center
-        //     const worldCenter = {
-        //         lat: 20.5937,
-        //         lng: 78.9629
-        //     }; // India center (you can change)
-
-        //     map = new google.maps.Map(document.getElementById('map'), {
-        //         zoom: 3, //  world view
-        //         center: worldCenter,
-        //         mapTypeControl: true,
-        //         streetViewControl: false,
-        //         fullscreenControl: true
-        //         //  REMOVE restriction (so all countries show)
-        //     });
-
-        //     directionsService = new google.maps.DirectionsService();
-        //     directionsRenderer = new google.maps.DirectionsRenderer({
-        //         map: map,
-        //         suppressMarkers: true,
-        //         polylineOptions: {
-        //             strokeColor: 'black',
-        //             strokeWeight: 4
-        //         }
-        //     });
-
-        //     mapReady = true;
-
-        //     // ONLY ONE restore place (here)
-        //     restorePendingBooking();
-        //     startDashAutoDrivers();
-        // }
         function initMap() {
-
-            // Dubai center
-            const dubaiCenter = {
-                lat: 25.2048,
-                lng: 55.2708
-            };
-
-            // Dubai bounds restriction
-            const dubaiBounds = {
-                north: 25.3875,
-                south: 24.7433,
-                west: 54.8970,
-                east: 55.6510
-            };
+            const defaultLat = 25.2048; // Dubai
+            const defaultLng = 55.2708; // Dubai
 
             map = new google.maps.Map(document.getElementById('map'), {
+                center: {
+                    lat: defaultLat,
+                    lng: defaultLng
+                },
                 zoom: 11,
-                center: dubaiCenter,
+                mapId: "DEMO_MAP_ID",
                 mapTypeControl: true,
                 streetViewControl: false,
                 fullscreenControl: true,
-
-                restriction: {
-                    latLngBounds: dubaiBounds,
-                    strictBounds: true
-                }
+                styles: [{
+                    featureType: "poi",
+                    elementType: "labels",
+                    stylers: [{
+                        visibility: "off"
+                    }]
+                }]
             });
 
             directionsService = new google.maps.DirectionsService();
-
             directionsRenderer = new google.maps.DirectionsRenderer({
                 map: map,
                 suppressMarkers: true,
@@ -631,6 +592,51 @@
             restorePendingBooking();
             startDashAutoDrivers();
         }
+        // function initMap() {
+
+        //     // Dubai center
+        //     const dubaiCenter = {
+        //         lat: 25.2048,
+        //         lng: 55.2708
+        //     };
+
+        //     // Dubai bounds restriction
+        //     const dubaiBounds = {
+        //         north: 25.3875,
+        //         south: 24.7433,
+        //         west: 54.8970,
+        //         east: 55.6510
+        //     };
+
+        //     map = new google.maps.Map(document.getElementById('map'), {
+        //         zoom: 11,
+        //         center: dubaiCenter,
+        //         mapTypeControl: true,
+        //         streetViewControl: false,
+        //         fullscreenControl: true,
+
+        //         restriction: {
+        //             latLngBounds: dubaiBounds,
+        //             strictBounds: true
+        //         }
+        //     });
+
+        //     directionsService = new google.maps.DirectionsService();
+
+        //     directionsRenderer = new google.maps.DirectionsRenderer({
+        //         map: map,
+        //         suppressMarkers: true,
+        //         polylineOptions: {
+        //             strokeColor: 'black',
+        //             strokeWeight: 4
+        //         }
+        //     });
+
+        //     mapReady = true;
+
+        //     restorePendingBooking();
+        //     startDashAutoDrivers();
+        // }
 
         function initAutocomplete() {
             const uaeBounds = new google.maps.LatLngBounds(
@@ -1555,6 +1561,7 @@
                 }
             });
         });
+
         function convertToMinutes(timeText) {
             if (!timeText) return 0;
 
@@ -1574,6 +1581,7 @@
 
             return (hours * 60) + minutes;
         }
+
         function setPromoButtonUI(isApplied) {
             const btn = document.getElementById('applyPromoBtn');
             const promoInput = document.getElementById('promo_code');

@@ -223,11 +223,13 @@
 
                 const tokens = getAuthToken();
                 if (!tokens) {
+                    clearAuthStorage();
                     return;
                 }
 
                 const baseUrl = (getApiBaseUrl() || '').replace(/\/$/, '');
                 if (!baseUrl) {
+                    clearAuthStorage();
                     return;
                 }
 
@@ -250,17 +252,27 @@
                     const responseText = await res.text();
 
                     if (res.status === 401) {
+                        clearAuthStorage();
                         window.location.href = "{{ route('logout') }}";
                         return;
                     }
                 } catch (e) {
-                    console.log('[modify-last-login] request failed:', e);
+                    console.log('[modify-last-login] error:', error);
+                    clearAuthStorage();
                 }
             }
 
             document.addEventListener('DOMContentLoaded', function() {
                 callModifyLastLogin();
             });
+            /* STORAGE CLEAR FUNCTION */
+            function clearAuthStorage() {
+
+                localStorage.removeItem('auth_token');
+                localStorage.removeItem('user');
+                sessionStorage.clear();
+
+            }
         })();
     </script>
     <script>
@@ -396,6 +408,14 @@
                 });
             });
         });
+
+        function clearAuthStorage() {
+
+            localStorage.removeItem('auth_token');
+            localStorage.removeItem('user');
+            sessionStorage.clear();
+
+        }
     </script>
 </body>
 
