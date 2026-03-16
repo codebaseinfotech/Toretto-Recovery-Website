@@ -31,13 +31,15 @@
                         </li>
 
                         <li>
-                            <a class="dropdown-item" href="{{ route('our-service.ourservice', 'vehicle-recovery-service-dubai') }}">
-                               Vehicle Recovery Service
+                            <a class="dropdown-item"
+                                href="{{ route('our-service.ourservice', 'vehicle-recovery-service-dubai') }}">
+                                Vehicle Recovery Service
                             </a>
                         </li>
 
                         <li>
-                            <a class="dropdown-item" href="{{ route('our-service.ourservice', 'flatbed-recovery-dubai') }}">
+                            <a class="dropdown-item"
+                                href="{{ route('our-service.ourservice', 'flatbed-recovery-dubai') }}">
                                 Flatbed Recovery
                             </a>
                         </li>
@@ -150,7 +152,10 @@
 
             <!-- ACTION BUTTONS -->
             <div class="header-actions d-flex gap-3">
-                <a href="{{ route('book.now') }}" class="theme-btn">Book Now</a>
+                <a href="https://wa.me/971545098498" class="theme-btn" target="_blank">
+                    WhatsApp
+                </a>
+                {{-- <a href="{{ route('book.now') }}" class="theme-btn">Book Now</a> --}}
                 <a href="tel:+971523003423" class="theme-btn">Call Now</a>
             </div>
         </div>

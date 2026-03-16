@@ -178,16 +178,19 @@
                             </a>
                         </li> --}}
                         <li id="logoutDropdownItem" class="d-none">
-                        <a class="dropdown-item ajaxLogout" href="javascript:void(0)">
-                            <i class="fa-solid fa-right-from-bracket"></i> <span>Logout</span>
-                        </a>
+                            <a class="dropdown-item ajaxLogout" href="javascript:void(0)">
+                                <i class="fa-solid fa-right-from-bracket"></i> <span>Logout</span>
+                            </a>
                         </li>
                     </ul>
                 </div>
 
 
                 <div class="header-actions d-flex align-items-center gap-3">
-                    <a href="{{ route('book.now') }}" class="theme-btn">Book Now</a>
+                    <a href="https://wa.me/971545098498" class="theme-btn" target="_blank">
+                        WhatsApp
+                    </a>
+                    {{-- <a href="{{ route('book.now') }}" class="theme-btn">Book Now</a> --}}
                     <a href="tel:+971523003423" class="theme-btn ">Call Now</a>
                 </div>
 
@@ -379,10 +382,10 @@
                 <li class="nav-item"><a class="nav-link" href="{{ route('blogs') }}">BLOGS</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('profile') }}">MY PROFILE</a></li>
                 <li class="nav-item d-none" id="logoutItem">
-                <a class="nav-link dropdown-item ajaxLogout" href="javascript:void(0)">
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                    <span class="logout-div">LOGOUT</span>
-                </a>
+                    <a class="nav-link dropdown-item ajaxLogout" href="javascript:void(0)">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span class="logout-div">LOGOUT</span>
+                    </a>
                 </li>
             </ul>
         </div>
