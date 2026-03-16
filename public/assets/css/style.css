@@ -2509,6 +2509,9 @@ label {
 }
 
 @media (max-width: 425px) {
+    .route-section-home {
+        padding-top: 4rem;
+    }
 
     .signup-section .left-container img,
     .login-section .left-container img,
@@ -2831,7 +2834,7 @@ label {
 }
 
 .route-section-home {
-    padding-top: 14px;
+    margin-top: 14px !important;
     padding-bottom: 40px;
     max-width: 1324px;
     margin: auto;
