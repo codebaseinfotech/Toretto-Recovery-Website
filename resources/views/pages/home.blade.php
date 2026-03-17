@@ -2171,6 +2171,11 @@
 
                     const token = getAuthToken();
 
+                    if (!pickupLat || !pickupLng || !dropLat || !dropLng) {
+                        showToast('Please select pickup and drop locations from the map autocomplete suggestions before calculating price.', 'error');
+                        return;
+                    }
+
                     const origin = pickupLat + "," + pickupLng;
                     const destination = dropLat + "," + dropLng;
 
@@ -2212,8 +2217,8 @@
                         await calculateFinalPrice(kms, token, minutes);
 
                     } catch (error) {
-                        console.error(error);
-                        showToast('Something went wrong.', 'error');
+                        console.error('Calculate Price error:', error);
+                        showToast(`Something went wrong: ${error.message || 'Please check console for details.'}`, 'error');
                     }
                 });
 
@@ -2753,8 +2758,20 @@
                 }
             );
 
+            if (!responsePrice.ok) {
+                let errorMessage = `Price API returned ${responsePrice.status}`;
+                try {
+                    const errJson = await responsePrice.json();
+                    if (errJson?.message) {
+                        errorMessage += `: ${errJson.message}`;
+                    }
+                } catch (_){/* ignore */}
+                throw new Error(errorMessage);
+            }
+
             const priceData = await responsePrice.json();
-            const price = priceData?.data?.price ?? 0;
+            const price = priceData?.data?.price ?? priceData?.data?.amount ?? priceData?.price ?? 0;
+
             document.getElementById('totalPriceDisplay').innerText =
                 parseFloat(price).toFixed(2) + ' AED';
             document.getElementById('grandTotalDisplay').innerText =
