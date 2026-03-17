@@ -2186,7 +2186,17 @@
                         );
 
                         const distanceData = await responseDistance.json();
+
+                        if (!distanceData || !Array.isArray(distanceData.rows) || distanceData.rows.length === 0 ||
+                            !Array.isArray(distanceData.rows[0].elements) || distanceData.rows[0].elements.length === 0) {
+                            throw new Error('Distance API returned unexpected format');
+                        }
+
                         const result = distanceData.rows[0].elements[0];
+
+                        if (!result || !result.distance || !result.duration_in_traffic) {
+                            throw new Error('Distance API missing distance/duration data');
+                        }
 
                         const kmText = result.distance.text;
                         const minutes = result.duration_in_traffic.text;
