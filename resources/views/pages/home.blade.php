@@ -7,7 +7,6 @@
     and the UAE. Fast response, safe transport, affordable rates — call now!')
 
 @section('content')
-
     {{-- <div class="seo-content-wrapper" style="position: absolute; left: -9999px; top: -9999px; width: 1px; height: 1px; overflow: hidden;">
     <h1>24/7 Car Recovery Service in Dubai Marina</h1>
 
@@ -82,7 +81,7 @@
                             </div>
                             <!-- Calculate Price Button -->
                             <div class="calculate-price-section mb-4 text-center">
-                                <button type="button" class="theme-btn" id="calculatePriceBtn">
+                                <button type="button" class="apply-btn" id="calculatePriceBtn">
                                     <span class="btn-text">Calculate Price</span>
                                     <span class="btn-loader-price d-none">
                                         <div class="beat-loader">

@@ -156,7 +156,7 @@
                     WhatsApp
                 </a>
                 {{-- <a href="{{ route('home') }}" class="theme-btn">Book Now</a> --}}
-                <a href="tel:+971523003423" class="theme-btn">Call Now</a>
+                <a href="tel:+971523003423" class="apply-btn">Call Now</a>
             </div>
         </div>
 
@@ -177,8 +177,8 @@
 
             <!-- BOOK NOW (optional on mobile) -->
             <div class="mobile-header-actions header-actions d-flex gap-3">
-                <a href="{{ route('home') }}" class="btn btn-book theme-btn">BOOK NOW</a>
-                <a href="tel:+971523003423" class="btn btn-book theme-btn">Call now</a>
+                <a href="https://wa.me/971545098498" class="btn btn-book theme-btn">WhatsApp</a>
+                <a href="tel:+971523003423" class="btn btn-book apply-btn">Call now</a>
             </div>
 
             <!-- TOGGLER -->

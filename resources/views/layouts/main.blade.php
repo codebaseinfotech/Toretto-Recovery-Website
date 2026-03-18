@@ -52,6 +52,69 @@
             margin-bottom: 10px;
         }
     </style>
+    <style>
+        .apply-btn {
+            display: inline-block;
+            font-size: 14px;
+            color: #fff;
+            padding: 14px 20px;
+            transition: all 0.5s ease;
+            text-transform: uppercase;
+            position: relative;
+            border-radius: 8px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            cursor: pointer;
+            text-align: center;
+            overflow: hidden;
+            border: none;
+            background: #000;
+            box-shadow: 0 0 40px 5px rgb(0 0 0 / 5%);
+            z-index: 1;
+            text-decoration: none;
+            transform: translateY(0);
+        }
+
+        .apply-btn::before {
+            position: absolute;
+            content: "";
+            top: 0px;
+            left: 0px;
+            right: 0px;
+            bottom: 0px;
+            transform: scaleY(0);
+            z-index: -1;
+            background: #d70006;
+            transition: 0.5s ease-in-out;
+        }
+
+        .apply-btn:hover::before,
+        .apply-btn:focus::before,
+        .apply-btn:active::before {
+            transform: scaleY(1);
+        }
+
+        .apply-btn:hover,
+        .apply-btn:focus,
+        .apply-btn:active {
+            color: #fff !important;
+            text-decoration: none;
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        .apply-btn:focus {
+            outline: none;
+        }
+        .header-actions .apply-btn {
+            padding: 9px 20px !important;
+        }
+        @media (max-width: 767px) {
+            .apply-btn {
+                font-size: 12px !important;
+                padding: 14px 10px !important;
+            }
+        }
+    </style>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-62X9L82MBP"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
