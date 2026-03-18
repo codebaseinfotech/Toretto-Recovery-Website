@@ -288,7 +288,7 @@
                         </h2>
 
                         <div class="hero-btn mt-4">
-                            <a target="_blank" href="{{ route('book.now') }}" class="theme-btn">
+                            <a target="_blank" href="{{ route('home') }}" class="theme-btn">
                                 Book Now <i class="fas fa-arrow-right-long"></i>
                             </a>
                             <a href="tel:+971523003423" class="theme-btn theme-btn2">
@@ -1613,11 +1613,11 @@
     </section>
 
 
-<link rel="stylesheet"
-      href="{{ asset('assets/css/service.css') }}?v={{ filemtime(public_path('assets/css/service.css')) }}">
+    <link rel="stylesheet"
+        href="{{ asset('assets/css/service.css') }}?v={{ filemtime(public_path('assets/css/service.css')) }}">
 
-<link rel="stylesheet"
-      href="{{ asset('assets/css/flatbed-recovery.css') }}?v={{ filemtime(public_path('assets/css/flatbed-recovery.css')) }}">
+    <link rel="stylesheet"
+        href="{{ asset('assets/css/flatbed-recovery.css') }}?v={{ filemtime(public_path('assets/css/flatbed-recovery.css')) }}">
     <script>
         document.querySelectorAll('.faqs2-question').forEach(button => {
             button.addEventListener('click', () => {

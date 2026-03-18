@@ -170,7 +170,7 @@
                         <a href="tel:+971523003423" class="theme-btn">
                             <i class="fas fa-phone"></i> Call Now
                         </a>
-                        <a href="{{ route('book.now') }}" target="_blank" class="theme-btn theme-btn-outline">
+                        <a href="{{ route('home') }}" target="_blank" class="theme-btn theme-btn-outline">
                             Book Recovery <i class="fas fa-arrow-right-long"></i>
                         </a>
                     </div>
@@ -942,7 +942,7 @@
                     <a href="tel:+971523003423" class="theme-btn pj-cta-btn-primary">
                         <i class="fas fa-phone"></i> +971 52 300 3423
                     </a>
-                    <a href="{{ route('book.now') }}" target="_blank" class="theme-btn pj-cta-btn-secondary">
+                    <a href="{{ route('home') }}" target="_blank" class="theme-btn pj-cta-btn-secondary">
                         Book Online <i class="fas fa-arrow-right-long"></i>
                     </a>
                     <a href="{{ route('contact') }}" target="_blank" class="pj-cta-link">

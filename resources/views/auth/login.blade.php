@@ -37,6 +37,7 @@
                                         </button>
 
                                         <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter your mobile number" maxlength="10">
+                                        <input type="hidden" name="base_url" value="{{ request()->has('x') ? 'x=' . request('x') : '' }}">
                                     </div>
                                     <!-- Validation Message -->
                                     <div class="invalid-feedback d-block" id="errorMsg"></div>
@@ -93,8 +94,9 @@ document.addEventListener('DOMContentLoaded', function () {
         e.preventDefault();
 
         const phone = phoneInput.value.trim();
+        const base_url = document.querySelector('input[name="base_url"]').value;
 
-        if (!phone) {
+        if (!phone) {   
             errorBox.innerText = 'Mobile number is required';
             phoneInput.classList.add('is-invalid');
             return;
@@ -113,6 +115,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             body: JSON.stringify({
                 phone: phone,
+                base_url: base_url,
                 _token: document.querySelector('input[name="_token"]').value
             })
         })

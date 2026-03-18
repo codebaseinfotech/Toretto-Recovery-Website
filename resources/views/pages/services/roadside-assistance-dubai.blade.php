@@ -150,7 +150,7 @@
                         </h2>
 
                         <div class="hero-btn mt-4">
-                            <a href="{{ route('book.now') }}" target="_blank" class="theme-btn">
+                            <a href="{{ route('home') }}" target="_blank" class="theme-btn">
                                 Book Now <i class="fas fa-arrow-right-long"></i>
                             </a>
                             <a href="tel:+971523003423" class="theme-btn theme-btn2">
@@ -241,7 +241,7 @@
                             getting drivers back on the road safely and quickly.</p>
                         <p class="mb-1">No complicated apps. No confusing memberships. Just fast, reliable help when you
                             need it most.</p>
-                        <a href="{{ route('book.now') }}" target="_blank" class="theme-btn mt-2">Book Now<i
+                        <a href="{{ route('home') }}" target="_blank" class="theme-btn mt-2">Book Now<i
                                 class="fa-solid fa-arrow-right-long"></i></a>
                         <a href="tel:+971 523003423" class="theme-btn mt-2"> Call Now<i
                                 class="fa-solid fa-arrow-right-long"></i></a>
@@ -277,7 +277,7 @@
                             in 45-degree heat. That’s why our services are built around what truly matters to you:
                         </p>
                         <div class="mt-2">
-                            <a href="{{ route('book.now') }}" target="_blank" class="theme-btn mt-2">Book Now<i
+                            <a href="{{ route('home') }}" target="_blank" class="theme-btn mt-2">Book Now<i
                                     class="fa-solid fa-arrow-right-long"></i></a>
                             <a href="tel:+971 523003423" class="theme-btn mt-2"> Call Now<i
                                     class="fa-solid fa-arrow-right-long"></i></a>

@@ -27,7 +27,12 @@ class LoginController extends Controller
         ]);
 
         $phone = $request->phone;
+        $base_url = $request->base_url;
+        $redirectUrl = route('otp.form');
 
+        if ($base_url === 'x=1') {
+            $redirectUrl .= '?x=1';
+        }
         Session::put('phone', $phone);
 
         try {
@@ -54,9 +59,9 @@ class LoginController extends Controller
                 'data' => [
                     'phone' => $phone,
                 ],
-                'redirect' => route('otp.form'),
+                'redirect' => $redirectUrl,
             ]);
-        } catch (\Throwable $e) {
+        } catch (\Throwable $e) {   
             return response()->json([
                 'status' => false,
                 'message' => 'Something went wrong. Please try again.',
@@ -82,6 +87,12 @@ class LoginController extends Controller
             'latitude' => 'nullable',
             'longitude' => 'nullable',
         ]);
+        $base_url = $request->base_url;
+        if ($base_url === 'x=1') {
+            $redirectUrl = route('home');
+        } else {
+            $redirectUrl = route('home');
+        }
 
         $phone = Session::get('phone');
 
@@ -150,11 +161,11 @@ class LoginController extends Controller
             // Check for pending booking data
             $pendingBooking = Session::get('pending_booking', []);
 
-            $redirectRoute = $isRegistered ? route('book.now') : route('signup.form');
+            $redirectRoute = $isRegistered ? $redirectUrl : route('signup.form');
 
             // If there's pending booking data, redirect to booking page
             if (! empty($pendingBooking)) {
-                $redirectRoute = route('book.now');
+                $redirectRoute = $redirectUrl;
                 // Clear the pending booking data
                 Session::forget('pending_booking');
             }

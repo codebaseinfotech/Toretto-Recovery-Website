@@ -190,7 +190,7 @@
                     <a href="https://wa.me/971545098498" class="theme-btn" target="_blank">
                         WhatsApp
                     </a>
-                    {{-- <a href="{{ route('book.now') }}" class="theme-btn">Book Now</a> --}}
+                    {{-- <a href="{{ route('home') }}" class="theme-btn">Book Now</a> --}}
                     <a href="tel:+971523003423" class="theme-btn ">Call Now</a>
                 </div>
 
@@ -213,7 +213,7 @@
 
             <!-- BOOK NOW (optional on mobile) -->
             <div class="mobile-header-actions header-actions d-flex gap-3">
-                <a href="{{ route('book.now') }}" class="btn btn-book theme-btn">BOOK NOW</a>
+                <a href="{{ route('home') }}" class="btn btn-book theme-btn">BOOK NOW</a>
                 <a href="tel:+971523003423" class="btn btn-book theme-btn ">Call now</a>
             </div>
 

@@ -345,7 +345,7 @@
                             to you — not the nearest truck on paper, but the one that actually gets there fastest.</p>
                         <p>Our average response time in Bur Dubai? 20 to 30 minutes. When you're stranded at night near
                             Dubai Creek with hazard lights blinking, every minute counts.</p>
-                        <a href="{{ route('book.now') }}" target="_blank" class="theme-btn mt-2">Book Now<i
+                        <a href="{{ route('home') }}" target="_blank" class="theme-btn mt-2">Book Now<i
                                 class="fa-solid fa-arrow-right-long"></i></a>
                         <a href="tel:+971523003423" class="theme-btn mt-2"> Call Now<i
                                 class="fa-solid fa-arrow-right-long"></i></a>
@@ -392,7 +392,7 @@
     <section class="bur-situations-section">
         <div class="container">
             <div class="">
-            {{-- <div class="bur-situations-wrap"> --}}
+                {{-- <div class="bur-situations-wrap"> --}}
 
                 {{-- <div class="bur-situations-image">
                     <img src="{{ asset('assets/images/car-recovery-in-bur-dubai-area.jpg') }}"

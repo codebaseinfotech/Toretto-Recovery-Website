@@ -34,7 +34,7 @@ class SignupController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'Form validated successfully',
-                'redirect' => route('book.now')
+                'redirect' => route('home')
             ]);
         }
         catch(\Exception $e){

@@ -141,7 +141,7 @@
                         <a href="tel:+971523003423" class="theme-btn ja-btn-primary">
                             <i class="fas fa-phone"></i> Call Now — +971 52 300 3423
                         </a>
-                        <a href="{{ route('book.now') }}" target="_blank" class="theme-btn ja-btn-secondary">
+                        <a href="{{ route('home') }}" target="_blank" class="theme-btn ja-btn-secondary">
                             Book Online <i class="fas fa-arrow-right-long"></i>
                         </a>
                     </div>
@@ -796,7 +796,7 @@
                     faqItems.forEach(function(el) {
                         el.classList.remove('active');
                         el.querySelector('.ja-faq-q').setAttribute('aria-expanded',
-                        'false');
+                            'false');
                         el.querySelector('.ja-faq-icon i').className = 'fas fa-plus';
                     });
                     if (!isActive) {

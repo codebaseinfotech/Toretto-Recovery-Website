@@ -37,7 +37,7 @@
                                 <input type="hidden" name="latitude" id="latitude">
                                 <input type="hidden" name="longitude" id="longitude">
                             </div>
-
+                            <input type="hidden" name="base_url" value="{{ request()->has('x') ? 'x=' . request('x') : '' }}">
                             <div id="otpError" class="error-message text-danger mt-2 text-center" style="min-height: 24px;"></div>
 
                             <button type="submit" class="btn-submit theme-btn" id="otpSubmitBtn">
@@ -225,6 +225,7 @@ document.addEventListener('DOMContentLoaded', function () {
             body: JSON.stringify({
                 phone: phoneFromStorage,
                 otp: otp,
+                base_url:document.querySelector('input[name="base_url"]').value ,
                 latitude: latInput ? latInput.value : null,
                 longitude: lngInput ? lngInput.value : null,
                 _token: document.querySelector('input[name="_token"]').value

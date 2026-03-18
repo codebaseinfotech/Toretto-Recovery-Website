@@ -271,7 +271,7 @@
                                             </p>
                                             <div class="hero-btn wow animate__animated animate__fadeInUp"
                                                 data-animation="fadeInUp" style="animation-delay: 1s;">
-                                                <a href="{{ route('book.now') }}" class="theme-btn">Book Now<i
+                                                <a href="{{ route('home') }}" class="theme-btn">Book Now<i
                                                         class="fas fa-arrow-right-long"></i></a>
                                                 <a href="tel:+971 523003423" class="theme-btn theme-btn2">Call /
                                                     WhatsApp<i class="fas fa-arrow-right-long"></i></a>
@@ -301,7 +301,7 @@
                                             </p>
                                             <div class="hero-btn wow animate__animated animate__fadeInUp"
                                                 data-animation="fadeInUp" style="animation-delay: 1s;">
-                                                <a href="{{ route('book.now') }}" class="theme-btn">Book Now<i
+                                                <a href="{{ route('home') }}" class="theme-btn">Book Now<i
                                                         class="fas fa-arrow-right-long"></i></a>
                                                 <a href="tel:+971 523003423" class="theme-btn theme-btn2">Call /
                                                     WhatsApp<i class="fas fa-arrow-right-long"></i></a>
@@ -332,7 +332,7 @@
                                             </p>
                                             <div class="hero-btn wow animate__animated animate__fadeInUp"
                                                 data-animation="fadeInUp">
-                                                <a href="{{ route('book.now') }}" class="theme-btn">Book Now<i
+                                                <a href="{{ route('home') }}" class="theme-btn">Book Now<i
                                                         class="fas fa-arrow-right-long"></i></a>
                                                 <a href="tel:+971 523003423" class="theme-btn theme-btn2">Call /
                                                     WhatsApp<i class="fas fa-arrow-right-long"></i></a>
@@ -362,7 +362,7 @@
                                             </p>
                                             <div class="hero-btn wow animate__animated animate__fadeInUp"
                                                 data-animation="fadeInUp" style="animation-delay: 1s;">
-                                                <a href="{{ route('book.now') }}" class="theme-btn">Book Now<i
+                                                <a href="{{ route('home') }}" class="theme-btn">Book Now<i
                                                         class="fas fa-arrow-right-long"></i></a>
                                                 <a href="tel:+971 523003423" class="theme-btn theme-btn2">Call /
                                                     WhatsApp<i class="fas fa-arrow-right-long"></i></a>
@@ -393,7 +393,7 @@
                                             </p>
                                             <div class="hero-btn wow animate__animated animate__fadeInUp"
                                                 data-animation="fadeInUp">
-                                                <a href="{{ route('book.now') }}" class="theme-btn">Book Now<i
+                                                <a href="{{ route('home') }}" class="theme-btn">Book Now<i
                                                         class="fas fa-arrow-right-long"></i></a>
                                                 <a href="tel:+971 523003423" class="theme-btn theme-btn2">Call /
                                                     WhatsApp<i class="fas fa-arrow-right-long"></i></a>
@@ -423,7 +423,7 @@
                                             </p>
                                             <div class="hero-btn wow animate__animated animate__fadeInUp"
                                                 data-animation="fadeInUp" style="animation-delay: 1s;">
-                                                <a href="{{ route('book.now') }}" class="theme-btn">Book Now<i
+                                                <a href="{{ route('home') }}" class="theme-btn">Book Now<i
                                                         class="fas fa-arrow-right-long"></i></a>
                                                 <a href="tel:+971 523003423" class="theme-btn theme-btn2">Call /
                                                     WhatsApp<i class="fas fa-arrow-right-long"></i></a>
@@ -1241,51 +1241,6 @@
             restorePendingBooking();
             startDashAutoDrivers();
         }
-        // function initMap() {
-
-        //     // Dubai center
-        //     const dubaiCenter = {
-        //         lat: 25.2048,
-        //         lng: 55.2708
-        //     };
-
-        //     // Dubai bounds restriction
-        //     const dubaiBounds = {
-        //         north: 25.3875,
-        //         south: 24.7433,
-        //         west: 54.8970,
-        //         east: 55.6510
-        //     };
-
-        //     map = new google.maps.Map(document.getElementById('map'), {
-        //         zoom: 11,
-        //         center: dubaiCenter,
-        //         mapTypeControl: true,
-        //         streetViewControl: false,
-        //         fullscreenControl: true,
-
-        //         restriction: {
-        //             latLngBounds: dubaiBounds,
-        //             strictBounds: true
-        //         }
-        //     });
-
-        //     directionsService = new google.maps.DirectionsService();
-
-        //     directionsRenderer = new google.maps.DirectionsRenderer({
-        //         map: map,
-        //         suppressMarkers: true,
-        //         polylineOptions: {
-        //             strokeColor: 'black',
-        //             strokeWeight: 4
-        //         }
-        //     });
-
-        //     mapReady = true;
-
-        //     restorePendingBooking();
-        //     startDashAutoDrivers();
-        // }
 
         function initAutocomplete() {
             const uaeBounds = new google.maps.LatLngBounds(
@@ -1488,7 +1443,7 @@
 
                 document.getElementById('totalPriceDisplay').innerText = currentOriginalPrice + ' AED';
                 document.getElementById('price').innerText = currentOriginalPrice + ' AED';
-
+                console.log(document.getElementById('price'), 'sasasasasas');
                 const platform_fee_amount = document.getElementById("platform_fee_amount");
                 const tax_amount = document.getElementById("tax_amount");
 
@@ -1499,7 +1454,7 @@
                 document.getElementById('grandTotalDisplay').innerText = TotalAmount + ' AED';
 
             } catch (error) {
-                console.error("calculateFinalPrice() failed:", error);
+                console.error("failed:", error);
             }
         }
 
@@ -1919,25 +1874,6 @@
                     <p style="font-size: 14px; margin-top: 20px; color: #666; text-align: center;">
                         <em>Note: Service updates and driver communication are available only in the mobile app.</em>
                     </p>
-
-                    <div style="margin-top: 25px;">
-                        <button id="openAppBtn" style="
-                            background-color: #dc3545;
-                            color: white;
-                            border: none;
-                            padding: 12px 30px;
-                            border-radius: 6px;
-                            cursor: pointer;
-                            font-size: 16px;
-                            font-family: 'Avenir', sans-serif;
-                            font-weight: bold;
-                            transition: background-color 0.3s;
-                            box-shadow: 0 2px 6px rgba(220,53,69,0.3);
-                        " onmouseover="this.style.backgroundColor='#c82333'; this.style.boxShadow='0 4px 12px rgba(220,53,69,0.4)';"
-                        onmouseout="this.style.backgroundColor='#dc3545'; this.style.boxShadow='0 2px 6px rgba(220,53,69,0.3)';">
-                            Go to Home Screen
-                        </button>
-                    </div>
                 </div>`,
                 showConfirmButton: false,
                 showCloseButton: true,
@@ -2095,7 +2031,8 @@
                             drop_lng: dropMarker.getPosition().lng(),
                             timestamp: Date.now()
                         }));
-                        window.location.href = "{{ route('login') }}";
+
+                        window.location.href = "{{ route('login') }}?x=1";
                         return;
                     }
                 });
@@ -2313,7 +2250,7 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        code: promoCode
+                        code: promoCode,
                     })
                 });
 

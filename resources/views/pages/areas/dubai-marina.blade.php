@@ -173,7 +173,7 @@
                         <a href="tel:+971523003423" class="theme-btn dm-btn-primary">
                             <i class="fas fa-phone"></i> Call Now — We Answer Day & Night
                         </a>
-                        <a href="{{ route('book.now') }}" target="_blank" class="theme-btn dm-btn-secondary">
+                        <a href="{{ route('home') }}" target="_blank" class="theme-btn dm-btn-secondary">
                             Book Online <i class="fas fa-arrow-right-long"></i>
                         </a>
                     </div>
@@ -754,7 +754,7 @@
                     faqItems.forEach(function(el) {
                         el.classList.remove('active');
                         el.querySelector('.dm-faq-q').setAttribute('aria-expanded',
-                        'false');
+                            'false');
                         el.querySelector('.dm-faq-icon i').className = 'fas fa-plus';
                     });
                     if (!isActive) {
