@@ -1104,6 +1104,16 @@
             return '';
         }
 
+        function parseAedAmount(value) {
+            if (value === null || value === undefined) return 0;
+            const cleaned = String(value)
+                .replace(/AED/gi, '')
+                .replace(/,/g, '')
+                .trim();
+            const amount = parseFloat(cleaned);
+            return Number.isFinite(amount) ? amount : 0;
+        }
+
         function isLocationInUAE(lat, lng) {
             const uaeMinLat = 22.4969,
                 uaeMaxLat = 26.0555;
@@ -1442,15 +1452,23 @@
 
                 document.getElementById('totalPriceDisplay').innerText = currentOriginalPrice + ' AED';
                 document.getElementById('price').innerText = currentOriginalPrice + ' AED';
-                console.log(document.getElementById('price'), 'sasasasasas');
+                console.log(currentOriginalPrice, 'price');
                 const platform_fee_amount = document.getElementById("platform_fee_amount");
                 const tax_amount = document.getElementById("tax_amount");
 
-                const platformFee = parseFloat(platform_fee_amount?.innerText) || 0;
-                const taxAmount = parseFloat(tax_amount?.innerText) || 0;
+                const platformFee = parseAedAmount(platform_fee_amount?.innerText || platform_fee_amount?.textContent || '');
+                const taxAmount = parseAedAmount(tax_amount?.innerText || tax_amount?.textContent || '');
                 const TotalAmount = platformFee + taxAmount + currentOriginalPrice;
 
-                document.getElementById('grandTotalDisplay').innerText = TotalAmount + ' AED';
+                const grandTotalDisplay = document.getElementById('grandTotalDisplay');
+                if (grandTotalDisplay) {
+                    grandTotalDisplay.innerText = TotalAmount + ' AED';
+                }
+
+                // Keep promo behavior intact if already applied.
+                if (currentPromotionData) {
+                    updateGrandTotal();
+                }
 
             } catch (error) {
                 console.error("failed:", error);
@@ -2092,12 +2110,16 @@
                 const basePrice = document.getElementById("price")?.innerText || "";
                 const discountAmountDisplay = document.getElementById("discountAmountDisplay")
                     ?.innerText || "";
+                const platform_fee_amount = document.getElementById("platform_fee_amount");
+                const tax_amount = document.getElementById("tax_amount");
 
                 // remove text like "AED" or "mins"
-                const cleanTotalPrice = parseFloat(totalPrice.replace(/[^\d.]/g, ""));
-                const cleanBasePrice = parseFloat(basePrice.replace(/[^\d.]/g, ""));
-                const discountPrice = parseFloat(discountAmountDisplay.replace(/[^\d.]/g, ""));
+                const cleanTotalPrice = parseAedAmount(totalPrice);
+                const cleanBasePrice = parseAedAmount(basePrice);
+                const discountPrice = parseAedAmount(discountAmountDisplay);
                 const cleanMinutes = convertToMinutes(etaMinutes);
+                const platformFee = parseAedAmount(platform_fee_amount?.innerText || platform_fee_amount?.textContent || '');
+                const taxAmount = parseAedAmount(tax_amount?.innerText || tax_amount?.textContent || '');
 
                 const bookingPayload = {
                     service_type_id: 1,
@@ -2108,8 +2130,8 @@
                     dropoff_lat: dropLatLng.lat(),
                     dropoff_lng: dropLatLng.lng(),
                     distance_km: distanceValue,
-                    platform_fee: parseFloat(platform_fee_amount.innerText) ?? 0,
-                    tax: parseFloat(tax_amount.innerText) ?? 0,
+                    platform_fee: platformFee,
+                    tax: taxAmount,
                     // extra values
                     total_price: cleanTotalPrice,
                     price: cleanBasePrice,
@@ -2328,6 +2350,8 @@
             const grandTotalEl = document.getElementById('grandTotalDisplay');
             const discountRow = document.getElementById('discountRow');
             const discountAmountEl = document.getElementById('discountAmountDisplay');
+            const platform_fee_amount = document.getElementById("platform_fee_amount");
+            const tax_amount = document.getElementById("tax_amount");
 
             if (!grandTotalEl) return;
 
@@ -2351,8 +2375,8 @@
                 const dtype = String(dtypeRaw).toLowerCase();
 
                 // discount value parse
-                const dval = parseFloat(currentDiscountValue ?? currentPromotionData.discount_value ?? currentPromotionData
-                    .value ?? 0) || 0;
+                const dval = parseAedAmount(currentDiscountValue ?? currentPromotionData.discount_value ?? currentPromotionData
+                    .value ?? 0);
 
                 if (dval > 0) {
                     if (dtype === 'percentage' || dtype === 'percent') {
@@ -2369,29 +2393,17 @@
 
                     if (discountRow) discountRow.classList.remove('d-none');
 
-                    const platform_fee_amount = document.getElementById("platform_fee_amount");
-                    const tax_amount = document.getElementById("tax_amount");
-
-                    // numeric values (handles "AED")
-                    const platformFee = parseFloat((platform_fee_amount?.innerText || "0").replace("AED", "").trim()) || 0;
-                    const taxAmount = parseFloat((tax_amount?.innerText || "0").replace("AED", "").trim()) || 0;
-
-                    //  TOTAL after discount
-                    const TotalAmount = finalPrice + platformFee + taxAmount;
-
                     if (discountAmountEl) discountAmountEl.innerText = discountAmount + ' AED';
-
-                    // update grand total element (if you have it)
-                    const gt = document.getElementById("grandTotalDisplay");
-                    if (gt) gt.innerText = TotalAmount + " AED";
                 } else {
                     if (discountRow) discountRow.classList.add('d-none');
+                    if (discountAmountEl) discountAmountEl.innerText = '0 AED';
                 }
             } else {
                 if (discountRow) discountRow.classList.add('d-none');
+                if (discountAmountEl) discountAmountEl.innerText = '0 AED';
             }
-            const platformFee = parseFloat((platform_fee_amount?.innerText || "0").replace("AED", "").trim()) || 0;
-            const taxAmount = parseFloat((tax_amount?.innerText || "0").replace("AED", "").trim()) || 0;
+            const platformFee = parseAedAmount(platform_fee_amount?.innerText || platform_fee_amount?.textContent || '');
+            const taxAmount = parseAedAmount(tax_amount?.innerText || tax_amount?.textContent || '');
 
             //  TOTAL after discount
             const TotalAmount = finalPrice + platformFee + taxAmount;
