@@ -2754,8 +2754,8 @@
             return `
                 <div style="min-width:210px">
                     <div style="font-weight:800;margin-bottom:4px">${escapeHtml(title)}</div>
-                    <div style="font-size:65px;color:#666">${escapeHtml(vehicleText)}</div>
-                    <div style="font-size:65px;color:#666;margin-top:6px">Phone: ${escapeHtml(mobile)}</div>
+                    <div style="font-size:12px;color:#666">${escapeHtml(vehicleText)}</div>
+                    <div style="font-size:12px;color:#666;margin-top:6px">Phone: ${escapeHtml(mobile)}</div>
                 </div>
             `;
         }
