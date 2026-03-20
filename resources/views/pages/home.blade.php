@@ -2412,11 +2412,191 @@
         const DASH_MAP_DATA_PATH = "/v1/common/dashboard/map-data";
         const DASH_MAP_DATA_URL = `${PRICE_API_BASE_URL}${DASH_MAP_DATA_PATH}`;
         const DASH_CAR_ICON_URL = `{{ asset('assets/images/ic_truck1.png') }}`;
+        const DASH_SOCKET_IO_CDN = "https://cdn.socket.io/4.7.5/socket.io.min.js";
+        const DASH_DEBUG_PREFIX = "[Home Drivers Map]";
 
-        let dashMarkers = {}; // {id: google.maps.Marker}
-        let dashInfoWindow = null; // one infowindow
+        const dashMapState = window.__homeDriversMapState || (window.__homeDriversMapState = {
+            markers: {},
+            driversById: {},
+            socket: null,
+            socketStarted: false,
+        });
+
+        let dashMarkers = dashMapState.markers; // shared marker store
+        let dashDriversById = dashMapState.driversById; // shared drivers store
+        let dashInfoWindow = null;
         let dashTimer = null;
-        let dashStarted = false; // setInterval handle
+        let dashStarted = false;
+        let dashSocket = dashMapState.socket;
+        let DashAdvancedMarkerElement = null;
+
+        function logDashDebug(message, meta) {
+            if (meta === undefined) {
+                console.log(`${DASH_DEBUG_PREFIX} ${message}`);
+                return;
+            }
+            console.log(`${DASH_DEBUG_PREFIX} ${message}`, meta);
+        }
+
+        function normalizeText(value) {
+            if (value === null || value === undefined) return "";
+            return String(value).trim();
+        }
+
+        function normalizeDriverId(driverLike) {
+            const rawId = driverLike?.id ?? driverLike?.driver_id ?? driverLike?.driverId ?? driverLike?.user_id;
+            if (rawId === null || rawId === undefined) return null;
+            const idText = String(rawId).trim();
+            return idText === "" ? null : idText;
+        }
+
+        function parseDriverLatLng(driverLike) {
+            const rawLat = driverLike?.current_lat ?? driverLike?.lat ?? driverLike?.latitude;
+            const rawLng = driverLike?.current_lng ?? driverLike?.lng ?? driverLike?.longitude;
+            const lat = parseFloat(rawLat);
+            const lng = parseFloat(rawLng);
+            if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
+            return {
+                lat,
+                lng
+            };
+        }
+
+        function parseOptionalBoolean(value) {
+            if (value === null || value === undefined || value === "") return null;
+            if (typeof value === "boolean") return value;
+            if (typeof value === "number") return value === 1;
+
+            const normalized = String(value).trim().toLowerCase();
+            if (["1", "true", "yes", "online", "busy"].includes(normalized)) return true;
+            if (["0", "false", "no", "offline", "idle"].includes(normalized)) return false;
+            return null;
+        }
+
+        function preferIncomingOrExisting(existingValue, incomingValue, fallbackValue = "") {
+            const incoming = normalizeText(incomingValue);
+            if (incoming) return incoming;
+
+            const existing = normalizeText(existingValue);
+            if (existing) return existing;
+
+            return fallbackValue;
+        }
+
+        function isFallbackDriverName(name) {
+            const normalized = normalizeText(name);
+            if (!normalized) return true;
+            return /^driver(\s*#\s*[\w-]+)?$/i.test(normalized);
+        }
+
+        function preferDriverName(existingName, incomingName, driverId) {
+            const incoming = normalizeText(incomingName);
+            const existing = normalizeText(existingName);
+
+            if (incoming) {
+                const incomingFallback = isFallbackDriverName(incoming);
+                const existingFallback = isFallbackDriverName(existing);
+
+                if (!incomingFallback || !existing || existingFallback) {
+                    return incoming;
+                }
+            }
+
+            if (existing) return existing;
+            return `Driver #${driverId}`;
+        }
+
+        function deriveSocketBaseUrl(apiBaseUrl) {
+            const raw = normalizeText(apiBaseUrl);
+            if (!raw) return "";
+
+            try {
+                const url = new URL(raw);
+                const strippedPath = (url.pathname || "").replace(/\/api\/?$/i, "/");
+                return `${url.protocol}//${url.host}${strippedPath}`.replace(/\/+$/, "");
+            } catch (e) {
+                return raw.replace(/\/api\/?$/i, "").replace(/\/+$/, "");
+            }
+        }
+
+        function resolveDashSocketConfig() {
+            const winCfg = window.DRIVERS_SOCKET_CONFIG || window.TORETTO_SOCKET_CONFIG || {};
+            const metaSocketUrl = normalizeText(document.querySelector('meta[name="socket-url"]')?.getAttribute("content"));
+
+            const socketUrl = normalizeText(winCfg.url || winCfg.socket_url || winCfg.host || metaSocketUrl) ||
+                deriveSocketBaseUrl(PRICE_API_BASE_URL);
+
+            const socketPath = normalizeText(winCfg.path || winCfg.socket_path) || "/socket.io";
+            const namespace = normalizeText(winCfg.namespace || winCfg.nsp);
+            const room = normalizeText(winCfg.room || winCfg.room_name || winCfg.join_room || winCfg.channel);
+            const joinEvent = normalizeText(winCfg.join_event || winCfg.joinEvent);
+
+            return {
+                socketUrl: socketUrl.replace(/\/+$/, ""),
+                socketPath,
+                namespace,
+                room,
+                joinEvent
+            };
+        }
+
+        function loadSocketScriptOnce(src) {
+            return new Promise((resolve, reject) => {
+                if (!src) {
+                    reject(new Error("Socket client script URL is empty."));
+                    return;
+                }
+
+                const existing = document.querySelector(`script[data-socket-src="${src}"]`);
+                if (existing) {
+                    if (window.io) {
+                        resolve();
+                        return;
+                    }
+                    existing.addEventListener("load", resolve, {
+                        once: true
+                    });
+                    existing.addEventListener("error", reject, {
+                        once: true
+                    });
+                    return;
+                }
+
+                const script = document.createElement("script");
+                script.src = src;
+                script.async = true;
+                script.defer = true;
+                script.dataset.socketSrc = src;
+                script.onload = () => resolve();
+                script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
+                document.head.appendChild(script);
+            });
+        }
+
+        async function ensureSocketIoClient(socketBaseUrl) {
+            if (typeof window.io === "function") return true;
+
+            const sources = [];
+            const normalizedBase = normalizeText(socketBaseUrl);
+            if (normalizedBase) {
+                sources.push(`${normalizedBase}/socket.io/socket.io.js`);
+            }
+            sources.push(DASH_SOCKET_IO_CDN);
+
+            for (const src of sources) {
+                try {
+                    await loadSocketScriptOnce(src);
+                    if (typeof window.io === "function") return true;
+                } catch (err) {
+                    console.warn(`${DASH_DEBUG_PREFIX} socket script load failed`, {
+                        src,
+                        error: err
+                    });
+                }
+            }
+
+            return false;
+        }
 
         async function initDashMarkerLibrary() {
             try {
@@ -2427,6 +2607,324 @@
             } catch (e) {
                 console.error("initDashMarkerLibrary error:", e);
                 return false;
+            }
+        }
+
+        function normalizeSocketDriverPayload(payload) {
+            if (!payload || typeof payload !== "object") return null;
+
+            const dataNode = payload.data && typeof payload.data === "object" ? payload.data : null;
+            const driverNode = payload.driver && typeof payload.driver === "object" ? payload.driver : null;
+            const nestedDriver = dataNode?.driver && typeof dataNode.driver === "object" ? dataNode.driver : null;
+            const base = {
+                ...(dataNode || {}),
+                ...(driverNode || {}),
+                ...(nestedDriver || {}),
+                ...payload,
+            };
+
+            return {
+                id: base.id ?? base.driver_id ?? base.driverId ?? base.user_id,
+                driver_id: base.driver_id ?? base.id ?? base.driverId ?? base.user_id,
+                current_lat: base.current_lat ?? base.lat ?? base.latitude,
+                current_lng: base.current_lng ?? base.lng ?? base.longitude,
+                full_name: base.full_name ?? base.name,
+                vehicle_number: base.vehicle_number,
+                vehicle_type: base.vehicle_type,
+                mobile: base.mobile ?? base.phone,
+                is_online: base.is_online,
+                has_active_job: base.has_active_job
+            };
+        }
+
+        function applyIncomingDriverData(targetDriver, incomingDriver, driverId) {
+            const latLng = parseDriverLatLng(incomingDriver);
+            if (latLng) {
+                targetDriver.current_lat = latLng.lat;
+                targetDriver.current_lng = latLng.lng;
+            }
+
+            targetDriver.id = incomingDriver?.id ?? targetDriver.id ?? driverId;
+            targetDriver.driver_id = incomingDriver?.driver_id ?? targetDriver.driver_id ?? driverId;
+
+            targetDriver.full_name = preferDriverName(targetDriver.full_name, incomingDriver?.full_name, driverId);
+            targetDriver.vehicle_number = preferIncomingOrExisting(targetDriver.vehicle_number, incomingDriver?.vehicle_number,
+                "N/A");
+            targetDriver.vehicle_type = preferIncomingOrExisting(targetDriver.vehicle_type, incomingDriver?.vehicle_type,
+                "Truck");
+            targetDriver.mobile = preferIncomingOrExisting(targetDriver.mobile, incomingDriver?.mobile, "N/A");
+
+            const isOnline = parseOptionalBoolean(incomingDriver?.is_online);
+            if (isOnline !== null) {
+                targetDriver.is_online = isOnline;
+            } else if (typeof targetDriver.is_online === "undefined") {
+                targetDriver.is_online = false;
+            }
+
+            const hasActiveJob = parseOptionalBoolean(incomingDriver?.has_active_job);
+            if (hasActiveJob !== null) {
+                targetDriver.has_active_job = hasActiveJob;
+            } else if (typeof targetDriver.has_active_job === "undefined") {
+                targetDriver.has_active_job = false;
+            }
+        }
+
+        function upsertDriverState(rawDriver, sourceTag = "api") {
+            const driverId = normalizeDriverId(rawDriver);
+            if (!driverId) return null;
+
+            const latLng = parseDriverLatLng(rawDriver);
+            if (!latLng) return null;
+
+            let existingDriver = dashDriversById[driverId];
+            if (existingDriver) {
+                if (sourceTag === "socket") {
+                    logDashDebug("existing driver found", {
+                        driver_id: driverId
+                    });
+                }
+                applyIncomingDriverData(existingDriver, rawDriver, driverId);
+                return existingDriver;
+            }
+
+            existingDriver = {
+                id: rawDriver.id ?? rawDriver.driver_id ?? driverId,
+                driver_id: rawDriver.driver_id ?? rawDriver.id ?? driverId,
+                current_lat: latLng.lat,
+                current_lng: latLng.lng,
+                full_name: "",
+                vehicle_number: "",
+                vehicle_type: "",
+                mobile: "",
+                is_online: false,
+                has_active_job: false,
+            };
+            applyIncomingDriverData(existingDriver, rawDriver, driverId);
+            dashDriversById[driverId] = existingDriver;
+
+            if (sourceTag === "socket") {
+                logDashDebug("fallback driver created", {
+                    driver_id: driverId
+                });
+            }
+
+            return existingDriver;
+        }
+
+        function isAdvancedMarkerInstance(marker) {
+            return Boolean(marker && typeof marker.setPosition !== "function" && "position" in marker && "content" in marker);
+        }
+
+        function removeMarkerFromMap(marker) {
+            if (!marker) return;
+            if (typeof marker.setMap === "function") {
+                marker.setMap(null);
+                return;
+            }
+            if ("map" in marker) {
+                marker.map = null;
+            }
+        }
+
+        function setMarkerPositionSafely(marker, position) {
+            if (!marker || !position) return;
+
+            if (typeof marker.setPosition === "function") {
+                marker.setPosition(position);
+                return;
+            }
+
+            if ("position" in marker) {
+                marker.position = position;
+            }
+        }
+
+        function buildDriverInfoHtml(driver) {
+            const title = driver?.full_name || "Driver";
+            const vehicleText = `${driver?.vehicle_type || "Truck"} - ${driver?.vehicle_number || "N/A"}`;
+            const mobile = driver?.mobile || "N/A";
+
+            return `
+                <div style="min-width:210px">
+                    <div style="font-weight:800;margin-bottom:4px">${escapeHtml(title)}</div>
+                    <div style="font-size:12px;color:#666">${escapeHtml(vehicleText)}</div>
+                    <div style="font-size:12px;color:#666;margin-top:6px">Phone: ${escapeHtml(mobile)}</div>
+                </div>
+            `;
+        }
+
+        function openDriverInfoWindow(driverId, marker) {
+            if (!dashInfoWindow || !map) return;
+            const driver = dashDriversById[driverId];
+            if (!driver) return;
+
+            dashInfoWindow.setContent(buildDriverInfoHtml(driver));
+
+            try {
+                dashInfoWindow.open({
+                    map,
+                    anchor: marker
+                });
+            } catch (e) {
+                dashInfoWindow.open(map, marker);
+            }
+        }
+
+        function bindDriverMarkerClick(marker, driverId) {
+            if (!marker || typeof marker.addListener !== "function") return;
+            marker.addListener("click", () => openDriverInfoWindow(driverId, marker));
+        }
+
+        function buildAdvancedMarkerContent(driver) {
+            const status = getDriverStatus(driver);
+            const wrap = document.createElement("div");
+            wrap.className = "dash-car-wrap";
+            if (status === "busy") wrap.classList.add("busy");
+            if (status === "offline") wrap.classList.add("offline");
+
+            const img = document.createElement("img");
+            img.src = DASH_CAR_ICON_URL;
+            img.alt = driver.full_name || "Driver";
+            wrap.appendChild(img);
+
+            return wrap;
+        }
+
+        function updateDriverMarker(driver, sourceTag = "api") {
+            if (!map || !window.google || !google.maps) return;
+
+            const driverId = normalizeDriverId(driver);
+            if (!driverId) return;
+
+            const position = parseDriverLatLng(driver);
+            if (!position) return;
+
+            const markerTitle = driver.full_name || `Driver #${driverId}`;
+            const status = getDriverStatus(driver);
+            const existingMarker = dashMarkers[driverId];
+
+            if (existingMarker) {
+                setMarkerPositionSafely(existingMarker, position);
+
+                if (typeof existingMarker.setIcon === "function") {
+                    existingMarker.setIcon({
+                        url: DASH_CAR_ICON_URL,
+                        scaledSize: new google.maps.Size(56, 56),
+                        anchor: new google.maps.Point(28, 28),
+                    });
+                }
+
+                if (isAdvancedMarkerInstance(existingMarker) && existingMarker.content) {
+                    existingMarker.content.className = "dash-car-wrap";
+                    if (status === "busy") existingMarker.content.classList.add("busy");
+                    if (status === "offline") existingMarker.content.classList.add("offline");
+                }
+
+                if ("title" in existingMarker) {
+                    existingMarker.title = markerTitle;
+                }
+
+                logDashDebug("marker updated", {
+                    driver_id: driverId,
+                    source: sourceTag
+                });
+                logDashDebug("duplicate prevented", {
+                    driver_id: driverId
+                });
+                return;
+            }
+
+            let marker;
+            if (DashAdvancedMarkerElement) {
+                marker = new DashAdvancedMarkerElement({
+                    map,
+                    position,
+                    title: markerTitle,
+                    content: buildAdvancedMarkerContent(driver)
+                });
+            } else {
+                marker = new google.maps.Marker({
+                    map: map,
+                    position,
+                    title: markerTitle,
+                    icon: {
+                        url: DASH_CAR_ICON_URL,
+                        scaledSize: new google.maps.Size(40, 40),
+                        anchor: new google.maps.Point(20, 20)
+                    }
+                });
+            }
+
+            bindDriverMarkerClick(marker, driverId);
+            dashMarkers[driverId] = marker;
+
+            logDashDebug("marker created", {
+                driver_id: driverId,
+                source: sourceTag
+            });
+        }
+
+        async function startDashSocketDrivers() {
+            if (dashMapState.socketStarted) return;
+            dashMapState.socketStarted = true;
+
+            try {
+                const socketConfig = resolveDashSocketConfig();
+                const hasClient = await ensureSocketIoClient(socketConfig.socketUrl);
+                if (!hasClient || typeof window.io !== "function") {
+                    dashMapState.socketStarted = false;
+                    return;
+                }
+
+                const socketTarget = socketConfig.namespace ?
+                    `${socketConfig.socketUrl}${socketConfig.namespace}` :
+                    socketConfig.socketUrl;
+
+                dashSocket = window.io(socketTarget, {
+                    path: socketConfig.socketPath,
+                    transports: ["websocket", "polling"],
+                    reconnection: true,
+                    autoConnect: true
+                });
+
+                dashMapState.socket = dashSocket;
+
+                dashSocket.on("connect", () => {
+                    logDashDebug("socket connected", {
+                        socket_id: dashSocket.id
+                    });
+
+                    if (socketConfig.room && socketConfig.joinEvent) {
+                        dashSocket.emit(socketConfig.joinEvent, socketConfig.room);
+                        logDashDebug("socket room joined", {
+                            room: socketConfig.room,
+                            event: socketConfig.joinEvent
+                        });
+                    }
+                });
+
+                dashSocket.on("driver_location_updated", (payload) => {
+                    logDashDebug("driver_location_updated received", payload);
+
+                    const socketDriver = normalizeSocketDriverPayload(payload);
+                    const upsertedDriver = upsertDriverState(socketDriver, "socket");
+                    if (!upsertedDriver) return;
+
+                    updateDriverMarker(upsertedDriver, "socket");
+                });
+
+                dashSocket.on("disconnect", (reason) => {
+                    logDashDebug("socket disconnected", {
+                        reason
+                    });
+                });
+
+                dashSocket.on("connect_error", (error) => {
+                    console.warn(`${DASH_DEBUG_PREFIX} socket connect error`, error);
+                });
+            } catch (error) {
+                dashMapState.socketStarted = false;
+                console.warn(`${DASH_DEBUG_PREFIX} socket init failed`, error);
             }
         }
 
@@ -2443,10 +2941,10 @@
 
                 if (!dashInfoWindow) dashInfoWindow = new google.maps.InfoWindow();
 
-                // first call
-                refreshDrivers();
+                initDashMarkerLibrary();
+                startDashSocketDrivers();
 
-                // auto refresh each 5 sec
+                refreshDrivers();
                 dashTimer = setInterval(refreshDrivers, 5000);
             } catch (e) {
                 dashStarted = false;
@@ -2460,6 +2958,14 @@
                     clearInterval(dashTimer);
                     dashTimer = null;
                 }
+
+                if (dashSocket && typeof dashSocket.disconnect === "function") {
+                    dashSocket.disconnect();
+                    dashSocket = null;
+                    dashMapState.socket = null;
+                    dashMapState.socketStarted = false;
+                }
+
                 dashStarted = false;
             } catch (e) {
                 console.error("stopDashAutoDrivers error:", e);
@@ -2481,11 +2987,9 @@
 
                 const json = await resp.json();
                 const drivers = Array.isArray(json) ? json : (json.data || json.drivers || []);
-
                 if (!Array.isArray(drivers)) return;
 
                 updateDriverCarMarkers(drivers);
-
             } catch (e) {
                 console.error("refreshDrivers error:", e);
             }
@@ -2508,17 +3012,14 @@
     </filter>
   </defs>
 
-  <!-- outer ring -->
   <circle cx="36" cy="36" r="28"
       fill="#ffffff"
       stroke="${ring}"
       stroke-width="6"
       filter="url(#shadow)"/>
 
-  <!-- white center -->
   <circle cx="36" cy="36" r="23" fill="#ffffff"/>
 
-  <!-- truck image -->
   <image
       x="18"
       y="18"
@@ -2545,94 +3046,35 @@
         }
 
         function getRingColor(status) {
-            if (status === "busy") return "#ff3b30"; // red
-            if (status === "offline") return "#8e8e93"; // gray
-            return "#35c759"; // green
+            if (status === "busy") return "#ff3b30";
+            if (status === "offline") return "#8e8e93";
+            return "#35c759";
         }
 
-        /*  CREATE/UPDATE markers on map (ONLY cars) */
         function updateDriverCarMarkers(drivers) {
             try {
                 if (!map || !window.google || !google.maps) return;
 
                 const activeIds = new Set();
 
-                drivers.forEach((d) => {
-                    const id = (d && (d.id ?? d.driver_id)) ?? null;
-                    if (id === null) return;
+                drivers.forEach((rawDriver) => {
+                    const upsertedDriver = upsertDriverState(rawDriver, "api");
+                    if (!upsertedDriver) return;
 
-                    if (!d.current_lat || !d.current_lng) return;
+                    const driverId = normalizeDriverId(upsertedDriver);
+                    if (!driverId) return;
 
-                    const lat = parseFloat(d.current_lat);
-                    const lng = parseFloat(d.current_lng);
-                    if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
-
-                    activeIds.add(String(id));
-
-                    const status = getDriverStatus(d);
-                    // const iconUrl = buildCarCardSvg(status, DASH_CAR_ICON_URL);
-                    const iconUrl = DASH_CAR_ICON_URL;
-
-                    const pos = {
-                        lat,
-                        lng
-                    };
-
-                    const title = d.full_name || "Driver";
-                    const vehicleText = (d.vehicle_type || "Truck") + " • " + (d.vehicle_number || "N/A");
-                    const mobile = d.mobile || "N/A";
-
-                    const infoHtml = `
-                <div style="min-width:210px">
-                    <div style="font-weight:800;margin-bottom:4px">${escapeHtml(title)}</div>
-                    <div style="font-size:12px;color:#666">${escapeHtml(vehicleText)}</div>
-                    <div style="font-size:12px;color:#666;margin-top:6px">📞 ${escapeHtml(mobile)}</div>
-                </div>
-            `;
-
-                    if (dashMarkers[String(id)]) {
-                        dashMarkers[String(id)].setPosition(pos);
-                        dashMarkers[String(id)].setIcon({
-                            url: iconUrl,
-                            scaledSize: new google.maps.Size(56, 56),
-                            anchor: new google.maps.Point(28, 28),
-                        });
-
-                        google.maps.event.clearListeners(dashMarkers[String(id)], "click");
-                        dashMarkers[String(id)].addListener("click", () => {
-                            dashInfoWindow.setContent(infoHtml);
-                            dashInfoWindow.open(map, dashMarkers[String(id)]);
-                        });
-
-                    } else {
-                        const marker = new google.maps.Marker({
-                            map: map,
-                            position: pos,
-                            title: title,
-                            icon: {
-                                url: DASH_CAR_ICON_URL,
-                                scaledSize: new google.maps.Size(40, 40),
-                                anchor: new google.maps.Point(20, 20)
-                            }
-                        });
-
-                        marker.addListener("click", () => {
-                            dashInfoWindow.setContent(infoHtml);
-                            dashInfoWindow.open(map, marker);
-                        });
-
-                        dashMarkers[String(id)] = marker;
-                    }
+                    activeIds.add(driverId);
+                    updateDriverMarker(upsertedDriver, "api");
                 });
 
-                // remove cars not present now (ONLY car markers remove)
-                Object.keys(dashMarkers).forEach((id) => {
-                    if (!activeIds.has(id)) {
-                        dashMarkers[id].setMap(null);
-                        delete dashMarkers[id];
-                    }
-                });
+                Object.keys(dashDriversById).forEach((driverId) => {
+                    if (activeIds.has(driverId)) return;
 
+                    removeMarkerFromMap(dashMarkers[driverId]);
+                    delete dashMarkers[driverId];
+                    delete dashDriversById[driverId];
+                });
             } catch (e) {
                 console.error("updateDriverCarMarkers error:", e);
             }
@@ -2647,7 +3089,6 @@
                 .replaceAll("'", "&#039;");
         }
 
-        /* Auto start after map is ready (no change to your initMap) */
         (function bootAutoDrivers() {
             const tryStart = () => {
                 if (mapReady && map) {
@@ -2658,5 +3099,8 @@
             };
             tryStart();
         })();
+
+        window.addEventListener("beforeunload", stopDashAutoDrivers);
     </script>
 @endpush
+
