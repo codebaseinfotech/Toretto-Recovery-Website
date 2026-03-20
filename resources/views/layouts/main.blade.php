@@ -12,6 +12,14 @@
             : config('services.socket.dev_url');
         $socketHost = $socketHost ?: config('services.socket.url');
         $socketHost = preg_replace('#/socket/?$#', '', (string) $socketHost);
+        $driversSocketConfig = [
+            'url' => $socketHost,
+            'path' => config('services.socket.path'),
+            'namespace' => config('services.socket.namespace'),
+            'room' => config('services.socket.room'),
+            'join_event' => config('services.socket.join_event'),
+            'force_polling' => (bool) config('services.socket.force_polling'),
+        ];
     @endphp
     <meta name="socket-url" content="{{ $socketHost }}">
     <meta name="socket-force-polling"
@@ -183,14 +191,7 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        window.DRIVERS_SOCKET_CONFIG = @json([
-            'url' => $socketHost,
-            'path' => config('services.socket.path'),
-            'namespace' => config('services.socket.namespace'),
-            'room' => config('services.socket.room'),
-            'join_event' => config('services.socket.join_event'),
-            'force_polling' => (bool) config('services.socket.force_polling'),
-        ]);
+        window.DRIVERS_SOCKET_CONFIG = @json($driversSocketConfig);
     </script>
     @stack('my-booking-script')
     @stack('map-script')
