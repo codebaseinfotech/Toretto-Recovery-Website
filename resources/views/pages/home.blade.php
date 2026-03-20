@@ -1188,7 +1188,8 @@
             }
 
             const script = document.createElement('script');
-            script.src = `https://maps.googleapis.com/maps/api/js?key={{ config('services.google_maps.key') }}&libraries=places,routes&callback=initMapAndAutocomplete`;
+            script.src =
+                `https://maps.googleapis.com/maps/api/js?key={{ config('services.google_maps.key') }}&libraries=places,routes&callback=initMapAndAutocomplete`;
             script.async = true;
             script.defer = true;
             document.head.appendChild(script);
@@ -1455,7 +1456,8 @@
                 const platform_fee_amount = document.getElementById("platform_fee_amount");
                 const tax_amount = document.getElementById("tax_amount");
 
-                const platformFee = parseAedAmount(platform_fee_amount?.innerText || platform_fee_amount?.textContent || '');
+                const platformFee = parseAedAmount(platform_fee_amount?.innerText || platform_fee_amount?.textContent ||
+                    '');
                 const taxAmount = parseAedAmount(tax_amount?.innerText || tax_amount?.textContent || '');
                 const TotalAmount = platformFee + taxAmount + currentOriginalPrice;
 
@@ -2117,8 +2119,10 @@
                 const cleanBasePrice = parseAedAmount(basePrice);
                 const discountPrice = parseAedAmount(discountAmountDisplay);
                 const cleanMinutes = convertToMinutes(etaMinutes);
-                const platformFee = parseAedAmount(platform_fee_amount?.innerText || platform_fee_amount?.textContent || '');
-                const taxAmount = parseAedAmount(tax_amount?.innerText || tax_amount?.textContent || '');
+                const platformFee = parseAedAmount(platform_fee_amount?.innerText || platform_fee_amount
+                    ?.textContent || '');
+                const taxAmount = parseAedAmount(tax_amount?.innerText || tax_amount?.textContent ||
+                '');
 
                 const bookingPayload = {
                     service_type_id: 1,
@@ -2374,7 +2378,8 @@
                 const dtype = String(dtypeRaw).toLowerCase();
 
                 // discount value parse
-                const dval = parseAedAmount(currentDiscountValue ?? currentPromotionData.discount_value ?? currentPromotionData
+                const dval = parseAedAmount(currentDiscountValue ?? currentPromotionData.discount_value ??
+                    currentPromotionData
                     .value ?? 0);
 
                 if (dval > 0) {
@@ -2428,6 +2433,7 @@
             driversById: {},
             socket: null,
             socketStarted: false,
+            joinedBookingRooms: {},
         });
 
         let dashMarkers = dashMapState.markers; // shared marker store
@@ -2456,6 +2462,13 @@
             if (rawId === null || rawId === undefined) return null;
             const idText = String(rawId).trim();
             return idText === "" ? null : idText;
+        }
+
+        function normalizeBookingId(driverLike) {
+            const rawBookingId = driverLike?.active_booking_id ?? driverLike?.booking_id ?? driverLike?.bookingId;
+            if (rawBookingId === null || rawBookingId === undefined || rawBookingId === "") return null;
+            const bookingId = Number(rawBookingId);
+            return Number.isFinite(bookingId) && bookingId > 0 ? bookingId : null;
         }
 
         function parseDriverLatLng(driverLike) {
@@ -2666,6 +2679,8 @@
                 driver_id: base.driver_id ?? base.id ?? base.driverId ?? base.user_id,
                 current_lat: base.current_lat ?? base.lat ?? base.latitude,
                 current_lng: base.current_lng ?? base.lng ?? base.longitude,
+                active_booking_id: base.active_booking_id ?? base.booking_id ?? base.bookingId,
+                booking_id: base.booking_id ?? base.active_booking_id ?? base.bookingId,
                 full_name: base.full_name ?? base.name,
                 vehicle_number: base.vehicle_number,
                 vehicle_type: base.vehicle_type,
@@ -2684,9 +2699,11 @@
 
             targetDriver.id = incomingDriver?.id ?? targetDriver.id ?? driverId;
             targetDriver.driver_id = incomingDriver?.driver_id ?? targetDriver.driver_id ?? driverId;
+            targetDriver.active_booking_id = normalizeBookingId(incomingDriver) ?? targetDriver.active_booking_id ?? null;
 
             targetDriver.full_name = preferDriverName(targetDriver.full_name, incomingDriver?.full_name, driverId);
-            targetDriver.vehicle_number = preferIncomingOrExisting(targetDriver.vehicle_number, incomingDriver?.vehicle_number,
+            targetDriver.vehicle_number = preferIncomingOrExisting(targetDriver.vehicle_number, incomingDriver
+                ?.vehicle_number,
                 "N/A");
             targetDriver.vehicle_type = preferIncomingOrExisting(targetDriver.vehicle_type, incomingDriver?.vehicle_type,
                 "Truck");
@@ -2734,6 +2751,7 @@
                 vehicle_number: "",
                 vehicle_type: "",
                 mobile: "",
+                active_booking_id: null,
                 is_online: false,
                 has_active_job: false,
             };
@@ -2750,7 +2768,8 @@
         }
 
         function isAdvancedMarkerInstance(marker) {
-            return Boolean(marker && typeof marker.setPosition !== "function" && "position" in marker && "content" in marker);
+            return Boolean(marker && typeof marker.setPosition !== "function" && "position" in marker && "content" in
+                marker);
         }
 
         function removeMarkerFromMap(marker) {
@@ -2826,11 +2845,47 @@
             const img = document.createElement("img");
             img.src = DASH_CAR_ICON_URL;
             img.alt = driver.full_name || "Driver";
-            img.style.width = "65px";
-            img.style.height = "65px";
+            img.style.width = "12px";
+            img.style.height = "12px";
             wrap.appendChild(img);
 
             return wrap;
+        }
+
+        function joinDashBookingRooms(socket, sourceTag = "unknown") {
+            if (!socket || typeof socket.emit !== "function") return;
+
+            const bookingIds = Object.values(dashDriversById)
+                .map((driver) => normalizeBookingId(driver))
+                .filter((bookingId) => bookingId !== null);
+
+            if (!bookingIds.length) {
+                logDashDebug("no active booking rooms found", {
+                    source: sourceTag
+                });
+                return;
+            }
+
+            [...new Set(bookingIds)].forEach((bookingId) => {
+                const roomKey = String(bookingId);
+                if (dashMapState.joinedBookingRooms[roomKey]) {
+                    logDashDebug("duplicate room join prevented", {
+                        booking_id: bookingId,
+                        source: sourceTag
+                    });
+                    return;
+                }
+
+                socket.emit("join_room", {
+                    booking_id: bookingId
+                });
+
+                dashMapState.joinedBookingRooms[roomKey] = true;
+                logDashDebug("join_room sent", {
+                    booking_id: bookingId,
+                    source: sourceTag
+                });
+            });
         }
 
         function updateDriverMarker(driver, sourceTag = "api") {
@@ -2970,13 +3025,9 @@
                                 event: socketConfig.joinEvent
                             });
                         }
+
+                        joinDashBookingRooms(dashSocket, "connect");
                     });
-
-                    dashSocket.on("driver_location_updated", (payload) =>
-                        handleDriverLocationSocketEvent("driver_location_updated", payload));
-
-                    dashSocket.on("driver_location_update", (payload) =>
-                        handleDriverLocationSocketEvent("driver_location_update", payload));
 
                     dashSocket.on("disconnect", (reason) => {
                         logDashDebug("socket disconnected", {
@@ -2987,6 +3038,25 @@
                     dashSocket.on("connect_error", (error) => {
                         console.warn(`${DASH_DEBUG_PREFIX} socket connect error`, error);
                     });
+
+                    dashSocket.on("error", (error) => {
+                        console.warn(`${DASH_DEBUG_PREFIX} socket error`, error);
+                    });
+
+                    if (typeof dashSocket.onAny === "function") {
+                        dashSocket.onAny((event, ...args) => {
+                            logDashDebug("socket event observed", {
+                                event,
+                                payload: args[0] ?? null
+                            });
+                        });
+                    }
+
+                    window.dashboardSocket = dashSocket;
+                    dashSocket.on("driver_location_updated", (payload) =>
+                        handleDriverLocationSocketEvent("driver_location_updated", payload));
+                    dashSocket.on("driver_location_update", (payload) =>
+                        handleDriverLocationSocketEvent("driver_location_update", payload));
                 };
 
                 connectSocket(socketConfig.socketUrl);
@@ -3058,6 +3128,10 @@
                 if (!Array.isArray(drivers)) return;
 
                 updateDriverCarMarkers(drivers);
+
+                if (dashSocket && dashSocket.connected) {
+                    joinDashBookingRooms(dashSocket, "api-refresh");
+                }
             } catch (e) {
                 console.error("refreshDrivers error:", e);
             }
