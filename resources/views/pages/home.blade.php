@@ -1188,8 +1188,7 @@
             }
 
             const script = document.createElement('script');
-            script.src =
-                `https://maps.googleapis.com/maps/api/js?key={{ config('services.google_maps.key') }}&libraries=places,directions,distance_matrix&callback=initMapAndAutocomplete`;
+            script.src = `https://maps.googleapis.com/maps/api/js?key={{ config('services.google_maps.key') }}&libraries=places,routes&callback=initMapAndAutocomplete`;
             script.async = true;
             script.defer = true;
             document.head.appendChild(script);
