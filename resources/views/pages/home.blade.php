@@ -1039,11 +1039,11 @@
     </style>
     <style>
         .dash-car-wrap {
-            width: 56px;
-            height: 56px;
+            width: 46px;
+            height: 46px;
             border-radius: 50%;
             background: #fff;
-            border: 6px solid #35c759;
+            border: 4px solid #35c759;
             /* online default */
             display: flex;
             align-items: center;
@@ -1061,8 +1061,8 @@
         }
 
         .dash-car-wrap img {
-            width: 36px;
-            height: 36px;
+            width: 22px;
+            height: 22px;
             object-fit: contain;
             display: block;
         }
@@ -2522,6 +2522,8 @@
         function resolveDashSocketConfig() {
             const winCfg = window.DRIVERS_SOCKET_CONFIG || window.TORETTO_SOCKET_CONFIG || {};
             const metaSocketUrl = normalizeText(document.querySelector('meta[name="socket-url"]')?.getAttribute("content"));
+            const metaForcePolling = normalizeText(document.querySelector('meta[name="socket-force-polling"]')?.getAttribute(
+                "content"));
 
             const socketUrl = normalizeText(winCfg.url || winCfg.socket_url || winCfg.host || metaSocketUrl) ||
                 deriveSocketBaseUrl(PRICE_API_BASE_URL);
@@ -2530,13 +2532,18 @@
             const namespace = normalizeText(winCfg.namespace || winCfg.nsp);
             const room = normalizeText(winCfg.room || winCfg.room_name || winCfg.join_room || winCfg.channel);
             const joinEvent = normalizeText(winCfg.join_event || winCfg.joinEvent);
+            const forcePollingRaw = winCfg.force_polling ?? winCfg.socket_force_polling ?? metaForcePolling;
+            const forcePollingParsed = parseOptionalBoolean(forcePollingRaw);
 
             return {
                 socketUrl: socketUrl.replace(/\/+$/, ""),
                 socketPath,
                 namespace,
                 room,
-                joinEvent
+                joinEvent,
+                // Default true to avoid repeated websocket failures in environments
+                // where the socket endpoint does not support wss upgrades.
+                forcePolling: forcePollingParsed !== false
             };
         }
 
@@ -2807,10 +2814,11 @@
                 setMarkerPositionSafely(existingMarker, position);
 
                 if (typeof existingMarker.setIcon === "function") {
+                    const iconUrl = buildCarCardSvg(status, DASH_CAR_ICON_URL);
                     existingMarker.setIcon({
-                        url: DASH_CAR_ICON_URL,
-                        scaledSize: new google.maps.Size(56, 56),
-                        anchor: new google.maps.Point(28, 28),
+                        url: iconUrl,
+                        scaledSize: new google.maps.Size(48, 48),
+                        anchor: new google.maps.Point(24, 24),
                     });
                 }
 
@@ -2843,14 +2851,15 @@
                     content: buildAdvancedMarkerContent(driver)
                 });
             } else {
+                const iconUrl = buildCarCardSvg(status, DASH_CAR_ICON_URL);
                 marker = new google.maps.Marker({
                     map: map,
                     position,
                     title: markerTitle,
                     icon: {
-                        url: DASH_CAR_ICON_URL,
-                        scaledSize: new google.maps.Size(40, 40),
-                        anchor: new google.maps.Point(20, 20)
+                        url: iconUrl,
+                        scaledSize: new google.maps.Size(48, 48),
+                        anchor: new google.maps.Point(24, 24)
                     }
                 });
             }
@@ -2880,14 +2889,21 @@
                     `${socketConfig.socketUrl}${socketConfig.namespace}` :
                     socketConfig.socketUrl;
 
+                const socketTransports = socketConfig.forcePolling ? ["polling"] : ["polling", "websocket"];
+
                 dashSocket = window.io(socketTarget, {
                     path: socketConfig.socketPath,
-                    transports: ["websocket", "polling"],
+                    transports: socketTransports,
+                    upgrade: !socketConfig.forcePolling,
                     reconnection: true,
                     autoConnect: true
                 });
 
                 dashMapState.socket = dashSocket;
+                logDashDebug("socket transport mode", {
+                    transports: socketTransports,
+                    force_polling: socketConfig.forcePolling
+                });
 
                 dashSocket.on("connect", () => {
                     logDashDebug("socket connected", {
@@ -3004,7 +3020,7 @@
                 .replace(/"/g, "&quot;");
 
             const svg = `
-<svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 72 72">
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
 
   <defs>
     <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
@@ -3012,19 +3028,19 @@
     </filter>
   </defs>
 
-  <circle cx="36" cy="36" r="28"
+  <circle cx="32" cy="32" r="24"
       fill="#ffffff"
       stroke="${ring}"
-      stroke-width="6"
+      stroke-width="4"
       filter="url(#shadow)"/>
 
-  <circle cx="36" cy="36" r="23" fill="#ffffff"/>
+  <circle cx="32" cy="32" r="21" fill="#ffffff"/>
 
   <image
-      x="18"
-      y="18"
-      width="36"
-      height="36"
+      x="20"
+      y="20"
+      width="24"
+      height="24"
       xlink:href="${safeImg}"
       href="${safeImg}"
       preserveAspectRatio="xMidYMid meet"

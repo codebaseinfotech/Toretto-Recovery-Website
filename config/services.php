@@ -38,8 +38,17 @@ return [
     'api' => [
         'base_url' => env('API_BASE_URL'),
     ],
-    
+
     'google_maps' => [
         'key' => env('GOOGLE_MAP_API'),
+    ],
+
+    'drivers_socket' => [
+        'url' => env('SOCKET_URL', 'https://ws-dev.torettorecovery.ae'),
+        'path' => env('SOCKET_PATH', '/socket.io'),
+        'namespace' => env('SOCKET_NAMESPACE', ''),
+        'room' => env('SOCKET_ROOM', ''),
+        'join_event' => env('SOCKET_JOIN_EVENT', ''),
+        'force_polling' => filter_var(env('SOCKET_FORCE_POLLING', true), FILTER_VALIDATE_BOOL, FILTER_NULL_ON_FAILURE) ?? true,
     ],
 ];
