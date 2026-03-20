@@ -1061,8 +1061,8 @@
         }
 
         .dash-car-wrap img {
-            width: 12px;
-            height: 12px;
+            width: 65px;
+            height: 65px;
             object-fit: contain;
             display: block;
         }
@@ -2754,8 +2754,8 @@
             return `
                 <div style="min-width:210px">
                     <div style="font-weight:800;margin-bottom:4px">${escapeHtml(title)}</div>
-                    <div style="font-size:12px;color:#666">${escapeHtml(vehicleText)}</div>
-                    <div style="font-size:12px;color:#666;margin-top:6px">Phone: ${escapeHtml(mobile)}</div>
+                    <div style="font-size:65px;color:#666">${escapeHtml(vehicleText)}</div>
+                    <div style="font-size:65px;color:#666;margin-top:6px">Phone: ${escapeHtml(mobile)}</div>
                 </div>
             `;
         }
@@ -2795,8 +2795,8 @@
             const img = document.createElement("img");
             img.src = DASH_CAR_ICON_URL;
             img.alt = driver.full_name || "Driver";
-            img.style.width = "12px";
-            img.style.height = "12px";
+            img.style.width = "65px";
+            img.style.height = "65px";
             wrap.appendChild(img);
 
             return wrap;
