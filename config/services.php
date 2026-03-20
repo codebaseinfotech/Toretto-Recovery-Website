@@ -43,8 +43,22 @@ return [
         'key' => env('GOOGLE_MAP_API'),
     ],
 
+    'socket' => [
+        // Existing backend emit endpoint (compatibility)
+        'url' => env('SOCKET_SERVER_URL', 'https://ws-dev.torettorecovery.ae/socket'),
+        // Frontend/dashboard socket hosts
+        'live_url' => env('SOCKET_URL_LIVE', 'https://ws.torettorecovery.ae'),
+        'dev_url' => env('SOCKET_URL_DEV', 'https://ws-dev.torettorecovery.ae'),
+        'path' => env('SOCKET_PATH', '/socket.io'),
+        'namespace' => env('SOCKET_NAMESPACE', ''),
+        'room' => env('SOCKET_ROOM', ''),
+        'join_event' => env('SOCKET_JOIN_EVENT', ''),
+        'force_polling' => filter_var(env('SOCKET_FORCE_POLLING', true), FILTER_VALIDATE_BOOL, FILTER_NULL_ON_FAILURE) ?? true,
+    ],
+
+    // Backward compatibility alias
     'drivers_socket' => [
-        'url' => env('SOCKET_URL', 'https://ws-dev.torettorecovery.ae'),
+        'url' => env('SOCKET_URL_DEV', env('SOCKET_URL', 'https://ws-dev.torettorecovery.ae')),
         'path' => env('SOCKET_PATH', '/socket.io'),
         'namespace' => env('SOCKET_NAMESPACE', ''),
         'room' => env('SOCKET_ROOM', ''),

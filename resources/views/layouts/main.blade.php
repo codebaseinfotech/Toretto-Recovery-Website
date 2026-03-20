@@ -6,9 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="api-token" content="{{ session('token') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="socket-url" content="{{ config('services.drivers_socket.url') }}">
+    @php
+        $socketHost = app()->environment('production')
+            ? config('services.socket.live_url')
+            : config('services.socket.dev_url');
+        $socketHost = $socketHost ?: config('services.socket.url');
+        $socketHost = preg_replace('#/socket/?$#', '', (string) $socketHost);
+    @endphp
+    <meta name="socket-url" content="{{ $socketHost }}">
     <meta name="socket-force-polling"
-        content="{{ config('services.drivers_socket.force_polling') ? 'true' : 'false' }}">
+        content="{{ config('services.socket.force_polling') ? 'true' : 'false' }}">
 
     <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon.png') }}">
     <title>@yield('title', 'Car Recovery Dubai | 24/7 Towing & Roadside Assistance UAE')</title>
@@ -177,12 +184,12 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         window.DRIVERS_SOCKET_CONFIG = @json([
-            'url' => config('services.drivers_socket.url'),
-            'path' => config('services.drivers_socket.path'),
-            'namespace' => config('services.drivers_socket.namespace'),
-            'room' => config('services.drivers_socket.room'),
-            'join_event' => config('services.drivers_socket.join_event'),
-            'force_polling' => (bool) config('services.drivers_socket.force_polling'),
+            'url' => $socketHost,
+            'path' => config('services.socket.path'),
+            'namespace' => config('services.socket.namespace'),
+            'room' => config('services.socket.room'),
+            'join_event' => config('services.socket.join_event'),
+            'force_polling' => (bool) config('services.socket.force_polling'),
         ]);
     </script>
     @stack('my-booking-script')
