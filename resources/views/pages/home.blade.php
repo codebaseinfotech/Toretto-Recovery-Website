@@ -2547,6 +2547,39 @@
             };
         }
 
+        function getUrlOrigin(rawUrl) {
+            const normalized = normalizeText(rawUrl);
+            if (!normalized) return "";
+            try {
+                return new URL(normalized).origin;
+            } catch (e) {
+                return "";
+            }
+        }
+
+        function getCurrentOriginSocketBase() {
+            try {
+                return normalizeText(window.location?.origin || "").replace(/\/+$/, "");
+            } catch (e) {
+                return "";
+            }
+        }
+
+        function isLikelyCorsSocketError(error) {
+            const text = normalizeText(
+                error?.message ||
+                error?.description ||
+                error?.type ||
+                error?.data ||
+                error
+            ).toLowerCase();
+
+            if (!text) return false;
+            return text.includes("xhr poll error") ||
+                text.includes("cors") ||
+                text.includes("access-control-allow-origin");
+        }
+
         function loadSocketScriptOnce(src) {
             return new Promise((resolve, reject) => {
                 if (!src) {
@@ -2890,59 +2923,88 @@
                     return;
                 }
 
-                const socketTarget = socketConfig.namespace ?
-                    `${socketConfig.socketUrl}${socketConfig.namespace}` :
-                    socketConfig.socketUrl;
-
                 const socketTransports = socketConfig.forcePolling ? ["polling"] : ["polling", "websocket"];
+                const currentOriginBase = getCurrentOriginSocketBase();
+                let sameOriginRetried = false;
 
-                dashSocket = window.io(socketTarget, {
-                    path: socketConfig.socketPath,
-                    transports: socketTransports,
-                    upgrade: !socketConfig.forcePolling,
-                    reconnection: true,
-                    autoConnect: true
-                });
+                const connectSocket = (baseUrl) => {
+                    const normalizedBase = normalizeText(baseUrl).replace(/\/+$/, "");
+                    if (!normalizedBase) return;
 
-                dashMapState.socket = dashSocket;
-                logDashDebug("socket transport mode", {
-                    transports: socketTransports,
-                    force_polling: socketConfig.forcePolling
-                });
+                    const socketTarget = socketConfig.namespace ?
+                        `${normalizedBase}${socketConfig.namespace}` :
+                        normalizedBase;
 
-                dashSocket.on("connect", () => {
-                    logDashDebug("socket connected", {
-                        socket_id: dashSocket.id
+                    dashSocket = window.io(socketTarget, {
+                        path: socketConfig.socketPath,
+                        transports: socketTransports,
+                        upgrade: !socketConfig.forcePolling,
+                        reconnection: true,
+                        autoConnect: true
                     });
 
-                    if (socketConfig.room && socketConfig.joinEvent) {
-                        dashSocket.emit(socketConfig.joinEvent, socketConfig.room);
-                        logDashDebug("socket room joined", {
-                            room: socketConfig.room,
-                            event: socketConfig.joinEvent
+                    dashMapState.socket = dashSocket;
+                    logDashDebug("socket transport mode", {
+                        transports: socketTransports,
+                        force_polling: socketConfig.forcePolling,
+                        socket_url: normalizedBase
+                    });
+
+                    dashSocket.on("connect", () => {
+                        logDashDebug("socket connected", {
+                            socket_id: dashSocket.id
                         });
-                    }
-                });
 
-                dashSocket.on("driver_location_updated", (payload) => {
-                    logDashDebug("driver_location_updated received", payload);
-
-                    const socketDriver = normalizeSocketDriverPayload(payload);
-                    const upsertedDriver = upsertDriverState(socketDriver, "socket");
-                    if (!upsertedDriver) return;
-
-                    updateDriverMarker(upsertedDriver, "socket");
-                });
-
-                dashSocket.on("disconnect", (reason) => {
-                    logDashDebug("socket disconnected", {
-                        reason
+                        if (socketConfig.room && socketConfig.joinEvent) {
+                            dashSocket.emit(socketConfig.joinEvent, socketConfig.room);
+                            logDashDebug("socket room joined", {
+                                room: socketConfig.room,
+                                event: socketConfig.joinEvent
+                            });
+                        }
                     });
-                });
 
-                dashSocket.on("connect_error", (error) => {
-                    console.warn(`${DASH_DEBUG_PREFIX} socket connect error`, error);
-                });
+                    dashSocket.on("driver_location_updated", (payload) => {
+                        logDashDebug("driver_location_updated received", payload);
+
+                        const socketDriver = normalizeSocketDriverPayload(payload);
+                        const upsertedDriver = upsertDriverState(socketDriver, "socket");
+                        if (!upsertedDriver) return;
+
+                        updateDriverMarker(upsertedDriver, "socket");
+                    });
+
+                    dashSocket.on("disconnect", (reason) => {
+                        logDashDebug("socket disconnected", {
+                            reason
+                        });
+                    });
+
+                    dashSocket.on("connect_error", (error) => {
+                        console.warn(`${DASH_DEBUG_PREFIX} socket connect error`, error);
+
+                        const activeOrigin = getUrlOrigin(normalizedBase);
+                        if (!sameOriginRetried &&
+                            currentOriginBase &&
+                            activeOrigin &&
+                            activeOrigin !== currentOriginBase &&
+                            isLikelyCorsSocketError(error)) {
+                            sameOriginRetried = true;
+                            logDashDebug("socket CORS fallback to same-origin", {
+                                from: normalizedBase,
+                                to: currentOriginBase
+                            });
+
+                            try {
+                                dashSocket.disconnect();
+                            } catch (disconnectError) {}
+
+                            connectSocket(currentOriginBase);
+                        }
+                    });
+                };
+
+                connectSocket(socketConfig.socketUrl);
             } catch (error) {
                 dashMapState.socketStarted = false;
                 console.warn(`${DASH_DEBUG_PREFIX} socket init failed`, error);
