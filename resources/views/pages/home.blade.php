@@ -1061,8 +1061,8 @@
         }
 
         .dash-car-wrap img {
-            width: 22px;
-            height: 22px;
+            width: 18px;
+            height: 18px;
             object-fit: contain;
             display: block;
         }
@@ -2817,8 +2817,8 @@
                     const iconUrl = buildCarCardSvg(status, DASH_CAR_ICON_URL);
                     existingMarker.setIcon({
                         url: iconUrl,
-                        scaledSize: new google.maps.Size(48, 48),
-                        anchor: new google.maps.Point(24, 24),
+                        scaledSize: new google.maps.Size(44, 44),
+                        anchor: new google.maps.Point(22, 22),
                     });
                 }
 
@@ -2858,8 +2858,8 @@
                     title: markerTitle,
                     icon: {
                         url: iconUrl,
-                        scaledSize: new google.maps.Size(48, 48),
-                        anchor: new google.maps.Point(24, 24)
+                        scaledSize: new google.maps.Size(44, 44),
+                        anchor: new google.maps.Point(22, 22)
                     }
                 });
             }
@@ -3020,7 +3020,7 @@
                 .replace(/"/g, "&quot;");
 
             const svg = `
-<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60">
 
   <defs>
     <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
@@ -3028,19 +3028,19 @@
     </filter>
   </defs>
 
-  <circle cx="32" cy="32" r="24"
+  <circle cx="30" cy="30" r="22"
       fill="#ffffff"
       stroke="${ring}"
       stroke-width="4"
       filter="url(#shadow)"/>
 
-  <circle cx="32" cy="32" r="21" fill="#ffffff"/>
+  <circle cx="30" cy="30" r="19" fill="#ffffff"/>
 
   <image
-      x="20"
-      y="20"
-      width="24"
-      height="24"
+      x="21"
+      y="21"
+      width="18"
+      height="18"
       xlink:href="${safeImg}"
       href="${safeImg}"
       preserveAspectRatio="xMidYMid meet"
