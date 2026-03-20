@@ -3668,3 +3668,18 @@ label {
     padding-right: 2rem;
     padding-left: 2rem;
 }
+@media (max-width: 768px) {
+
+    #scroll-top {
+        width: 40px;
+        height: 40px;
+        right: 19px;
+        bottom: 20px;
+        font-size: 0px;
+    }
+
+    #scroll-top i {
+        font-size: 14px;
+    }
+
+}
