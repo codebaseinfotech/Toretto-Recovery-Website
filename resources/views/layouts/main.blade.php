@@ -7,18 +7,15 @@
     <meta name="api-token" content="{{ session('token') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @php
-        $socketHost = app()->environment('production')
+        $isProductionEnv = app()->environment(['production', 'prod']);
+        $socketHost = $isProductionEnv
             ? config('services.socket.live_url')
             : config('services.socket.dev_url');
         $socketHost = $socketHost ?: config('services.socket.url');
         $socketHost = preg_replace('#/socket/?$#', '', (string) $socketHost);
         $driversSocketConfig = [
+            'app_env' => app()->environment(),
             'url' => $socketHost,
-            'path' => config('services.socket.path'),
-            'namespace' => config('services.socket.namespace'),
-            'room' => config('services.socket.room'),
-            'join_event' => config('services.socket.join_event'),
-            'force_polling' => (bool) config('services.socket.force_polling'),
         ];
     @endphp
     <meta name="socket-url" content="{{ $socketHost }}">

@@ -2414,6 +2414,15 @@
         const DASH_CAR_ICON_URL = `{{ asset('assets/images/ic_truck1.png') }}`;
         const DASH_SOCKET_IO_CDN = "https://cdn.socket.io/4.7.5/socket.io.min.js";
         const DASH_DEBUG_PREFIX = "[Home Drivers Map]";
+        const APP_ENV = @json(app()->environment());
+        const SOCKET_LIVE_URL = @json(config('services.socket.live_url'));
+        const SOCKET_DEV_URL = @json(config('services.socket.dev_url'));
+        const SOCKET_FALLBACK_URL = @json(config('services.socket.url'));
+        const RAW_SOCKET_URL = APP_ENV === 'production' ? (SOCKET_LIVE_URL || SOCKET_FALLBACK_URL) : (SOCKET_DEV_URL ||
+            SOCKET_FALLBACK_URL);
+        const ENV_SOCKET_URL = (RAW_SOCKET_URL || '')
+            .replace(/\/socket\/?$/, '')
+            .replace(/\/+$/, '');
 
         const dashMapState = window.__homeDriversMapState || (window.__homeDriversMapState = {
             markers: {},
@@ -2521,29 +2530,19 @@
 
         function resolveDashSocketConfig() {
             const winCfg = window.DRIVERS_SOCKET_CONFIG || window.TORETTO_SOCKET_CONFIG || {};
-            const metaSocketUrl = normalizeText(document.querySelector('meta[name="socket-url"]')?.getAttribute("content"));
-            const metaForcePolling = normalizeText(document.querySelector('meta[name="socket-force-polling"]')?.getAttribute(
-                "content"));
-
-            const socketUrl = normalizeText(winCfg.url || winCfg.socket_url || winCfg.host || metaSocketUrl) ||
-                deriveSocketBaseUrl(PRICE_API_BASE_URL);
+            const socketUrl = normalizeText(winCfg.url || winCfg.socket_url || winCfg.host || ENV_SOCKET_URL);
 
             const socketPath = normalizeText(winCfg.path || winCfg.socket_path) || "/socket.io";
             const namespace = normalizeText(winCfg.namespace || winCfg.nsp);
             const room = normalizeText(winCfg.room || winCfg.room_name || winCfg.join_room || winCfg.channel);
             const joinEvent = normalizeText(winCfg.join_event || winCfg.joinEvent);
-            const forcePollingRaw = winCfg.force_polling ?? winCfg.socket_force_polling ?? metaForcePolling;
-            const forcePollingParsed = parseOptionalBoolean(forcePollingRaw);
 
             return {
                 socketUrl: socketUrl.replace(/\/+$/, ""),
                 socketPath,
                 namespace,
                 room,
-                joinEvent,
-                // Default true to avoid repeated websocket failures in environments
-                // where the socket endpoint does not support wss upgrades.
-                forcePolling: forcePollingParsed !== false
+                joinEvent
             };
         }
 
@@ -2917,15 +2916,26 @@
 
             try {
                 const socketConfig = resolveDashSocketConfig();
-                const hasClient = await ensureSocketIoClient(socketConfig.socketUrl);
-                if (!hasClient || typeof window.io !== "function") {
+                if (!socketConfig.socketUrl) {
+                    logDashDebug("socket URL missing");
                     dashMapState.socketStarted = false;
                     return;
                 }
 
-                const socketTransports = socketConfig.forcePolling ? ["polling"] : ["polling", "websocket"];
-                const currentOriginBase = getCurrentOriginSocketBase();
-                let sameOriginRetried = false;
+                const hasClient = await ensureSocketIoClient(socketConfig.socketUrl);
+                if (!hasClient || typeof window.io !== "function") {
+                    logDashDebug("socket.io client not loaded");
+                    dashMapState.socketStarted = false;
+                    return;
+                }
+
+                const handleDriverLocationSocketEvent = (eventName, payload) => {
+                    logDashDebug(`${eventName} received`, payload);
+                    const socketDriver = normalizeSocketDriverPayload(payload);
+                    const upsertedDriver = upsertDriverState(socketDriver, "socket");
+                    if (!upsertedDriver) return;
+                    updateDriverMarker(upsertedDriver, "socket");
+                };
 
                 const connectSocket = (baseUrl) => {
                     const normalizedBase = normalizeText(baseUrl).replace(/\/+$/, "");
@@ -2937,16 +2947,15 @@
 
                     dashSocket = window.io(socketTarget, {
                         path: socketConfig.socketPath,
-                        transports: socketTransports,
-                        upgrade: !socketConfig.forcePolling,
+                        transports: ["websocket"],
                         reconnection: true,
+                        reconnectionAttempts: 5,
+                        reconnectionDelay: 2000,
                         autoConnect: true
                     });
 
                     dashMapState.socket = dashSocket;
-                    logDashDebug("socket transport mode", {
-                        transports: socketTransports,
-                        force_polling: socketConfig.forcePolling,
+                    logDashDebug("connecting to socket", {
                         socket_url: normalizedBase
                     });
 
@@ -2964,15 +2973,11 @@
                         }
                     });
 
-                    dashSocket.on("driver_location_updated", (payload) => {
-                        logDashDebug("driver_location_updated received", payload);
+                    dashSocket.on("driver_location_updated", (payload) =>
+                        handleDriverLocationSocketEvent("driver_location_updated", payload));
 
-                        const socketDriver = normalizeSocketDriverPayload(payload);
-                        const upsertedDriver = upsertDriverState(socketDriver, "socket");
-                        if (!upsertedDriver) return;
-
-                        updateDriverMarker(upsertedDriver, "socket");
-                    });
+                    dashSocket.on("driver_location_update", (payload) =>
+                        handleDriverLocationSocketEvent("driver_location_update", payload));
 
                     dashSocket.on("disconnect", (reason) => {
                         logDashDebug("socket disconnected", {
@@ -2982,25 +2987,6 @@
 
                     dashSocket.on("connect_error", (error) => {
                         console.warn(`${DASH_DEBUG_PREFIX} socket connect error`, error);
-
-                        const activeOrigin = getUrlOrigin(normalizedBase);
-                        if (!sameOriginRetried &&
-                            currentOriginBase &&
-                            activeOrigin &&
-                            activeOrigin !== currentOriginBase &&
-                            isLikelyCorsSocketError(error)) {
-                            sameOriginRetried = true;
-                            logDashDebug("socket CORS fallback to same-origin", {
-                                from: normalizedBase,
-                                to: currentOriginBase
-                            });
-
-                            try {
-                                dashSocket.disconnect();
-                            } catch (disconnectError) {}
-
-                            connectSocket(currentOriginBase);
-                        }
                     });
                 };
 
