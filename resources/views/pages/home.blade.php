@@ -1039,11 +1039,11 @@
     </style>
     <style>
         .dash-car-wrap {
-            width: 46px;
-            height: 46px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             background: #fff;
-            border: 4px solid #35c759;
+            border: 3px solid #35c759;
             /* online default */
             display: flex;
             align-items: center;
@@ -1061,8 +1061,8 @@
         }
 
         .dash-car-wrap img {
-            width: 18px;
-            height: 18px;
+            width: 12px;
+            height: 12px;
             object-fit: contain;
             display: block;
         }
@@ -2786,12 +2786,17 @@
             const status = getDriverStatus(driver);
             const wrap = document.createElement("div");
             wrap.className = "dash-car-wrap";
+            wrap.style.width = "34px";
+            wrap.style.height = "34px";
+            wrap.style.borderWidth = "3px";
             if (status === "busy") wrap.classList.add("busy");
             if (status === "offline") wrap.classList.add("offline");
 
             const img = document.createElement("img");
             img.src = DASH_CAR_ICON_URL;
             img.alt = driver.full_name || "Driver";
+            img.style.width = "12px";
+            img.style.height = "12px";
             wrap.appendChild(img);
 
             return wrap;
@@ -2817,8 +2822,8 @@
                     const iconUrl = buildCarCardSvg(status, DASH_CAR_ICON_URL);
                     existingMarker.setIcon({
                         url: iconUrl,
-                        scaledSize: new google.maps.Size(44, 44),
-                        anchor: new google.maps.Point(22, 22),
+                        scaledSize: new google.maps.Size(30, 30),
+                        anchor: new google.maps.Point(15, 15),
                     });
                 }
 
@@ -2858,8 +2863,8 @@
                     title: markerTitle,
                     icon: {
                         url: iconUrl,
-                        scaledSize: new google.maps.Size(44, 44),
-                        anchor: new google.maps.Point(22, 22)
+                        scaledSize: new google.maps.Size(30, 30),
+                        anchor: new google.maps.Point(15, 15)
                     }
                 });
             }
@@ -3020,7 +3025,7 @@
                 .replace(/"/g, "&quot;");
 
             const svg = `
-<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60">
+<svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 44 44">
 
   <defs>
     <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
@@ -3028,19 +3033,19 @@
     </filter>
   </defs>
 
-  <circle cx="30" cy="30" r="22"
+  <circle cx="22" cy="22" r="16"
       fill="#ffffff"
       stroke="${ring}"
-      stroke-width="4"
+      stroke-width="3"
       filter="url(#shadow)"/>
 
-  <circle cx="30" cy="30" r="19" fill="#ffffff"/>
+  <circle cx="22" cy="22" r="13.5" fill="#ffffff"/>
 
   <image
-      x="21"
-      y="21"
-      width="18"
-      height="18"
+      x="16"
+      y="16"
+      width="12"
+      height="12"
       xlink:href="${safeImg}"
       href="${safeImg}"
       preserveAspectRatio="xMidYMid meet"
@@ -3119,4 +3124,3 @@
         window.addEventListener("beforeunload", stopDashAutoDrivers);
     </script>
 @endpush
-
