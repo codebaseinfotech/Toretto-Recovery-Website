@@ -98,4 +98,5 @@
 
 <a href="#" id="scroll-top"><i class="fa-solid fa-arrow-up"></i></a>
 
-<link rel="stylesheet" href="{{ asset('assets/css/floating-social.css') }}">
+<link rel="stylesheet"
+        href="{{ asset('assets/css/floating-social.css') }}?v={{ filemtime(public_path('assets/css/floating-social.css')) }}">
