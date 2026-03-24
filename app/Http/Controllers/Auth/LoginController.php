@@ -78,10 +78,9 @@ class LoginController extends Controller
 
             return response()->json([
                 'status' => true,
-                'message' => $json['message'] ?? 'OTP sent successfully.',
+                'message' => 'OTP sent successfully.',
                 'data' => [
                     'phone' => $phone,
-                    'otp_debug' => app()->isLocal() ? data_get($json, 'data.otp_debug') : null,
                 ],
                 'redirect' => $redirectUrl,
             ]);

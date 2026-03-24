@@ -157,12 +157,9 @@ document.addEventListener('DOMContentLoaded', function () {
             setLoading(false);
 
             const verifiedPhone = data?.data?.phone || normalizedPhone;
-            const successMessage = data?.data?.otp_debug
-                ? `${data.message} Test OTP: ${data.data.otp_debug}`
-                : data.message;
 
             localStorage.setItem('phone_for_verification', verifiedPhone);
-            showToast(successMessage, 'success');
+            showToast(data.message, 'success');
 
             if (data.redirect) {
                 setTimeout(() => {
