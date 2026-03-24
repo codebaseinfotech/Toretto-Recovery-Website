@@ -31,12 +31,13 @@ class LoginController extends Controller
         $base_url = $request->base_url;
         $redirectUrl = route('otp.form');
 
-        if (! $this->isValidUaeMobile($phone)) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Enter a valid UAE mobile number.',
-            ], 422);
-        }
+        // Temporarily allow broader phone input; upstream API will handle validation.
+        // if (! $this->isValidUaeMobile($phone)) {
+        //     return response()->json([
+        //         'status' => false,
+        //         'message' => 'Enter a valid UAE mobile number.',
+        //     ], 422);
+        // }
 
         if ($base_url === 'x=1') {
             $redirectUrl .= '?x=1';
@@ -131,12 +132,13 @@ class LoginController extends Controller
             }
         }
 
-        if (! $this->isValidUaeMobile($phone)) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Phone number not found. Please request OTP again.',
-            ], 422);
-        }
+        // Temporarily allow broader phone input; OTP API/session will determine validity.
+        // if (! $this->isValidUaeMobile($phone)) {
+        //     return response()->json([
+        //         'status' => false,
+        //         'message' => 'Phone number not found. Please request OTP again.',
+        //     ], 422);
+        // }
 
         try {
             $response = Http::withHeaders([

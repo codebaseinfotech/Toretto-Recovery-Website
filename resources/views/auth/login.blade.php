@@ -123,11 +123,12 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        if (!/^5\d{8}$/.test(normalizedPhone)) {
-            errorBox.innerText = 'Enter a valid UAE mobile number';
-            phoneInput.classList.add('is-invalid');
-            return;
-        }
+        // Temporarily disabled strict UAE mobile validation.
+        // if (!/^5\d{8}$/.test(normalizedPhone)) {
+        //     errorBox.innerText = 'Enter a valid UAE mobile number';
+        //     phoneInput.classList.add('is-invalid');
+        //     return;
+        // }
 
         setLoading(true);
 
