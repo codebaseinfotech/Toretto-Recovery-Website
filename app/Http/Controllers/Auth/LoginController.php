@@ -45,7 +45,7 @@ class LoginController extends Controller
             ])->post(config('services.api.base_url').'/v1/customer/login',
                 [
                     'phone' => $phone,
-                    'country_code' => '971',
+                    'country_code' => '+971',
                 ]
             );
             if ($response->failed()) {
@@ -113,7 +113,7 @@ class LoginController extends Controller
             ])->post(
                 config('services.api.base_url').'/v1/customer/verify-otp',
                 [
-                    'country_code' => '971',
+                    'country_code' => '+971',
                     'phone' => $phone,
                     'otp' => $request->otp,
                     'latitude' => $request->latitude,
