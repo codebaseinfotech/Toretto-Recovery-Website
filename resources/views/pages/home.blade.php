@@ -194,6 +194,8 @@
 
                             <div class="payment-method-section mb-4"
                                 style="background: #f8f9fa; border-radius: 8px; padding: 15px; border: 1px solid #eee;">
+
+                                <!-- COD (default selected) -->
                                 <div class="form-check m-0 d-flex align-items-center gap-2">
                                     <input class="form-check-input mt-0" type="radio" name="payment_method"
                                         id="payment_cod" value="cod" required checked style="cursor: pointer;">
@@ -202,6 +204,16 @@
                                         Cash on Delivery (COD)
                                     </label>
                                 </div>
+                                @if (!empty($settings['is_payment_link']) && $settings['is_payment_link'] == 'true') 
+                                <div class="form-check m-0 d-flex align-items-center gap-2">
+                                    <input class="form-check-input mt-0" type="radio" name="payment_method"
+                                        id="payment_link" value="payment_link" required style="cursor: pointer;">
+                                    <label class="form-check-label" for="payment_link"
+                                        style="font-size: 14px; font-weight: 500; color: #000; cursor: pointer; margin-top:2px;">
+                                        Pay by Link
+                                    </label>
+                                </div>
+                                @endif
                             </div>
 
                             <!-- SUBMIT -->
@@ -2124,6 +2136,8 @@
                 const taxAmount = parseAedAmount(tax_amount?.innerText || tax_amount?.textContent ||
                 '');
 
+                let payment_method = document.querySelector('input[name="payment_method"]:checked').value;
+
                 const bookingPayload = {
                     service_type_id: 1,
                     pickup_address: pickupElement.value,
@@ -2135,6 +2149,7 @@
                     distance_km: distanceValue,
                     platform_fee: platformFee,
                     tax: taxAmount,
+                    payment_method: payment_method,
                     // extra values
                     total_price: cleanTotalPrice,
                     price: cleanBasePrice,
