@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
@@ -26,14 +27,20 @@ class LoginController extends Controller
             'phone' => 'required|string',
         ]);
 
-        $phone = $request->phone;
+        $phone = $this->normalizeUaePhone($request->phone);
         $base_url = $request->base_url;
         $redirectUrl = route('otp.form');
+
+        if (! $this->isValidUaeMobile($phone)) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Enter a valid UAE mobile number.',
+            ], 422);
+        }
 
         if ($base_url === 'x=1') {
             $redirectUrl .= '?x=1';
         }
-        Session::put('phone', $phone);
 
         try {
             $response = Http::withHeaders([
@@ -42,26 +49,47 @@ class LoginController extends Controller
                 'Language' => 'en',
                 'DeviceType' => 'Android',
                 'DeviceID' => '123456789',
-            ])->post(config('services.api.base_url').'/v1/customer/login',
+            ])->timeout(15)->post(config('services.api.base_url').'/v1/customer/login',
                 [
                     'phone' => $phone,
                     'country_code' => '+971',
                 ]
             );
-            if ($response->failed()) {
-                return back()->withErrors([
-                    'phone' => 'Failed to send OTP. Please try again.',
+
+            $json = $response->json() ?? [];
+
+            if ($response->failed() || ($json['status'] ?? false) !== true) {
+                $message = $json['message'] ?? 'Failed to send OTP. Please try again.';
+
+                Log::warning('OTP send failed.', [
+                    'phone' => $phone,
+                    'status_code' => $response->status(),
+                    'response' => $json,
                 ]);
+
+                return response()->json([
+                    'status' => false,
+                    'message' => $message,
+                ], $response->successful() ? 422 : $response->status());
             }
+
+            Session::put('phone', $phone);
+
             return response()->json([
                 'status' => true,
-                'message' => 'OTP sent successfully.',
+                'message' => $json['message'] ?? 'OTP sent successfully.',
                 'data' => [
                     'phone' => $phone,
+                    'otp_debug' => app()->isLocal() ? data_get($json, 'data.otp_debug') : null,
                 ],
                 'redirect' => $redirectUrl,
             ]);
-        } catch (\Throwable $e) {   
+        } catch (\Throwable $e) {
+            Log::error('OTP send exception.', [
+                'phone' => $phone,
+                'message' => $e->getMessage(),
+            ]);
+
             return response()->json([
                 'status' => false,
                 'message' => 'Something went wrong. Please try again.',
@@ -94,13 +122,20 @@ class LoginController extends Controller
             $redirectUrl = route('home');
         }
 
-        $phone = Session::get('phone');
+        $phone = $this->normalizeUaePhone(Session::get('phone'));
 
         if (! $phone) {
-            $phone_header = $request->header('X-Phone-Verification');
+            $phone_header = $this->normalizeUaePhone($request->header('X-Phone-Verification'));
             if ($phone_header) {
                 $phone = $phone_header;
             }
+        }
+
+        if (! $this->isValidUaeMobile($phone)) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Phone number not found. Please request OTP again.',
+            ], 422);
         }
 
         try {
@@ -193,5 +228,29 @@ class LoginController extends Controller
             ], 500);
         }
 
+    }
+
+    private function normalizeUaePhone(?string $phone): ?string
+    {
+        if (! $phone) {
+            return null;
+        }
+
+        $phone = preg_replace('/\D+/', '', $phone);
+
+        if (str_starts_with($phone, '971')) {
+            $phone = substr($phone, 3);
+        }
+
+        if (strlen($phone) === 10 && str_starts_with($phone, '0')) {
+            $phone = substr($phone, 1);
+        }
+
+        return $phone;
+    }
+
+    private function isValidUaeMobile(?string $phone): bool
+    {
+        return (bool) preg_match('/^5\d{8}$/', $phone ?? '');
     }
 }
