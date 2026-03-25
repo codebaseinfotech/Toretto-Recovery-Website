@@ -196,14 +196,16 @@
                                 style="background: #f8f9fa; border-radius: 8px; padding: 15px; border: 1px solid #eee;">
 
                                 <!-- COD (default selected) -->
-                                <div class="form-check m-0 d-flex align-items-center gap-2">
-                                    <input class="form-check-input mt-0" type="radio" name="payment_method"
-                                        id="payment_cod" value="cod" required checked style="cursor: pointer;">
-                                    <label class="form-check-label" for="payment_cod"
-                                        style="font-size: 14px; font-weight: 500; color: #000; cursor: pointer; margin-top:2px;">
-                                        Cash on Delivery (COD)
-                                    </label>
-                                </div>
+                                @if (!empty($settings['is_COD_enabale']) && $settings['is_COD_enabale'] == 'true') 
+                                    <div class="form-check m-0 d-flex align-items-center gap-2">
+                                        <input class="form-check-input mt-0" type="radio" name="payment_method"
+                                            id="payment_cod" value="cash" required checked style="cursor: pointer;">
+                                        <label class="form-check-label" for="payment_cod"
+                                            style="font-size: 14px; font-weight: 500; color: #000; cursor: pointer; margin-top:2px;">
+                                            Cash on Delivery (COD)
+                                        </label>
+                                    </div>
+                                @endif
                                 @if (!empty($settings['is_payment_link']) && $settings['is_payment_link'] == 'true') 
                                 <div class="form-check m-0 d-flex align-items-center gap-2">
                                     <input class="form-check-input mt-0" type="radio" name="payment_method"
@@ -1464,7 +1466,7 @@
 
                 document.getElementById('totalPriceDisplay').innerText = currentOriginalPrice + ' AED';
                 document.getElementById('price').innerText = currentOriginalPrice + ' AED';
-                console.log(currentOriginalPrice, 'price');
+                
                 const platform_fee_amount = document.getElementById("platform_fee_amount");
                 const tax_amount = document.getElementById("tax_amount");
 
@@ -2137,7 +2139,10 @@
                 '');
 
                 let payment_method = document.querySelector('input[name="payment_method"]:checked').value;
-
+                if (!payment_method) {
+                    alert("Please select payment method");
+                    return;
+                }
                 const bookingPayload = {
                     service_type_id: 1,
                     pickup_address: pickupElement.value,
@@ -2860,8 +2865,8 @@
             const img = document.createElement("img");
             img.src = DASH_CAR_ICON_URL;
             img.alt = driver.full_name || "Driver";
-            img.style.width = "12px";
-            img.style.height = "12px";
+            img.style.width = "64px";
+            img.style.height = "64px";
             wrap.appendChild(img);
 
             return wrap;
