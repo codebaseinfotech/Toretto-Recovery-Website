@@ -110,11 +110,11 @@
                             </a>
                         </li>
 
-                        <li>
+                        {{-- <li>
                             <a class="dropdown-item" href="{{ route('areas.show', 'dubai-investments-park') }}">
                                 Car Recovery Service in Dubai Investments Park
                             </a>
-                        </li>
+                        </li> --}}
 
                         <li>
                             <a class="dropdown-item" href="{{ route('areas.show', 'dip') }}">
@@ -342,11 +342,11 @@
                             </a>
                         </li>
 
-                        <li>
+                        {{-- <li>
                             <a class="dropdown-item" href="{{ route('areas.show', 'dubai-investments-park') }}">
                                 Car Recovery Service in Dubai Investments Park
                             </a>
-                        </li>
+                        </li> --}}
 
                         <li>
                             <a class="dropdown-item" href="{{ route('areas.show', 'dip') }}">

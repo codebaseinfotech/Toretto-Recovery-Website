@@ -209,7 +209,7 @@ class PageController extends Controller
             'dubai-jebel-ali' => 'Dubai Jebel Ali',
             'dubai-deira' => 'Dubai Deira',
             'bur-dubai' => 'Bur Dubai',
-            'dubai-investments-park' => 'Dubai Investments Park',
+            // 'dubai-investments-park' => 'Dubai Investments Park',
             'dip' => 'Dubai DIP',
             'al-warqa' => 'Dubai Al Warqa',
             'mirdif' => 'Dubai Mirdif',
