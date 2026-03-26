@@ -2169,7 +2169,7 @@
 
                 try {
                     const resp = await window.ApiUtils.fetch(
-                        `${PRICE_API_BASE_URL}/v1/customer/bookings`, {
+                        `${PRICE_API_BASE_URL}/v1/customer/bookings?called_by=web`, {
                             method: 'POST',
                             headers: {
                                 'Authorization': 'Bearer ' + token
