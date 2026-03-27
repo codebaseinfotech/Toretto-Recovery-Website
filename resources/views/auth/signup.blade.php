@@ -129,6 +129,23 @@
     <script>
         // sign-up form validation
         document.addEventListener('DOMContentLoaded', function() {
+            function normalizePhone(value) {
+                let digits = (value || '').replace(/\D/g, '');
+
+                if (digits.startsWith('971')) {
+                    digits = digits.slice(3);
+                }
+
+                if (digits.length > 9 && digits.startsWith('0')) {
+                    digits = digits.slice(1);
+                }
+
+                return digits.slice(0, 9);
+            }
+
+            function isValidUaeMobile(value) {
+                return /^5\d{8}$/.test(value);
+            }
 
             // Populate phone number from localStorage if available
             const mobileInput = document.getElementById('mobile');
@@ -143,8 +160,7 @@
                 }
 
                 if (phoneNumber) {
-                    // Remove country code '971' and set the remaining digits
-                    const displayNumber = phoneNumber.replace(/^971/, '');
+                    const displayNumber = normalizePhone(phoneNumber);
                     mobileInput.value = displayNumber;
                 }
             }
@@ -190,12 +206,17 @@
                     let userData = JSON.parse(localStorage.getItem('user_data') || '{}');
 
                     if (!phone) {
-                        phone = userData.phone || ('971' + mobileInput.value);
+                        phone = userData.phone || mobileInput.value;
                     }
 
-                    if (!phone.startsWith('971')) {
-                        phone = mobileInput.value;
+                    phone = normalizePhone(phone);
+
+                    if (!isValidUaeMobile(phone)) {
+                        showToast('Enter a valid UAE mobile number (9 digits starting with 5).', 'error');
+                        return;
                     }
+
+                    mobileInput.value = phone;
 
                     const submitBtn = document.getElementById('signupSubmitBtn');
                     const btnText = submitBtn.querySelector('.btn-text');

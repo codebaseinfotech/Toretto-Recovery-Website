@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Support\UaePhoneNumber;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -243,13 +244,19 @@ class PageController extends Controller
 
     public function submitFormContact(Request $request)
     {
+        $request->merge([
+            'phone' => UaePhoneNumber::normalize($request->phone),
+        ]);
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'type' => 'nullable',
             'email' => 'required|email|max:255',
-            'phone' => 'required|string|max:20',
+            'phone' => ['required', 'regex:/^5\d{8}$/'],
             'subject' => 'nullable|string|max:255',
             'message' => 'nullable|string',
+        ], [
+            'phone.regex' => 'Enter a valid UAE mobile number (9 digits starting with 5).',
         ]);
 
         $apiUrl = config('services.api.base_url') . '/v1/common/contact-us';

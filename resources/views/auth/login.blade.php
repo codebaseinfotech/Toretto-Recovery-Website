@@ -36,7 +36,7 @@
                                             <span id="dialCode">+971</span>
                                         </button>
 
-                                        <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter your mobile number" maxlength="10">
+                                        <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter your 9-digit mobile number" maxlength="12" inputmode="numeric" autocomplete="tel-national">
                                         <input type="hidden" name="base_url" value="{{ request()->has('x') ? 'x=' . request('x') : '' }}">
                                     </div>
                                     <!-- Validation Message -->
@@ -83,17 +83,21 @@ document.addEventListener('DOMContentLoaded', function () {
     const btnLoader = btn.querySelector('.btn-loader');
 
     function normalizePhone(value) {
-        const digits = value.replace(/\D/g, '');
+        let digits = value.replace(/\D/g, '');
 
         if (digits.startsWith('971')) {
-            return digits.slice(3);
+            digits = digits.slice(3);
         }
 
-        if (digits.length === 10 && digits.startsWith('0')) {
-            return digits.slice(1);
+        if (digits.length > 9 && digits.startsWith('0')) {
+            digits = digits.slice(1);
         }
 
-        return digits;
+        return digits.slice(0, 9);
+    }
+
+    function isValidUaeMobile(value) {
+        return /^5\d{8}$/.test(value);
     }
 
     function setLoading(isLoading) {
@@ -104,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     /* Numeric only */
     phoneInput.addEventListener('input', function () {
-        this.value = this.value.replace(/\D/g, '');
+        this.value = normalizePhone(this.value);
         this.classList.remove('is-invalid');
         errorBox.innerText = '';
     });
@@ -123,12 +127,11 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        // Temporarily disabled strict UAE mobile validation.
-        // if (!/^5\d{8}$/.test(normalizedPhone)) {
-        //     errorBox.innerText = 'Enter a valid UAE mobile number';
-        //     phoneInput.classList.add('is-invalid');
-        //     return;
-        // }
+        if (!isValidUaeMobile(normalizedPhone)) {
+            errorBox.innerText = 'Enter a valid UAE mobile number (9 digits starting with 5)';
+            phoneInput.classList.add('is-invalid');
+            return;
+        }
 
         setLoading(true);
 

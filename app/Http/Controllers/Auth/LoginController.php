@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Support\UaePhoneNumber;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -27,17 +28,16 @@ class LoginController extends Controller
             'phone' => 'required|string',
         ]);
 
-        $phone = $this->normalizeUaePhone($request->phone);
+        $phone = UaePhoneNumber::normalize($request->phone);
         $base_url = $request->base_url;
         $redirectUrl = route('otp.form');
 
-        // Temporarily allow broader phone input; upstream API will handle validation.
-        // if (! $this->isValidUaeMobile($phone)) {
-        //     return response()->json([
-        //         'status' => false,
-        //         'message' => 'Enter a valid UAE mobile number.',
-        //     ], 422);
-        // }
+        if (! UaePhoneNumber::isValidMobile($phone)) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Enter a valid UAE mobile number (9 digits starting with 5).',
+            ], 422);
+        }
 
         if ($base_url === 'x=1') {
             $redirectUrl .= '?x=1';
@@ -122,22 +122,21 @@ class LoginController extends Controller
             $redirectUrl = route('home');
         }
 
-        $phone = $this->normalizeUaePhone(Session::get('phone'));
+        $phone = UaePhoneNumber::normalize(Session::get('phone'));
 
         if (! $phone) {
-            $phone_header = $this->normalizeUaePhone($request->header('X-Phone-Verification'));
+            $phone_header = UaePhoneNumber::normalize($request->header('X-Phone-Verification'));
             if ($phone_header) {
                 $phone = $phone_header;
             }
         }
 
-        // Temporarily allow broader phone input; OTP API/session will determine validity.
-        // if (! $this->isValidUaeMobile($phone)) {
-        //     return response()->json([
-        //         'status' => false,
-        //         'message' => 'Phone number not found. Please request OTP again.',
-        //     ], 422);
-        // }
+        if (! UaePhoneNumber::isValidMobile($phone)) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Phone number not found. Please request OTP again.',
+            ], 422);
+        }
 
         try {
             $response = Http::withHeaders([
@@ -229,29 +228,5 @@ class LoginController extends Controller
             ], 500);
         }
 
-    }
-
-    private function normalizeUaePhone(?string $phone): ?string
-    {
-        if (! $phone) {
-            return null;
-        }
-
-        $phone = preg_replace('/\D+/', '', $phone);
-
-        if (str_starts_with($phone, '971')) {
-            $phone = substr($phone, 3);
-        }
-
-        if (strlen($phone) === 10 && str_starts_with($phone, '0')) {
-            $phone = substr($phone, 1);
-        }
-
-        return $phone;
-    }
-
-    private function isValidUaeMobile(?string $phone): bool
-    {
-        return (bool) preg_match('/^5\d{8}$/', $phone ?? '');
     }
 }

@@ -195,6 +195,94 @@
     @stack('signup-script')
     @stack('login-script')
     @stack('otp-script')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function normalizeUaePhone(value) {
+                let digits = (value || '').replace(/\D/g, '');
+
+                if (digits.startsWith('971')) {
+                    digits = digits.slice(3);
+                }
+
+                if (digits.length > 9 && digits.startsWith('0')) {
+                    digits = digits.slice(1);
+                }
+
+                return digits.slice(0, 9);
+            }
+
+            function isValidUaePhone(value) {
+                return /^5\d{8}$/.test(value);
+            }
+
+            const phoneInputs = document.querySelectorAll('form[action*="/contact-us"] input[name="phone"]');
+            const handledForms = new WeakSet();
+
+            phoneInputs.forEach((input) => {
+                input.type = 'tel';
+                input.inputMode = 'numeric';
+                input.autocomplete = 'tel-national';
+                input.maxLength = 12;
+
+                input.addEventListener('input', function() {
+                    this.value = normalizeUaePhone(this.value);
+                    this.setCustomValidity('');
+                });
+
+                input.addEventListener('blur', function() {
+                    this.value = normalizeUaePhone(this.value);
+                });
+
+                const form = input.form;
+                if (!form || handledForms.has(form)) {
+                    return;
+                }
+
+                handledForms.add(form);
+
+                form.addEventListener('submit', function(event) {
+                    const phoneField = form.querySelector('input[name="phone"]');
+                    if (!phoneField) {
+                        return;
+                    }
+
+                    const normalizedPhone = normalizeUaePhone(phoneField.value);
+                    phoneField.value = normalizedPhone;
+                    phoneField.setCustomValidity('');
+
+                    if (!isValidUaePhone(normalizedPhone)) {
+                        event.preventDefault();
+                        phoneField.setCustomValidity(
+                            'Enter a valid UAE mobile number (9 digits starting with 5).'
+                        );
+                        phoneField.reportValidity();
+                    }
+                });
+            });
+        });
+    </script>
+    @if (session('success') || session('error') || $errors->any())
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const flashMessage = @json(
+                    $errors->first() ?: (session('error') ?: session('success'))
+                );
+                const flashIcon = @json(
+                    $errors->any() || session('error') ? 'error' : 'success'
+                );
+
+                if (!flashMessage) {
+                    return;
+                }
+
+                Swal.fire({
+                    icon: flashIcon,
+                    text: flashMessage,
+                    confirmButtonColor: '#d70006'
+                });
+            });
+        </script>
+    @endif
 
     <script>
         AOS.init();
