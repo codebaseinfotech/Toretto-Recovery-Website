@@ -698,7 +698,7 @@
                     recovery team who can respond quickly and handle the situation properly.</p>
                 <p>Whether it's a breakdown, accident, tyre issue, or battery failure — getting professional help early
                     makes all the difference.</p>
-                <a href="tel:+971545098498" class="theme-btn ja-cta-btn-primary"><i class="fas fa-phone"></i> Call Now —
+                <a href="tel:+971526917666" class="theme-btn ja-cta-btn-primary"><i class="fas fa-phone"></i> Call Now —
                     Get Help Fast</a>
             </div>
 

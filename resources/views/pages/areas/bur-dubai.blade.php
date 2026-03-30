@@ -271,7 +271,7 @@
         <div class="container">
             <div class="area-hero-box">
                 <div class="area-hero-links">
-                    <a href="tel:+971545098498" class="hero-contact-link">
+                    <a href="tel:+971526917666" class="hero-contact-link">
                         <span class="hero-icon call">
                             <i class="fa fa-phone"></i>
                         </span>
@@ -280,7 +280,7 @@
 
                     <span class="hero-divider">|</span>
 
-                    <a href="https://wa.me/971545098498" class="hero-contact-link" target="_blank">
+                    <a href="https://wa.me/971526917666" class="hero-contact-link" target="_blank">
                         <span class="hero-icon whatsapp">
                             <i class="fa-brands fa-whatsapp"></i>
                         </span>
