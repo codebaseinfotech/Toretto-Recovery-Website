@@ -23,7 +23,7 @@
   "logo": "https://torettorecovery.com/logo.png",
   "image": "https://torettorecovery.com/truck.jpg",
   "description": "Professional 24/7 car recovery service in Dubai Marina. Licensed and insured operators providing breakdown recovery, accident towing, EV recovery, basement parking extraction, and luxury vehicle transport.",
-  "telephone": " +971 523003423",
+  "telephone": " +971 526917666",
   "priceRange": "$$",
   "address": {
     "@type": " 274 Street - Dubai Investment Park - 2 - Dubai",
@@ -170,7 +170,7 @@
                     </div>
 
                     <div class="dm-hero-btns">
-                        <a href="tel:+971523003423" class="theme-btn dm-btn-primary">
+                        <a href="tel:+971526917666" class="theme-btn dm-btn-primary">
                             <i class="fas fa-phone"></i> Call Now — We Answer Day & Night
                         </a>
                         <a href="{{ route('home') }}" target="_blank" class="theme-btn dm-btn-secondary">
@@ -732,7 +732,7 @@
                     </p>
                 </div>
                 <div class="dm-cta-right">
-                    <a href="tel:+971523003423" class="theme-btn dm-cta-btn-primary">
+                    <a href="tel:+971526917666" class="theme-btn dm-cta-btn-primary">
                         <i class="fas fa-phone"></i> +971 52 300 3423
                     </a>
                 </div>

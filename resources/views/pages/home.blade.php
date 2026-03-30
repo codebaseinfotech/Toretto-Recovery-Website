@@ -286,7 +286,7 @@
                                                 data-animation="fadeInUp" style="animation-delay: 1s;">
                                                 <a href="{{ route('home') }}" class="theme-btn">Book Now<i
                                                         class="fas fa-arrow-right-long"></i></a>
-                                                <a href="tel:+971 523003423" class="theme-btn theme-btn2">Call /
+                                                <a href="tel:+971 526917666" class="theme-btn theme-btn2">Call /
                                                     WhatsApp<i class="fas fa-arrow-right-long"></i></a>
                                             </div>
                                         </div>
@@ -316,7 +316,7 @@
                                                 data-animation="fadeInUp" style="animation-delay: 1s;">
                                                 <a href="{{ route('home') }}" class="theme-btn">Book Now<i
                                                         class="fas fa-arrow-right-long"></i></a>
-                                                <a href="tel:+971 523003423" class="theme-btn theme-btn2">Call /
+                                                <a href="tel:+971 526917666" class="theme-btn theme-btn2">Call /
                                                     WhatsApp<i class="fas fa-arrow-right-long"></i></a>
                                             </div>
                                         </div>
@@ -347,7 +347,7 @@
                                                 data-animation="fadeInUp">
                                                 <a href="{{ route('home') }}" class="theme-btn">Book Now<i
                                                         class="fas fa-arrow-right-long"></i></a>
-                                                <a href="tel:+971 523003423" class="theme-btn theme-btn2">Call /
+                                                <a href="tel:+971 526917666" class="theme-btn theme-btn2">Call /
                                                     WhatsApp<i class="fas fa-arrow-right-long"></i></a>
                                             </div>
                                         </div>
@@ -377,7 +377,7 @@
                                                 data-animation="fadeInUp" style="animation-delay: 1s;">
                                                 <a href="{{ route('home') }}" class="theme-btn">Book Now<i
                                                         class="fas fa-arrow-right-long"></i></a>
-                                                <a href="tel:+971 523003423" class="theme-btn theme-btn2">Call /
+                                                <a href="tel:+971 526917666" class="theme-btn theme-btn2">Call /
                                                     WhatsApp<i class="fas fa-arrow-right-long"></i></a>
                                             </div>
                                         </div>
@@ -408,7 +408,7 @@
                                                 data-animation="fadeInUp">
                                                 <a href="{{ route('home') }}" class="theme-btn">Book Now<i
                                                         class="fas fa-arrow-right-long"></i></a>
-                                                <a href="tel:+971 523003423" class="theme-btn theme-btn2">Call /
+                                                <a href="tel:+971 526917666" class="theme-btn theme-btn2">Call /
                                                     WhatsApp<i class="fas fa-arrow-right-long"></i></a>
                                             </div>
                                         </div>
@@ -438,7 +438,7 @@
                                                 data-animation="fadeInUp" style="animation-delay: 1s;">
                                                 <a href="{{ route('home') }}" class="theme-btn">Book Now<i
                                                         class="fas fa-arrow-right-long"></i></a>
-                                                <a href="tel:+971 523003423" class="theme-btn theme-btn2">Call /
+                                                <a href="tel:+971 526917666" class="theme-btn theme-btn2">Call /
                                                     WhatsApp<i class="fas fa-arrow-right-long"></i></a>
                                             </div>
                                         </div>

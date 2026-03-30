@@ -20,7 +20,7 @@
   "name": "Toretto Recovery",
   "description": "24/7 car recovery service in Bur Dubai offering emergency breakdown recovery, accident towing, battery jumpstart, flatbed towing, and basement pull-out for all vehicle types.",
   "url": "https://www.torettorecovery.ae/car-recovery-bur-dubai",
-  "telephone": " +971523003423",
+  "telephone": " +971526917666",
   "email": "info@torettorecovery.ae",
   "foundingDate": "2014",
   "priceRange": "AED 150 – AED 600",
@@ -347,7 +347,7 @@
                             Dubai Creek with hazard lights blinking, every minute counts.</p>
                         <a href="{{ route('home') }}" target="_blank" class="theme-btn mt-2">Book Now<i
                                 class="fa-solid fa-arrow-right-long"></i></a>
-                        <a href="tel:+971523003423" class="theme-btn mt-2"> Call Now<i
+                        <a href="tel:+971526917666" class="theme-btn mt-2"> Call Now<i
                                 class="fa-solid fa-arrow-right-long"></i></a>
                     </div>
                 </div>
@@ -1197,7 +1197,7 @@
                                 </p>
                             </div>
                         </div>
-                        <a href="tel:+971523003423" class="tr-emergency-btn">
+                        <a href="tel:+971526917666" class="tr-emergency-btn">
                             <i class="bi bi-telephone-fill"></i>
                             Call Recovery Now
                         </a>
@@ -1315,12 +1315,12 @@
 
                 <div class="tr-final-actions">
 
-                    <a href="tel:+971523003423" class="tr-final-btn call">
+                    <a href="tel:+971526917666" class="tr-final-btn call">
                         <i class="bi bi-telephone-fill"></i>
                         CALL NOW
                     </a>
 
-                    <a href="https://wa.me/971523003423" class="tr-final-btn whatsapp">
+                    <a href="https://wa.me/971526917666" class="tr-final-btn whatsapp">
                         <i class="bi bi-whatsapp"></i>
                         WHATSAPP NOW
                     </a>
@@ -1354,12 +1354,12 @@
 
                         <li>
                             <strong>Phone</strong>
-                            <span>+971 523003423 (24/7)</span>
+                            <span>+971 526917666 (24/7)</span>
                         </li>
 
                         <li>
                             <strong>WhatsApp</strong>
-                            <span>+971 523003423</span>
+                            <span>+971 526917666</span>
                         </li>
 
                         <li>

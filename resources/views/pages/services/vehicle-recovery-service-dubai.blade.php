@@ -178,7 +178,7 @@
                             <a href="{{ route('home') }}" target="_blank" class="theme-btn">
                                 Book Now <i class="fas fa-arrow-right-long"></i>
                             </a>
-                            <a href="tel:+971523003423" class="theme-btn theme-btn2">
+                            <a href="tel:+971526917666" class="theme-btn theme-btn2">
                                 Call Now <i class="fas fa-arrow-right-long"></i>
                             </a>
                         </div>
@@ -266,7 +266,7 @@
                             routes, ensuring professional care for every vehicle, anytime, anywhere in Dubai.</p>
                         <a href="{{ route('home') }}" target="_blank" class="theme-btn mt-2">Book Now<i
                                 class="fa-solid fa-arrow-right-long"></i></a>
-                        <a href="tel:+971 523003423" class="theme-btn mt-2"> Call Now<i
+                        <a href="tel:+971 526917666" class="theme-btn mt-2"> Call Now<i
                                 class="fa-solid fa-arrow-right-long"></i></a>
                     </div>
                 </div>
@@ -997,7 +997,7 @@
                         </ul>
                         <a href="{{ route('home') }}" target="_blank" class="theme-btn mt-2">Book Now<i
                                 class="fa-solid fa-arrow-right-long"></i></a>
-                        <a href="tel:+971 523003423" class="theme-btn mt-2"> Call Now<i
+                        <a href="tel:+971 526917666" class="theme-btn mt-2"> Call Now<i
                                 class="fa-solid fa-arrow-right-long"></i></a>
                     </div>
                 </div>
@@ -1214,7 +1214,7 @@
 
 
             <div class="cta-actions header-actions rapid-help-buttons d-flex align-items-center gap-3 mt-5">
-                <a href="tel:+971523003423" class="theme-btn">
+                <a href="tel:+971526917666" class="theme-btn">
                     Call Now
                 </a>
                 <a href="{{ route('contact') }}" target="_blank" class="theme-btn theme-btn2">

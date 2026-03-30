@@ -16,7 +16,7 @@
     "@type": "AutoRepair",
     "name": "Toretto Recovery",
     "image": "https://www.yourdomain.com/logo.jpg",
-    "telephone": "+971 523003423",
+    "telephone": "+971 526917666",
     "url": "https://www.yourdomain.com/accidental-car-recovery-dubai",
     "priceRange": "$$",
     "address": {
@@ -291,7 +291,7 @@
                             <a href="{{ route('home') }}" target="_blank" class="theme-btn">
                                 Book Now <i class="fas fa-arrow-right-long"></i>
                             </a>
-                            <a href="tel:+971523003423" class="theme-btn theme-btn2">
+                            <a href="tel:+971526917666" class="theme-btn theme-btn2">
                                 Call Now <i class="fas fa-arrow-right-long"></i>
                             </a>
                         </div>

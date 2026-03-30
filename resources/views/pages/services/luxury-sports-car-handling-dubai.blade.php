@@ -200,7 +200,7 @@
                             <a href="{{ route('home') }}" target="_blank" class="theme-btn">
                                 Book Now <i class="fas fa-arrow-right-long"></i>
                             </a>
-                            <a href="tel:+971523003423" class="theme-btn theme-btn2">
+                            <a href="tel:+971526917666" class="theme-btn theme-btn2">
                                 Call Now <i class="fas fa-arrow-right-long"></i>
                             </a>
                         </div>
@@ -1287,7 +1287,7 @@
                         <i class="fa-solid fa-phone"></i>
                         <div>
                             <span class="lsc-faq-cta-label">Still have questions?</span>
-                            <a href="tel:+971523003423" class="lsc-faq-cta-link">
+                            <a href="tel:+971526917666" class="lsc-faq-cta-link">
                                 Call Now <i class="fas fa-arrow-right-long"></i>
                             </a>
                         </div>

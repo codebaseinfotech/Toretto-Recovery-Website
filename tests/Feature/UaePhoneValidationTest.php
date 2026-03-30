@@ -44,7 +44,7 @@ class UaePhoneValidationTest extends TestCase
 
         Http::assertSent(function (Request $request) {
             return $request->url() === 'https://example.com/api/v1/common/contact-us'
-                && $request['phone'] === '523003423';
+                && $request['phone'] === '526917666';
         });
     }
 
@@ -73,15 +73,15 @@ class UaePhoneValidationTest extends TestCase
         ]);
 
         $response = $this->postJson('/login-otp', [
-            'phone' => '0523003423',
+            'phone' => '0526917666',
         ]);
 
         $response->assertOk();
-        $response->assertJsonPath('data.phone', '523003423');
+        $response->assertJsonPath('data.phone', '526917666');
 
         Http::assertSent(function (Request $request) {
             return $request->url() === 'https://example.com/api/v1/customer/login'
-                && $request['phone'] === '523003423'
+                && $request['phone'] === '526917666'
                 && $request['country_code'] === '+971';
         });
     }

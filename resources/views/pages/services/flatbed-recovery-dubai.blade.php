@@ -23,7 +23,7 @@
   "image": "https://torettorecovery.ae/images/flatbed-recovery-service.jpg",
   "@id": "https://torettorecovery.ae/flatbed-recovery-dubai",
   "url": "https://torettorecovery.ae/flatbed-recovery-dubai",
-  "telephone": "+971 523003423",
+  "telephone": "+971 526917666",
   "priceRange": "AED 300 - AED 1500",
   "address": {
     "@type": "PostalAddress",
@@ -130,7 +130,7 @@
   "provider": {
     "@type": "AutoRepair",
     "name": "Toretto Recovery",
-    "telephone": "+971 523003423",
+    "telephone": "+971 526917666",
     "url": "https://torettorecovery.ae"
   },
   "areaServed": {
@@ -291,7 +291,7 @@
                             <a target="_blank" href="{{ route('home') }}" class="theme-btn">
                                 Book Now <i class="fas fa-arrow-right-long"></i>
                             </a>
-                            <a href="tel:+971523003423" class="theme-btn theme-btn2">
+                            <a href="tel:+971526917666" class="theme-btn theme-btn2">
                                 Call Now <i class="fas fa-arrow-right-long"></i>
                             </a>
                         </div>
@@ -1605,7 +1605,7 @@
                     </ul>
                 </div>
 
-                <a href="tel:+971523003423" class="theme-btn theme-btn2">
+                <a href="tel:+971526917666" class="theme-btn theme-btn2">
                     Call Now <i class="fas fa-arrow-right-long"></i>
                 </a>
             </div>
