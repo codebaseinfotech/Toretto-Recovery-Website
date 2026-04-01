@@ -178,7 +178,7 @@
                             target="_blank">towing company in Deira</a> makes all the difference.</p>
                 </div>
                 <div class="de-what-img-wrap">
-                    <img src="{{ asset('assets/images/breakdown-recovery-deira-dubai.jpg') }}"
+                    <img src="{{ asset('assets/images/breakdown-recovery-deira-dubai (1).jpg') }}"
                         alt="Breakdown recovery in Deira Dubai" class="de-what-img">
                 </div>
             </div>

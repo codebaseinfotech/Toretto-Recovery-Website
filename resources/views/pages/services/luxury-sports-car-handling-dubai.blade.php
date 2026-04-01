@@ -256,7 +256,7 @@
                 <div class="col-lg-6 imagebag">
                     <div class="about-left wow animate__animated animate__fadeInLeft">
                         <div class="about-img">
-                            <img src="{{ asset('assets/images/luxury-car-recovery-from-illegel-parked.jpg') }}"
+                            <img src="{{ asset('assets/images/luxury-car-recovery-from-illegel-parkeda.jpg') }}"
                                 alt="">
                         </div>
                     </div>

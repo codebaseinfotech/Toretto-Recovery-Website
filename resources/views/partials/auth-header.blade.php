@@ -193,9 +193,9 @@
     <div class="collapse mobile-slide-menu d-xl-none" id="mobile_nav">
         <div class="mobile-menu-inner">
 
-            <div class="mobile-menu-header d-flex justify-content-between align-items-center">
+            <div class="mobile-menu-header d-flex justify-content-between align-items-center" style="margin-right: 1rem;">
                 <a class="navbar-brand" href="{{ route('home') }}">
-                    <img src="./assets/images/logo (1).png" alt="Toretto Recovery">
+                   <img src="{{ asset('assets/images/logo (1).png') }}" alt="Toretto Recovery">
                 </a>
 
                 <!-- CLOSE TOGGLER -->

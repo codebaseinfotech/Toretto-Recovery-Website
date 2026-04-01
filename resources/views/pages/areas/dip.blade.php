@@ -32,7 +32,7 @@
             "postalCode": "00000"
           },
           "geo": { "@type": "GeoCoordinates", "latitude": "24.9964", "longitude": "55.1597" },
-          "telephone": "+971563240477",
+          "telephone": "+971526917666",
           "email": "customercare@toretto.ae",
           "openingHoursSpecification": [{
             "@type": "OpeningHoursSpecification",
@@ -75,7 +75,7 @@
             {"@type":"Question","name":"Do you handle heavy truck and fleet vehicle recovery?","acceptedAnswer":{"@type":"Answer","text":"Heavy vehicle towing is a core service. We recover lorries, trailers, delivery trucks, staff buses, and commercial vehicles using purpose-built heavy-duty recovery rigs. Fleet contracts with priority dispatch are also available for logistics companies based in DIP."}},
             {"@type":"Question","name":"Can you safely tow a Ferrari, Lamborghini, or luxury car?","acceptedAnswer":{"@type":"Answer","text":"Yes. We use flatbed tow trucks and soft straps only for low-clearance and high-value vehicles. No wheel-lift, no dragging. Luxury and sports car recovery is handled with the same equipment and care as any high-ticket asset."}},
             {"@type":"Question","name":"What does car recovery cost in Dubai Investment Park?","acceptedAnswer":{"@type":"Answer","text":"Light vehicle recovery within DIP starts from approximately AED 150–250. Heavy vehicle towing, basement pull-out, and specialist recoveries are priced on request. We provide transparent upfront pricing before dispatch — no hidden fees."}},
-            {"@type":"Question","name":"What to do if my car breaks down in Dubai Investment Park?","acceptedAnswer":{"@type":"Answer","text":"Stay with your vehicle in a safe position away from traffic. Turn on hazard lights. Call or WhatsApp Toretto Recovery on +971563240477. Share your location pin or nearest warehouse/road name. Our nearest truck will be dispatched immediately."}}
+            {"@type":"Question","name":"What to do if my car breaks down in Dubai Investment Park?","acceptedAnswer":{"@type":"Answer","text":"Stay with your vehicle in a safe position away from traffic. Turn on hazard lights. Call or WhatsApp Toretto Recovery on +971526917666. Share your location pin or nearest warehouse/road name. Our nearest truck will be dispatched immediately."}}
           ]
         }
         </script>
@@ -99,7 +99,7 @@
     {{-- BREADCRUMB --}}
     <section class="site-breadcrumb" style="background:url('{{ asset('assets/images/contact-bg.jpg') }}')">
         <div class="container">
-            <h1 class="breadcrumb-title-areas">Industrial & Fleet Recovery Specialist in Dubai Investment Park</h1>
+            <h1 class="breadcrumb-title-areas">Dubai Investment Park</h1>
             <ul class="breadcrumb-menu">
                 <li>
                     <a href="{{ route('home') }}">Home</a>
@@ -143,10 +143,10 @@
 
                     {{-- 3 CTA Buttons --}}
                     <div class="dip-hero-cta-row">
-                        <a href="tel:+971563240477" class="dip-cta-call">
-                            <i class="fas fa-phone-alt"></i> Call Now — +971 56 324 0477
+                        <a href="tel:+971526917666" class="dip-cta-call">
+                            <i class="fas fa-phone-alt"></i> Call Now — +971 526917666
                         </a>
-                        <a href="https://wa.me/971563240477" target="_blank" class="dip-cta-whatsapp">
+                        <a href="https://wa.me/971526917666" target="_blank" class="dip-cta-whatsapp">
                             <i class="fab fa-whatsapp"></i> WhatsApp Recovery
                         </a>
                         <a href="{{ route('book.now') }}" target="_blank" class="dip-cta-help">
@@ -848,7 +848,7 @@
                     </div>
                 </div>
                 <div class="dip-s10-cta-btns">
-                    <a href="tel:+971563240477" class="dip-s10-btn dip-s10-btn-primary">
+                    <a href="tel:+971526917666" class="dip-s10-btn dip-s10-btn-primary">
                         <i class="fas fa-phone-alt"></i>
                         <div class="dip-btn-text">
                             <span class="dip-btn-title">Call Now</span>

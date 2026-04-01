@@ -327,7 +327,7 @@
     align-items: flex-start;
     gap: 12px;
     background: linear-gradient(135deg, #111 0%, #1a1a1a 100%);
-    color: rgba(255,255,255,0.85);
+    color: rgba(255,255,255,0.85) !important;
     padding: 20px 24px;
     border-radius: 14px;
     border-left: 4px solid #d70006;
