@@ -2,6 +2,14 @@
 <html lang="en">
 
 <head>
+    <script>
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id=GTM-K8T3NS2S'+dl;
+    f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-K8T3NS2S');
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="api-token" content="{{ session('token') }}">
@@ -142,11 +150,11 @@
 
         gtag('config', 'G-62X9L82MBP');
     </script>
-    {{-- SEO / SCHEMA GOES HERE HEAD UNDER BAR --}}
-    {{-- @yield('schema') --}}
 </head>
 
 <body>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K8T3NS2S"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     @include('partials.topbar')
 
@@ -173,12 +181,10 @@
     </div>
 
 
-    {{-- PAGE CONTENT --}}
     @yield('content')
 
     @include('partials.footer')
 
-    {{-- JS --}}
     <script src="{{ asset('assets/js/jquery-3.5.1.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/js/owl.carousel.min.js') }}"></script>
