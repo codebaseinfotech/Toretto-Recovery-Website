@@ -3034,7 +3034,6 @@
 
             return `
                 <div class="driver-info-card">
-                    <div class="driver-info-title">Current Location</div>
                     <p class="driver-info-address">${escapeHtml(locationText)}</p>
                     <div class="driver-info-meta ${isLoadingAddress ? 'loading' : ''}">
                         <span class="driver-info-pin"></span>
