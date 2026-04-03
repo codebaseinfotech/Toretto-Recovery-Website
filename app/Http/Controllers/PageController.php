@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Support\UaePhoneNumber;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class PageController extends Controller
 {
@@ -261,13 +263,40 @@ class PageController extends Controller
 
         $apiUrl = config('services.api.base_url') . '/v1/common/contact-us';
 
-        $response = Http::timeout(10)
-            ->post($apiUrl, $validated);
+        try {
+            $response = Http::acceptJson()
+                ->timeout(10)
+                ->post($apiUrl, $validated);
 
-        if ($response->successful()) {
-            return back()->with('success', 'Thank you for your message! We will get back to you soon.');
+            if ($response->successful()) {
+                return back()->with('success', 'Thank you for your message! We will get back to you soon.');
+            }
+
+            Log::warning('Contact form API request failed.', [
+                'api_url' => $apiUrl,
+                'status' => $response->status(),
+                'response_body' => substr((string) $response->body(), 0, 1000),
+                'type' => $validated['type'] ?? null,
+                'email' => $validated['email'] ?? null,
+            ]);
+        } catch (ConnectionException $e) {
+            Log::error('Contact form API connection failed.', [
+                'api_url' => $apiUrl,
+                'message' => $e->getMessage(),
+                'type' => $validated['type'] ?? null,
+                'email' => $validated['email'] ?? null,
+            ]);
+        } catch (\Throwable $e) {
+            Log::error('Contact form API request crashed.', [
+                'api_url' => $apiUrl,
+                'message' => $e->getMessage(),
+                'type' => $validated['type'] ?? null,
+                'email' => $validated['email'] ?? null,
+            ]);
         }
 
-        return back()->with('error', 'Failed to submit form. Please try again later.');
+        return back()
+            ->withInput()
+            ->with('error', 'We could not submit your request right now. Please call +971 52 691 7666 while we fix this.');
     }
 }

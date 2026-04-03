@@ -1080,6 +1080,116 @@
             object-fit: contain;
             display: block;
         }
+
+        .gm-style .gm-style-iw-c {
+            border-radius: 18px !important;
+            padding: 0 !important;
+            box-shadow: 0 18px 45px rgba(15, 23, 42, 0.20) !important;
+            overflow: hidden !important;
+        }
+
+        .gm-style .gm-style-iw-d {
+            overflow: hidden !important;
+            max-height: none !important;
+        }
+
+        .gm-style button.gm-ui-hover-effect {
+            top: 10px !important;
+            right: 10px !important;
+            opacity: 0.78;
+        }
+
+        .driver-info-card {
+            min-width: 250px;
+            max-width: 290px;
+            padding: 18px 18px 16px;
+            background:
+                radial-gradient(circle at top right, rgba(215, 0, 6, 0.08), transparent 38%),
+                linear-gradient(180deg, #ffffff 0%, #fff8f2 100%);
+            color: #111827;
+            font-family: inherit;
+        }
+
+        .driver-info-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(215, 0, 6, 0.08);
+            color: #b91c1c;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .driver-info-badge-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #d70006;
+            box-shadow: 0 0 0 4px rgba(215, 0, 6, 0.12);
+            flex-shrink: 0;
+        }
+
+        .driver-info-title {
+            margin-top: 14px;
+            margin-bottom: 8px;
+            font-size: 18px;
+            font-weight: 800;
+            line-height: 1.2;
+            color: #111827;
+        }
+
+        .driver-info-address {
+            margin: 0;
+            font-size: 13px;
+            line-height: 1.7;
+            color: #5b6472;
+            word-break: break-word;
+        }
+
+        .driver-info-meta {
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(17, 24, 39, 0.08);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #7c8697;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .driver-info-pin {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            color: #d70006;
+            border: 1px solid rgba(215, 0, 6, 0.15);
+            box-shadow: 0 8px 20px rgba(215, 0, 6, 0.10);
+            flex-shrink: 0;
+        }
+
+        .driver-info-pin::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #d70006;
+            display: block;
+        }
+
+        .driver-info-meta.loading {
+            color: #9ca3af;
+        }
     </style>
 @endpush
 
@@ -2455,11 +2565,15 @@
             socket: null,
             socketStarted: false,
             joinedBookingRooms: {},
+            addressCache: {},
+            pendingAddressRequests: {},
+            geocoder: null,
         });
 
         let dashMarkers = dashMapState.markers; // shared marker store
         let dashDriversById = dashMapState.driversById; // shared drivers store
         let dashInfoWindow = null;
+        let dashActiveInfoDriverId = null;
         let dashTimer = null;
         let dashStarted = false;
         let dashSocket = dashMapState.socket;
@@ -2700,6 +2814,8 @@
                 driver_id: base.driver_id ?? base.id ?? base.driverId ?? base.user_id,
                 current_lat: base.current_lat ?? base.lat ?? base.latitude,
                 current_lng: base.current_lng ?? base.lng ?? base.longitude,
+                current_address: base.current_address ?? base.address ?? base.formatted_address ?? base.location_name ??
+                    base.location_address,
                 active_booking_id: base.active_booking_id ?? base.booking_id ?? base.bookingId,
                 booking_id: base.booking_id ?? base.active_booking_id ?? base.bookingId,
                 full_name: base.full_name ?? base.name,
@@ -2729,6 +2845,12 @@
             targetDriver.vehicle_type = preferIncomingOrExisting(targetDriver.vehicle_type, incomingDriver?.vehicle_type,
                 "Truck");
             targetDriver.mobile = preferIncomingOrExisting(targetDriver.mobile, incomingDriver?.mobile, "N/A");
+            targetDriver.current_address = preferIncomingOrExisting(
+                targetDriver.current_address,
+                incomingDriver?.current_address ?? incomingDriver?.address ?? incomingDriver?.formatted_address ??
+                incomingDriver?.location_name ?? incomingDriver?.location_address,
+                ""
+            );
 
             const isOnline = parseOptionalBoolean(incomingDriver?.is_online);
             if (isOnline !== null) {
@@ -2772,6 +2894,7 @@
                 vehicle_number: "",
                 vehicle_type: "",
                 mobile: "",
+                current_address: "",
                 active_booking_id: null,
                 is_online: false,
                 has_active_job: false,
@@ -2817,25 +2940,120 @@
             }
         }
 
+        function formatDriverCoordinates(driver) {
+            const latLng = parseDriverLatLng(driver);
+            if (!latLng) return "Location unavailable";
+            return `${latLng.lat.toFixed(5)}, ${latLng.lng.toFixed(5)}`;
+        }
+
+        function getDriverAddressCacheKey(driver) {
+            const latLng = parseDriverLatLng(driver);
+            if (!latLng) return "";
+            return `${latLng.lat.toFixed(5)},${latLng.lng.toFixed(5)}`;
+        }
+
+        function getDriverAddressText(driver) {
+            return normalizeText(
+                driver?.current_address ??
+                driver?.address ??
+                driver?.formatted_address ??
+                driver?.location_name ??
+                driver?.location_address
+            );
+        }
+
+        function getDashGeocoder() {
+            if (!window.google || !google.maps || typeof google.maps.Geocoder !== "function") {
+                return null;
+            }
+
+            if (!dashMapState.geocoder) {
+                dashMapState.geocoder = new google.maps.Geocoder();
+            }
+
+            return dashMapState.geocoder;
+        }
+
+        function reverseGeocodeDriverAddress(driver) {
+            const latLng = parseDriverLatLng(driver);
+            const cacheKey = getDriverAddressCacheKey(driver);
+            if (!latLng || !cacheKey) return Promise.resolve("");
+
+            const cachedAddress = normalizeText(dashMapState.addressCache[cacheKey]);
+            if (cachedAddress) return Promise.resolve(cachedAddress);
+
+            if (dashMapState.pendingAddressRequests[cacheKey]) {
+                return dashMapState.pendingAddressRequests[cacheKey];
+            }
+
+            const geocoder = getDashGeocoder();
+            if (!geocoder) return Promise.resolve("");
+
+            dashMapState.pendingAddressRequests[cacheKey] = new Promise((resolve) => {
+                geocoder.geocode({
+                    location: latLng
+                }, (results, status) => {
+                    const address = status === "OK" && results && results.length > 0 ?
+                        normalizeText(results[0].formatted_address) :
+                        "";
+
+                    if (address) {
+                        dashMapState.addressCache[cacheKey] = address;
+                    }
+
+                    delete dashMapState.pendingAddressRequests[cacheKey];
+                    resolve(address);
+                });
+            });
+
+            return dashMapState.pendingAddressRequests[cacheKey];
+        }
+
+        async function ensureDriverAddress(driverId) {
+            const driver = dashDriversById[driverId];
+            if (!driver) return "";
+
+            const existingAddress = getDriverAddressText(driver);
+            if (existingAddress) {
+                driver.current_address = existingAddress;
+                return existingAddress;
+            }
+
+            const resolvedAddress = await reverseGeocodeDriverAddress(driver);
+            if (resolvedAddress && dashDriversById[driverId]) {
+                dashDriversById[driverId].current_address = resolvedAddress;
+            }
+
+            return resolvedAddress;
+        }
+
         function buildDriverInfoHtml(driver) {
-            const title = driver?.full_name || "Driver";
-            const vehicleText = `${driver?.vehicle_type || "Truck"} - ${driver?.vehicle_number || "N/A"}`;
-            const mobile = driver?.mobile || "N/A";
+            const address = getDriverAddressText(driver);
+            const locationText = address || formatDriverCoordinates(driver);
+            const isLoadingAddress = !address;
 
             return `
-                <div style="min-width:210px">
-                    <div style="font-weight:800;margin-bottom:4px">${escapeHtml(title)}</div>
-                    <div style="font-size:12px;color:#666">${escapeHtml(vehicleText)}</div>
-                    <div style="font-size:12px;color:#666;margin-top:6px">Phone: ${escapeHtml(mobile)}</div>
+                <div class="driver-info-card">
+                    <div class="driver-info-badge">
+                        <span class="driver-info-badge-dot"></span>
+                        Live Truck
+                    </div>
+                    <div class="driver-info-title">Current Location</div>
+                    <p class="driver-info-address">${escapeHtml(locationText)}</p>
+                    <div class="driver-info-meta ${isLoadingAddress ? 'loading' : ''}">
+                        <span class="driver-info-pin"></span>
+                        ${isLoadingAddress ? 'Locating address...' : 'Updated from live map position'}
+                    </div>
                 </div>
             `;
         }
 
-        function openDriverInfoWindow(driverId, marker) {
+        async function openDriverInfoWindow(driverId, marker) {
             if (!dashInfoWindow || !map) return;
             const driver = dashDriversById[driverId];
             if (!driver) return;
 
+            dashActiveInfoDriverId = driverId;
             dashInfoWindow.setContent(buildDriverInfoHtml(driver));
 
             try {
@@ -2846,6 +3064,14 @@
             } catch (e) {
                 dashInfoWindow.open(map, marker);
             }
+
+            const resolvedAddress = await ensureDriverAddress(driverId);
+            if (!resolvedAddress || dashActiveInfoDriverId !== driverId || !dashInfoWindow) return;
+
+            const updatedDriver = dashDriversById[driverId];
+            if (!updatedDriver) return;
+
+            dashInfoWindow.setContent(buildDriverInfoHtml(updatedDriver));
         }
 
         function bindDriverMarkerClick(marker, driverId) {
@@ -3098,7 +3324,12 @@
                     return;
                 }
 
-                if (!dashInfoWindow) dashInfoWindow = new google.maps.InfoWindow();
+                if (!dashInfoWindow) {
+                    dashInfoWindow = new google.maps.InfoWindow();
+                    dashInfoWindow.addListener("closeclick", () => {
+                        dashActiveInfoDriverId = null;
+                    });
+                }
 
                 initDashMarkerLibrary();
                 startDashSocketDrivers();
