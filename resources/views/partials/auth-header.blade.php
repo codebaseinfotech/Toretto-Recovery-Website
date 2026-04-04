@@ -18,6 +18,18 @@
                     <ul class="dropdown-menu">
                         <li>
                             <a class="dropdown-item"
+                                href="{{ route('our-service.ourservice', 'emergency-fuel-delivery-dubai') }}">
+                                Emergency Fuel Delivery
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item"
+                                href="{{ route('our-service.ourservice', 'battery-jump-start-dubai') }}">
+                                Battery Jump Start
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item"
                                 href="{{ route('our-service.ourservice', 'towing-service-dubai') }}">
                                 Towing Service
                             </a>
@@ -212,6 +224,18 @@
                         OUR SERVICES
                     </a>
                     <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item"
+                                href="{{ route('our-service.ourservice', 'emergency-fuel-delivery-dubai') }}">
+                                Emergency Fuel Delivery
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item"
+                                href="{{ route('our-service.ourservice', 'battery-jump-start-dubai') }}">
+                                Battery Jump Start
+                            </a>
+                        </li>
                         <li>
                             <a class="dropdown-item"
                                 href="{{ route('our-service.ourservice', 'towing-service-dubai') }}">

@@ -63,7 +63,7 @@
                         </div>
 
                         <div class="qr-code">
-                            <img src="{{ asset('assets/images/qr-code.png') }}" alt="QR Code">
+                            <img src="{{ asset('assets/images/QR.png') }}" alt="QR Code">
                         </div>
                     </div>
                 </div>

@@ -189,6 +189,8 @@ class PageController extends Controller
     public function ourService($slug)
     {
         $services = [
+            'emergency-fuel-delivery-dubai',
+            'battery-jump-start-dubai',
             'towing-service-dubai',
             'roadside-assistance-dubai',
             'vehicle-recovery-service-dubai',
