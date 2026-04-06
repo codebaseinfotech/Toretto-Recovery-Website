@@ -8,62 +8,62 @@
 
 {{-- OTP VERIFY SECTION --}}
 <section class="otp-section">
-        <div class="container">
-            <div class="otp-wrapper row" data-aos="fade-up" data-aos-duration="500">
-                <div class="col-lg-6 align-content-center">
-                    <div class="left-container">
-                        <img src="{{ asset('assets/images/otp-verify.png') }}" alt="">
-                    </div>
+    <div class="container">
+        <div class="otp-wrapper row" data-aos="fade-up" data-aos-duration="500">
+            <div class="col-lg-6 align-content-center">
+                <div class="left-container">
+                    <img src="{{ asset('assets/images/otp-verify.png') }}" alt="">
                 </div>
-                <div class="col-lg-6 align-content-center">
-                    <div class="right-container">
-                        <div class="section-heading" data-aos="fade-up" data-aos-duration="500">
-                            <h2 class="section-title">Verify Your <span> OTP </span></h2>
-                            <p>We’ve sent a 6-digit verification code to your registered mobile number</p>
+            </div>
+            <div class="col-lg-6 align-content-center">
+                <div class="right-container">
+                    <div class="section-heading" data-aos="fade-up" data-aos-duration="500">
+                        <h2 class="section-title">Verify Your <span> OTP </span></h2>
+                        <p>We've sent a 6-digit verification code to your registered mobile number</p>
+                    </div>
+
+                    <form class="otp-card" id="OtpForm" method="POST" action="{{ route('otp.verify') }}" novalidate>
+                        @csrf
+
+                        <div class="otp-inputs">
+                            <input type="text" maxlength="1" class="otp-input" id="otp1" inputmode="numeric" pattern="[0-9]*">
+                            <input type="text" maxlength="1" class="otp-input" id="otp2" inputmode="numeric" pattern="[0-9]*">
+                            <input type="text" maxlength="1" class="otp-input" id="otp3" inputmode="numeric" pattern="[0-9]*">
+                            <input type="text" maxlength="1" class="otp-input" id="otp4" inputmode="numeric" pattern="[0-9]*">
+                            <input type="text" maxlength="1" class="otp-input" id="otp5" inputmode="numeric" pattern="[0-9]*">
+                            <input type="text" maxlength="1" class="otp-input" id="otp6" inputmode="numeric" pattern="[0-9]*">
+                            <input type="hidden" name="otp" id="hiddenOtp">
+                            <input type="hidden" name="latitude" id="latitude">
+                            <input type="hidden" name="longitude" id="longitude">
                         </div>
 
-                        <form class="otp-card" id="OtpForm" method="POST" action="{{ route('otp.verify') }}" novalidate>
-                            @csrf
+                        <input type="hidden" name="base_url" value="{{ request()->has('x') ? 'x=' . request('x') : '' }}">
+                        <div id="otpError" class="error-message text-danger mt-2 text-center" style="min-height: 24px;"></div>
 
-                             <div class="otp-inputs">
-                                <input type="text" maxlength="1" class="otp-input" id="otp1" inputmode="numeric" pattern="[0-9]*">
-                                <input type="text" maxlength="1" class="otp-input" id="otp2" inputmode="numeric" pattern="[0-9]*">
-                                <input type="text" maxlength="1" class="otp-input" id="otp3" inputmode="numeric" pattern="[0-9]*">
-                                <input type="text" maxlength="1" class="otp-input" id="otp4" inputmode="numeric" pattern="[0-9]*">
-                                <input type="text" maxlength="1" class="otp-input" id="otp5" inputmode="numeric" pattern="[0-9]*">
-                                <input type="text" maxlength="1" class="otp-input" id="otp6" inputmode="numeric" pattern="[0-9]*">
-                                <input type="hidden" name="otp" id="hiddenOtp">
-                                {{-- Filled automatically from browser geolocation on page load --}}
-                                <input type="hidden" name="latitude" id="latitude">
-                                <input type="hidden" name="longitude" id="longitude">
-                            </div>
-                            <input type="hidden" name="base_url" value="{{ request()->has('x') ? 'x=' . request('x') : '' }}">
-                            <div id="otpError" class="error-message text-danger mt-2 text-center" style="min-height: 24px;"></div>
+                        <button type="submit" class="btn-submit theme-btn" id="otpSubmitBtn">
+                            <span class="btn-text">VERIFY AND CONTINUE</span>
+                            <span class="btn-loader d-none">
+                                <div class="beat-loader">
+                                    <div class="beat"></div>
+                                    <div class="beat"></div>
+                                    <div class="beat"></div>
+                                    <div class="beat"></div>
+                                    <div class="beat"></div>
+                                    <div class="beat"></div>
+                                </div>
+                            </span>
+                        </button>
+                    </form>
 
-                            <button type="submit" class="btn-submit theme-btn" id="otpSubmitBtn">
-                                <span class="btn-text">VERIFY AND CONTINUE</span>
-                                <span class="btn-loader d-none">
-                                    <div class="beat-loader">
-                                        <div class="beat"></div>
-                                        <div class="beat"></div>
-                                        <div class="beat"></div>
-                                        <div class="beat"></div>
-                                        <div class="beat"></div>
-                                        <div class="beat"></div>
-                                    </div>
-                                </span>
-                            </button>
-                        </form>
-
-                        <p class="resend-otp-text">
-                            Resend OTP in <span id="timer">00:30</span>
-                        </p>
+                    <div class="resend-otp-text">
+                        <span id="resendOtpCountdown">Resend OTP in <span id="timer">00:30</span></span>
+                        <button type="button" id="resendOtpBtn" class="btn btn-link p-0 d-none" style="color: #d70006;">Resend OTP</button>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 </section>
-
 
 @if(session('otp-success'))
 <div class="toast-container position-fixed top-0 end-0 p-3 animate__animated animate__fadeInRight" style="z-index: 1055; margin-top:10px;">
@@ -109,24 +109,112 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 @endif
 
-
 @endsection
 
 @push('otp-script')
 <script>
-// otp-verify page
-
 document.addEventListener('DOMContentLoaded', function () {
-
     const otpForm = document.getElementById('OtpForm');
+    if (!otpForm) {
+        return;
+    }
+
     const inputs = otpForm.querySelectorAll('.otp-input');
     const errorMsg = document.getElementById('otpError');
     const timerEl = document.getElementById('timer');
+    const resendOtpBtn = document.getElementById('resendOtpBtn');
+    const resendOtpCountdown = document.getElementById('resendOtpCountdown');
     const latInput = document.getElementById('latitude');
     const lngInput = document.getElementById('longitude');
     const otpBtn = document.getElementById('otpSubmitBtn');
     const otpBtnText = otpBtn ? otpBtn.querySelector('.btn-text') : null;
     const otpBtnLoader = otpBtn ? otpBtn.querySelector('.btn-loader') : null;
+    const resendUrl = @json(route('login.send'));
+    const resendCooldownSeconds = 30;
+    const resendStorageKey = 'otp_resend_available_at';
+
+    let resendInterval = null;
+
+    function formatSeconds(totalSeconds) {
+        const safeSeconds = Math.max(0, totalSeconds);
+        const minutes = String(Math.floor(safeSeconds / 60)).padStart(2, '0');
+        const seconds = String(safeSeconds % 60).padStart(2, '0');
+
+        return `${minutes}:${seconds}`;
+    }
+
+    function setOtpButtonLoading(isLoading) {
+        if (!otpBtn || !otpBtnText || !otpBtnLoader) {
+            return;
+        }
+
+        otpBtn.disabled = isLoading;
+        otpBtnText.classList.toggle('d-none', isLoading);
+        otpBtnLoader.classList.toggle('d-none', !isLoading);
+    }
+
+    function toggleResendState(canResend) {
+        if (resendOtpCountdown) {
+            resendOtpCountdown.classList.toggle('d-none', canResend);
+        }
+
+        if (resendOtpBtn) {
+            resendOtpBtn.classList.toggle('d-none', !canResend);
+            resendOtpBtn.disabled = !canResend;
+        }
+    }
+
+    function stopResendTimer() {
+        if (resendInterval) {
+            clearInterval(resendInterval);
+            resendInterval = null;
+        }
+    }
+
+    function startResendTimer(durationInSeconds = resendCooldownSeconds) {
+        const availableAt = Date.now() + (durationInSeconds * 1000);
+        localStorage.setItem(resendStorageKey, String(availableAt));
+        stopResendTimer();
+        toggleResendState(false);
+
+        const updateTimer = () => {
+            const remainingSeconds = Math.ceil((availableAt - Date.now()) / 1000);
+
+            if (remainingSeconds <= 0) {
+                stopResendTimer();
+                localStorage.removeItem(resendStorageKey);
+                if (timerEl) {
+                    timerEl.textContent = formatSeconds(0);
+                }
+                toggleResendState(true);
+                return;
+            }
+
+            if (timerEl) {
+                timerEl.textContent = formatSeconds(remainingSeconds);
+            }
+        };
+
+        updateTimer();
+        resendInterval = setInterval(updateTimer, 1000);
+    }
+
+    function restoreResendTimer() {
+        const storedValue = Number(localStorage.getItem(resendStorageKey) || 0);
+        const remainingSeconds = Math.ceil((storedValue - Date.now()) / 1000);
+
+        if (remainingSeconds > 0) {
+            startResendTimer(remainingSeconds);
+            return;
+        }
+
+        localStorage.removeItem(resendStorageKey);
+        if (timerEl) {
+            timerEl.textContent = formatSeconds(resendCooldownSeconds);
+        }
+        toggleResendState(true);
+    }
+
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             position => {
@@ -148,9 +236,7 @@ document.addEventListener('DOMContentLoaded', function () {
         console.warn('Geolocation is not supported by this browser.');
     }
 
-    /* 🔢 Numeric only + auto focus */
     inputs.forEach((input, index) => {
-
         input.addEventListener('input', () => {
             input.value = input.value.replace(/\D/g, '');
 
@@ -166,7 +252,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    /* 🚀 Submit OTP */
     otpForm.addEventListener('submit', function (e) {
         e.preventDefault();
 
@@ -193,155 +278,161 @@ document.addEventListener('DOMContentLoaded', function () {
         if (errorMsg) {
             errorMsg.textContent = '';
         }
-        // Add hidden input if not exists
-        if (!document.getElementById('hiddenOtp')) {
-            let hiddenOtpInput = document.createElement('input');
-            hiddenOtpInput.type = 'hidden';
-            hiddenOtpInput.name = 'otp';
-            hiddenOtpInput.id = 'hiddenOtp';
-            otpForm.appendChild(hiddenOtpInput);
-        }
 
-        // Set the combined OTP in hidden input
         document.getElementById('hiddenOtp').value = otp;
-
-        // Show loader on button while submitting
-        if (otpBtn && otpBtnText && otpBtnLoader) {
-            otpBtn.disabled = true;
-            otpBtnText.classList.add('d-none');
-            otpBtnLoader.classList.remove('d-none');
-        }
+        setOtpButtonLoading(true);
 
         const phoneFromStorage = localStorage.getItem('phone_for_verification') || '';
+        const csrfToken = document.querySelector('input[name="_token"]');
+        const baseUrlInput = document.querySelector('input[name="base_url"]');
 
-        // AJAX submit
         window.ApiUtils.fetch(otpForm.action, {
             method: 'POST',
             headers: {
-                'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                'X-CSRF-TOKEN': csrfToken ? csrfToken.value : '',
                 'X-Requested-With': 'XMLHttpRequest',
                 'X-Phone-Verification': phoneFromStorage
             },
             body: JSON.stringify({
                 phone: phoneFromStorage,
                 otp: otp,
-                base_url:document.querySelector('input[name="base_url"]').value ,
+                base_url: baseUrlInput ? baseUrlInput.value : '',
                 latitude: latInput ? latInput.value : null,
                 longitude: lngInput ? lngInput.value : null,
-                _token: document.querySelector('input[name="_token"]').value
+                _token: csrfToken ? csrfToken.value : ''
             })
         })
         .then(response => response.json())
         .then(data => {
-            // Hide loader
-            if (otpBtn && otpBtnText && otpBtnLoader) {
-                otpBtn.disabled = false;
-                otpBtnText.classList.remove('d-none');
-                otpBtnLoader.classList.add('d-none');
-            }
+            setOtpButtonLoading(false);
 
             if (data.status === true) {
-                // Store token and user data in localStorage
                 if (data.token) {
                     localStorage.setItem('auth_token', data.token);
                     localStorage.setItem('user_data', JSON.stringify(data.user || {}));
                 }
 
-                // Show success toast
                 showToast(data.message, 'success');
-                console.log(data.message);
-                console.log(data.redirect);
-                // Redirect
-                if (data.redirect) {
-                    // Ensure token is stored in localStorage before redirect
-                    if (data.token) {
-                        localStorage.setItem('auth_token', data.token);
-                        localStorage.setItem('user_data', JSON.stringify(data.user || {}));
-                    }
 
-                    // Wait for a moment to ensure everything is set, then redirect
+                if (data.redirect) {
                     setTimeout(() => {
                         window.location.href = data.redirect;
                     }, 1500);
                 }
             } else {
-                // Show error toast
-                showToast((data.message || 'Invalid OTP'), 'error');
+                showToast(data.message || 'Invalid OTP', 'error');
+
                 if (errorMsg) {
                     errorMsg.textContent = data.message || 'Invalid OTP';
                 }
 
-                // Clear OTP fields
                 inputs.forEach(input => {
                     input.value = '';
                     input.classList.add('is-invalid');
                 });
-                inputs[0].focus();
+
+                if (inputs[0]) {
+                    inputs[0].focus();
+                }
             }
         })
-        .catch(error => {
-            // Hide loader
-            if (otpBtn && otpBtnText && otpBtnLoader) {
-                otpBtn.disabled = false;
-                otpBtnText.classList.remove('d-none');
-                otpBtnLoader.classList.add('d-none');
-            }
-
+        .catch(() => {
+            setOtpButtonLoading(false);
             showToast('Network error. Please try again.', 'error');
+
             if (errorMsg) {
                 errorMsg.textContent = 'Network error. Please try again.';
             }
         });
     });
 
-    /* ⏱ Resend OTP Timer */
-    let time = 30;
-    const interval = setInterval(() => {
-        time--;
+    restoreResendTimer();
 
-        let sec = time < 10 ? '0' + time : time;
-        timerEl.textContent = '00:' + sec;
+    if (resendOtpBtn) {
+        resendOtpBtn.addEventListener('click', function () {
+            const phoneFromStorage = localStorage.getItem('phone_for_verification') || '';
+            const baseUrlInput = document.querySelector('input[name="base_url"]');
+            const csrfToken = document.querySelector('input[name="_token"]');
 
-        if (time <= 0) {
-            clearInterval(interval);
-            timerEl.textContent = 'Resend OTP';
-            timerEl.style.cursor = 'pointer';
+            if (!phoneFromStorage) {
+                showToast('Phone number not found. Please go back and try again.', 'error');
+                return;
+            }
 
-            timerEl.addEventListener('click', () => {
-                location.reload();
+            resendOtpBtn.disabled = true;
+
+            window.ApiUtils.fetch(resendUrl, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken ? csrfToken.value : '',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify({
+                    phone: phoneFromStorage,
+                    base_url: baseUrlInput ? baseUrlInput.value : '',
+                    _token: csrfToken ? csrfToken.value : ''
+                })
+            })
+            .then(async response => {
+                const data = await response.json().catch(() => ({}));
+
+                if (!response.ok || data.status !== true) {
+                    throw new Error(data.message || 'Failed to resend OTP. Please try again.');
+                }
+
+                return data;
+            })
+            .then(data => {
+                showToast(data.message || 'OTP sent successfully.', 'success');
+
+                inputs.forEach(input => {
+                    input.value = '';
+                    input.classList.remove('is-invalid');
+                });
+
+                if (errorMsg) {
+                    errorMsg.textContent = '';
+                }
+
+                if (inputs[0]) {
+                    inputs[0].focus();
+                }
+
+                startResendTimer(resendCooldownSeconds);
+            })
+            .catch(error => {
+                resendOtpBtn.disabled = false;
+                toggleResendState(true);
+                showToast(error.message || 'Failed to resend OTP. Please try again.', 'error');
             });
-        }
-    }, 1000);
+        });
+    }
 
-    // SweetAlert2 toast notification function
     function showToast(message, type = 'info') {
-        // Map our types to SweetAlert2 types
         let swalIcon = type === 'error' ? 'error' : type === 'warning' ? 'warning' : type === 'info' ? 'info' : 'success';
-
-        // Use white background as requested
         let background = '#FFFFFF';
         let color;
-        switch(type) {
+
+        switch (type) {
             case 'error':
-                color = '#dc3545'; // Red for error
+                color = '#dc3545';
                 break;
             case 'warning':
-                color = '#ffc107'; // Yellow for warning
+                color = '#ffc107';
                 break;
             case 'info':
-                color = '#17a2b8'; // Blue for info
+                color = '#17a2b8';
                 break;
-            default: // success
-                color = '#28a745'; // Green for success
+            default:
+                color = '#28a745';
         }
 
-        // Customize title based on the page and action
         let toastTitle = message.includes('OTP') ? 'OTP Verification' :
-                        message.toLowerCase().includes('success') ? 'Verification Success' :
-                        message.toLowerCase().includes('login') ? 'Login Status' :
-                        type === 'error' ? 'Verification Error' :
-                        type === 'warning' ? 'Attention Required' :
-                        type === 'info' ? 'Information' : 'OTP Status';
+            message.toLowerCase().includes('success') ? 'Verification Success' :
+            message.toLowerCase().includes('login') ? 'Login Status' :
+            type === 'error' ? 'Verification Error' :
+            type === 'warning' ? 'Attention Required' :
+            type === 'info' ? 'Information' : 'OTP Status';
 
         Swal.fire({
             toast: true,
@@ -364,26 +455,24 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             didOpen: () => {
                 const progressBar = Swal.getTimerProgressBar();
-                if(progressBar) {
-                    // Set progress bar color based on type
-                    switch(type) {
+                if (progressBar) {
+                    switch (type) {
                         case 'error':
-                            progressBar.style.backgroundColor = '#dc3545'; // Red for error
+                            progressBar.style.backgroundColor = '#dc3545';
                             break;
                         case 'warning':
-                            progressBar.style.backgroundColor = '#ffc107'; // Yellow for warning
+                            progressBar.style.backgroundColor = '#ffc107';
                             break;
                         case 'info':
-                            progressBar.style.backgroundColor = '#17a2b8'; // Blue for info
+                            progressBar.style.backgroundColor = '#17a2b8';
                             break;
-                        default: // success
-                            progressBar.style.backgroundColor = '#28a745'; // Green for success
+                        default:
+                            progressBar.style.backgroundColor = '#28a745';
                     }
                 }
             }
         });
     }
-
 });
 </script>
 @endpush

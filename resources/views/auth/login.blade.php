@@ -162,6 +162,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const verifiedPhone = data?.data?.phone || normalizedPhone;
 
             localStorage.setItem('phone_for_verification', verifiedPhone);
+            localStorage.setItem('otp_resend_available_at', String(Date.now() + 30000));
             showToast(data.message, 'success');
 
             if (data.redirect) {
