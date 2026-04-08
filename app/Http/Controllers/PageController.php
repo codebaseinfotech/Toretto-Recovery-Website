@@ -14,12 +14,14 @@ class PageController extends Controller
     public function home()
     {
         $apiUrl = config('services.api.base_url') . '/v1/common/config';
+
         $response = Http::get($apiUrl);
         $settings = [];
         if ($response->successful()) {
             $settings = $response->json()['data'] ?? [];
         }
         $settings = $settings['general_settings'];
+
         return view('pages.home', compact('settings'));
     }
 

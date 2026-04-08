@@ -123,7 +123,61 @@
                                 </div>
                             </div>
 
-                            <!-- Promo Code Section -->
+
+                            <div class="form-group mb-3">
+                                <label for="recoveryTypesTrigger">Recovery Types</label>
+                                <div id="recoveryTypesDropdown" class="position-relative">
+                                    <button type="button" id="recoveryTypesTrigger"
+                                        style="width: 100%; min-height: 54px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px; border: 1px solid #dcdcdc; border-radius: 14px; background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%); box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06); text-align: left; transition: all 0.2s ease; cursor: pointer;">
+                                        <span
+                                            style="display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1;">
+                                            <span
+                                                style="width: 30px; height: 30px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; background: #fff2f2; color: #dc3545; flex-shrink: 0;">
+                                                <i class="fa-solid fa-screwdriver-wrench"></i>
+                                            </span>
+                                            <span id="recoveryTypesSummary"
+                                                style="font-size: 14px; font-weight: 500; color: #6c757d; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                                Select recovery types
+                                            </span>
+                                        </span>
+                                        <span
+                                            style="display: flex; align-items: center; gap: 10px; flex-shrink: 0;">
+                                            <span id="recoveryTypesCountBadge"
+                                                style="display: none; min-width: 24px; height: 24px; padding: 0 8px; border-radius: 999px; background: #dc3545; color: #fff; font-size: 12px; font-weight: 700; align-items: center; justify-content: center;">
+                                                0
+                                            </span>
+                                            <i id="recoveryTypesChevron" class="fa-solid fa-angle-down"
+                                                style="color: #6c757d; transition: transform 0.2s ease;"></i>
+                                        </span>
+                                    </button>
+                                    <div id="recoveryTypesPanel" class="d-none position-absolute w-100"
+                                        style="top: calc(100% + 10px); left: 0; z-index: 30; border: 1px solid #e5e7eb; border-radius: 16px; background: #fff; box-shadow: 0 20px 45px rgba(15, 23, 42, 0.16); padding: 14px;">
+                                        <div
+                                            style="display: flex; align-items: center; justify-content: flex-end; gap: 12px; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid #f1f5f9;">
+                                            <button type="button" id="recoveryTypesDoneBtn"
+                                                style="border: 0; background: #fff2f2; color: #dc3545; border-radius: 999px; padding: 6px 12px; font-size: 12px; font-weight: 700;">
+                                                Done
+                                            </button>
+                                        </div>
+                                        <div id="recoveryTypesLoading" class="d-none"
+                                            style="font-size: 13px; font-weight: 500; color: #6c757d; padding: 2px 4px 10px;">
+                                            Loading recovery types...
+                                        </div>
+                                        <div id="recoveryTypesEmptyState" class="d-none"
+                                            style="font-size: 13px; color: #6c757d; padding: 2px 4px 10px;">
+                                            No recovery types available right now.
+                                        </div>
+                                        <div id="recoveryTypesList"
+                                            style="display: flex; flex-direction: column; gap: 8px; max-height: 240px; overflow-y: auto; padding-right: 4px;">
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="text" id="recoveryTypesRequiredProxy" tabindex="-1"
+                                    aria-hidden="true"
+                                    style="position: absolute; opacity: 0; pointer-events: none; width: 1px; height: 1px; padding: 0; margin: 0; border: 0;">
+                                <small style="font-size: 12px; color: #6c757d;">Recovery types are loaded from the API and can change anytime.</small>
+                            </div>
+
                             <div class="promo-section mb-3">
                                 <div class="row g-2 align-items-end">
                                     <div class="col-md-8 col-12">
@@ -1280,6 +1334,265 @@
             return Number.isFinite(num) ? num : 0;
         }
 
+        let recoveryTypeOptions = [];
+
+        function getRecoveryTypeIcon(name = '') {
+            const normalizedName = String(name).toLowerCase();
+
+            if (normalizedName.includes('bike') || normalizedName.includes('motorcycle')) {
+                return 'fa-motorcycle';
+            }
+
+            if (normalizedName.includes('pickup') || normalizedName.includes('pikup') || normalizedName
+                .includes('truck') || normalizedName.includes('ton')) {
+                return 'fa-truck';
+            }
+
+            if (normalizedName.includes('suv') || normalizedName.includes('sedan') || normalizedName
+                .includes('lexus') || normalizedName.includes('luxury') || normalizedName.includes('car')) {
+                return 'fa-car-side';
+            }
+
+            return 'fa-car';
+        }
+
+        function normalizeRecoveryTypesResponse(payload) {
+            const collections = [
+                payload?.data?.name_options,
+                payload?.data?.recovery_types,
+                payload?.data,
+                payload?.recovery_types,
+                payload?.name_options,
+                payload?.items,
+                payload
+            ];
+
+            for (const collection of collections) {
+                if (!Array.isArray(collection)) continue;
+
+                return collection
+                    .map((item, index) => {
+                        const id = Number(item?.id ?? item?.recovery_type_id ?? item?.value);
+                        const name = item?.name ?? item?.title ?? item?.label ?? '';
+
+                        if (!id || !name) return null;
+
+                        return {
+                            id,
+                            name,
+                            description: `Recovery type ID: ${id}`,
+                            icon: getRecoveryTypeIcon(name)
+                        };
+                    })
+                    .filter(Boolean);
+            }
+
+            return [];
+        }
+
+        function setRecoveryTypesLoading(isLoading) {
+            const loadingElement = document.getElementById('recoveryTypesLoading');
+            if (!loadingElement) return;
+
+            loadingElement.classList.toggle('d-none', !isLoading);
+        }
+
+        function setRecoveryTypesEmptyState(message = '') {
+            const headerElement = document.getElementById('recoveryTypesHeader');
+            const emptyStateElement = document.getElementById('recoveryTypesEmptyState');
+            if (headerElement) {
+                headerElement.style.display = message ? 'none' : 'flex';
+            }
+
+            if (!emptyStateElement) return;
+
+            emptyStateElement.textContent = message || 'No recovery types available right now.';
+            emptyStateElement.classList.toggle('d-none', !message);
+        }
+
+        function setRecoveryTypesDropdownOpen(isOpen) {
+            const panel = document.getElementById('recoveryTypesPanel');
+            const chevron = document.getElementById('recoveryTypesChevron');
+            const trigger = document.getElementById('recoveryTypesTrigger');
+            if (!panel || !chevron || !trigger) return;
+
+            panel.classList.toggle('d-none', !isOpen);
+            chevron.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+            trigger.style.borderColor = isOpen ? '#dc3545' : '#dcdcdc';
+            trigger.style.boxShadow = isOpen ? '0 14px 30px rgba(220, 53, 69, 0.12)' :
+                '0 8px 24px rgba(15, 23, 42, 0.06)';
+        }
+
+        function syncRecoveryTypesRequiredState(selectedCount = null) {
+            const proxyInput = document.getElementById('recoveryTypesRequiredProxy');
+            const trigger = document.getElementById('recoveryTypesTrigger');
+            if (!proxyInput || !trigger) return;
+
+            const count = selectedCount ?? document.querySelectorAll('input[name="recovery_types_id[]"]:checked').length;
+            proxyInput.value = count > 0 ? 'selected' : '';
+            proxyInput.setCustomValidity('');
+            trigger.style.borderColor = '#dcdcdc';
+        }
+
+        function updateRecoveryTypesSummary() {
+            const summaryElement = document.getElementById('recoveryTypesSummary');
+            const badgeElement = document.getElementById('recoveryTypesCountBadge');
+            if (!summaryElement || !badgeElement) return;
+
+            const selectedInputs = Array.from(document.querySelectorAll('input[name="recovery_types_id[]"]:checked'));
+            const selectedNames = selectedInputs.map((input) => input.dataset.name || '').filter(Boolean);
+            const selectedCount = selectedNames.length;
+
+            if (!selectedCount) {
+                summaryElement.textContent = 'Select recovery types';
+                summaryElement.style.color = '#6c757d';
+                badgeElement.style.display = 'none';
+                syncRecoveryTypesRequiredState(0);
+                return;
+            }
+
+            const previewNames = selectedNames.slice(0, 2).join(', ');
+            summaryElement.textContent = selectedCount > 2 ? `${previewNames} +${selectedCount - 2}` : previewNames;
+            summaryElement.style.color = '#111827';
+            badgeElement.textContent = String(selectedCount);
+            badgeElement.style.display = 'inline-flex';
+            syncRecoveryTypesRequiredState(selectedCount);
+        }
+
+        function applyRecoveryTypeOptionState(wrapper, input) {
+            if (!wrapper || !input) return;
+
+            wrapper.style.borderColor = input.checked ? '#dc3545' : '#e5e7eb';
+            wrapper.style.background = input.checked ? '#fff5f5' : '#f8fafc';
+            wrapper.style.boxShadow = input.checked ? '0 10px 22px rgba(220, 53, 69, 0.12)' : 'none';
+        }
+
+        function clearRecoveryTypesSelection() {
+            const listElement = document.getElementById('recoveryTypesList');
+            if (!listElement) return;
+
+            listElement.innerHTML = '';
+            setRecoveryTypesEmptyState('');
+            renderRecoveryTypes(recoveryTypeOptions);
+            setRecoveryTypesDropdownOpen(false);
+        }
+
+        function renderRecoveryTypes(recoveryTypes) {
+            const listElement = document.getElementById('recoveryTypesList');
+            if (!listElement) return;
+
+            listElement.innerHTML = '';
+            recoveryTypeOptions = Array.isArray(recoveryTypes) ? recoveryTypes : [];
+
+            if (!recoveryTypeOptions.length) {
+                setRecoveryTypesEmptyState('No recovery types found');
+                updateRecoveryTypesSummary();
+                return;
+            }
+
+            setRecoveryTypesEmptyState('');
+            console.log('[Recovery Types] Render list:', recoveryTypeOptions);
+
+            recoveryTypeOptions.forEach((recoveryType) => {
+                const wrapper = document.createElement('label');
+                wrapper.setAttribute('for', `recovery_type_${recoveryType.id}`);
+                wrapper.style.cssText =
+                    'display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 14px; border:1px solid #e5e7eb; border-radius:12px; background:#f8fafc; cursor:pointer; transition:all 0.2s ease;';
+
+                const content = document.createElement('span');
+                content.style.cssText = 'display:flex; align-items:flex-start; gap:12px; min-width:0;';
+
+                const iconBox = document.createElement('span');
+                iconBox.style.cssText =
+                    'width:34px; height:34px; border-radius:10px; background:#fff; color:#dc3545; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; box-shadow:0 6px 16px rgba(15, 23, 42, 0.06);';
+                iconBox.innerHTML = `<i class="fa-solid ${recoveryType.icon || 'fa-circle-check'}"></i>`;
+
+                const input = document.createElement('input');
+                input.type = 'checkbox';
+                input.name = 'recovery_types_id[]';
+                input.id = `recovery_type_${recoveryType.id}`;
+                input.value = recoveryType.id;
+                input.dataset.name = recoveryType.name;
+                input.className = 'form-check-input m-0';
+                input.style.cursor = 'pointer';
+                input.style.flexShrink = '0';
+
+                const textWrap = document.createElement('span');
+                textWrap.style.cssText = 'display:flex; flex-direction:column; gap:4px; min-width:0;';
+
+                const text = document.createElement('span');
+                text.textContent = recoveryType.name;
+                text.style.cssText =
+                    'font-size:14px; font-weight:600; color:#111827; line-height:1.3; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;';
+
+                const meta = document.createElement('span');
+                meta.textContent = recoveryType.description || `ID: ${recoveryType.id}`;
+                meta.style.cssText =
+                    'font-size:12px; font-weight:500; color:#6b7280; line-height:1.4; white-space:normal;';
+
+                input.addEventListener('change', function() {
+                    applyRecoveryTypeOptionState(wrapper, input);
+                    updateRecoveryTypesSummary();
+                });
+
+                content.appendChild(iconBox);
+                textWrap.appendChild(text);
+                textWrap.appendChild(meta);
+                content.appendChild(textWrap);
+                wrapper.appendChild(content);
+                wrapper.appendChild(input);
+                applyRecoveryTypeOptionState(wrapper, input);
+                listElement.appendChild(wrapper);
+            });
+
+            updateRecoveryTypesSummary();
+        }
+
+        async function fetchRecoveryTypes() {
+            setRecoveryTypesLoading(true);
+            setRecoveryTypesEmptyState('');
+
+            try {
+                const response = await window.ApiUtils.fetch(
+                    `${PRICE_API_BASE_URL}/v1/common/recovery-types?audience=customer`, {
+                        method: 'GET'
+                    });
+
+                const rawResponse = await response.text();
+                let responseData = {};
+
+                try {
+                    responseData = JSON.parse(rawResponse);
+                } catch (error) {
+                    responseData = {};
+                }
+
+                console.log('[Recovery Types] API raw response:', {
+                    status: response.status,
+                    ok: response.ok,
+                    data: responseData
+                });
+
+                if (!response.ok) {
+                    renderRecoveryTypes([]);
+                    showToast(responseData?.message || 'Failed to load recovery types.', 'error');
+                    return;
+                }
+
+                renderRecoveryTypes(normalizeRecoveryTypesResponse(responseData));
+            } catch (error) {
+                console.error('Recovery types fetch error:', error);
+                renderRecoveryTypes([]);
+                showToast('Failed to load recovery types.', 'error');
+            } finally {
+                setRecoveryTypesLoading(false);
+            }
+        }
+
+        function initializeRecoveryTypes() {
+            fetchRecoveryTypes();
+        }
+
         /* ------------------ Google Maps Loader ------------------ */
         function checkLocationPermission() {
             if ('permissions' in navigator) {
@@ -2056,6 +2369,8 @@
                         delete promoInput.dataset.promotionId;
                     }
 
+                    clearRecoveryTypesSelection();
+
                     // Clear map markers
                     if (pickupMarker) {
                         pickupMarker.setMap(null);
@@ -2136,6 +2451,44 @@
                 });
             }
 
+            initializeRecoveryTypes();
+
+            const recoveryTypesTrigger = document.getElementById('recoveryTypesTrigger');
+            const recoveryTypesDropdown = document.getElementById('recoveryTypesDropdown');
+            const recoveryTypesDoneBtn = document.getElementById('recoveryTypesDoneBtn');
+            const recoveryTypesRequiredProxy = document.getElementById('recoveryTypesRequiredProxy');
+            if (recoveryTypesTrigger && recoveryTypesDropdown) {
+                recoveryTypesTrigger.addEventListener('click', function() {
+                    const panel = document.getElementById('recoveryTypesPanel');
+                    const isOpen = panel ? panel.classList.contains('d-none') : false;
+                    setRecoveryTypesDropdownOpen(isOpen);
+                });
+
+                document.addEventListener('click', function(event) {
+                    if (!recoveryTypesDropdown.contains(event.target)) {
+                        setRecoveryTypesDropdownOpen(false);
+                    }
+                });
+
+                document.addEventListener('keydown', function(event) {
+                    if (event.key === 'Escape') {
+                        setRecoveryTypesDropdownOpen(false);
+                    }
+                });
+            }
+
+            if (recoveryTypesRequiredProxy) {
+                recoveryTypesRequiredProxy.addEventListener('invalid', function() {
+                    setRecoveryTypesDropdownOpen(true);
+                });
+            }
+
+            if (recoveryTypesDoneBtn) {
+                recoveryTypesDoneBtn.addEventListener('click', function() {
+                    setRecoveryTypesDropdownOpen(false);
+                });
+            }
+
             // Calculate Price button
             const calculatePriceBtn = document.getElementById('calculatePriceBtn');
             if (calculatePriceBtn) {
@@ -2187,6 +2540,11 @@
                 const pickupElement = document.getElementById('pickup_location');
                 const dropElement = document.getElementById('drop_location');
                 const promoElement = document.getElementById('promo_code');
+                const selectedRecoveryTypes = Array.from(document.querySelectorAll(
+                    'input[name="recovery_types_id[]"]:checked')).map((element) => Number(element.value))
+                    .filter((value) => Number.isFinite(value) && value > 0);
+
+                console.log('[Booking] Selected recovery types:', selectedRecoveryTypes);
 
                 if (!pickupElement.value || !dropElement.value) {
                     showToast('Please enter both pickup and drop locations', 'error');
@@ -2274,9 +2632,14 @@
                     polyline: latestRoutePolyline
                 };
 
-                console.log("Booking Payload:", bookingPayload);
+                if (selectedRecoveryTypes.length) {
+                    bookingPayload.recovery_types_id = selectedRecoveryTypes;
+                }
+
+                console.log('[Booking] Payload before promotion:', bookingPayload);
 
                 if (promotionId) bookingPayload.promotion_id = promotionId;
+                console.log('[Booking] Final payload:', bookingPayload);
 
                 try {
                     const resp = await window.ApiUtils.fetch(
@@ -2289,6 +2652,11 @@
                         });
 
                     const resData = await resp.json();
+                    console.log('[Booking] API response:', {
+                        status: resp.status,
+                        ok: resp.ok,
+                        data: resData
+                    });
                     if (!resp.ok || resData.status !== true) {
                         showToast(resData.message || 'Please try again.', 'error');
                         return;
