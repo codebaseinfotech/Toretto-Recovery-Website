@@ -125,19 +125,15 @@
 
 
                             <div class="form-group mb-3">
-                                <label for="recoveryTypesTrigger">Recovery Types</label>
+                                <label for="recoveryTypesTrigger">Vehicle Types</label>
                                 <div id="recoveryTypesDropdown" class="position-relative">
                                     <button type="button" id="recoveryTypesTrigger"
                                         style="width: 100%; min-height: 54px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px; border: 1px solid #dcdcdc; border-radius: 14px; background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%); box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06); text-align: left; transition: all 0.2s ease; cursor: pointer;">
                                         <span
-                                            style="display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1;">
-                                            <span
-                                                style="width: 30px; height: 30px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; background: #fff2f2; color: #dc3545; flex-shrink: 0;">
-                                                <i class="fa-solid fa-screwdriver-wrench"></i>
-                                            </span>
+                                            style="display: flex; align-items: center; min-width: 0; flex: 1;">
                                             <span id="recoveryTypesSummary"
                                                 style="font-size: 14px; font-weight: 500; color: #6c757d; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                                                Select recovery types
+                                                Select recovery type
                                             </span>
                                         </span>
                                         <span
@@ -152,20 +148,20 @@
                                     </button>
                                     <div id="recoveryTypesPanel" class="d-none position-absolute w-100"
                                         style="top: calc(100% + 10px); left: 0; z-index: 30; border: 1px solid #e5e7eb; border-radius: 16px; background: #fff; box-shadow: 0 20px 45px rgba(15, 23, 42, 0.16); padding: 14px;">
-                                        <div
+                                        {{-- <div
                                             style="display: flex; align-items: center; justify-content: flex-end; gap: 12px; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid #f1f5f9;">
                                             <button type="button" id="recoveryTypesDoneBtn"
                                                 style="border: 0; background: #fff2f2; color: #dc3545; border-radius: 999px; padding: 6px 12px; font-size: 12px; font-weight: 700;">
                                                 Done
                                             </button>
-                                        </div>
+                                        </div> --}}
                                         <div id="recoveryTypesLoading" class="d-none"
                                             style="font-size: 13px; font-weight: 500; color: #6c757d; padding: 2px 4px 10px;">
-                                            Loading recovery types...
+                                            Loading Vehicle Types...
                                         </div>
                                         <div id="recoveryTypesEmptyState" class="d-none"
                                             style="font-size: 13px; color: #6c757d; padding: 2px 4px 10px;">
-                                            No recovery types available right now.
+                                            No Vehicle Types available right now.
                                         </div>
                                         <div id="recoveryTypesList"
                                             style="display: flex; flex-direction: column; gap: 8px; max-height: 240px; overflow-y: auto; padding-right: 4px;">
@@ -175,7 +171,7 @@
                                 <input type="text" id="recoveryTypesRequiredProxy" tabindex="-1"
                                     aria-hidden="true"
                                     style="position: absolute; opacity: 0; pointer-events: none; width: 1px; height: 1px; padding: 0; margin: 0; border: 0;">
-                                <small style="font-size: 12px; color: #6c757d;">Recovery types are loaded from the API and can change anytime.</small>
+                                {{-- <small style="font-size: 12px; color: #6c757d;">Vehicle Types are loaded from the API and can change anytime.</small> --}}
                             </div>
 
                             <div class="promo-section mb-3">
@@ -1336,26 +1332,6 @@
 
         let recoveryTypeOptions = [];
 
-        function getRecoveryTypeIcon(name = '') {
-            const normalizedName = String(name).toLowerCase();
-
-            if (normalizedName.includes('bike') || normalizedName.includes('motorcycle')) {
-                return 'fa-motorcycle';
-            }
-
-            if (normalizedName.includes('pickup') || normalizedName.includes('pikup') || normalizedName
-                .includes('truck') || normalizedName.includes('ton')) {
-                return 'fa-truck';
-            }
-
-            if (normalizedName.includes('suv') || normalizedName.includes('sedan') || normalizedName
-                .includes('lexus') || normalizedName.includes('luxury') || normalizedName.includes('car')) {
-                return 'fa-car-side';
-            }
-
-            return 'fa-car';
-        }
-
         function normalizeRecoveryTypesResponse(payload) {
             const collections = [
                 payload?.data?.name_options,
@@ -1379,9 +1355,7 @@
 
                         return {
                             id,
-                            name,
-                            description: `Recovery type ID: ${id}`,
-                            icon: getRecoveryTypeIcon(name)
+                            name
                         };
                     })
                     .filter(Boolean);
@@ -1406,7 +1380,7 @@
 
             if (!emptyStateElement) return;
 
-            emptyStateElement.textContent = message || 'No recovery types available right now.';
+            emptyStateElement.textContent = message || 'No Vehicle Types available right now.';
             emptyStateElement.classList.toggle('d-none', !message);
         }
 
@@ -1444,18 +1418,16 @@
             const selectedCount = selectedNames.length;
 
             if (!selectedCount) {
-                summaryElement.textContent = 'Select recovery types';
+                summaryElement.textContent = 'Select recovery type';
                 summaryElement.style.color = '#6c757d';
                 badgeElement.style.display = 'none';
                 syncRecoveryTypesRequiredState(0);
                 return;
             }
 
-            const previewNames = selectedNames.slice(0, 2).join(', ');
-            summaryElement.textContent = selectedCount > 2 ? `${previewNames} +${selectedCount - 2}` : previewNames;
+            summaryElement.textContent = selectedNames[0];
             summaryElement.style.color = '#111827';
-            badgeElement.textContent = String(selectedCount);
-            badgeElement.style.display = 'inline-flex';
+            badgeElement.style.display = 'none';
             syncRecoveryTypesRequiredState(selectedCount);
         }
 
@@ -1465,6 +1437,12 @@
             wrapper.style.borderColor = input.checked ? '#dc3545' : '#e5e7eb';
             wrapper.style.background = input.checked ? '#fff5f5' : '#f8fafc';
             wrapper.style.boxShadow = input.checked ? '0 10px 22px rgba(220, 53, 69, 0.12)' : 'none';
+        }
+
+        function refreshRecoveryTypeOptionStates() {
+            document.querySelectorAll('input[name="recovery_types_id[]"]').forEach((input) => {
+                applyRecoveryTypeOptionState(input.closest('label'), input);
+            });
         }
 
         function clearRecoveryTypesSelection() {
@@ -1485,13 +1463,13 @@
             recoveryTypeOptions = Array.isArray(recoveryTypes) ? recoveryTypes : [];
 
             if (!recoveryTypeOptions.length) {
-                setRecoveryTypesEmptyState('No recovery types found');
+                setRecoveryTypesEmptyState('No Vehicle Types found');
                 updateRecoveryTypesSummary();
                 return;
             }
 
             setRecoveryTypesEmptyState('');
-            console.log('[Recovery Types] Render list:', recoveryTypeOptions);
+            console.log('[Vehicle Types] Render list:', recoveryTypeOptions);
 
             recoveryTypeOptions.forEach((recoveryType) => {
                 const wrapper = document.createElement('label');
@@ -1500,15 +1478,10 @@
                     'display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 14px; border:1px solid #e5e7eb; border-radius:12px; background:#f8fafc; cursor:pointer; transition:all 0.2s ease;';
 
                 const content = document.createElement('span');
-                content.style.cssText = 'display:flex; align-items:flex-start; gap:12px; min-width:0;';
-
-                const iconBox = document.createElement('span');
-                iconBox.style.cssText =
-                    'width:34px; height:34px; border-radius:10px; background:#fff; color:#dc3545; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; box-shadow:0 6px 16px rgba(15, 23, 42, 0.06);';
-                iconBox.innerHTML = `<i class="fa-solid ${recoveryType.icon || 'fa-circle-check'}"></i>`;
+                content.style.cssText = 'display:flex; align-items:center; min-width:0; flex:1;';
 
                 const input = document.createElement('input');
-                input.type = 'checkbox';
+                input.type = 'radio';
                 input.name = 'recovery_types_id[]';
                 input.id = `recovery_type_${recoveryType.id}`;
                 input.value = recoveryType.id;
@@ -1517,28 +1490,20 @@
                 input.style.cursor = 'pointer';
                 input.style.flexShrink = '0';
 
-                const textWrap = document.createElement('span');
-                textWrap.style.cssText = 'display:flex; flex-direction:column; gap:4px; min-width:0;';
-
                 const text = document.createElement('span');
                 text.textContent = recoveryType.name;
                 text.style.cssText =
                     'font-size:14px; font-weight:600; color:#111827; line-height:1.3; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;';
 
-                const meta = document.createElement('span');
-                meta.textContent = recoveryType.description || `ID: ${recoveryType.id}`;
-                meta.style.cssText =
-                    'font-size:12px; font-weight:500; color:#6b7280; line-height:1.4; white-space:normal;';
-
                 input.addEventListener('change', function() {
-                    applyRecoveryTypeOptionState(wrapper, input);
+                    refreshRecoveryTypeOptionStates();
                     updateRecoveryTypesSummary();
+                    if (input.checked) {
+                        setRecoveryTypesDropdownOpen(false);
+                    }
                 });
 
-                content.appendChild(iconBox);
-                textWrap.appendChild(text);
-                textWrap.appendChild(meta);
-                content.appendChild(textWrap);
+                content.appendChild(text);
                 wrapper.appendChild(content);
                 wrapper.appendChild(input);
                 applyRecoveryTypeOptionState(wrapper, input);
@@ -1567,7 +1532,7 @@
                     responseData = {};
                 }
 
-                console.log('[Recovery Types] API raw response:', {
+                console.log('[Vehicle Types] API raw response:', {
                     status: response.status,
                     ok: response.ok,
                     data: responseData
@@ -1575,15 +1540,15 @@
 
                 if (!response.ok) {
                     renderRecoveryTypes([]);
-                    showToast(responseData?.message || 'Failed to load recovery types.', 'error');
+                    showToast(responseData?.message || 'Failed to load Vehicle Types.', 'error');
                     return;
                 }
 
                 renderRecoveryTypes(normalizeRecoveryTypesResponse(responseData));
             } catch (error) {
-                console.error('Recovery types fetch error:', error);
+                console.error('Vehicle Types fetch error:', error);
                 renderRecoveryTypes([]);
-                showToast('Failed to load recovery types.', 'error');
+                showToast('Failed to load Vehicle Types.', 'error');
             } finally {
                 setRecoveryTypesLoading(false);
             }
@@ -2544,7 +2509,7 @@
                     'input[name="recovery_types_id[]"]:checked')).map((element) => Number(element.value))
                     .filter((value) => Number.isFinite(value) && value > 0);
 
-                console.log('[Booking] Selected recovery types:', selectedRecoveryTypes);
+                console.log('[Booking] Selected Vehicle Types:', selectedRecoveryTypes);
 
                 if (!pickupElement.value || !dropElement.value) {
                     showToast('Please enter both pickup and drop locations', 'error');
