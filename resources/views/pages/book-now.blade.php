@@ -1548,25 +1548,54 @@
                 if (promotionId) bookingPayload.promotion_id = promotionId;
 
                 try {
-                    const resp = await window.ApiUtils.fetch(
-                        `${PRICE_API_BASE_URL}/v1/customer/bookings`, {
+                    const token = getAuthToken();
+                    const availabilityResp = await window.ApiUtils.fetch(
+                        `${PRICE_API_BASE_URL}/v1/customer/drivers/availability-status`, {
                             method: 'POST',
                             headers: {
-                                'Authorization': 'Bearer ' + token
+                                'Authorization': 'Bearer ' + token,
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
                             },
-                            body: JSON.stringify(bookingPayload)
+                            body: JSON.stringify({
+                                pickup_lat: pickupLatLng.lat(),
+                                pickup_lng: pickupLatLng.lng()
+                            })
                         });
 
-                    const resData = await resp.json();
-                    if (!resp.ok || resData.status !== true) {
-                        showToast(resData.message || 'Please try again.', 'error');
+                    const availRaw = await availabilityResp.text();
+                    let availData = {};
+                    try { availData = JSON.parse(availRaw); } catch(e) {}
+
+                    let available = null;
+                    if (availabilityResp.ok && availData && availData.data) {
+                        const val = availData.data.is_drives_status ?? availData.data.isDriversStatus ?? availData.is_drives_status;
+                        if (val !== undefined && val !== null) {
+                            if (typeof val === "boolean") available = val;
+                            else if (typeof val === "number") available = val === 1;
+                            else {
+                                const norm = String(val).trim().toLowerCase();
+                                if (["1", "true", "yes", "online", "busy"].includes(norm)) available = true;
+                                if (["0", "false", "no", "offline", "idle"].includes(norm)) available = false;
+                            }
+                        }
+                    }
+
+                    if (available === false) {
+                        await showNoDriversAvailablePopup(async () => {
+                            await submitTripPrepayment(bookingPayload, token);
+                        });
                         return;
                     }
 
-                    showToast('Booking created successfully!', 'success');
-                    showBookingSuccessPopup();
-                    return;
+                    if (available === null && !availData?.status) {
+                        showToast(availData?.message || 'Unable to check driver availability right now.', 'error');
+                        return;
+                    }
+
+                    await submitTripPrepayment(bookingPayload, token);
                 } catch (err) {
+                    console.error('Booking Error:', err);
                     showToast('Please try again.', 'error');
                 }
             });
@@ -1590,6 +1619,155 @@
             }
 
             return (hours * 60) + minutes;
+        }
+
+        async function submitTripPrepayment(bookingPayload, token) {
+            // Note: Uses the previous payload format but calling trip-prepayments API
+            // Based on user requirements: "if successed then call v1/customer/payments/trip-prepayments API"
+            try {
+                // Ensure payment_method is set
+                bookingPayload.payment_method = 'payment_link';
+                // Provide a default prepayment amount if needed
+                if (!bookingPayload.prepayment_amount) {
+                    bookingPayload.prepayment_amount = 50; 
+                }
+
+                const resp = await window.ApiUtils.fetch(
+                    `${PRICE_API_BASE_URL}/v1/customer/payments/trip-prepayments`, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': 'Bearer ' + token,
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json' // added header
+                        },
+                        body: JSON.stringify(bookingPayload)
+                    });
+
+                const raw = await resp.text();
+                let resData = {};
+                try { resData = JSON.parse(raw); } catch (e) { resData = { raw }; }
+
+                if (!resp.ok || resData.status !== true) {
+                    showToast(resData.message || 'Please try again.', 'error');
+                    return;
+                }
+
+                // If trip-prepayments API returns a checkout URL like in home.blade.php
+                const checkoutUrl = resData?.data?.checkout_url || resData?.checkout_url;
+                if (checkoutUrl) {
+                    window.location.replace(checkoutUrl);
+                    return;
+                }
+
+                showToast('Booking created successfully!', 'success');
+                showBookingSuccessPopup();
+            } catch (err) {
+                console.error("Trip Prepayment Error:", err);
+                showToast('Please try again.', 'error');
+            }
+        }
+
+        async function showNoDriversAvailablePopup(onContinueBooking) {
+            const result = await Swal.fire({
+                icon: 'warning',
+                title: 'Sorry! No Drivers Available',
+                html: `
+                    <style>
+                        .no-drivers-popup {
+                            border-radius: 22px;
+                            padding: 24px 22px 18px;
+                        }
+
+                        .no-drivers-popup .swal2-title {
+                            font-size: 22px;
+                            font-weight: 800;
+                            color: #111827;
+                            margin-bottom: 8px;
+                        }
+
+                        .no-drivers-popup .swal2-html-container {
+                            margin: 0;
+                            font-size: 15px;
+                            line-height: 1.6;
+                            color: #6b7280;
+                            text-align: center;
+                        }
+
+                        .no-drivers-popup .swal2-actions {
+                            width: 100%;
+                            display: flex;
+                            flex-direction: column;
+                            align-items: stretch;
+                            gap: 10px;
+                            margin-top: 20px;
+                        }
+
+                        .no-drivers-popup .swal2-confirm,
+                        .no-drivers-popup .swal2-deny,
+                        .no-drivers-popup .swal2-cancel {
+                            width: 100%;
+                            margin: 0 !important;
+                            border-radius: 10px;
+                            min-height: 48px;
+                            font-size: 15px;
+                            font-weight: 700;
+                            box-shadow: none !important;
+                        }
+
+                        .no-drivers-popup .swal2-confirm {
+                            background: #000 !important;
+                            color: #fff !important;
+                            border: 1px solid #000 !important;
+                        }
+
+                        .no-drivers-popup .swal2-deny {
+                            background: #fff !important;
+                            color: #111 !important;
+                            border: 1px solid #d1d5db !important;
+                        }
+
+                        .no-drivers-popup .swal2-cancel {
+                            background: transparent !important;
+                            color: #ff4d4f !important;
+                            border: 0 !important;
+                        }
+
+                        .no-drivers-popup .swal2-icon {
+                            margin: 0 auto 10px;
+                        }
+                    </style>
+                    <div style="text-align: center;">
+                        <p style="margin: 0 0 12px 0;">We don't have any drivers available in your area for the next 30 minutes.</p>
+                        <p style="margin: 0;">If your trip isn't urgent, you can continue booking.<br>For immediate assistance, please contact support.</p>
+                    </div>
+                `,
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: 'Continue Booking',
+                denyButtonText: 'Contact Support',
+                cancelButtonText: 'Cancel',
+                buttonsStyling: false,
+                customClass: {
+                    popup: 'no-drivers-popup',
+                    actions: 'no-drivers-actions',
+                    confirmButton: 'no-drivers-confirm-btn',
+                    denyButton: 'no-drivers-support-btn',
+                    cancelButton: 'no-drivers-cancel-btn'
+                },
+                allowOutsideClick: false,
+                reverseButtons: false,
+                focusConfirm: false
+            });
+
+            if (result.isConfirmed && typeof onContinueBooking === 'function') {
+                return onContinueBooking();
+            }
+
+            if (result.isDenied) {
+                window.location.href = "{{ route('contact') }}";
+            }
+
+            return null;
         }
 
         function setPromoButtonUI(isApplied) {
