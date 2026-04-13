@@ -21,7 +21,7 @@
   "image": "https://yourwebsite.com/images/car-recovery-jebel-ali.jpg",
   "@id": "https://yourwebsite.com/car-recovery-jebel-ali",
   "url": "https://yourwebsite.com/car-recovery-jebel-ali",
-  "telephone": "+971 523003423",
+  "telephone": "+971 526917666",
   "priceRange": "$$",
   "address": {
     "@type": "PostalAddress",
@@ -138,10 +138,10 @@
                         <span class="ja-trust-item"><i class="fas fa-check-circle"></i> Flatbed Towing</span>
                     </div>
                     <div class="ja-hero-btns">
-                        <a href="tel:+971523003423" class="theme-btn ja-btn-primary">
+                        <a href="tel:+971526917666" class="theme-btn ja-btn-primary">
                             <i class="fas fa-phone"></i> Call Now — +971 52 300 3423
                         </a>
-                        <a href="{{ route('book.now') }}" target="_blank" class="theme-btn ja-btn-secondary">
+                        <a href="{{ route('home') }}" target="_blank" class="theme-btn ja-btn-secondary">
                             Book Online <i class="fas fa-arrow-right-long"></i>
                         </a>
                     </div>
@@ -698,7 +698,7 @@
                     recovery team who can respond quickly and handle the situation properly.</p>
                 <p>Whether it's a breakdown, accident, tyre issue, or battery failure — getting professional help early
                     makes all the difference.</p>
-                <a href="tel:+971545098498" class="theme-btn ja-cta-btn-primary"><i class="fas fa-phone"></i> Call Now —
+                <a href="tel:+971526917666" class="theme-btn ja-cta-btn-primary"><i class="fas fa-phone"></i> Call Now —
                     Get Help Fast</a>
             </div>
 
@@ -774,7 +774,7 @@
                         early makes all the difference.</p>
                 </div>
                 <div class="ja-cta-right">
-                    <a href="tel:+971523003423" class="theme-btn ja-cta-btn-primary">
+                    <a href="tel:+971526917666" class="theme-btn ja-cta-btn-primary">
                         <i class="fas fa-phone"></i> +971 52 300 3423
                     </a>
                 </div>
@@ -796,7 +796,7 @@
                     faqItems.forEach(function(el) {
                         el.classList.remove('active');
                         el.querySelector('.ja-faq-q').setAttribute('aria-expanded',
-                        'false');
+                            'false');
                         el.querySelector('.ja-faq-icon i').className = 'fas fa-plus';
                     });
                     if (!isActive) {

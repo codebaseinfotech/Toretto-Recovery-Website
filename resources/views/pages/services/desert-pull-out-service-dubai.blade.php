@@ -27,7 +27,7 @@
     "https://www.toretto.ae/images/dubai-desert-pull-out-service-toretto.jpg",
     "https://www.toretto.ae/images/toretto-recovery-team-dubai.jpg"
     ],
-    "telephone": "+971 523003423",
+    "telephone": "+971 526917666",
     "email": "recovery@toretto.ae",
     "address": {
     "@type": "PostalAddress",
@@ -118,10 +118,10 @@
 
                         <!-- CTA Section -->
                         <div class="hero-btn mt-4">
-                            <a href="tel:+971523003423" class="theme-btn">
+                            <a href="tel:+971526917666" class="theme-btn">
                                 Call Now — Immediate Desert Assistance <i class="fas fa-phone"></i>
                             </a>
-                            <a href="https://wa.me/971523003423" class="theme-btn theme-btn2">
+                            <a href="https://wa.me/971526917666" class="theme-btn theme-btn2">
                                 Send WhatsApp Location <i class="fab fa-whatsapp"></i>
                             </a>
                         </div>
@@ -1312,10 +1312,10 @@
 
 
                     <div class="dp-cta-actions">
-                        <a href="tel:+971523003423" class="theme-btn">
+                        <a href="tel:+971526917666" class="theme-btn">
                             <i class="fas fa-phone"></i> Call Now — 24/7 Desert Pull Out
                         </a>
-                        <a href="https://wa.me/971523003423" class="theme-btn theme-btn2" target="_blank">
+                        <a href="https://wa.me/971526917666" class="theme-btn theme-btn2" target="_blank">
                             <i class="fab fa-whatsapp"></i> Send Your Location on WhatsApp
                         </a>
                     </div>
@@ -1325,7 +1325,7 @@
     </section>
 
     <link rel="stylesheet"
-      href="{{ asset('assets/css/desert-pull-out.css') }}?v={{ filemtime(public_path('assets/css/desert-pull-out.css')) }}">
+        href="{{ asset('assets/css/desert-pull-out.css') }}?v={{ filemtime(public_path('assets/css/desert-pull-out.css')) }}">
 
     <script>
         // Urban Districts Accordion

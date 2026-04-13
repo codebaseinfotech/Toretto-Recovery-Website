@@ -2,10 +2,33 @@
 <html lang="en">
 
 <head>
+    <script>
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id=GTM-K8T3NS2S'+dl;
+    f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-K8T3NS2S');
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="api-token" content="{{ session('token') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    @php
+        $isProductionEnv = app()->environment(['production', 'prod']);
+        $socketHost = $isProductionEnv
+            ? config('services.socket.live_url')
+            : config('services.socket.dev_url');
+        $socketHost = $socketHost ?: config('services.socket.url');
+        $socketHost = preg_replace('#/socket/?$#', '', (string) $socketHost);
+        $driversSocketConfig = [
+            'app_env' => app()->environment(),
+            'url' => $socketHost,
+        ];
+    @endphp
+    <meta name="socket-url" content="{{ $socketHost }}">
+    <meta name="socket-force-polling"
+        content="{{ config('services.socket.force_polling') ? 'true' : 'false' }}">
 
     <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon.png') }}">
     <title>@yield('title', 'Car Recovery Dubai | 24/7 Towing & Roadside Assistance UAE')</title>
@@ -22,7 +45,8 @@
 
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/fonts.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('assets/css/style.css') }}?v={{ filemtime(public_path('assets/css/style.css')) }}">
     <link rel="stylesheet" href="{{ asset('assets/css/owl.carousel.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/owl.theme.default.min.css') }}">
 
@@ -31,6 +55,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    @stack('head')
 
     <style>
         .custom-toast-popup {
@@ -52,6 +77,69 @@
             margin-bottom: 10px;
         }
     </style>
+    <style>
+        .apply-btn {
+            display: inline-block;
+            font-size: 14px;
+            color: #fff;
+            padding: 14px 20px;
+            transition: all 0.5s ease;
+            text-transform: uppercase;
+            position: relative;
+            border-radius: 8px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            cursor: pointer;
+            text-align: center;
+            overflow: hidden;
+            border: none;
+            background: #000;
+            box-shadow: 0 0 40px 5px rgb(0 0 0 / 5%);
+            z-index: 1;
+            text-decoration: none;
+            transform: translateY(0);
+        }
+
+        .apply-btn::before {
+            position: absolute;
+            content: "";
+            top: 0px;
+            left: 0px;
+            right: 0px;
+            bottom: 0px;
+            transform: scaleY(0);
+            z-index: -1;
+            background: #d70006;
+            transition: 0.5s ease-in-out;
+        }
+
+        .apply-btn:hover::before,
+        .apply-btn:focus::before,
+        .apply-btn:active::before {
+            transform: scaleY(1);
+        }
+
+        .apply-btn:hover,
+        .apply-btn:focus,
+        .apply-btn:active {
+            color: #fff !important;
+            text-decoration: none;
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        .apply-btn:focus {
+            outline: none;
+        }
+        .header-actions .apply-btn {
+            padding: 9px 20px !important;
+        }
+        @media (max-width: 767px) {
+            .apply-btn {
+                font-size: 12px !important;
+                padding: 14px 10px !important;
+            }
+        }
+    </style>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-62X9L82MBP"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -63,11 +151,11 @@
 
         gtag('config', 'G-62X9L82MBP');
     </script>
-    {{-- SEO / SCHEMA GOES HERE HEAD UNDER BAR --}}
-    {{-- @yield('schema') --}}
 </head>
 
 <body>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K8T3NS2S"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     @include('partials.topbar')
 
@@ -94,12 +182,10 @@
     </div>
 
 
-    {{-- PAGE CONTENT --}}
     @yield('content')
 
     @include('partials.footer')
 
-    {{-- JS --}}
     <script src="{{ asset('assets/js/jquery-3.5.1.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/js/owl.carousel.min.js') }}"></script>
@@ -108,11 +194,102 @@
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        window.DRIVERS_SOCKET_CONFIG = @json($driversSocketConfig);
+    </script>
     @stack('my-booking-script')
     @stack('map-script')
     @stack('signup-script')
     @stack('login-script')
     @stack('otp-script')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function normalizeUaePhone(value) {
+                let digits = (value || '').replace(/\D/g, '');
+
+                if (digits.startsWith('971')) {
+                    digits = digits.slice(3);
+                }
+
+                if (digits.length > 9 && digits.startsWith('0')) {
+                    digits = digits.slice(1);
+                }
+
+                return digits.slice(0, 9);
+            }
+
+            function isValidUaePhone(value) {
+                return /^5\d{8}$/.test(value);
+            }
+
+            const phoneInputs = document.querySelectorAll('form[action*="/contact-us"] input[name="phone"]');
+            const handledForms = new WeakSet();
+
+            phoneInputs.forEach((input) => {
+                input.type = 'tel';
+                input.inputMode = 'numeric';
+                input.autocomplete = 'tel-national';
+                input.maxLength = 12;
+
+                input.addEventListener('input', function() {
+                    this.value = normalizeUaePhone(this.value);
+                    this.setCustomValidity('');
+                });
+
+                input.addEventListener('blur', function() {
+                    this.value = normalizeUaePhone(this.value);
+                });
+
+                const form = input.form;
+                if (!form || handledForms.has(form)) {
+                    return;
+                }
+
+                handledForms.add(form);
+
+                form.addEventListener('submit', function(event) {
+                    const phoneField = form.querySelector('input[name="phone"]');
+                    if (!phoneField) {
+                        return;
+                    }
+
+                    const normalizedPhone = normalizeUaePhone(phoneField.value);
+                    phoneField.value = normalizedPhone;
+                    phoneField.setCustomValidity('');
+
+                    if (!isValidUaePhone(normalizedPhone)) {
+                        event.preventDefault();
+                        phoneField.setCustomValidity(
+                            'Enter a valid UAE mobile number (9 digits starting with 5).'
+                        );
+                        phoneField.reportValidity();
+                    }
+                });
+            });
+        });
+    </script>
+    @if (session('success') || session('error') || $errors->any())
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const flashMessage = @json(
+                    $errors->first() ?: (session('error') ?: session('success'))
+                );
+                const flashIcon = @json(
+                    $errors->any() || session('error') ? 'error' : 'success'
+                );
+
+                if (!flashMessage) {
+                    return;
+                }
+
+                Swal.fire({
+                    icon: flashIcon,
+                    text: flashMessage,
+                    confirmButtonColor: '#d70006'
+                });
+            });
+        </script>
+    @endif
 
     <script>
         AOS.init();

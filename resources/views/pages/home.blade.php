@@ -5,9 +5,8 @@
 @section('meta_description',
     'Reliable 24/7 car recovery, vehicle towing, and emergency roadside assistance across Dubai
     and the UAE. Fast response, safe transport, affordable rates — call now!')
-
+{{-- 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 --}}
 @section('content')
-
     {{-- <div class="seo-content-wrapper" style="position: absolute; left: -9999px; top: -9999px; width: 1px; height: 1px; overflow: hidden;">
     <h1>24/7 Car Recovery Service in Dubai Marina</h1>
 
@@ -82,7 +81,7 @@
                             </div>
                             <!-- Calculate Price Button -->
                             <div class="calculate-price-section mb-4 text-center">
-                                <button type="button" class="theme-btn" id="calculatePriceBtn">
+                                <button type="button" class="apply-btn" id="calculatePriceBtn">
                                     <span class="btn-text">Calculate Price</span>
                                     <span class="btn-loader-price d-none">
                                         <div class="beat-loader">
@@ -124,7 +123,57 @@
                                 </div>
                             </div>
 
-                            <!-- Promo Code Section -->
+
+                            <div class="form-group mb-3">
+                                <label for="recoveryTypesTrigger">Vehicle Types</label>
+                                <div id="recoveryTypesDropdown" class="position-relative">
+                                    <button type="button" id="recoveryTypesTrigger"
+                                        style="width: 100%; min-height: 54px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px; border: 1px solid #dcdcdc; border-radius: 14px; background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%); box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06); text-align: left; transition: all 0.2s ease; cursor: pointer;">
+                                        <span
+                                            style="display: flex; align-items: center; min-width: 0; flex: 1;">
+                                            <span id="recoveryTypesSummary"
+                                                style="font-size: 14px; font-weight: 500; color: #6c757d; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                                Select recovery type
+                                            </span>
+                                        </span>
+                                        <span
+                                            style="display: flex; align-items: center; gap: 10px; flex-shrink: 0;">
+                                            <span id="recoveryTypesCountBadge"
+                                                style="display: none; min-width: 24px; height: 24px; padding: 0 8px; border-radius: 999px; background: #dc3545; color: #fff; font-size: 12px; font-weight: 700; align-items: center; justify-content: center;">
+                                                0
+                                            </span>
+                                            <i id="recoveryTypesChevron" class="fa-solid fa-angle-down"
+                                                style="color: #6c757d; transition: transform 0.2s ease;"></i>
+                                        </span>
+                                    </button>
+                                    <div id="recoveryTypesPanel" class="d-none position-absolute w-100"
+                                        style="top: calc(100% + 10px); left: 0; z-index: 30; border: 1px solid #e5e7eb; border-radius: 16px; background: #fff; box-shadow: 0 20px 45px rgba(15, 23, 42, 0.16); padding: 14px;">
+                                        {{-- <div
+                                            style="display: flex; align-items: center; justify-content: flex-end; gap: 12px; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid #f1f5f9;">
+                                            <button type="button" id="recoveryTypesDoneBtn"
+                                                style="border: 0; background: #fff2f2; color: #dc3545; border-radius: 999px; padding: 6px 12px; font-size: 12px; font-weight: 700;">
+                                                Done
+                                            </button>
+                                        </div> --}}
+                                        <div id="recoveryTypesLoading" class="d-none"
+                                            style="font-size: 13px; font-weight: 500; color: #6c757d; padding: 2px 4px 10px;">
+                                            Loading Vehicle Types...
+                                        </div>
+                                        <div id="recoveryTypesEmptyState" class="d-none"
+                                            style="font-size: 13px; color: #6c757d; padding: 2px 4px 10px;">
+                                            No Vehicle Types available right now.
+                                        </div>
+                                        <div id="recoveryTypesList"
+                                            style="display: flex; flex-direction: column; gap: 8px; max-height: 240px; overflow-y: auto; padding-right: 4px;">
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="text" id="recoveryTypesRequiredProxy" tabindex="-1"
+                                    aria-hidden="true"
+                                    style="position: absolute; opacity: 0; pointer-events: none; width: 1px; height: 1px; padding: 0; margin: 0; border: 0;">
+                                {{-- <small style="font-size: 12px; color: #6c757d;">Vehicle Types are loaded from the API and can change anytime.</small> --}}
+                            </div>
+
                             <div class="promo-section mb-3">
                                 <div class="row g-2 align-items-end">
                                     <div class="col-md-8 col-12">
@@ -155,35 +204,41 @@
                             </div>
 
                             <!-- Price Calculation Section -->
-                            <div class="price-calculation-section mb-3"
-                                style="background: #f8f9fa; border-radius: 8px; padding: 15px; border: 1px solid #eee;">
-                                <div class="d-flex justify-content-between mb-2">
-                                    <span style="font-size: 14px; color: #333;">Total Price:</span>
-                                    <span id="totalPriceDisplay"
-                                        style="font-size: 14px; font-weight: 700; color: #000;">0.00 AED</span>
-                                </div>
-                                <div class="d-flex justify-content-between mb-2 d-none" id="discountRow">
-                                    <span style="font-size: 14px; color: #333;">Discounted Price:</span>
-                                    <span id="discountAmountDisplay"
-                                        style="font-size: 14px; font-weight: 700; color: #dc3545;">0.00 AED</span>
-                                </div>
-                                <hr style="margin: 8px 0; border-color: #ddd;">
-                                <div class="d-flex justify-content-between">
-                                    <span style="font-size: 15px; font-weight: 700; color: #000;">Grand Total:</span>
-                                    <span id="grandTotalDisplay"
-                                        style="font-size: 15px; font-weight: 700; color: #000;">0.00 AED</span>
-                                </div>
-                            </div>
+                            <div class="price-calculation-section mb-4 mt-3 p-3 bg-light rounded">
+                                <h5 class="mb-3">Price Calculation</h5>
 
-                            <div class="payment-method-section mb-4"
-                                style="background: #f8f9fa; border-radius: 8px; padding: 15px; border: 1px solid #eee;">
-                                <div class="form-check m-0 d-flex align-items-center gap-2">
-                                    <input class="form-check-input mt-0" type="radio" name="payment_method"
-                                        id="payment_cod" value="cod" required checked style="cursor: pointer;">
-                                    <label class="form-check-label" for="payment_cod"
-                                        style="font-size: 14px; font-weight: 500; color: #000; cursor: pointer; margin-top:2px;">
-                                        Cash on Delivery (COD)
-                                    </label>
+                                <div class="price-item mb-2">
+                                    <span class="fw-bold">Total Price:</span>
+                                    <span id="totalPriceDisplay" class="float-end">0.00 AED</span>
+                                </div>
+                                @if (!empty($settings['show_platform_fee']) && $settings['show_platform_fee'])
+                                    <div class="price-item mb-2">
+                                        <span class="fw-bold">Platform Fee:</span>
+                                        <span id="platform_fee_amount" class="float-end">
+                                            {{ $settings['platform_fee_amount'] }} AED
+                                        </span>
+                                    </div>
+                                @endif
+
+                                @if (!empty($settings['show_tax']) && $settings['show_tax'])
+                                    <div class="price-item mb-2">
+                                        <span class="fw-bold">Government tax:</span>
+                                        <span id="tax_amount" class="float-end">
+                                            {{ $settings['tax_amount'] }} AED
+                                        </span>
+                                    </div>
+                                @endif
+
+                                <div class="price-item mb-2 d-none" id="discountRow">
+                                    <span class="fw-bold">Discounted Price:</span>
+                                    <span id="discountAmountDisplay" class="float-end text-danger">0.00 AED</span>
+                                </div>
+
+                                <hr class="my-3">
+
+                                <div class="price-item">
+                                    <span class="fw-bold">Grand Total:</span>
+                                    <span id="grandTotalDisplay" class="float-end fw-bold">0.00 AED</span>
                                 </div>
                             </div>
 
@@ -218,7 +273,7 @@
     </section>
 
     {{-- HERO SECTION --}}
-    <section class="hero-section">
+    {{-- <section class="hero-section">
         <div class="hero-shape">
             <div class="hero-shape-1"></div>
             <div class="hero-shape-2"></div>
@@ -253,9 +308,9 @@
                                             </p>
                                             <div class="hero-btn wow animate__animated animate__fadeInUp"
                                                 data-animation="fadeInUp" style="animation-delay: 1s;">
-                                                <a href="{{ route('book.now') }}" class="theme-btn">Book Now<i
+                                                <a href="{{ route('home') }}" class="theme-btn">Book Now<i
                                                         class="fas fa-arrow-right-long"></i></a>
-                                                <a href="tel:+971 523003423" class="theme-btn theme-btn2">Call /
+                                                <a href="tel:+971 526917666" class="theme-btn theme-btn2">Call /
                                                     WhatsApp<i class="fas fa-arrow-right-long"></i></a>
                                             </div>
                                         </div>
@@ -283,9 +338,9 @@
                                             </p>
                                             <div class="hero-btn wow animate__animated animate__fadeInUp"
                                                 data-animation="fadeInUp" style="animation-delay: 1s;">
-                                                <a href="{{ route('book.now') }}" class="theme-btn">Book Now<i
+                                                <a href="{{ route('home') }}" class="theme-btn">Book Now<i
                                                         class="fas fa-arrow-right-long"></i></a>
-                                                <a href="tel:+971 523003423" class="theme-btn theme-btn2">Call /
+                                                <a href="tel:+971 526917666" class="theme-btn theme-btn2">Call /
                                                     WhatsApp<i class="fas fa-arrow-right-long"></i></a>
                                             </div>
                                         </div>
@@ -314,9 +369,9 @@
                                             </p>
                                             <div class="hero-btn wow animate__animated animate__fadeInUp"
                                                 data-animation="fadeInUp">
-                                                <a href="{{ route('book.now') }}" class="theme-btn">Book Now<i
+                                                <a href="{{ route('home') }}" class="theme-btn">Book Now<i
                                                         class="fas fa-arrow-right-long"></i></a>
-                                                <a href="tel:+971 523003423" class="theme-btn theme-btn2">Call /
+                                                <a href="tel:+971 526917666" class="theme-btn theme-btn2">Call /
                                                     WhatsApp<i class="fas fa-arrow-right-long"></i></a>
                                             </div>
                                         </div>
@@ -344,9 +399,9 @@
                                             </p>
                                             <div class="hero-btn wow animate__animated animate__fadeInUp"
                                                 data-animation="fadeInUp" style="animation-delay: 1s;">
-                                                <a href="{{ route('book.now') }}" class="theme-btn">Book Now<i
+                                                <a href="{{ route('home') }}" class="theme-btn">Book Now<i
                                                         class="fas fa-arrow-right-long"></i></a>
-                                                <a href="tel:+971 523003423" class="theme-btn theme-btn2">Call /
+                                                <a href="tel:+971 526917666" class="theme-btn theme-btn2">Call /
                                                     WhatsApp<i class="fas fa-arrow-right-long"></i></a>
                                             </div>
                                         </div>
@@ -375,9 +430,9 @@
                                             </p>
                                             <div class="hero-btn wow animate__animated animate__fadeInUp"
                                                 data-animation="fadeInUp">
-                                                <a href="{{ route('book.now') }}" class="theme-btn">Book Now<i
+                                                <a href="{{ route('home') }}" class="theme-btn">Book Now<i
                                                         class="fas fa-arrow-right-long"></i></a>
-                                                <a href="tel:+971 523003423" class="theme-btn theme-btn2">Call /
+                                                <a href="tel:+971 526917666" class="theme-btn theme-btn2">Call /
                                                     WhatsApp<i class="fas fa-arrow-right-long"></i></a>
                                             </div>
                                         </div>
@@ -405,9 +460,9 @@
                                             </p>
                                             <div class="hero-btn wow animate__animated animate__fadeInUp"
                                                 data-animation="fadeInUp" style="animation-delay: 1s;">
-                                                <a href="{{ route('book.now') }}" class="theme-btn">Book Now<i
+                                                <a href="{{ route('home') }}" class="theme-btn">Book Now<i
                                                         class="fas fa-arrow-right-long"></i></a>
-                                                <a href="tel:+971 523003423" class="theme-btn theme-btn2">Call /
+                                                <a href="tel:+971 526917666" class="theme-btn theme-btn2">Call /
                                                     WhatsApp<i class="fas fa-arrow-right-long"></i></a>
                                             </div>
                                         </div>
@@ -428,7 +483,7 @@
             </div>
             <div class="owl-dots disabled"></div>
         </div>
-    </section>
+    </section> --}}
 
     {{-- FEATURE SECTION --}}
     <section class="feature-area ft-bg1" id="Feature">
@@ -911,7 +966,6 @@
 @endsection
 
 
-
 @push('styles')
     <style>
         /* Remove button maintains same styling as apply button */
@@ -1021,15 +1075,154 @@
             cursor: not-allowed;
         }
     </style>
+    <style>
+        .dash-car-wrap {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: #fff;
+            border: 3px solid #35c759;
+            /* online default */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, .25);
+            overflow: hidden;
+        }
+
+        .dash-car-wrap.busy {
+            border-color: #ff3b30;
+        }
+
+        .dash-car-wrap.offline {
+            border-color: #8e8e93;
+        }
+
+        .dash-car-wrap img {
+            width: 65px;
+            height: 65px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .gm-style .gm-style-iw-c {
+            border-radius: 18px !important;
+            padding: 0 !important;
+            box-shadow: 0 18px 45px rgba(15, 23, 42, 0.20) !important;
+            overflow: hidden !important;
+        }
+
+        .gm-style .gm-style-iw-d {
+            overflow: hidden !important;
+            max-height: none !important;
+        }
+
+        .gm-style button.gm-ui-hover-effect {
+            top: 10px !important;
+            right: 10px !important;
+            opacity: 0.78;
+        }
+
+        .driver-info-card {
+            min-width: 250px;
+            max-width: 290px;
+            padding: 18px 18px 16px;
+            background:
+                radial-gradient(circle at top right, rgba(215, 0, 6, 0.08), transparent 38%),
+                linear-gradient(180deg, #ffffff 0%, #fff8f2 100%);
+            color: #111827;
+            font-family: inherit;
+        }
+
+        .driver-info-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(215, 0, 6, 0.08);
+            color: #b91c1c;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .driver-info-badge-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #d70006;
+            box-shadow: 0 0 0 4px rgba(215, 0, 6, 0.12);
+            flex-shrink: 0;
+        }
+
+        .driver-info-title {
+            margin-top: 14px;
+            margin-bottom: 8px;
+            font-size: 18px;
+            font-weight: 800;
+            line-height: 1.2;
+            color: #111827;
+        }
+
+        .driver-info-address {
+            margin: 0;
+            font-size: 13px;
+            line-height: 1.7;
+            color: #5b6472;
+            word-break: break-word;
+        }
+
+        .driver-info-meta {
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(17, 24, 39, 0.08);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #7c8697;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .driver-info-pin {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            color: #d70006;
+            border: 1px solid rgba(215, 0, 6, 0.15);
+            box-shadow: 0 8px 20px rgba(215, 0, 6, 0.10);
+            flex-shrink: 0;
+        }
+
+        .driver-info-pin::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #d70006;
+            display: block;
+        }
+
+        .driver-info-meta.loading {
+            color: #9ca3af;
+        }
+    </style>
 @endpush
 
 @push('map-script')
     <script>
         const PRICE_API_BASE_URL = "{{ config('services.api.base_url') }}";
-
         const API_BEARER_TOKEN = localStorage.getItem('auth_token') || '';
-
         const DRIVER_ICON_URL = "{{ asset('assets/images/driver-truck.png') }}";
+        const TRIP_PREPAYMENT_STORAGE_KEY = 'trip_prepayment_context';
         let latestDistanceKm = 0;
         let currentOriginalPrice = 0;
         let currentDiscountValue = 0;
@@ -1037,13 +1230,815 @@
 
         let locationPermissionGranted = false;
 
-
-        let pickupLat = null;
-        let pickupLng = null;
-        let dropLat = null;
-        let dropLng = null;
+        let pickupLat = null,
+            pickupLng = null;
+        let dropLat = null,
+            dropLng = null;
         let mapReady = false;
 
+        let pickupAutocomplete, dropAutocomplete;
+        let map, pickupMarker, dropMarker, directionsRenderer, directionsService;
+        let routePolyline = null;
+        let latestRoutePolyline = null;
+        /* ------------------ Helpers ------------------ */
+        function getAuthToken() {
+            const localStorageToken = localStorage.getItem('auth_token');
+            if (localStorageToken && localStorageToken !== '') return localStorageToken;
+            if (API_BEARER_TOKEN && API_BEARER_TOKEN !== '') return API_BEARER_TOKEN;
+
+            const tokenMeta = document.querySelector('meta[name="api-token"]');
+            if (tokenMeta) return tokenMeta.getAttribute('content');
+
+            if (typeof window.userApiToken !== 'undefined') return window.userApiToken;
+            return '';
+        }
+
+        function parseAedAmount(value) {
+            if (value === null || value === undefined) return 0;
+            const cleaned = String(value)
+                .replace(/AED/gi, '')
+                .replace(/,/g, '')
+                .trim();
+            const amount = parseFloat(cleaned);
+            return Number.isFinite(amount) ? amount : 0;
+        }
+
+        function isLocationInUAE(lat, lng) {
+            const uaeMinLat = 22.4969,
+                uaeMaxLat = 26.0555;
+            const uaeMinLng = 51.5795,
+                uaeMaxLng = 56.3967;
+            return (lat >= uaeMinLat && lat <= uaeMaxLat && lng >= uaeMinLng && lng <= uaeMaxLng);
+        }
+
+        function showToast(message, type = 'success') {
+            if (message.includes('Thank you for choosing Toretto Recovery Services') || message.includes(
+                    'Booking created successfully!')) {
+                showBookingSuccessPopup();
+                return;
+            }
+            let swalIcon = type === 'error' ? 'error' : type === 'warning' ? 'warning' : type === 'info' ? 'info' :
+                'success';
+            let color = type === 'error' ? '#dc3545' : type === 'warning' ? '#ffc107' : type === 'info' ? '#17a2b8' :
+                '#28a745';
+
+            Swal.fire({
+                toast: true,
+                icon: swalIcon,
+                title: type === 'error' ? 'Booking Error' : 'Status',
+                text: message,
+                position: 'top-end',
+                timer: 5000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                background: '#fff',
+                color: color,
+                width: '400px',
+                padding: '20px',
+            });
+        }
+
+
+    // code for trip prepayment status handling and storage
+    // ------------------- Trip Prepayment Status Handling ------------------
+    function normalizeText(value) {
+        if (value === null || value === undefined) return '';
+        return String(value).trim().toLowerCase();
+    }
+
+    let tripPrepaymentContext = readTripPrepaymentContext() || {};
+    let tripPrepaymentId = tripPrepaymentContext.prepayment_id || '';
+    let tripPrepaymentStatus = tripPrepaymentContext.status || '';
+    const initialPrepaymentIdFromUrl = ''; // getTripPrepaymentIdFromLocation();
+
+    if (initialPrepaymentIdFromUrl) {
+        tripPrepaymentId = initialPrepaymentIdFromUrl;
+            alert('Found prepayment ID in URL: ' + tripPrepaymentId);
+            saveTripPrepaymentContext({
+                prepayment_id: tripPrepaymentId
+            });
+
+        API_BEARER_TOKEN && callTripPrepaymentStatusApi(tripPrepaymentId, API_BEARER_TOKEN);
+
+        console.log('[Trip Prepayment] Initialized with prepayment ID from URL:', tripPrepaymentId , getTripPrepaymentIdFromLocation());
+        let statusText = tripPrepaymentStatus || 'unknown';
+        if (statusText) {
+                console.log('[Trip Prepayment] Initial status from context:', statusText);
+            if (isTripPrepaymentPaid(statusText)) {
+                showToast('Your payment was successful! We are processing your booking.', 'success');
+                clearTripPrepaymentContext();
+            } else if (isTripPrepaymentPending(statusText)) {
+                clearTripPrepaymentContext();
+                showToast('Your payment is pending. We will update you once it is confirmed.', 'info');
+            } else if (isTripPrepaymentCancelled(statusText)) {
+                showToast('Your payment was cancelled or failed. Please try booking again.', 'error');
+                clearTripPrepaymentContext();
+                clearTripPrepaymentParamsFromLocation();
+            } else {
+                clearTripPrepaymentParamsFromLocation();
+                console.log('[Trip Prepayment] Unrecognized status:', statusText);
+            }
+        } else {
+            clearTripPrepaymentParamsFromLocation();
+            console.log('[Trip Prepayment] No initial status found in context.');
+        }
+
+        let tripPrepaymentStatusCheckInterval = null;
+        function startTripPrepaymentStatusPolling(prepaymentId, token) {
+            if (tripPrepaymentStatusCheckInterval) {
+                clearInterval(tripPrepaymentStatusCheckInterval);
+                console.log('[Trip Prepayment] Cleared existing polling interval before starting new one.');
+            }
+            tripPrepaymentStatusCheckInterval = setInterval(() => {
+                callTripPrepaymentStatusApi(prepaymentId, token);
+            }, 5000); // Poll every 5 seconds
+        }
+
+        function stopTripPrepaymentStatusPolling() {
+            if (tripPrepaymentStatusCheckInterval) {
+                clearInterval(tripPrepaymentStatusCheckInterval);
+                tripPrepaymentStatusCheckInterval = null;
+            }
+        console.log('[Trip Prepayment] Stopped status polling.');
+
+        function callTripPrepaymentStatusApi(prepaymentId, token) {
+            if (!prepaymentId || !token) {
+                console.warn('[Trip Prepayment] Missing prepayment ID or token for status API call.');
+                return;
+            }
+            fetch(`${PRICE_API_BASE_URL}/trip-prepayment/status/${prepaymentId}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const statusText = getTripPrepaymentStatusText(data);
+                console.log('[Trip Prepayment] Polled status:', statusText, data);
+                saveTripPrepaymentContext({ status: statusText });
+
+                if (isTripPrepaymentPaid(statusText)) {
+                    showToast('Your payment was successful! We are processing your booking.', 'success');
+                    clearTripPrepaymentContext();
+                    stopTripPrepaymentStatusPolling();
+                } else if (isTripPrepaymentPending(statusText)) {
+                    showToast('Your payment is pending. We will update you once it is confirmed.', 'info');
+                } else if (isTripPrepaymentCancelled(statusText)) {
+                    showToast('Your payment was cancelled or failed. Please try booking again.', 'error');
+                    clearTripPrepaymentContext();
+                    clearTripPrepaymentParamsFromLocation();
+                    stopTripPrepaymentStatusPolling();
+                } else {
+                    console.log('[Trip Prepayment] Unrecognized status during polling:', statusText);
+                }
+            })
+            .catch(error => {
+                console.error('[Trip Prepayment] Failed to fetch status:', error);
+            });
+        }
+
+    }
+}
+
+
+function handleTripPrepaymentStatusOnLoad() {
+    if (!tripPrepaymentId) {
+        console.log('[Trip Prepayment] No prepayment ID in context on load.');
+        return;
+    }
+    if (!API_BEARER_TOKEN) {
+        console.warn('[Trip Prepayment] No API token available to check status on load.');
+        return;
+    }
+    console.log('[Trip Prepayment] Checking status on load for prepayment ID:', tripPrepaymentId);
+    callTripPrepaymentStatusApi(tripPrepaymentId, API_BEARER_TOKEN);
+    startTripPrepaymentStatusPolling(tripPrepaymentId, API_BEARER_TOKEN);
+}
+// Initialize the trip prepayment status handling when the page loads
+
+function initTripPrepaymentStatusHandling() {
+    document.addEventListener('DOMContentLoaded', () => {
+        handleTripPrepaymentStatusOnLoad();
+    });
+}
+
+publiclyExposeFunction('initTripPrepaymentStatusHandling', initTripPrepaymentStatusHandling);
+// Ensure this runs after the main JS functions are initialized
+mainJsFunctions.push(initTripPrepaymentStatusHandling);
+// If using a module system, you can also export the function
+// export { initTripPrepaymentStatusHandling };
+// Call this function in the main script initialization to set up the trip prepayment status handling
+// Trip Prepayment Context Management
+// Using localStorage to persist prepayment ID and status across page loads and redirects
+//-------------------- Trip Prepayment Context Management ------------------
+
+
+        function readTripPrepaymentContext() {
+            try {
+                const raw = localStorage.getItem(TRIP_PREPAYMENT_STORAGE_KEY);
+                return raw ? JSON.parse(raw) : null;
+            } catch (error) {
+                return null;
+            }
+        }
+
+        function saveTripPrepaymentContext(context = {}) {
+            try {
+                const currentContext = readTripPrepaymentContext() || {};
+                localStorage.setItem(TRIP_PREPAYMENT_STORAGE_KEY, JSON.stringify({
+                    ...currentContext,
+                    ...context
+                }));
+            } catch (error) {
+                console.warn('[Trip Prepayment] Failed to save context:', error);
+            }
+        }
+
+        function clearTripPrepaymentContext() {
+            try {
+                localStorage.removeItem(TRIP_PREPAYMENT_STORAGE_KEY);
+            } catch (error) {
+                console.warn('[Trip Prepayment] Failed to clear context:', error);
+            }
+        }
+
+        // function getTripPrepaymentIdFromLocation() {
+        //     try {
+        //         const params = new URLSearchParams(window.location.search || '');
+        //         return params.get('prepayment_id') ||
+        //             params.get('prepayment') ||
+        //             params.get('trip_prepayment_id') ||
+        //             params.get('trip_prepayment') ||
+        //             params.get('trip_prepayment_request_id') ||
+        //             '';
+        //     } catch (error) {
+        //         return '';
+        //     }
+        // }
+
+        // function isStripeTripPrepaymentSuccessReturn() {
+        //     try {
+        //         const params = new URLSearchParams(window.location.search || '');
+        //         const gateway = normalizeTripPrepaymentStatus(params.get('payment_gateway'));
+        //         const state = normalizeTripPrepaymentStatus(params.get('state'));
+        //         return gateway === 'stripe' && state === 'success';
+        //     } catch (error) {
+        //         return false;
+        //     }
+        // }
+
+        function clearTripPrepaymentParamsFromLocation() {
+            try {
+                const url = new URL(window.location.href);
+                const params = url.searchParams;
+                let changed = false;
+
+                [
+                    'prepayment_id',
+                    'prepayment',
+                    'trip_prepayment_id',
+                    'trip_prepayment',
+                    'trip_prepayment_request_id',
+                    'payment_gateway',
+                    'state'
+                ].forEach((key) => {
+                    if (params.has(key)) {
+                        params.delete(key);
+                        changed = true;
+                    }
+                });
+
+                if (changed) {
+                    const cleanedUrl = `${url.origin}${url.pathname}${params.toString() ? `?${params.toString()}` : ''}${url.hash}`;
+                    window.history.replaceState({}, document.title, cleanedUrl);
+                }
+            } catch (error) {
+                console.warn('[Trip Prepayment] Failed to clean URL params:', error);
+            }
+        }
+
+        function normalizeTripPrepaymentStatus(value) {
+            if (value === null || value === undefined) return '';
+            return normalizeText(value).toLowerCase();
+        }
+
+        function getTripPrepaymentStatusTokens(statusText) {
+            return normalizeTripPrepaymentStatus(statusText)
+                .replace(/[^a-z0-9]+/g, ' ')
+                .split(/\s+/)
+                .filter(Boolean);
+        }
+
+        function getTripPrepaymentResponseData(resData) {
+            return resData?.data ?? resData ?? {};
+        }
+
+        function getTripPrepaymentStatusText(resData) {
+            const payload = getTripPrepaymentResponseData(resData);
+            const candidates = [
+                payload?.payment_status,
+                payload?.prepayment_status,
+                payload?.booking_status,
+                payload?.state,
+                payload?.status,
+                resData?.payment_status,
+                resData?.prepayment_status,
+                resData?.booking_status,
+                resData?.state
+            ];
+
+            for (const candidate of candidates) {
+                if (typeof candidate === 'string' && candidate.trim() !== '') {
+                    return normalizeTripPrepaymentStatus(candidate);
+                }
+            }
+
+            return '';
+        }
+
+        function hasTripPrepaymentBooking(resData) {
+            const payload = getTripPrepaymentResponseData(resData);
+            return Boolean(
+                payload?.booking ||
+                payload?.booking_id ||
+                payload?.bookingId ||
+                payload?.booking_number ||
+                payload?.booking_no ||
+                payload?.booking_reference ||
+                payload?.booking_ref ||
+                payload?.booking_uuid ||
+                payload?.booking_code
+            );
+        }
+
+        function isTripPrepaymentPaid(statusText) {
+            const status = normalizeTripPrepaymentStatus(statusText);
+            const tokens = getTripPrepaymentStatusTokens(statusText);
+            return [
+                'paid',
+                'succeeded',
+                'success',
+                'completed',
+                'complete',
+                'captured',
+                'done'
+            ].some((value) => status === value || tokens.includes(value));
+        }
+
+        function isTripPrepaymentPending(statusText) {
+            const status = normalizeTripPrepaymentStatus(statusText);
+            const tokens = getTripPrepaymentStatusTokens(statusText);
+            if (status === 'requires_payment' || status === 'requires_payment_method') {
+                return true;
+            }
+
+            return [
+                'pending',
+                'created',
+                'open',
+                'processing'
+            ].some((value) => status === value || tokens.includes(value)) ||
+                (tokens.includes('requires') && tokens.includes('payment'));
+        }
+
+        function isTripPrepaymentCancelled(statusText) {
+            const status = normalizeTripPrepaymentStatus(statusText);
+            const tokens = getTripPrepaymentStatusTokens(statusText);
+            return ['cancel', 'cancelled', 'canceled', 'failed', 'expired', 'void'].some(
+                (value) => status === value || tokens.includes(value)
+            );
+        }
+
+        async function callTripPrepaymentApi(endpoint, token, options = {}) {
+            if (!token) {
+                return {
+                    resp: null,
+                    resData: {
+                        status: false,
+                        message: 'Authentication token is missing.'
+                    }
+                };
+            }
+
+            const headers = {
+                'Authorization': 'Bearer ' + token,
+                'Accept': 'application/json',
+                ...(options.body ? {
+                    'Content-Type': 'application/json'
+                } : {})
+            };
+
+            if (options.headers) {
+                Object.assign(headers, options.headers);
+            }
+
+            const resp = await window.ApiUtils.fetch(
+                `${PRICE_API_BASE_URL}/v1/customer/payments/${endpoint}`, {
+                    method: options.method || 'GET',
+                    headers,
+                    ...(options.body ? {
+                        body: options.body
+                    } : {})
+                });
+
+            const rawResponse = await resp.text();
+            let resData = {};
+
+            try {
+                resData = JSON.parse(rawResponse);
+            } catch (error) {
+                resData = {
+                    raw: rawResponse
+                };
+            }
+
+            return {
+                resp,
+                resData
+            };
+        }
+
+        async function fetchTripPrepaymentStatus(prepaymentId, token) {
+            return callTripPrepaymentApi(`trip-prepayments/${encodeURIComponent(prepaymentId)}`, token);
+        }
+
+        async function fetchTripPrepaymentLinks(prepaymentId, token) {
+            return callTripPrepaymentApi(`trip-prepayments/${encodeURIComponent(prepaymentId)}/links`, token);
+        }
+
+        async function finalizeTripPrepayment(prepaymentId, token) {
+            return callTripPrepaymentApi(`trip-prepayments/${encodeURIComponent(prepaymentId)}/finalize`, token, {
+                method: 'POST'
+            });
+        }
+
+        async function handleTripPrepaymentResume() {
+            const token = getAuthToken();
+            const storedContext = readTripPrepaymentContext() || {};
+            const prepaymentId = storedContext.prepayment_id || getTripPrepaymentIdFromLocation();
+            const isStripeSuccessReturn = isStripeTripPrepaymentSuccessReturn();
+
+            if (isStripeSuccessReturn) {
+                clearTripPrepaymentParamsFromLocation();
+            }
+
+            if (!prepaymentId) {
+                if (isStripeSuccessReturn) {
+                    showBookingSuccessPopup();
+                    return true;
+                }
+                return null;
+            }
+
+            if (!token) {
+                return null;
+            }
+
+            if (!storedContext.prepayment_id) {
+                saveTripPrepaymentContext({
+                    prepayment_id: prepaymentId
+                });
+            }
+
+            if (getTripPrepaymentIdFromLocation()) {
+                clearTripPrepaymentParamsFromLocation();
+            }
+
+            try {
+                const statusResult = await fetchTripPrepaymentStatus(prepaymentId, token);
+                const statusData = getTripPrepaymentResponseData(statusResult.resData);
+                const statusText = getTripPrepaymentStatusText(statusResult.resData);
+                const statusMessage = statusData?.message || statusResult.resData?.message || '';
+
+                console.log('[Trip Prepayment] Status response:', {
+                    status: statusResult.resp?.status,
+                    ok: statusResult.resp?.ok,
+                    data: statusResult.resData
+                });
+
+                if (!statusResult.resp || !statusResult.resp.ok || statusResult.resData?.status === false) {
+                    if (statusMessage) {
+                        showToast(statusMessage, 'error');
+                    }
+                    return false;
+                }
+
+                if (isTripPrepaymentPaid(statusText)) {
+                    if (hasTripPrepaymentBooking(statusData)) {
+                        clearTripPrepaymentContext();
+                        showBookingSuccessPopup();
+                        return true;
+                    }
+
+                    const finalizeResult = await finalizeTripPrepayment(prepaymentId, token);
+                    console.log('[Trip Prepayment] Finalize response:', {
+                        status: finalizeResult.resp?.status,
+                        ok: finalizeResult.resp?.ok,
+                        data: finalizeResult.resData
+                    });
+
+                    if (finalizeResult.resp?.ok && finalizeResult.resData?.status !== false) {
+                        clearTripPrepaymentContext();
+                        showBookingSuccessPopup();
+                        return true;
+                    }
+
+                    showToast(finalizeResult.resData?.message || 'Payment is complete, but booking finalization is still pending.', 'warning');
+                    return false;
+                }
+
+                if (isTripPrepaymentCancelled(statusText)) {
+                    clearTripPrepaymentContext();
+                    if (statusMessage) {
+                        showToast(statusMessage, 'warning');
+                    }
+                    return false;
+                }
+
+                if (!isTripPrepaymentPending(statusText) && statusText) {
+                    saveTripPrepaymentContext({
+                        prepayment_id: prepaymentId,
+                        latest_status: statusText
+                    });
+                }
+
+                const linksResult = await fetchTripPrepaymentLinks(prepaymentId, token);
+                const linksData = getTripPrepaymentResponseData(linksResult.resData);
+                const checkoutUrl = linksData?.checkout_url || storedContext.checkout_url;
+                const successUrl = linksData?.success_url || storedContext.success_url;
+                const cancelUrl = linksData?.cancel_url || storedContext.cancel_url;
+                const publicStatusUrl = linksData?.public_status_url || storedContext.public_status_url;
+
+                console.log('[Trip Prepayment] Links response:', {
+                    status: linksResult.resp?.status,
+                    ok: linksResult.resp?.ok,
+                    data: linksResult.resData
+                });
+
+                saveTripPrepaymentContext({
+                    prepayment_id: prepaymentId,
+                    checkout_url: checkoutUrl || storedContext.checkout_url || '',
+                    success_url: successUrl || storedContext.success_url || '',
+                    cancel_url: cancelUrl || storedContext.cancel_url || '',
+                    public_status_url: publicStatusUrl || storedContext.public_status_url || ''
+                });
+
+                if (checkoutUrl) {
+                    window.location.replace(checkoutUrl);
+                    return true;
+                }
+
+                if (linksResult.resData?.status === false && linksResult.resData?.message) {
+                    showToast(linksResult.resData.message, 'error');
+                } else {
+                    showToast('Payment link is not available right now. Please try again.', 'error');
+                }
+                return false;
+            } catch (error) {
+                console.error('[Trip Prepayment] Resume error:', error);
+                showToast('Unable to resume the payment right now. Please try again.', 'error');
+                return false;
+            }
+        }
+
+        function parseKmFromDistanceText(text) {
+            // "46.8 km" -> 46.8
+            if (!text) return 0;
+            const num = parseFloat(String(text).replace(/[^\d.]/g, ''));
+            return Number.isFinite(num) ? num : 0;
+        }
+
+        let recoveryTypeOptions = [];
+
+        function normalizeRecoveryTypesResponse(payload) {
+            const collections = [
+                payload?.data?.name_options,
+                payload?.data?.recovery_types,
+                payload?.data,
+                payload?.recovery_types,
+                payload?.name_options,
+                payload?.items,
+                payload
+            ];
+
+            for (const collection of collections) {
+                if (!Array.isArray(collection)) continue;
+
+                return collection
+                    .map((item, index) => {
+                        const id = Number(item?.id ?? item?.recovery_type_id ?? item?.value);
+                        const name = item?.name ?? item?.title ?? item?.label ?? '';
+
+                        if (!id || !name) return null;
+
+                        return {
+                            id,
+                            name
+                        };
+                    })
+                    .filter(Boolean);
+            }
+
+            return [];
+        }
+
+        function setRecoveryTypesLoading(isLoading) {
+            const loadingElement = document.getElementById('recoveryTypesLoading');
+            if (!loadingElement) return;
+
+            loadingElement.classList.toggle('d-none', !isLoading);
+        }
+
+        function setRecoveryTypesEmptyState(message = '') {
+            const headerElement = document.getElementById('recoveryTypesHeader');
+            const emptyStateElement = document.getElementById('recoveryTypesEmptyState');
+            if (headerElement) {
+                headerElement.style.display = message ? 'none' : 'flex';
+            }
+
+            if (!emptyStateElement) return;
+
+            emptyStateElement.textContent = message || 'No Vehicle Types available right now.';
+            emptyStateElement.classList.toggle('d-none', !message);
+        }
+
+        function setRecoveryTypesDropdownOpen(isOpen) {
+            const panel = document.getElementById('recoveryTypesPanel');
+            const chevron = document.getElementById('recoveryTypesChevron');
+            const trigger = document.getElementById('recoveryTypesTrigger');
+            if (!panel || !chevron || !trigger) return;
+
+            panel.classList.toggle('d-none', !isOpen);
+            chevron.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+            trigger.style.borderColor = isOpen ? '#dc3545' : '#dcdcdc';
+            trigger.style.boxShadow = isOpen ? '0 14px 30px rgba(220, 53, 69, 0.12)' :
+                '0 8px 24px rgba(15, 23, 42, 0.06)';
+        }
+
+        function syncRecoveryTypesRequiredState(selectedCount = null) {
+            const proxyInput = document.getElementById('recoveryTypesRequiredProxy');
+            const trigger = document.getElementById('recoveryTypesTrigger');
+            if (!proxyInput || !trigger) return;
+
+            const count = selectedCount ?? document.querySelectorAll('input[name="recovery_types_id[]"]:checked').length;
+            proxyInput.value = count > 0 ? 'selected' : '';
+            proxyInput.setCustomValidity('');
+            trigger.style.borderColor = '#dcdcdc';
+        }
+
+        function updateRecoveryTypesSummary() {
+            const summaryElement = document.getElementById('recoveryTypesSummary');
+            const badgeElement = document.getElementById('recoveryTypesCountBadge');
+            if (!summaryElement || !badgeElement) return;
+
+            const selectedInputs = Array.from(document.querySelectorAll('input[name="recovery_types_id[]"]:checked'));
+            const selectedNames = selectedInputs.map((input) => input.dataset.name || '').filter(Boolean);
+            const selectedCount = selectedNames.length;
+
+            if (!selectedCount) {
+                summaryElement.textContent = 'Select recovery type';
+                summaryElement.style.color = '#6c757d';
+                badgeElement.style.display = 'none';
+                syncRecoveryTypesRequiredState(0);
+                return;
+            }
+
+            summaryElement.textContent = selectedNames[0];
+            summaryElement.style.color = '#111827';
+            badgeElement.style.display = 'none';
+            syncRecoveryTypesRequiredState(selectedCount);
+        }
+
+        function applyRecoveryTypeOptionState(wrapper, input) {
+            if (!wrapper || !input) return;
+
+            wrapper.style.borderColor = input.checked ? '#dc3545' : '#e5e7eb';
+            wrapper.style.background = input.checked ? '#fff5f5' : '#f8fafc';
+            wrapper.style.boxShadow = input.checked ? '0 10px 22px rgba(220, 53, 69, 0.12)' : 'none';
+        }
+
+        function refreshRecoveryTypeOptionStates() {
+            document.querySelectorAll('input[name="recovery_types_id[]"]').forEach((input) => {
+                applyRecoveryTypeOptionState(input.closest('label'), input);
+            });
+        }
+
+        function clearRecoveryTypesSelection() {
+            const listElement = document.getElementById('recoveryTypesList');
+            if (!listElement) return;
+
+            listElement.innerHTML = '';
+            setRecoveryTypesEmptyState('');
+            renderRecoveryTypes(recoveryTypeOptions);
+            setRecoveryTypesDropdownOpen(false);
+        }
+
+        function renderRecoveryTypes(recoveryTypes) {
+            const listElement = document.getElementById('recoveryTypesList');
+            if (!listElement) return;
+
+            listElement.innerHTML = '';
+            recoveryTypeOptions = Array.isArray(recoveryTypes) ? recoveryTypes : [];
+
+            if (!recoveryTypeOptions.length) {
+                setRecoveryTypesEmptyState('No Vehicle Types found');
+                updateRecoveryTypesSummary();
+                return;
+            }
+
+            setRecoveryTypesEmptyState('');
+            console.log('[Vehicle Types] Render list:', recoveryTypeOptions);
+
+            recoveryTypeOptions.forEach((recoveryType) => {
+                const wrapper = document.createElement('label');
+                wrapper.setAttribute('for', `recovery_type_${recoveryType.id}`);
+                wrapper.style.cssText =
+                    'display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 14px; border:1px solid #e5e7eb; border-radius:12px; background:#f8fafc; cursor:pointer; transition:all 0.2s ease;';
+
+                const content = document.createElement('span');
+                content.style.cssText = 'display:flex; align-items:center; min-width:0; flex:1;';
+
+                const input = document.createElement('input');
+                input.type = 'radio';
+                input.name = 'recovery_types_id[]';
+                input.id = `recovery_type_${recoveryType.id}`;
+                input.value = recoveryType.id;
+                input.dataset.name = recoveryType.name;
+                input.className = 'form-check-input m-0';
+                input.style.cursor = 'pointer';
+                input.style.flexShrink = '0';
+
+                const text = document.createElement('span');
+                text.textContent = recoveryType.name;
+                text.style.cssText =
+                    'font-size:14px; font-weight:600; color:#111827; line-height:1.3; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;';
+
+                input.addEventListener('change', function() {
+                    refreshRecoveryTypeOptionStates();
+                    updateRecoveryTypesSummary();
+                    if (input.checked) {
+                        setRecoveryTypesDropdownOpen(false);
+                    }
+                });
+
+                content.appendChild(text);
+                wrapper.appendChild(content);
+                wrapper.appendChild(input);
+                applyRecoveryTypeOptionState(wrapper, input);
+                listElement.appendChild(wrapper);
+            });
+
+            updateRecoveryTypesSummary();
+        }
+
+        async function fetchRecoveryTypes() {
+            setRecoveryTypesLoading(true);
+            setRecoveryTypesEmptyState('');
+
+            try {
+                const response = await window.ApiUtils.fetch(
+                    `${PRICE_API_BASE_URL}/v1/common/recovery-types?audience=customer`, {
+                        method: 'GET'
+                    });
+
+                const rawResponse = await response.text();
+                let responseData = {};
+
+                try {
+                    responseData = JSON.parse(rawResponse);
+                } catch (error) {
+                    responseData = {};
+                }
+
+                console.log('[Vehicle Types] API raw response:', {
+                    status: response.status,
+                    ok: response.ok,
+                    data: responseData
+                });
+
+                if (!response.ok) {
+                    renderRecoveryTypes([]);
+                    showToast(responseData?.message || 'Failed to load Vehicle Types.', 'error');
+                    return;
+                }
+
+                renderRecoveryTypes(normalizeRecoveryTypesResponse(responseData));
+            } catch (error) {
+                console.error('Vehicle Types fetch error:', error);
+                renderRecoveryTypes([]);
+                showToast('Failed to load Vehicle Types.', 'error');
+            } finally {
+                setRecoveryTypesLoading(false);
+            }
+        }
+
+        function initializeRecoveryTypes() {
+            fetchRecoveryTypes();
+        }
+
+        /* ------------------ Google Maps Loader ------------------ */
         function checkLocationPermission() {
             if ('permissions' in navigator) {
                 navigator.permissions.query({
@@ -1052,7 +2047,6 @@
                     if (result.state === 'granted') {
                         locationPermissionGranted = true;
                     } else if (result.state === 'prompt') {
-                        // show modal
                         const modalElement = document.getElementById('locationPermissionModal');
                         if (modalElement) {
                             const modal = new bootstrap.Modal(modalElement);
@@ -1063,36 +2057,27 @@
                             });
                         }
                     }
-                    // if denied, do nothing
                 });
             } else {
-                // permissions API not supported, assume granted to keep old behavior
                 locationPermissionGranted = true;
             }
         }
 
         function loadGoogleMapsScript() {
-            // Check if Google Maps API is already loaded
             if (window.google && window.google.maps) {
-                // Maps API already loaded, initialize directly
                 initMapAndAutocomplete();
                 return;
             }
 
             const script = document.createElement('script');
-            // Modified callback to handle map initialization after API loads
             script.src =
-                `https://maps.googleapis.com/maps/api/js?key={{ config('services.google_maps.key') }}&libraries=places,directions,distance_matrix&callback=initMapAndAutocomplete`;
+                `https://maps.googleapis.com/maps/api/js?key={{ config('services.google_maps.key') }}&libraries=places,routes&callback=initMapAndAutocomplete`;
             script.async = true;
             script.defer = true;
             document.head.appendChild(script);
         }
 
-        let pickupAutocomplete, dropAutocomplete;
-        let map, pickupMarker, dropMarker, directionsRenderer;
-        let directionsService;
-
-        function initMapAndAutocomplete() {
+        window.initMapAndAutocomplete = function() {
             initMap();
             initAutocomplete();
 
@@ -1100,38 +2085,38 @@
                 setTimeout(getUserLiveLocation, 500);
             }
 
-            // Enable the "Use Current Location" button after map is ready
             setTimeout(() => {
-                const useCurrentLocationBtn = document.getElementById('useCurrentLocationBtn');
-                if (useCurrentLocationBtn) {
-                    useCurrentLocationBtn.style.opacity = '1';
-                    useCurrentLocationBtn.style.pointerEvents = 'auto';
-                    console.log('Use Current Location button enabled');
+                const btn = document.getElementById('useCurrentLocationBtn');
+                if (btn) {
+                    btn.style.opacity = '1';
+                    btn.style.pointerEvents = 'auto';
                 }
-            }, 1000);
+            }, 800);
         }
 
         function initMap() {
-            // Initialize the Google map
-            const uaeCenter = {
-                lat: 24.4539,
-                lng: 54.3773
-            }; // UAE center
+            const defaultLat = 25.2048; // Dubai
+            const defaultLng = 55.2708; // Dubai
+
             map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 6,
-                center: uaeCenter,
-                restriction: {
-                    latLngBounds: {
-                        north: 26.0555,
-                        south: 22.4969,
-                        west: 51.5795,
-                        east: 56.3967
-                    },
-                    strictBounds: true
-                }
+                center: {
+                    lat: defaultLat,
+                    lng: defaultLng
+                },
+                zoom: 11,
+                mapId: "DEMO_MAP_ID",
+                mapTypeControl: true,
+                streetViewControl: false,
+                fullscreenControl: true,
+                styles: [{
+                    featureType: "poi",
+                    elementType: "labels",
+                    stylers: [{
+                        visibility: "off"
+                    }]
+                }]
             });
 
-            // Initialize directions service and renderer
             directionsService = new google.maps.DirectionsService();
             directionsRenderer = new google.maps.DirectionsRenderer({
                 map: map,
@@ -1141,297 +2126,194 @@
                     strokeWeight: 4
                 }
             });
-            mapReady = true;
-            restorePendingBooking();
 
+            mapReady = true;
+
+            restorePendingBooking();
+            startDashAutoDrivers();
         }
 
         function initAutocomplete() {
-            // 🇦🇪 UAE Boundaries
             const uaeBounds = new google.maps.LatLngBounds(
                 new google.maps.LatLng(22.4969, 51.5795),
                 new google.maps.LatLng(26.0555, 56.3967)
             );
 
             const autocompleteOptions = {
+                // IMPORTANT: establishments strict sometimes blocks. Better:
                 types: ['establishment'],
                 bounds: uaeBounds,
                 strictBounds: true,
                 componentRestrictions: {
-                    country: ['AE'] // 🇦🇪 UAE only
+                    country: ['AE']
                 }
             };
 
-            // Safely initialize autocompletes with checks
             const pickupElement = document.getElementById('pickup_location');
             const dropElement = document.getElementById('drop_location');
 
             if (pickupElement) {
-                pickupAutocomplete = new google.maps.places.Autocomplete(
-                    pickupElement,
-                    autocompleteOptions
-                );
-
-                // Add listener with error handling
-                pickupAutocomplete.addListener('place_changed', function() {
-                    try {
-                        onPickupChanged();
-                    } catch (error) {
-                        // Fallback: ensure input value is set properly
-                        const element = document.getElementById('pickup_location');
-                        if (element && pickupAutocomplete) {
-                            const place = pickupAutocomplete.getPlace();
-                            if (place && place.name) {
-                                element.value = place.name;
-                            }
-                        }
-                    }
-                });
+                pickupAutocomplete = new google.maps.places.Autocomplete(pickupElement, autocompleteOptions);
+                pickupAutocomplete.addListener('place_changed', onPickupChanged);
             }
 
             if (dropElement) {
-                dropAutocomplete = new google.maps.places.Autocomplete(
-                    dropElement,
-                    autocompleteOptions
-                );
-
-                // Add listener with error handling
-                dropAutocomplete.addListener('place_changed', function() {
-                    try {
-                        onDropChanged();
-                    } catch (error) {
-                        // Fallback: ensure input value is set properly
-                        const element = document.getElementById('drop_location');
-                        if (element && dropAutocomplete) {
-                            const place = dropAutocomplete.getPlace();
-                            if (place && place.name) {
-                                element.value = place.name;
-                            }
-                        }
-                    }
-                });
+                dropAutocomplete = new google.maps.places.Autocomplete(dropElement, autocompleteOptions);
+                dropAutocomplete.addListener('place_changed', onDropChanged);
             }
-
         }
 
         function onPickupChanged() {
             const place = pickupAutocomplete.getPlace();
-
             if (!place.geometry) {
                 showToast('Please select a valid location within the UAE.', 'error');
-                const pickupElement = document.getElementById('pickup_location');
-                if (pickupElement) pickupElement.value = '';
+                document.getElementById('pickup_location').value = '';
+                pickupLat = pickupLng = null;
+                if (pickupMarker) {
+                    pickupMarker.setMap(null);
+                    pickupMarker = null;
+                }
                 return;
             }
 
             const lat = place.geometry.location.lat();
             const lng = place.geometry.location.lng();
-            pickupLat = lat;
-            pickupLng = lng;
 
             if (!isLocationInUAE(lat, lng)) {
                 showToast('Please select a valid location within the UAE.', 'error');
-                const pickupElement = document.getElementById('pickup_location');
-                if (pickupElement) pickupElement.value = '';
+                document.getElementById('pickup_location').value = '';
                 return;
             }
 
-            // Remove existing pickup marker if present
-            if (pickupMarker) {
-                pickupMarker.setMap(null);
-            }
+            pickupLat = lat;
+            pickupLng = lng;
 
-            // Create new pickup marker
+            if (pickupMarker) pickupMarker.setMap(null);
             pickupMarker = new google.maps.Marker({
                 position: {
-                    lat: lat,
-                    lng: lng
+                    lat,
+                    lng
                 },
-                map: map,
-                title: 'Pickup: ' + place.name,
+                map,
+                title: 'Pickup',
                 icon: {
-                    url: "{{ asset('assets/images/pin.png') }}", // Using a pin icon for pickup
+                    url: "{{ asset('assets/images/pin.png') }}",
                     scaledSize: new google.maps.Size(30, 30)
                 }
             });
 
-            // Add info window to the marker
-            const pickupInfoWindow = new google.maps.InfoWindow({
-                // content: 'Pickup: ' + place.name
-                content: `
-                    <div style="max-width:200px; font-size:13px; line-height:1.4;">
-                        <strong>Pickup:</strong><br>
-                        ${place.name.split('|')[0]}
-                    </div>
-                `
-
-            });
-            pickupInfoWindow.open(map, pickupMarker);
-
-            // Safely update the input field value
             const pickupElement = document.getElementById('pickup_location');
-            // if (pickupElement && place.name) {
-            //     pickupElement.value = place.name;
-            // }
-            if (place.formatted_address) {
-                pickupElement.value = place.formatted_address;
-            } else {
-                pickupElement.value = place.name.split('|')[0].split(',')[0];
-            }
+            pickupElement.value = place.formatted_address || place.name || '';
 
+            new google.maps.InfoWindow({
+                content: `<div style="max-width:200px;font-size:13px;"><strong>Pickup:</strong><br>${pickupElement.value}</div>`
+            }).open(map, pickupMarker);
 
-            // Pan to the marker location
             map.panTo({
-                lat: lat,
-                lng: lng
+                lat,
+                lng
             });
             map.setZoom(15);
 
-            // Draw route with a small delay to ensure everything is ready
-            if (dropMarker) {
-                setTimeout(drawRoute, 300);
-            }
+            if (dropMarker) setTimeout(drawRoute, 200);
         }
 
         function onDropChanged() {
             const place = dropAutocomplete.getPlace();
-
             if (!place.geometry) {
                 showToast('Please select a valid location within the UAE.', 'error');
-                const dropElement = document.getElementById('drop_location');
-                if (dropElement) dropElement.value = '';
+                document.getElementById('drop_location').value = '';
+                dropLat = dropLng = null;
+                if (dropMarker) {
+                    dropMarker.setMap(null);
+                    dropMarker = null;
+                }
                 return;
             }
 
             const lat = place.geometry.location.lat();
             const lng = place.geometry.location.lng();
+
+            if (!isLocationInUAE(lat, lng)) {
+                showToast('Please select a valid location within the UAE.', 'error');
+                document.getElementById('drop_location').value = '';
+                return;
+            }
+
             dropLat = lat;
             dropLng = lng;
 
-            // Remove existing drop marker if present
-            if (dropMarker) {
-                dropMarker.setMap(null);
-            }
-
-            // Create new drop marker
+            if (dropMarker) dropMarker.setMap(null);
             dropMarker = new google.maps.Marker({
                 position: {
-                    lat: lat,
-                    lng: lng
+                    lat,
+                    lng
                 },
-                map: map,
-                title: 'Drop: ' + place.name,
+                map,
+                title: 'Drop',
                 icon: {
-                    url: "{{ asset('assets/images/pin.png') }}", // Using a pin icon for drop
+                    url: "{{ asset('assets/images/pin.png') }}",
                     scaledSize: new google.maps.Size(30, 30)
                 }
             });
 
-            // Add info window to the marker
-            const dropInfoWindow = new google.maps.InfoWindow({
-                // content: 'Drop: ' + place.name
-                content: `
-                    <div style="max-width:200px; font-size:13px; line-height:1.4;">
-                        <strong>Drop:</strong><br>
-                        ${place.name.split('|')[0]}
-                    </div>
-                `
-            });
-            dropInfoWindow.open(map, dropMarker);
-
-            // Safely update the input field value
             const dropElement = document.getElementById('drop_location');
-            // if (dropElement && place.name) {
-            //     dropElement.value = place.name;
-            // }
-            if (place.formatted_address) {
-                dropElement.value = place.formatted_address;
-            } else {
-                dropElement.value = place.name.split('|')[0].split(',')[0];
-            }
+            dropElement.value = place.formatted_address || place.name || '';
 
-            // Pan to the marker location
+            new google.maps.InfoWindow({
+                content: `<div style="max-width:200px;font-size:13px;"><strong>Drop:</strong><br>${dropElement.value}</div>`
+            }).open(map, dropMarker);
+
             map.panTo({
-                lat: lat,
-                lng: lng
+                lat,
+                lng
             });
             map.setZoom(15);
 
-            // Draw route with a small delay to ensure everything is ready
-            if (pickupMarker) {
-                setTimeout(drawRoute, 300);
-            }
+            if (pickupMarker) setTimeout(drawRoute, 200);
         }
 
-        function getAuthToken() {
-            const localStorageToken = localStorage.getItem('auth_token');
-            if (localStorageToken && localStorageToken !== '') {
-                return localStorageToken;
+        /* ------------------ Route + Distance + Price ------------------ */
+        function drawRoute() {
+            console.log("called");
+
+            if (!pickupMarker || !dropMarker || !map) {
+                console.log("stopped: pickupMarker/dropMarker/map missing", {
+                    pickupMarker,
+                    dropMarker,
+                    map
+                });
+                return;
             }
 
-            if (API_BEARER_TOKEN && API_BEARER_TOKEN !== '') {
-                return API_BEARER_TOKEN;
+            const pickupPos = pickupMarker.getPosition();
+            const dropPos = dropMarker.getPosition();
+
+            if (!pickupPos || !dropPos) {
+                console.log("stopped: pickupPos/dropPos missing", {
+                    pickupPos,
+                    dropPos
+                });
+                return;
             }
 
-            const tokenMeta = document.querySelector('meta[name="api-token"]');
-            if (tokenMeta) {
-                return tokenMeta.getAttribute('content');
-            }
+            const origin = pickupPos.lat() + "," + pickupPos.lng();
+            const destination = dropPos.lat() + "," + dropPos.lng();
 
-            if (typeof window.userApiToken !== 'undefined') {
-                return window.userApiToken;
-            }
+            console.log("origin:", origin);
+            console.log("destination:", destination);
 
-            return '';
+            callDistanceApi(origin, destination);
         }
 
-        async function fetchPriceFromAPI(latitude, longitude, km) {
-            console.log('fetchPriceFromAPI called with lat: ' + latitude + ', lng: ' + longitude + ', km: ' + km);
+        async function calculateFinalPrice(kms, token, minutes) {
             try {
-                const origin = pickupLat + "," + pickupLng;
-                const destination = dropLat + "," + dropLng;
 
-                const responsea = await window.ApiUtils.fetch(
-                    `${PRICE_API_BASE_URL}/v1/customer/distance?origin=${origin}&destination=${destination}&traffic_model=best_guess`, {
-                        method: "GET",
-                        headers: {
-                            'Authorization': `Bearer ${token}`,
-                            'Accept': 'application/json'
-                        }
-                    }
-                );
-
-                const datas = await responsea.json();
-
-                console.log("Distance API Response:", datas);
-
-                const priceEl = document.getElementById('price');
-                const totalPriceEl = document.getElementById('totalPriceDisplay');
-                const grandTotalEl = document.getElementById('grandTotalDisplay');
-
-                // Reset displays
-                if (priceEl) priceEl.innerText = '0.00';
-                if (totalPriceEl) totalPriceEl.innerText = '0.00';
-                if (grandTotalEl) grandTotalEl.innerText = '0.00';
-
-                const result = datas.rows[0].elements[0];
-                const km = result.distance.text;
-                const minutes = result.duration_in_traffic.text;
-
-                document.getElementById("distance").innerText = km;
-                document.getElementById("minutes").innerText = minutes;
-                let kmText = result.distance.text; // "120.39 km"
-                let kms = kmText.replace(' km', '');
-
-                console.log("KMS:", kms);
-                console.log("minutes:", minutes);
-
-
-                const token = getAuthToken();
-                const response = await window.ApiUtils.fetch(`${PRICE_API_BASE_URL}/v1/customer/price/calculate`, {
+                const responsePrice = await fetch(`${PRICE_API_BASE_URL}/v1/customer/price/calculate`, {
                     method: 'POST',
                     headers: {
-                        'Authorization': 'Bearer ' + token
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
                         km: kms,
@@ -1439,213 +2321,284 @@
                         longitude: pickupLng,
                         drop_latitude: dropLat,
                         drop_longitude: dropLng,
-                        minutes: minutes,
+                        minutes: minutes
                     })
                 });
 
-                if (!response.ok) {
-                    throw new Error(`API responded with status ${response.status}`);
-                }
+                const priceData = await responsePrice.json();
 
-                const data = await response.json();
-                const price =
-                    (data && data.data && data.data.price) ??
-                    data?.price ??
-                    data?.data?.amount ??
-                    data?.amount ??
-                    data?.data?.total ??
-                    data?.total;
-                console.log('Price from API:', price);
+                const price = priceData?.data?.price ?? 0;
 
-                if (price !== null && price !== undefined && !isNaN(parseFloat(price))) {
-
-                    const priceValue = parseFloat(price);
-                    currentOriginalPrice = priceValue; // Store original price
-
-                    // Update all price displays
-                    if (priceEl) priceEl.innerText = priceValue.toFixed(2) + ' AED';
-                    updateGrandTotal(); // This will update all displays
-                } else {
-                    if (priceEl) priceEl.innerText = '0.00 AED';
-                    currentOriginalPrice = 0;
-                    updateGrandTotal();
-
-                }
-            } catch (error) {
-
-                const priceEl = document.getElementById('price');
-                const fallbackPrice = (50 + km * 12);
-                console.log('used this is not used', fallbackPrice);
-
-                currentOriginalPrice = fallbackPrice;
-
-                if (priceEl) priceEl.innerText = fallbackPrice.toFixed(2) + ' AED';
+                currentOriginalPrice = price || 0;
                 updateGrandTotal();
+
+                document.getElementById('totalPriceDisplay').innerText = currentOriginalPrice + ' AED';
+                document.getElementById('price').innerText = currentOriginalPrice + ' AED';
+
+                const platform_fee_amount = document.getElementById("platform_fee_amount");
+                const tax_amount = document.getElementById("tax_amount");
+
+                const platformFee = parseAedAmount(platform_fee_amount?.innerText || platform_fee_amount?.textContent ||
+                    '');
+                const taxAmount = parseAedAmount(tax_amount?.innerText || tax_amount?.textContent || '');
+                const TotalAmount = platformFee + taxAmount + currentOriginalPrice;
+
+                const grandTotalDisplay = document.getElementById('grandTotalDisplay');
+                if (grandTotalDisplay) {
+                    grandTotalDisplay.innerText = TotalAmount + ' AED';
+                }
+
+                // Keep promo behavior intact if already applied.
+                if (currentPromotionData) {
+                    updateGrandTotal();
+                }
+
+            } catch (error) {
+                console.error("failed:", error);
             }
         }
 
-        // Helper function to calculate and display price calculation
-        function updateGrandTotal() {
-            const totalPriceEl = document.getElementById('totalPriceDisplay');
-            const grandTotalEl = document.getElementById('grandTotalDisplay');
-            const discountRow = document.getElementById('discountRow');
-            const discountAmountEl = document.getElementById('discountAmountDisplay');
+        async function callDistanceApi(origin, destination) {
+            try {
+                const token = getAuthToken();
 
-            if (!grandTotalEl) return;
+                const responseDistance = await fetch(
+                    `${PRICE_API_BASE_URL}/v1/customer/distance?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&traffic_model=best_guess`
+                );
 
-            // Update total price display
-            if (totalPriceEl) {
-                totalPriceEl.innerText = currentOriginalPrice.toFixed(2) + ' AED';
-            }
+                const data = await responseDistance.json();
+                console.log('Distance API full response:', data);
 
-            let finalPrice = currentOriginalPrice;
-            let discountAmount = 0;
+                if (!responseDistance.ok) {
+                    showToast(data?.message || "Distance API request failed.", "error");
+                    return;
+                }
 
-            // Apply discount if available
-            if (currentPromotionData && currentDiscountValue > 0) {
-                // Check if discount is percentage or fixed amount
-                if (currentPromotionData.discount_type === 'percentage') {
-                    discountAmount = (currentOriginalPrice * currentDiscountValue) / 100;
+                const result = data?.data;
+
+                if (!data?.status || !result || !result.distance?.text) {
+                    console.log('Invalid result:', result);
+                    showToast("Unable to calculate route. Try different locations.", "error");
+                    return;
+                }
+
+                latestRoutePolyline = result.polyline || null;
+
+                const kmText = result.distance?.text || '';
+                const minutes = result.duration_in_traffic?.text || result.duration?.text || '';
+
+                let kmsNumber = null;
+
+                if (kmText) {
+                    if (kmText.toLowerCase().includes('km')) {
+                        kmsNumber = parseFloat(
+                            kmText.toLowerCase().replace('km', '').replace(/,/g, '').trim()
+                        );
+                    } else if (kmText.toLowerCase().includes('m')) {
+                        kmsNumber = parseFloat(
+                            kmText.toLowerCase().replace('m', '').replace(/,/g, '').trim()
+                        ) / 1000;
+                    }
+                }
+
+                latestDistanceKm = Number.isFinite(kmsNumber) ? kmsNumber : 0;
+
+                console.log('kmText:', kmText);
+                console.log('latestDistanceKm:', latestDistanceKm);
+
+                if (latestDistanceKm <= 0) {
+                    showToast("Unable to calculate route. Distance not found.", "error");
+                    return;
+                }
+
+                document.getElementById("distance").innerText = kmText || 'N/A';
+                document.getElementById("minutes").innerText = minutes || 'N/A';
+
+                if (routePolyline) {
+                    routePolyline.setMap(null);
+                    routePolyline = null;
+                }
+
+                if (result.polyline && map && google?.maps?.geometry?.encoding) {
+                    const path = google.maps.geometry.encoding.decodePath(result.polyline);
+
+                    routePolyline = new google.maps.Polyline({
+                        path: path,
+                        geodesic: true,
+                        strokeColor: "#000000",
+                        strokeOpacity: 1,
+                        strokeWeight: 4,
+                        map: map
+                    });
+
+                    const bounds = new google.maps.LatLngBounds();
+                    path.forEach(point => bounds.extend(point));
+                    map.fitBounds(bounds);
                 } else {
-                    // Fixed amount discount
-                    discountAmount = currentDiscountValue;
+                    console.log("Polyline not drawn", {
+                        hasPolyline: !!result.polyline,
+                        hasMap: !!map,
+                        hasGeometry: !!google?.maps?.geometry?.encoding
+                    });
                 }
 
-                finalPrice = currentOriginalPrice - discountAmount;
-
-                // Ensure price doesn't go below zero
-                if (finalPrice < 0) finalPrice = 0;
-
-                // Show discount row
-                if (discountRow) {
-                    discountRow.classList.remove('d-none');
+                if (token) {
+                    await calculateFinalPrice(latestDistanceKm, token, minutes);
+                } else {
+                    console.log("Skipping price calculation: token missing");
                 }
 
-                // Update discount display
-                if (discountAmountEl) {
-                    discountAmountEl.innerText = discountAmount.toFixed(2) + ' AED';
-                }
-            } else {
-                // Hide discount section if no discount
-                if (discountRow) {
-                    discountRow.classList.add('d-none');
-                }
+            } catch (e) {
+                console.error("Distance API call failed:", e);
+                showToast("Something went wrong while calculating route.", "error");
             }
-
-            // Update grand total display
-            grandTotalEl.innerText = finalPrice.toFixed(2) + ' AED';
         }
 
-        function showToast(message, type = 'success') {
-            // Special handling for booking success message
-            if (message.includes('Thank you for choosing Toretto Recovery Services')) {
-                showBookingSuccessPopup();
+        /* ------------------ Pending Booking Restore (LOGIN FLOW) ------------------ */
+        function restorePendingBooking() {
+
+            const token = getAuthToken();
+            const pendingBooking = localStorage.getItem('pending_booking');
+            if (!token || !pendingBooking || !mapReady) {
                 return;
             }
 
-            let swalIcon = type === 'error' ? 'error' : type === 'warning' ? 'warning' : type === 'info' ? 'info' :
-                'success';
+            const data = JSON.parse(pendingBooking);
 
-            let background = '#FFFFFF';
-            let color;
-            switch (type) {
-                case 'error':
-                    color = '#dc3545';
-                    break;
-                case 'warning':
-                    color = '#ffc107';
-                    break;
-                case 'info':
-                    color = '#17a2b8'; // Blue for info
-                    break;
-                default: // success
-                    color = '#28a745'; // Green for success
+            if (!data.pickup_lat || !data.pickup_lng || !data.drop_lat || !data.drop_lng) {
+                localStorage.removeItem('pending_booking');
+                return;
             }
 
-            // Customize title based on the page and action
-            let toastTitle = message.toLowerCase().includes('booking') || message.toLowerCase().includes('book') ?
-                'Booking Status' :
-                message.toLowerCase().includes('promo') || message.toLowerCase().includes('code') ? 'Promo Code' :
-                message.toLowerCase().includes('success') ? 'Booking Success' :
-                type === 'error' ? 'Booking Error' :
-                type === 'warning' ? 'Attention Required' :
-                type === 'info' ? 'Information' : 'Service Status';
+            setPickupManually(
+                parseFloat(data.pickup_lat),
+                parseFloat(data.pickup_lng),
+                data.pickup_location
+            );
 
-            //  msg.includes('session')
-            if (type === 'error' && toastTitle === 'Unauthenticated' || toastTitle === 'Unauthorized') {
-                autoLogout();
-            }
+            setDropManually(
+                parseFloat(data.drop_lat),
+                parseFloat(data.drop_lng),
+                data.drop_location
+            );
 
-            Swal.fire({
-                toast: true,
-                icon: swalIcon,
-                title: toastTitle,
-                text: message,
-                animation: true,
-                position: 'top-end',
-                background: background,
-                color: color,
-                timer: 5000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                width: '400px',
-                padding: '20px',
-                customClass: {
-                    popup: 'custom-toast-popup',
-                    title: 'custom-toast-title',
-                    icon: 'custom-toast-icon',
-                },
-                didOpen: () => {
-                    const progressBar = Swal.getTimerProgressBar();
-                    if (progressBar) {
-                        // Set progress bar color based on type
-                        switch (type) {
-                            case 'error':
-                                progressBar.style.backgroundColor = '#dc3545'; // Red for error
-                                break;
-                            case 'warning':
-                                progressBar.style.backgroundColor = '#ffc107'; // Yellow for warning
-                                break;
-                            case 'info':
-                                progressBar.style.backgroundColor = '#17a2b8'; // Blue for info
-                                break;
-                            default: // success
-                                progressBar.style.backgroundColor = '#28a745'; // Green for success
-                        }
-                    }
-                }
-            });
+            setTimeout(() => {
+                drawRoute();
+            }, 400);
+
+            localStorage.removeItem('pending_booking');
         }
 
-        function autoLogout() {
-            window.ApiUtils.fetch('{{ route('logout.ajax') }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document
-                            .querySelector('meta[name="csrf-token"]')
-                            .getAttribute('content')
-                    },
-                    body: JSON.stringify({
-                        _token: document
-                            .querySelector('meta[name="csrf-token"]')
-                            .getAttribute('content')
-                    })
-                })
-                .then(res => res.json())
-                .then(data => {
-                    localStorage.removeItem('auth_token');
-                    localStorage.removeItem('user_data');
+        function setPickupManually(lat, lng, address) {
+            pickupLat = lat;
+            pickupLng = lng;
 
-                    // optional delay so user toast joi sake
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 1500);
-                })
-                .catch(err => {
-                    console.error('Logout error:', err);
-                    window.location.href = '{{ route('logout') }}';
-                });
+            if (pickupMarker) pickupMarker.setMap(null);
+
+            const position = new google.maps.LatLng(lat, lng);
+            pickupMarker = new google.maps.Marker({
+                position,
+                map,
+                title: 'Pickup',
+                icon: {
+                    url: "{{ asset('assets/images/pin.png') }}",
+                    scaledSize: new google.maps.Size(30, 30)
+                }
+            });
+
+            new google.maps.InfoWindow({
+                content: `<div style="max-width:200px;font-size:13px;"><strong>Pickup:</strong><br>${address}</div>`
+            }).open(map, pickupMarker);
+
+            document.getElementById('pickup_location').value = address || '';
+
+            map.panTo(position);
+            map.setZoom(15);
+        }
+
+        function setDropManually(lat, lng, address) {
+            dropLat = lat;
+            dropLng = lng;
+
+            if (dropMarker) dropMarker.setMap(null);
+
+            const position = new google.maps.LatLng(lat, lng);
+            dropMarker = new google.maps.Marker({
+                position,
+                map,
+                title: 'Drop',
+                icon: {
+                    url: "{{ asset('assets/images/pin.png') }}",
+                    scaledSize: new google.maps.Size(30, 30)
+                }
+            });
+
+            new google.maps.InfoWindow({
+                content: `<div style="max-width:200px;font-size:13px;"><strong>Drop:</strong><br>${address}</div>`
+            }).open(map, dropMarker);
+
+            document.getElementById('drop_location').value = address || '';
+
+            if (pickupMarker) {
+                const bounds = new google.maps.LatLngBounds();
+                bounds.extend(pickupMarker.getPosition());
+                bounds.extend(position);
+                map.fitBounds(bounds);
+            } else {
+                map.panTo(position);
+                map.setZoom(15);
+            }
+        }
+
+        /* ------------------ Current Location ------------------ */
+        function getUserLiveLocation() {
+            if (!navigator.geolocation) {
+                showToast("Geolocation not supported.", "error");
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+
+                    if (!map) {
+                        showToast("Map is loading. Try again.", "info");
+                        return;
+                    }
+
+                    if (!isLocationInUAE(lat, lng)) {
+                        showToast("Your current location is outside UAE.", "warning");
+                        return;
+                    }
+
+                    setPickupFromLatLng(lat, lng);
+                },
+                () => showToast("Unable to fetch location.", "error"), {
+                    enableHighAccuracy: true,
+                    timeout: 15000,
+                    maximumAge: 60000
+                }
+            );
+        }
+
+        function setPickupFromLatLng(lat, lng) {
+            const geocoder = new google.maps.Geocoder();
+            geocoder.geocode({
+                location: {
+                    lat,
+                    lng
+                }
+            }, (results, status) => {
+                if (status === "OK" && results && results.length > 0) {
+                    const address = results[0].formatted_address;
+                    setPickupManually(lat, lng, address);
+                    showToast("Pickup set to current location", "success");
+                    if (dropMarker) setTimeout(drawRoute, 300);
+                } else {
+                    showToast("Unable to detect address.", "error");
+                }
+            });
         }
 
         function showBookingSuccessPopup() {
@@ -1821,27 +2774,7 @@
                     <p style="font-size: 14px; margin-top: 20px; color: #666; text-align: center;">
                         <em>Note: Service updates and driver communication are available only in the mobile app.</em>
                     </p>
-
-                    <div style="margin-top: 25px;">
-                        <button id="openAppBtn" style="
-                            background-color: #dc3545;
-                            color: white;
-                            border: none;
-                            padding: 12px 30px;
-                            border-radius: 6px;
-                            cursor: pointer;
-                            font-size: 16px;
-                            font-family: 'Avenir', sans-serif;
-                            font-weight: bold;
-                            transition: background-color 0.3s;
-                            box-shadow: 0 2px 6px rgba(220,53,69,0.3);
-                        " onmouseover="this.style.backgroundColor='#c82333'; this.style.boxShadow='0 4px 12px rgba(220,53,69,0.4)';"
-                        onmouseout="this.style.backgroundColor='#dc3545'; this.style.boxShadow='0 2px 6px rgba(220,53,69,0.3)';">
-                            Go to Home Screen
-                        </button>
-                    </div>
-                </div>
-        `,
+                </div>`,
                 showConfirmButton: false,
                 showCloseButton: true,
                 width: '600px',
@@ -1853,6 +2786,7 @@
                     // Reset all displays
                     document.getElementById('distance').innerText = '0.00 km';
                     document.getElementById('price').innerText = '0.00 AED';
+                    document.getElementById('minutes').innerText = '0.00 mins';
                     document.getElementById('totalPriceDisplay').innerText = '0.00 AED';
                     document.getElementById('grandTotalDisplay').innerText = '0.00 AED';
 
@@ -1866,26 +2800,37 @@
                     const applyPromoBtn = document.getElementById('applyPromoBtn');
                     if (applyPromoBtn) {
                         applyPromoBtn.dataset.applied = 'false';
+
                         const promoBtnText = applyPromoBtn.querySelector('.btn-text');
                         if (promoBtnText) {
                             promoBtnText.textContent = 'Apply';
                         }
-
-                        // Clear promo code input
-                        const promoInput = document.getElementById('promo_code');
-                        if (promoInput) {
-                            promoInput.value = '';
-                        }
                     }
+
+                    // Clear promo code input
+                    const promoInput = document.getElementById('promo_code');
+                    if (promoInput) {
+                        promoInput.value = '';
+                        delete promoInput.dataset.promotionId;
+                    }
+
+                    clearRecoveryTypesSelection();
 
                     // Clear map markers
                     if (pickupMarker) {
                         pickupMarker.setMap(null);
                         pickupMarker = null;
                     }
+
                     if (dropMarker) {
                         dropMarker.setMap(null);
                         dropMarker = null;
+                    }
+
+                    // Clear custom route polyline
+                    if (routePolyline) {
+                        routePolyline.setMap(null);
+                        routePolyline = null;
                     }
 
                     // Clear directions
@@ -1895,11 +2840,27 @@
                         });
                     }
 
-                    // Reset price calculation variables
+                    // Reset lat lng values
+                    pickupLat = null;
+                    pickupLng = null;
+                    dropLat = null;
+                    dropLng = null;
+
+                    // Reset route values
                     latestDistanceKm = 0;
+                    latestRoutePolyline = null;
                     currentOriginalPrice = 0;
                     currentDiscountValue = 0;
                     currentPromotionData = null;
+
+                    // Reset map position
+                    if (map) {
+                        map.setCenter({
+                            lat: 25.2048,
+                            lng: 55.2708
+                        });
+                        map.setZoom(11);
+                    }
                 },
                 customClass: {
                     popup: 'booking-success-popup',
@@ -1919,1109 +2880,1847 @@
                     }, 100);
                 }
             });
-        }
-
-        // We're removing the driver functionality since it was causing conflicts
-        // Adding the missing drawRoute function
-
-        function drawRoute() {
-            if (!pickupMarker || !dropMarker || !map || !directionsService || !directionsRenderer) {
-                console.log("Missing required elements for route drawing:", {
-                    pickupMarker: !!pickupMarker,
-                    dropMarker: !!dropMarker,
-                    map: !!map,
-                    directionsService: !!directionsService,
-                    directionsRenderer: !!directionsRenderer
-                });
-                return;
-            }
-
-            // Get positions of markers
-            const pickupPos = pickupMarker.getPosition();
-            const dropPos = dropMarker.getPosition();
-
-            // Clear any existing route
-            directionsRenderer.setDirections({
-                routes: []
-            });
-
-            // Request directions
-            directionsService.route({
-                    origin: pickupPos,
-                    destination: dropPos,
-                    travelMode: google.maps.TravelMode.DRIVING
-                },
-                (response, status) => {
-                    if (status === google.maps.DirectionsStatus.OK && response.routes.length > 0) {
-                        // Display the route on the map
-                        directionsRenderer.setDirections(response);
-
-                        // // Calculate distance from the route
-                        // let totalDistance = 0;
-                        // for (let i = 0; i < response.routes[0].legs.length; i++) {
-                        //     totalDistance += response.routes[0].legs[i].distance.value;
-                        // }
-
-                        // // Convert to km and update global variable
-                        // latestDistanceKm = totalDistance / 1000;
-
-                        // // Update distance display
-                        // const distanceEl = document.getElementById("distance");
-                        // console.log(distanceEl, 'distanceEl');
-
-                        // if (distanceEl) {
-                        //     distanceEl.innerText = latestDistanceKm.toFixed(2) + " km";
-                        // }
-                        directionsRenderer.setDirections(response);
-
-                        const pickupPos = pickupMarker.getPosition();
-                        const dropPos = dropMarker.getPosition();
-
-                        const origin = pickupPos.lat() + "," + pickupPos.lng();
-                        const destination = dropPos.lat() + "," + dropPos.lng();
-                        console.log('Origin:', origin, 'Destination:', destination);
-
-                        map.fitBounds(response.routes[0].bounds);
-                        callDistanceApi(origin, destination);
-                    } else {
-                        // Handle error
-                        showToast(
-                            "Unable to calculate route between selected locations. Please try different locations.",
-                            "error");
-
-                        // Show straight line as fallback
-                        const lineCoordinates = [
-                            pickupPos,
-                            dropPos
-                        ];
-
-                        const straightLine = new google.maps.Polyline({
-                            path: lineCoordinates,
-                            geodesic: true,
-                            strokeColor: '#FF0000',
-                            strokeOpacity: 1.0,
-                            strokeWeight: 3
-                        });
-
-                        straightLine.setMap(map);
-                        map.fitBounds(new google.maps.LatLngBounds(pickupPos, dropPos));
-                    }
-                }
-            );
-        }
-
-
-        document.addEventListener('DOMContentLoaded', function() {
-            checkLocationPermission();
-            loadGoogleMapsScript();
-
-            // Check for pending booking data after a slight delay to ensure map is ready
-            setTimeout(checkPendingBookingData, 1000);
-
-            const bookingBtn = document.getElementById('bookingSubmitBtn');
-            const bookingBtnText = bookingBtn ? bookingBtn.querySelector('.btn-text') : null;
-            const bookingBtnLoader = bookingBtn ? bookingBtn.querySelector('.btn-loader') : null;
-
-            // Promo code apply button functionality
-            const applyPromoBtn = document.getElementById('applyPromoBtn');
-            const promoInput = document.getElementById('promo_code');
-            const promoMessage = document.getElementById('promoMessage');
-            const promoBtnText = applyPromoBtn ? applyPromoBtn.querySelector('.btn-text') : null;
-            const promoBtnLoader = applyPromoBtn ? applyPromoBtn.querySelector('.btn-loader-promo') : null;
-
-            if (applyPromoBtn) {
-                applyPromoBtn.addEventListener('click', async function() {
-                    const isApplied = applyPromoBtn.dataset.applied === 'true';
-                    const promoCode = promoInput.value.trim();
-
-                    if (isApplied) {
-                        removePromoCode();
-                        return;
-                    }
-
-                    if (!promoCode) {
-                        showPromoMessage('Please enter a promo code.', 'error');
-                        return;
-                    }
-
-                    if (promoBtnText && promoBtnLoader) {
-                        promoBtnText.classList.add('d-none');
-                        promoBtnLoader.classList.remove('d-none');
-                        applyPromoBtn.disabled = true;
-                    }
-
-                    const token = getAuthToken();
-                    if (!token) {
-                        showPromoMessage('Please log in to apply promo codes.', 'error');
-                        resetPromoButton();
-                        return;
-                    }
-
-                    try {
-                        const promoResp = await window.ApiUtils.fetch(
-                            `${PRICE_API_BASE_URL}/v1/customer/promocodes/verify`, {
-                                method: 'POST',
-                                headers: {
-                                    'Authorization': 'Bearer ' + token
-                                },
-                                body: JSON.stringify({
-                                    code: promoCode
-                                })
-                            });
-
-                        const promoData = await promoResp.json();
-
-                        if (!promoResp.ok || promoData.status !== true) {
-                            showPromoMessage(promoData.message || 'Invalid promo code.', 'error');
-                        } else {
-                            showPromoMessage('Promo code applied successfully!', 'success');
-
-                            // Store promotion data
-                            if (promoData.data) {
-                                currentPromotionData = promoData.data;
-                                // Extract discount value from the API response
-                                currentDiscountValue = promoData.data.discount_value || 0;
-
-                                // Store the promotion ID for use in booking
-                                if (promoData.data.id) {
-                                    document.getElementById('promo_code').dataset.promotionId =
-                                        promoData.data.id;
-                                }
-
-                                // Update grand total with discount
-                                updateGrandTotal();
-                            }
-
-                            // Change button to Remove state
-                            setPromoButtonState(true);
-                        }
-                    } catch (err) {
-                        showPromoMessage('Failed to verify promo code. Please try again.', 'error');
-                    } finally {
-                        resetPromoButton();
-                    }
-                });
-            }
-
-            function showPromoMessage(message, type) {
-                showToast(message, type);
-            }
-
-            function resetPromoButton() {
-                if (promoBtnText && promoBtnLoader) {
-                    promoBtnText.classList.remove('d-none');
-                    promoBtnLoader.classList.add('d-none');
-                    applyPromoBtn.disabled = false;
-                }
-            }
-
-            function setPromoButtonState(applied) {
-                if (applyPromoBtn && promoBtnText) {
-                    applyPromoBtn.dataset.applied = applied.toString();
-                    if (applied) {
-                        promoBtnText.textContent = 'Remove';
-                    } else {
-                        promoBtnText.textContent = 'Apply';
-                        // Clear the promo input
-                        if (promoInput) {
-                            promoInput.value = '';
-                        }
-                    }
-                }
-            }
-
-            function removePromoCode() {
-                // Remove the promotion ID
-                const promoInputElement = document.getElementById('promo_code');
-                if (promoInputElement) {
-                    delete promoInputElement.dataset.promotionId;
-                }
-
-                // Reset promotion data
-                currentPromotionData = null;
-                currentDiscountValue = 0;
-
-                // Update grand total (without discount)
-                updateGrandTotal();
-
-                // Show success message
-                showPromoMessage('Promo code removed successfully!', 'success');
-
-                // Change button back to Apply state
-                setPromoButtonState(false);
-            }
-
-            // Calculate Price button functionality
-            const calculatePriceBtn = document.getElementById('calculatePriceBtn');
-            const calculatePriceBtnText = calculatePriceBtn ? calculatePriceBtn.querySelector('.btn-text') : null;
-            const calculatePriceBtnLoader = calculatePriceBtn ? calculatePriceBtn.querySelector(
-                '.btn-loader-price') : null;
-            if (calculatePriceBtn) {
-                calculatePriceBtn.addEventListener('click', async function(e) {
-
-                    e.preventDefault();
-
-                    const pickupElement = document.getElementById('pickup_location');
-                    const dropElement = document.getElementById('drop_location');
-
-                    if (!pickupElement.value || !dropElement.value) {
-                        showToast('Please enter both pickup and drop locations', 'error');
-                        return;
-                    }
-
-                    const token = getAuthToken();
-
-                    if (!pickupLat || !pickupLng || !dropLat || !dropLng) {
-                        showToast('Please select pickup and drop locations from the map autocomplete suggestions before calculating price.', 'error');
-                        return;
-                    }
-
-                    const origin = pickupLat + "," + pickupLng;
-                    const destination = dropLat + "," + dropLng;
-
-                    try {
-                        // //  1. Distance API (NO TOKEN)
-                        const responseDistance = await fetch(
-                            `${PRICE_API_BASE_URL}/v1/customer/distance?origin=${origin}&destination=${destination}&traffic_model=best_guess`
-                        );
-
-                        const distanceData = await responseDistance.json();
-
-                        if (!distanceData || !Array.isArray(distanceData.rows) || distanceData.rows.length === 0 ||
-                            !Array.isArray(distanceData.rows[0].elements) || distanceData.rows[0].elements.length === 0) {
-                            throw new Error('Distance API returned unexpected format');
-                        }
-
-                        const result = distanceData.rows[0].elements[0];
-
-                        if (!result || !result.distance || !result.duration_in_traffic) {
-                            throw new Error('Distance API missing distance/duration data');
-                        }
-
-                        const kmText = result.distance.text;
-                        const minutes = result.duration_in_traffic.text;
-                        const kms = kmText.replace(/[^\d.]/g, "");
-
-                        document.getElementById("distance").innerText = kmText;
-                        document.getElementById("minutes").innerText = minutes;
-
-                        // ❌ 2. If NOT LOGIN → Save & Redirect
-                        if (!token) {
-
-                            localStorage.setItem('pending_booking', JSON.stringify({
-                                pickup_location: pickupElement.value,
-                                drop_location: dropElement.value,
-                                pickup_lat: pickupLat,
-                                pickup_lng: pickupLng,
-                                drop_lat: dropLat,
-                                drop_lng: dropLng,
-                                km: kms,
-                                timestamp: Date.now()
-                            }));
-
-                            window.location.href = "{{ route('login') }}";
-                            return;
-                        }
-
-                        //  3. If LOGIN → Calculate Price
-                        await calculateFinalPrice(kms, token, minutes);
-
-                    } catch (error) {
-                        console.error('Calculate Price error:', error);
-                        showToast(`Something went wrong: ${error.message || 'Please check console for details.'}`, 'error');
-                    }
-                });
-
-
-            }
-
-
-            // Use Current Location button functionality
-            const useCurrentLocationBtn = document.getElementById('useCurrentLocationBtn');
-            if (useCurrentLocationBtn) {
-                useCurrentLocationBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    console.log('Use Current Location button clicked');
-
-                    // Check if map is ready
-                    if (!map) {
-                        console.log('Map not ready yet, showing loading message');
-                        showToast('Map is still loading. Please wait a moment and try again.', 'info');
-                        return;
-                    }
-
-                    getUserLiveLocation();
-                });
+        // }
+
+        // async function showNoDriversAvailablePopup(onContinueBooking) {
+        //     const result = await Swal.fire({
+        //         icon: 'warning',
+        //         title: 'Sorry! No Drivers Available',
+        //         html: `
+        //             <style>
+        //                 .no-drivers-popup {
+        //                     border-radius: 22px;
+        //                     padding: 24px 22px 18px;
+        //                 }
+
+        //                 .no-drivers-popup .swal2-title {
+        //                     font-size: 22px;
+        //                     font-weight: 800;
+        //                     color: #111827;
+        //                     margin-bottom: 8px;
+        //                 }
+
+        //                 .no-drivers-popup .swal2-html-container {
+        //                     margin: 0;
+        //                     font-size: 15px;
+        //                     line-height: 1.6;
+        //                     color: #6b7280;
+        //                     text-align: center;
+        //                 }
+
+        //                 .no-drivers-popup .swal2-actions {
+        //                     width: 100%;
+        //                     display: flex;
+        //                     flex-direction: column;
+        //                     align-items: stretch;
+        //                     gap: 10px;
+        //                     margin-top: 20px;
+        //                 }
+
+        //                 .no-drivers-popup .swal2-confirm,
+        //                 .no-drivers-popup .swal2-deny,
+        //                 .no-drivers-popup .swal2-cancel {
+        //                     width: 100%;
+        //                     margin: 0 !important;
+        //                     border-radius: 10px;
+        //                     min-height: 48px;
+        //                     font-size: 15px;
+        //                     font-weight: 700;
+        //                     box-shadow: none !important;
+        //                 }
+
+        //                 .no-drivers-popup .swal2-confirm {
+        //                     background: #000 !important;
+        //                     color: #fff !important;
+        //                     border: 1px solid #000 !important;
+        //                 }
+
+        //                 .no-drivers-popup .swal2-deny {
+        //                     background: #fff !important;
+        //                     color: #111 !important;
+        //                     border: 1px solid #d1d5db !important;
+        //                 }
+
+        //                 .no-drivers-popup .swal2-cancel {
+        //                     background: transparent !important;
+        //                     color: #ff4d4f !important;
+        //                     border: 0 !important;
+        //                 }
+
+        //                 .no-drivers-popup .swal2-icon {
+        //                     margin: 0 auto 10px;
+        //                 }
+        //             </style>
+        //             <div style="text-align: center;">
+        //                 <p style="margin: 0 0 12px 0;">We don't have any drivers available in your area for the next 30 minutes.</p>
+        //                 <p style="margin: 0;">If your trip isn't urgent, you can continue booking.<br>For immediate assistance, please contact support.</p>
+        //             </div>
+        //         `,
+        //         showDenyButton: true,
+        //         showCancelButton: true,
+        //         confirmButtonText: 'Continue Booking',
+        //         denyButtonText: 'Contact Support',
+        //         cancelButtonText: 'Cancel',
+        //         buttonsStyling: false,
+        //         customClass: {
+        //             popup: 'no-drivers-popup',
+        //             actions: 'no-drivers-actions',
+        //             confirmButton: 'no-drivers-confirm-btn',
+        //             denyButton: 'no-drivers-support-btn',
+        //             cancelButton: 'no-drivers-cancel-btn'
+        //         },
+        //         allowOutsideClick: false,
+        //         reverseButtons: false,
+        //         focusConfirm: false
+        //     });
+
+        //     if (result.isConfirmed && typeof onContinueBooking === 'function') {
+        //         return onContinueBooking();
+        //     }
+
+        //     if (result.isDenied) {
+        //         window.location.href = "{{ route('contact') }}";
+        //     }
+
+        //     return null;
+        // }
+
+        // async function checkDriverAvailability(pickupLat, pickupLng) {
+        //     const token = getAuthToken();
+        //     const response = await window.ApiUtils.fetch(
+        //         `${PRICE_API_BASE_URL}/v1/customer/drivers/availability-status`, {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Authorization': 'Bearer ' + token,
+        //                 'Accept': 'application/json',
+        //                 'Content-Type': 'application/json'
+        //             },
+        //             body: JSON.stringify({
+        //                 pickup_lat: pickupLat,
+        //                 pickup_lng: pickupLng
+        //             })
+        //         });
+
+        //     const rawResponse = await response.text();
+        //     let responseData = {};
+
+        //     try {
+        //         responseData = JSON.parse(rawResponse);
+        //     } catch (error) {
+        //         responseData = {
+        //             raw: rawResponse
+        //         };
+        //     }
+
+        //     console.log('[Driver Availability] API response:', {
+        //         status: response.status,
+        //         ok: response.ok,
+        //         data: responseData
+        //     });
+
+        //     if (!response.ok) {
+        //         return {
+        //             available: null,
+        //             responseData
+        //         };
+        //     }
+
+        //     const available = parseOptionalBoolean(
+        //         responseData?.data?.is_drives_status ??
+        //         responseData?.data?.isDriversStatus ??
+        //         responseData?.is_drives_status ??
+        //         responseData?.isDriversStatus
+        //     );
+
+        //     return {
+        //         available,
+        //         responseData
+        //     };
+        // }
+
+        // function formatAedAmount(amount) {
+        //     const numericAmount = Number(amount);
+        //     const safeAmount = Number.isFinite(numericAmount) ? numericAmount : 0;
+        //     return `AED ${safeAmount.toFixed(2)}`;
+        // }
+
+        // async function showTripPaymentOptionPopup(totalAmount, onContinuePayment) {
+        //     const depositAmount = 50;
+        //     const numericTotalAmount = Number(totalAmount);
+        //     const fullPaymentAmount = Number.isFinite(numericTotalAmount) && numericTotalAmount > 0 ? numericTotalAmount :
+        //         depositAmount;
+
+        //     if (fullPaymentAmount <= depositAmount) {
+        //         return onContinuePayment(fullPaymentAmount);
+        //     }
+
+        //     const result = await Swal.fire({
+        //         title: 'Choose your payment option',
+        //         html: `
+        //             <style>
+        //                 .trip-payment-popup {
+        //                     border-radius: 22px;
+        //                     padding: 24px 22px 18px;
+        //                 }
+
+        //                 .trip-payment-options {
+        //                     display: flex;
+        //                     flex-direction: column;
+        //                     gap: 12px;
+        //                     text-align: left;
+        //                 }
+
+        //                 .trip-payment-option {
+        //                     display: flex;
+        //                     gap: 12px;
+        //                     align-items: flex-start;
+        //                     border: 1px solid #d1d5db;
+        //                     border-radius: 16px;
+        //                     padding: 14px 16px;
+        //                     cursor: pointer;
+        //                     transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        //                 }
+
+        //                 .trip-payment-option.is-active {
+        //                     border-color: #dc3545;
+        //                     box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.08);
+        //                 }
+
+        //                 .trip-payment-option input {
+        //                     margin-top: 4px;
+        //                 }
+
+        //                 .trip-payment-option__content {
+        //                     flex: 1;
+        //                 }
+
+        //                 .trip-payment-option__head {
+        //                     display: flex;
+        //                     align-items: center;
+        //                     justify-content: space-between;
+        //                     gap: 12px;
+        //                     font-size: 15px;
+        //                     font-weight: 700;
+        //                     color: #111827;
+        //                 }
+
+        //                 .trip-payment-option__note {
+        //                     margin-top: 4px;
+        //                     font-size: 13px;
+        //                     line-height: 1.45;
+        //                     color: #6b7280;
+        //                 }
+
+        //                 .trip-payment-warning {
+        //                     margin-top: 6px;
+        //                     padding: 10px 12px;
+        //                     border-radius: 12px;
+        //                     background: #fff7ed;
+        //                     color: #f97316;
+        //                     font-size: 13px;
+        //                     line-height: 1.45;
+        //                 }
+
+        //                 .trip-payment-popup .swal2-actions {
+        //                     width: 100%;
+        //                     display: flex;
+        //                     gap: 10px;
+        //                     margin-top: 20px;
+        //                 }
+
+        //                 .trip-payment-popup .swal2-confirm,
+        //                 .trip-payment-popup .swal2-cancel {
+        //                     flex: 1;
+        //                     margin: 0 !important;
+        //                     min-height: 48px;
+        //                     border-radius: 10px;
+        //                     font-size: 15px;
+        //                     font-weight: 700;
+        //                     box-shadow: none !important;
+        //                 }
+
+        //                 .trip-payment-popup .swal2-confirm {
+        //                     background: #000 !important;
+        //                     color: #fff !important;
+        //                     border: 1px solid #000 !important;
+        //                 }
+
+        //                 .trip-payment-popup .swal2-cancel {
+        //                     background: #fff !important;
+        //                     color: #111 !important;
+        //                     border: 1px solid #d1d5db !important;
+        //                 }
+        //             </style>
+        //             <div class="trip-payment-options">
+        //                 <label class="trip-payment-option is-active">
+        //                     <input type="radio" name="trip_payment_option" value="full" checked>
+        //                     <div class="trip-payment-option__content">
+        //                         <div class="trip-payment-option__head">
+        //                             <span>Pay full amount now</span>
+        //                             <strong>${formatAedAmount(fullPaymentAmount)}</strong>
+        //                         </div>
+        //                         <div class="trip-payment-option__note">No payment required to driver</div>
+        //                         <div class="trip-payment-option__note">Faster & smoother trip</div>
+        //                     </div>
+        //                 </label>
+
+        //                 <label class="trip-payment-option">
+        //                     <input type="radio" name="trip_payment_option" value="deposit">
+        //                     <div class="trip-payment-option__content">
+        //                         <div class="trip-payment-option__head">
+        //                             <span>Pay at least AED 50 to confirm the trip</span>
+        //                             <strong>${formatAedAmount(depositAmount)}</strong>
+        //                         </div>
+        //                         <div class="trip-payment-option__note">Remaining amount payable when driver arrives</div>
+        //                         <div class="trip-payment-option__note">Vehicle will be picked up only after full payment</div>
+        //                     </div>
+        //                 </label>
+
+        //                 <div class="trip-payment-warning">
+        //                     Minimum amount of AED 50 is non-refundable if the customer cancels.
+        //                 </div>
+        //             </div>
+        //         `,
+        //         confirmButtonText: 'Continue',
+        //         cancelButtonText: 'Cancel',
+        //         showCancelButton: true,
+        //         buttonsStyling: false,
+        //         customClass: {
+        //             popup: 'trip-payment-popup',
+        //             confirmButton: 'trip-payment-confirm-btn',
+        //             cancelButton: 'trip-payment-cancel-btn'
+        //         },
+        //         allowOutsideClick: false,
+        //         focusConfirm: false,
+        //         didOpen: () => {
+        //             const popup = Swal.getPopup();
+        //             const optionLabels = popup?.querySelectorAll('.trip-payment-option') || [];
+        //             const radios = popup?.querySelectorAll('input[name="trip_payment_option"]') || [];
+
+        //             const syncActiveState = () => {
+        //                 optionLabels.forEach((label) => label.classList.remove('is-active'));
+        //                 const selectedRadio = popup?.querySelector('input[name="trip_payment_option"]:checked');
+        //                 if (selectedRadio) {
+        //                     selectedRadio.closest('.trip-payment-option')?.classList.add('is-active');
+        //                 }
+        //             };
+
+        //             radios.forEach((radio) => {
+        //                 radio.addEventListener('change', syncActiveState);
+        //             });
+
+        //             syncActiveState();
+        //         },
+        //         preConfirm: () => {
+        //             const selectedOption = Swal.getPopup()?.querySelector('input[name="trip_payment_option"]:checked')
+        //                 ?.value || 'full';
+        //             return selectedOption;
+        //         }
+        //     });
+
+        //     if (!result.isConfirmed) return null;
+
+        //     const selectedAmount = result.value === 'deposit' ? depositAmount : fullPaymentAmount;
+        //     return onContinuePayment(selectedAmount);
+        // }
+
+        // function buildTripPrepaymentPayload(bookingPayload, prepaymentAmount) {
+        //     const numericAmount = Number(prepaymentAmount);
+        //     const safePrepaymentAmount = Number.isFinite(numericAmount) && numericAmount > 0 ? numericAmount : 50;
+
+        //     return {
+        //         service_type_id: bookingPayload.service_type_id,
+        //         pickup_address: bookingPayload.pickup_address,
+        //         pickup_lat: bookingPayload.pickup_lat,
+        //         pickup_lng: bookingPayload.pickup_lng,
+        //         dropoff_address: bookingPayload.dropoff_address,
+        //         dropoff_lat: bookingPayload.dropoff_lat,
+        //         dropoff_lng: bookingPayload.dropoff_lng,
+        //         distance_km: bookingPayload.distance_km,
+        //         eta_minutes: bookingPayload.eta_minutes,
+        //         booking_type: 'immediate',
+        //         payment_method: bookingPayload.payment_method,
+        //         prepayment_amount: safePrepaymentAmount,
+        //         additional_notes: '',
+        //         ...(bookingPayload.recovery_types_id?.length ? {
+        //             recovery_types_id: bookingPayload.recovery_types_id
+        //         } : {})
+        //     };
+        // }
+
+        // async function submitTripPrepaymentRequest(bookingPayload, token, prepaymentAmount) {
+        //     const prepaymentPayload = buildTripPrepaymentPayload(bookingPayload, prepaymentAmount);
+
+        //     const {
+        //         resp,
+        //         resData
+        //     } = await callTripPrepaymentApi('trip-prepayments-web', token, {
+        //         method: 'POST',
+        //         body: JSON.stringify(prepaymentPayload)
+        //     });
+
+        //     console.log('[Trip Prepayment] API response:', {
+        //         status: resp.status,
+        //         ok: resp.ok,
+        //         data: resData
+        //     });
+
+        //     if (!resp.ok || resData.status !== true) {
+        //         showToast(resData.message || 'Please try again.', 'error');
+        //         return false;
+        //     }
+
+        //     const responseData = getTripPrepaymentResponseData(resData);
+        //     const prepaymentId = responseData?.prepayment_id || resData?.prepayment_id || '';
+        //     const checkoutUrl = responseData?.checkout_url;
+        //     const successUrl = responseData?.success_url;
+        //     const cancelUrl = responseData?.cancel_url;
+        //     const publicStatusUrl = responseData?.public_status_url;
+
+        //     if (!checkoutUrl) {
+        //         showToast('Payment link generated, but checkout URL is missing.', 'error');
+        //         return false;
+        //     }
+
+        //     saveTripPrepaymentContext({
+        //         prepayment_id: prepaymentId,
+        //         checkout_url: checkoutUrl || '',
+        //         success_url: successUrl || '',
+        //         cancel_url: cancelUrl || '',
+        //         public_status_url: publicStatusUrl || '',
+        //         booking_payload: prepaymentPayload,
+        //         prepayment_amount: prepaymentPayload.prepayment_amount
+        //     });
+
+        //     window.location.replace(checkoutUrl);
+        //     return true;
+        // }
+
+        // async function submitBookingRequest(bookingPayload, token) {
+        //     return showTripPaymentOptionPopup(bookingPayload.total_price, (selectedAmount) =>
+        //         submitTripPrepaymentRequest(bookingPayload, token, selectedAmount)
+        //     );
+        // }
+
+        // /* ------------------ DOM Ready ------------------ */
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     handleTripPrepaymentResume();
+        //     checkLocationPermission();
+        //     loadGoogleMapsScript();
+
+        //     // Use current location
+        //     const useCurrentLocationBtn = document.getElementById('useCurrentLocationBtn');
+        //     if (useCurrentLocationBtn) {
+        //         useCurrentLocationBtn.addEventListener('click', function(e) {
+        //             e.preventDefault();
+        //             if (!map) return showToast('Map is still loading...', 'info');
+        //             getUserLiveLocation();
+        //         });
+        //     }
+
+        //     initializeRecoveryTypes();
+
+        //     const recoveryTypesTrigger = document.getElementById('recoveryTypesTrigger');
+        //     const recoveryTypesDropdown = document.getElementById('recoveryTypesDropdown');
+        //     const recoveryTypesDoneBtn = document.getElementById('recoveryTypesDoneBtn');
+        //     const recoveryTypesRequiredProxy = document.getElementById('recoveryTypesRequiredProxy');
+        //     if (recoveryTypesTrigger && recoveryTypesDropdown) {
+        //         recoveryTypesTrigger.addEventListener('click', function() {
+        //             const panel = document.getElementById('recoveryTypesPanel');
+        //             const isOpen = panel ? panel.classList.contains('d-none') : false;
+        //             setRecoveryTypesDropdownOpen(isOpen);
+        //         });
+
+        //         document.addEventListener('click', function(event) {
+        //             if (!recoveryTypesDropdown.contains(event.target)) {
+        //                 setRecoveryTypesDropdownOpen(false);
+        //             }
+        //         });
+
+        //         document.addEventListener('keydown', function(event) {
+        //             if (event.key === 'Escape') {
+        //                 setRecoveryTypesDropdownOpen(false);
+        //             }
+        //         });
+        //     }
+
+        //     if (recoveryTypesRequiredProxy) {
+        //         recoveryTypesRequiredProxy.addEventListener('invalid', function() {
+        //             setRecoveryTypesDropdownOpen(true);
+        //         });
+        //     }
+
+        //     if (recoveryTypesDoneBtn) {
+        //         recoveryTypesDoneBtn.addEventListener('click', function() {
+        //             setRecoveryTypesDropdownOpen(false);
+        //         });
+        //     }
+
+        //     // Calculate Price button
+        //     const calculatePriceBtn = document.getElementById('calculatePriceBtn');
+        //     if (calculatePriceBtn) {
+        //         calculatePriceBtn.addEventListener('click', async function(e) {
+        //             e.preventDefault();
+
+        //             const pickupElement = document.getElementById('pickup_location');
+        //             const dropElement = document.getElementById('drop_location');
+
+        //             if (!pickupElement.value || !dropElement.value) {
+        //                 showToast('Please enter both pickup and drop locations', 'error');
+        //                 return;
+        //             }
+
+        //             if (!pickupMarker || !dropMarker) {
+        //                 showToast('Please select pickup and drop from suggestions.', 'error');
+        //                 return;
+        //             }
+
+        //             const origin = pickupMarker.getPosition().lat() + "," + pickupMarker.getPosition()
+        //                 .lng();
+        //             const destination = dropMarker.getPosition().lat() + "," + dropMarker.getPosition()
+        //                 .lng();
+
+        //             await callDistanceApi(origin, destination);
+
+        //             const token = getAuthToken();
+        //             if (!token) {
+        //                 localStorage.setItem('pending_booking', JSON.stringify({
+        //                     pickup_location: pickupElement.value,
+        //                     drop_location: dropElement.value,
+        //                     pickup_lat: pickupMarker.getPosition().lat(),
+        //                     pickup_lng: pickupMarker.getPosition().lng(),
+        //                     drop_lat: dropMarker.getPosition().lat(),
+        //                     drop_lng: dropMarker.getPosition().lng(),
+        //                     timestamp: Date.now()
+        //                 }));
+
+        //                 window.location.href = "{{ route('login') }}?x=1";
+        //                 return;
+        //             }
+        //         });
+        //     }
+
+        //     // Booking Submit
+        //     document.getElementById('bookingForm').addEventListener('submit', async function(e) {
+        //         e.preventDefault();
+
+        //         const pickupElement = document.getElementById('pickup_location');
+        //         const dropElement = document.getElementById('drop_location');
+        //         const promoElement = document.getElementById('promo_code');
+        //         const selectedRecoveryTypes = Array.from(document.querySelectorAll(
+        //             'input[name="recovery_types_id[]"]:checked')).map((element) => Number(element.value))
+        //             .filter((value) => Number.isFinite(value) && value > 0);
+
+        //         console.log('[Booking] Selected Vehicle Types:', selectedRecoveryTypes);
+
+        //         if (!pickupElement.value || !dropElement.value) {
+        //             showToast('Please enter both pickup and drop locations', 'error');
+        //             return;
+        //         }
+
+        //         if (!pickupMarker || !dropMarker) {
+        //             showToast('Please select valid pickup and drop locations on the map.', 'error');
+        //             return;
+        //         }
+
+        //         const distanceText = document.getElementById('distance')?.innerText || '';
+        //         const distanceValue = parseKmFromDistanceText(distanceText);
+        //         if (distanceValue <= 0) {
+        //             showToast('Distance could not be calculated. Please click Calculate Price first.',
+        //                 'error');
+        //             return;
+        //         }
+
+        //         const token = getAuthToken();
+        //         if (!token) {
+        //             localStorage.setItem('pending_booking', JSON.stringify({
+        //                 pickup_location: pickupElement.value,
+        //                 drop_location: dropElement.value,
+        //                 pickup_lat: pickupMarker.getPosition().lat(),
+        //                 pickup_lng: pickupMarker.getPosition().lng(),
+        //                 drop_lat: dropMarker.getPosition().lat(),
+        //                 drop_lng: dropMarker.getPosition().lng(),
+        //                 timestamp: Date.now()
+        //             }));
+        //             window.location.href = "{{ route('login') }}";
+        //             return;
+        //         }
+
+        //         const pickupLatLng = pickupMarker.getPosition();
+        //         const dropLatLng = dropMarker.getPosition();
+
+        //         let promotionId = null;
+        //         if (promoElement && promoElement.dataset.promotionId) {
+        //             promotionId = promoElement.dataset.promotionId;
+        //         }
+
+        //         // DOM values
+        //         const totalPrice = document.getElementById("grandTotalDisplay")?.innerText || "";
+        //         const etaMinutes = document.getElementById("minutes")?.innerText || "";
+        //         const basePrice = document.getElementById("price")?.innerText || "";
+        //         const discountAmountDisplay = document.getElementById("discountAmountDisplay")
+        //             ?.innerText || "";
+        //         const platform_fee_amount = document.getElementById("platform_fee_amount");
+        //         const tax_amount = document.getElementById("tax_amount");
+
+        //         // remove text like "AED" or "mins"
+        //         const cleanTotalPrice = parseAedAmount(totalPrice);
+        //         const cleanBasePrice = parseAedAmount(basePrice);
+        //         const discountPrice = parseAedAmount(discountAmountDisplay);
+        //         const cleanMinutes = convertToMinutes(etaMinutes);
+        //         const platformFee = parseAedAmount(platform_fee_amount?.innerText || platform_fee_amount
+        //             ?.textContent || '');
+        //         const taxAmount = parseAedAmount(tax_amount?.innerText || tax_amount?.textContent ||
+        //             '');
+
+        //         const payment_method = 'payment_link';
+        //         const bookingPayload = {
+        //             service_type_id: 1,
+        //             pickup_address: pickupElement.value,
+        //             pickup_lat: pickupLatLng.lat(),
+        //             pickup_lng: pickupLatLng.lng(),
+        //             dropoff_address: dropElement.value,
+        //             dropoff_lat: dropLatLng.lat(),
+        //             dropoff_lng: dropLatLng.lng(),
+        //             distance_km: distanceValue,
+        //             platform_fee: platformFee,
+        //             tax: taxAmount,
+        //             payment_method: payment_method,
+        //             // extra values
+        //             total_price: cleanTotalPrice,
+        //             price: cleanBasePrice,
+        //             eta_minutes: cleanMinutes,
+        //             discountPrice: discountPrice,
+        //             polyline: latestRoutePolyline
+        //         };
+
+        //         if (selectedRecoveryTypes.length) {
+        //             bookingPayload.recovery_types_id = selectedRecoveryTypes;
+        //         }
+
+        //         console.log('[Booking] Payload before promotion:', bookingPayload);
+
+        //         if (promotionId) bookingPayload.promotion_id = promotionId;
+        //         console.log('[Booking] Final payload:', bookingPayload);
+
+        //         try {
+        //             const availabilityResult = await checkDriverAvailability(
+        //                 pickupLatLng.lat(),
+        //                 pickupLatLng.lng()
+        //             );
+
+        //             if (availabilityResult.available === false) {
+        //                 await showNoDriversAvailablePopup(() => submitBookingRequest(bookingPayload, token));
+        //                 return;
+        //             }
+
+        //             if (availabilityResult.available === null && !availabilityResult.responseData?.status) {
+        //                 showToast(availabilityResult.responseData?.message || 'Unable to check driver availability right now.',
+        //                     'error');
+        //                 return;
+        //             }
+
+        //             await submitBookingRequest(bookingPayload, token);
+        //             return;
+        //         } catch (err) {
+        //             console.error('[Booking] submit error:', err);
+        //             showToast('Please try again.', 'error');
+        //         }
+        //     });
+        // });
+
+        // window.addEventListener('pageshow', function(event) {
+        //     if (event.persisted) {
+        //         handleTripPrepaymentResume();
+        //     }
+        // });
+
+        // function convertToMinutes(timeText) {
+        //     if (!timeText) return 0;
+
+        //     let hours = 0;
+        //     let minutes = 0;
+
+        //     const hourMatch = timeText.match(/(\d+)\s*h/i);
+        //     const minMatch = timeText.match(/(\d+)\s*m/i);
+
+        //     if (hourMatch) {
+        //         hours = parseInt(hourMatch[1]);
+        //     }
+
+        //     if (minMatch) {
+        //         minutes = parseInt(minMatch[1]);
+        //     }
+
+        //     return (hours * 60) + minutes;
+        // }
+
+        // function setPromoButtonUI(isApplied) {
+        //     const btn = document.getElementById('applyPromoBtn');
+        //     const promoInput = document.getElementById('promo_code');
+        //     if (!btn) return;
+
+        //     btn.dataset.applied = isApplied ? 'true' : 'false';
+
+        //     const txt = btn.querySelector('.btn-text');
+        //     if (txt) txt.textContent = isApplied ? 'Remove' : 'Apply';
+
+        //     if (!isApplied && promoInput) {
+        //         promoInput.value = '';
+        //         delete promoInput.dataset.promotionId;
+        //     }
+        // }
+
+        // // Globals (ensure these exist)
+        // function setPromoButtonUI(isApplied) {
+        //     const btn = document.getElementById('applyPromoBtn');
+        //     const promoInput = document.getElementById('promo_code');
+        //     if (!btn) return;
+
+        //     btn.dataset.applied = isApplied ? 'true' : 'false';
+
+        //     const txt = btn.querySelector('.btn-text');
+        //     if (txt) txt.textContent = isApplied ? 'Remove' : 'Apply';
+
+        //     if (!isApplied && promoInput) {
+        //         promoInput.value = '';
+        //         delete promoInput.dataset.promotionId;
+        //     }
+        // }
+
+        function setPromoLoading(isLoading) {
+            const btn = document.getElementById('applyPromoBtn');
+            if (!btn) return;
+
+            const txt = btn.querySelector('.btn-text');
+            const loader = btn.querySelector('.btn-loader-promo');
+
+            if (isLoading) {
+                if (txt) txt.classList.add('d-none');
+                if (loader) loader.classList.remove('d-none');
+                btn.disabled = true;
             } else {
-                console.error('Use Current Location button not found');
-            }
-
-            // Booking form submission functionality
-            document.getElementById('bookingForm').addEventListener('submit', async function(e) {
-                e.preventDefault();
-
-                const pickupElement = document.getElementById('pickup_location');
-                const dropElement = document.getElementById('drop_location');
-                const promoElement = document.getElementById('promo_code');
-                console.log('Booking form submitted with values:', {
-                    pickup: pickupElement ? pickupElement.value : null,
-                    drop: dropElement ? dropElement.value : null,
-                    promo: promoElement ? promoElement.value : null
-                });
-                if (!pickupElement || !dropElement) {
-                    showToast('Pickup or drop location elements not found', 'error');
-                    return;
-                }
-
-                const pickupLocation = pickupElement.value;
-                const dropLocation = dropElement.value;
-                const promoCode = promoElement ? promoElement.value : '';
-
-                if (!pickupLocation || !dropLocation) {
-                    showToast('Please enter both pickup and drop locations', 'error');
-                    return;
-                }
-
-                if (!pickupMarker || !dropMarker) {
-                    showToast('Please select valid pickup and drop locations on the map.', 'error');
-                    return;
-                }
-
-                const distanceElement = document.getElementById('distance');
-                const distanceValue = distanceElement ? parseFloat(distanceElement.value) : 0;
-
-                if (distanceValue <= 0) {
-                    showToast(
-                        'Distance could not be calculated. Please ensure both locations are valid.',
-                        'error');
-                    return;
-                }
-
-                if (bookingBtn && bookingBtnText && bookingBtnLoader) {
-                    bookingBtn.disabled = true;
-                    bookingBtnText.classList.add('d-none');
-                    bookingBtnLoader.classList.remove('d-none');
-                }
-
-                const token = getAuthToken();
-
-                if (!token) {
-                    const bookingData = {
-                        pickup_location: pickupLocation,
-                        drop_location: dropLocation,
-                        pickup_coords: pickupMarker ? {
-                            lat: pickupMarker.getPosition().lat(),
-                            lng: pickupMarker.getPosition().lng()
-                        } : null,
-                        drop_coords: dropMarker ? {
-                            lat: dropMarker.getPosition().lat(),
-                            lng: dropMarker.getPosition().lng()
-                        } : null,
-                        distance: document.getElementById('distance') ? document.getElementById(
-                            'distance').value : 0,
-                        timestamp: Date.now()
-                    };
-
-                    localStorage.setItem('pending_booking', JSON.stringify(bookingData));
-
-                    window.location.href = '{{ route('login') }}';
-                    return;
-                }
-
-                const pickupLatLng = pickupMarker.getPosition();
-                const dropLatLng = dropMarker.getPosition();
-
-                let promotionId = null;
-
-                const promoInputElement = document.getElementById('promo_code');
-                if (promoInputElement && promoInputElement.dataset.promotionId) {
-                    promotionId = promoInputElement.dataset.promotionId;
-                } else if (promoCode) {
-                    try {
-                        const promoResp = await window.ApiUtils.fetch(
-                            `${PRICE_API_BASE_URL}/v1/customer/promocodes/verify`, {
-                                method: 'POST',
-                                headers: {
-                                    'Authorization': 'Bearer ' + token
-                                },
-                                body: JSON.stringify({
-                                    code: promoCode
-                                })
-                            });
-
-                        const promoData = await promoResp.json();
-
-                        if (!promoResp.ok || promoData.status !== true) {
-                            showToast(promoData.message || 'Invalid promo code.', 'error');
-                            if (bookingBtn && bookingBtnText && bookingBtnLoader) {
-                                bookingBtn.disabled = false;
-                                bookingBtnText.classList.remove('d-none');
-                                bookingBtnLoader.classList.add('d-none');
-                            }
-                            return;
-                        }
-
-                        if (promoData.data && promoData.data.id) {
-                            promotionId = promoData.data.id;
-                            // Also store discount data for display
-                            currentPromotionData = promoData.data;
-                            currentDiscountValue = promoData.data.discount_value || 0;
-                            updateGrandTotal();
-                        }
-                    } catch (err) {
-                        showToast('Please try again.', 'error');
-                        if (bookingBtn && bookingBtnText && bookingBtnLoader) {
-                            bookingBtn.disabled = false;
-                            bookingBtnText.classList.remove('d-none');
-                            bookingBtnLoader.classList.add('d-none');
-                        }
-                        return;
-                    }
-                }
-
-                // Build booking payload
-                const bookingPayload = {
-                    service_type_id: 1,
-                    pickup_address: pickupLocation,
-                    pickup_lat: pickupLatLng.lat(),
-                    pickup_lng: pickupLatLng.lng(),
-                    dropoff_address: dropLocation,
-                    dropoff_lat: dropLatLng.lat(),
-                    dropoff_lng: dropLatLng.lng(),
-                    distance_km: document.getElementById('distance') ? parseFloat(document
-                        .getElementById('distance').value) : 0,
-                };
-
-                if (promotionId) {
-                    bookingPayload.promotion_id = promotionId;
-                }
-
-                try {
-                    const bookingResp = await window.ApiUtils.fetch(
-                        `${PRICE_API_BASE_URL}/v1/customer/bookings`, {
-                            method: 'POST',
-                            headers: {
-                                'Authorization': 'Bearer ' + token
-                            },
-                            body: JSON.stringify(bookingPayload)
-                        });
-
-                    const bookingData = await bookingResp.json();
-
-                    if (!bookingResp.ok || bookingData.status !== true) {
-                        showToast(bookingData.message || 'Please try again.', 'error');
-                        if (bookingBtn && bookingBtnText && bookingBtnLoader) {
-                            bookingBtn.disabled = false;
-                            bookingBtnText.classList.remove('d-none');
-                            bookingBtnLoader.classList.add('d-none');
-                        }
-                        return;
-                    }
-
-                    const successMessage = `Thank you for choosing Toretto Recovery Services.
-
-            Your nearest recovery driver is currently being assigned.
-
-            To receive real-time updates, driver contact details, and live tracking, please continue using our mobile application.
-
-            Track your recovery vehicle in real time
-
-            [Open App / Download App]
-
-            Note: Service updates and driver communication are available only in the mobile app.`;
-                    showToast(successMessage, 'success');
-
-                    if (bookingBtn && bookingBtnText && bookingBtnLoader) {
-                        bookingBtn.disabled = false;
-                        bookingBtnText.classList.remove('d-none');
-                        bookingBtnLoader.classList.add('d-none');
-                    }
-                } catch (err) {
-                    showToast('Please try again.', 'error');
-                    if (bookingBtn && bookingBtnText && bookingBtnLoader) {
-                        bookingBtn.disabled = false;
-                        bookingBtnText.classList.remove('d-none');
-                        bookingBtnLoader.classList.add('d-none');
-                    }
-                }
-
-                if (bookingBtn && bookingBtnText && bookingBtnLoader) {
-                    bookingBtn.disabled = false;
-                    bookingBtnText.classList.remove('d-none');
-                    bookingBtnLoader.classList.add('d-none');
-                }
-            });
-        });
-
-        function checkPendingBookingData() {
-            const pendingBooking = localStorage.getItem('pending_booking');
-
-            if (pendingBooking) {
-                try {
-                    const bookingData = JSON.parse(pendingBooking);
-
-                    const oneHour = 60 * 60 * 1000;
-                    if (Date.now() - bookingData.timestamp > oneHour) {
-                        localStorage.removeItem('pending_booking');
-                        return;
-                    }
-
-                    if (bookingData.pickup_location) {
-                        const pickupElement = document.getElementById('pickup_location');
-                        if (pickupElement) {
-                            setAutocompleteValue(pickupElement, pickupAutocomplete, bookingData.pickup_location);
-                        }
-                    }
-
-                    if (bookingData.drop_location) {
-                        const dropElement = document.getElementById('drop_location');
-                        if (dropElement) {
-                            setAutocompleteValue(dropElement, dropAutocomplete, bookingData.drop_location);
-                        }
-                    }
-
-                    if (bookingData.pickup_coords && map) {
-                        if (pickupMarker) {
-                            pickupMarker.setMap(null);
-                        }
-
-                        pickupMarker = new google.maps.Marker({
-                            position: {
-                                lat: bookingData.pickup_coords.lat,
-                                lng: bookingData.pickup_coords.lng
-                            },
-                            map: map,
-                            title: 'Pickup Location: ' + bookingData.pickup_location,
-                            icon: {
-                                url: "{{ asset('assets/images/pin.png') }}",
-                                scaledSize: new google.maps.Size(30, 30)
-                            }
-                        });
-
-                        const pickupInfoWindow = new google.maps.InfoWindow({
-                            content: 'Pickup Location: ' + bookingData.pickup_location
-                        });
-                        pickupInfoWindow.open(map, pickupMarker);
-
-                        map.panTo({
-                            lat: bookingData.pickup_coords.lat,
-                            lng: bookingData.pickup_coords.lng
-                        });
-                        map.setZoom(15);
-                    }
-
-                    if (bookingData.drop_coords && map) {
-                        if (dropMarker) {
-                            dropMarker.setMap(null);
-                        }
-
-                        dropMarker = new google.maps.Marker({
-                            position: {
-                                lat: bookingData.drop_coords.lat,
-                                lng: bookingData.drop_coords.lng
-                            },
-                            map: map,
-                            title: 'Drop Location: ' + bookingData.drop_location,
-                            icon: {
-                                url: "{{ asset('assets/images/pin.png') }}",
-                                scaledSize: new google.maps.Size(30, 30)
-                            }
-                        });
-
-                        const dropInfoWindow = new google.maps.InfoWindow({
-                            content: 'Drop Location: ' + bookingData.drop_location
-                        });
-                        dropInfoWindow.open(map, dropMarker);
-                    }
-
-                    if (bookingData.distance) {
-                        const distanceElement = document.getElementById('distance');
-                        if (distanceElement) {
-                            latestDistanceKm = bookingData.distance;
-                            distanceElement.innerText = bookingData.distance.toFixed(2) + " km";
-                        }
-                    }
-
-                    if (pickupMarker && dropMarker) {
-                        drawRoute();
-
-                        setTimeout(async () => {
-                            if (latestDistanceKm > 0) {
-                                const pickupLatLng = pickupMarker.getPosition();
-                                await fetchPriceFromAPI(pickupLatLng.lat(), pickupLatLng.lng(),
-                                    latestDistanceKm);
-                            } else {
-                                const pickupElement = document.getElementById('pickup_location');
-                                const dropElement = document.getElementById('drop_location');
-
-                                if (pickupElement && dropElement && pickupElement.value && dropElement.value) {
-                                    calculateDistanceByLatLng();
-
-                                    setTimeout(async () => {
-                                        if (latestDistanceKm > 0) {
-                                            const pickupLatLng = pickupMarker.getPosition();
-                                            await fetchPriceFromAPI(pickupLatLng.lat(), pickupLatLng
-                                                .lng(), latestDistanceKm);
-                                        }
-                                    }, 1000);
-                                }
-                            }
-                        }, 500);
-                    } else {
-                        setTimeout(() => {
-                            showToast('Your booking data has been restored!', 'success');
-                        }, 1000);
-                    }
-
-                    localStorage.removeItem('pending_booking');
-
-                } catch (error) {
-
-                    localStorage.removeItem('pending_booking');
-                }
+                if (txt) txt.classList.remove('d-none');
+                if (loader) loader.classList.add('d-none');
+                btn.disabled = false;
             }
         }
 
-        function setAutocompleteValue(inputElement, autocompleteInstance, value) {
-            if (!inputElement || !autocompleteInstance) return;
+        function removePromoCode() {
+            const promoInput = document.getElementById('promo_code');
+            if (promoInput) delete promoInput.dataset.promotionId;
 
-            inputElement.value = value;
+            currentPromotionData = null;
+            currentDiscountValue = 0;
 
-            inputElement.dispatchEvent(new Event('input', {
-                bubbles: true
-            }));
-            inputElement.dispatchEvent(new Event('change', {
-                bubbles: true
-            }));
+            if (typeof updateGrandTotal === 'function') updateGrandTotal();
+
+            setPromoButtonUI(false);
+            showToast('Promo code removed successfully!', 'success');
         }
 
-        function isLocationInUAE(lat, lng) {
-            // UAE coordinates boundaries
-            const uaeMinLat = 22.4969;
-            const uaeMaxLat = 26.0555;
-            const uaeMinLng = 51.5795;
-            const uaeMaxLng = 56.3967;
-
-            return (lat >= uaeMinLat && lat <= uaeMaxLat &&
-                lng >= uaeMinLng && lng <= uaeMaxLng);
-        }
-
-        function getUserLiveLocation() {
-            console.log('getUserLiveLocation called');
-
-            if (!navigator.geolocation) {
-                console.error('Geolocation is not supported by this browser');
-                showToast("Geolocation is not supported by your browser. Please enter pickup location manually.", "error");
+        async function applyPromoCode(promoCode) {
+            const token = getAuthToken();
+            if (!token) {
+                showToast('Please log in to apply promo codes.', 'error');
                 return;
             }
 
-            console.log('Requesting geolocation...');
+            setPromoLoading(true);
 
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    console.log('Geolocation success:', position);
-                    const lat = position.coords.latitude;
-                    const lng = position.coords.longitude;
-
-                    if (!lat || !lng) {
-                        console.error('Invalid coordinates received');
-                        showToast(
-                            "Unable to determine your location. Please enter pickup location manually.",
-                            "info"
-                        );
-                        return;
-                    }
-
-                    console.log('Coordinates:', lat, lng);
-
-                    // Check if map is initialized
-                    if (!map) {
-                        console.error('Map not initialized yet');
-                        showToast("Map is still loading. Please try again in a moment.", "warning");
-                        return;
-                    }
-
-                    if (!isLocationInUAE(lat, lng)) {
-                        console.log('Location is outside UAE');
-                        const pickupElement = document.getElementById('pickup_location');
-                        const dropElement = document.getElementById('drop_location');
-                        if (pickupElement && dropElement && pickupElement.value.trim() === '' && dropElement.value
-                            .trim() === '') {
-                            showToast(
-                                "Your current location is outside UAE. Please select pickup location manually.",
-                                "warning"
-                            );
-                        }
-                        return;
-                    }
-
-                    console.log('Setting pickup location from coordinates');
-                    setPickupFromLatLng(lat, lng);
-                },
-                (error) => {
-                    console.error('Geolocation error:', error);
-                    let errorMessage = "Unable to fetch your location. Please enter pickup location manually.";
-
-                    switch (error.code) {
-                        case error.PERMISSION_DENIED:
-                            errorMessage =
-                                "Location access denied. Please enable location services to use this feature.";
-                            break;
-                        case error.POSITION_UNAVAILABLE:
-                            errorMessage = "Location information is unavailable. Please try again later.";
-                            break;
-                        case error.TIMEOUT:
-                            errorMessage = "The request to get your location timed out. Please try again.";
-                            break;
-                        case error.UNKNOWN_ERROR:
-                        default:
-                            errorMessage = "An unknown error occurred while getting your location.";
-                            break;
-                    }
-
-                    showToast(errorMessage, "error");
-                }, {
-                    enableHighAccuracy: true,
-                    timeout: 15000,
-                    maximumAge: 60000
-                }
-            );
-        }
-
-        function setPickupFromLatLng(lat, lng) {
-            const geocoder = new google.maps.Geocoder();
-
-            geocoder.geocode({
-                    location: {
-                        lat: lat,
-                        lng: lng
-                    }
-                },
-                (results, status) => {
-                    if (status === "OK" && results && results.length > 0) {
-                        const address = results[0].formatted_address;
-
-                        const pickupInput = document.getElementById("pickup_location");
-                        if (pickupInput) {
-                            pickupInput.value = address;
-                        }
-
-                        if (pickupMarker) {
-                            pickupMarker.setMap(null);
-                        }
-
-                        pickupMarker = new google.maps.Marker({
-                            position: {
-                                lat: lat,
-                                lng: lng
-                            },
-                            map: map,
-                            title: "Your Current Location",
-                            icon: {
-                                url: "{{ asset('assets/images/pin.png') }}",
-                                scaledSize: new google.maps.Size(30, 30)
-                            }
-                        });
-
-                        const pickupInfoWindow = new google.maps.InfoWindow({
-                            content: "Your Current Location"
-                        });
-                        pickupInfoWindow.open(map, pickupMarker);
-
-                        map.panTo({
-                            lat: lat,
-                            lng: lng
-                        });
-                        map.setZoom(15);
-
-                        showToast("Pickup location set to your current location", "success");
-
-                        if (dropMarker && pickupMarker) {
-                            setTimeout(drawRoute, 500);
-                        }
-                    } else {
-                        showToast(
-                            "Unable to detect address from your location",
-                            "error"
-                        );
-                    }
-                }
-            );
-        }
-
-        async function calculateFinalPrice(kms, token, minutes) {
-            const responsePrice = await fetch(
-                `${PRICE_API_BASE_URL}/v1/customer/price/calculate`, {
+            try {
+                const promoResp = await window.fetch(`${PRICE_API_BASE_URL}/v1/customer/promocodes/verify`, {
                     method: 'POST',
                     headers: {
                         'Authorization': 'Bearer ' + token,
+                        'Accept': 'application/json',
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        km: kms,
-                        latitude: pickupLat,
-                        longitude: pickupLng,
-                        drop_latitude: dropLat,
-                        drop_longitude: dropLng,
-                        minutes: minutes
+                        code: promoCode,
                     })
-                }
-            );
+                });
 
-            if (!responsePrice.ok) {
-                let errorMessage = `Price API returned ${responsePrice.status}`;
+                const raw = await promoResp.text();
+                let promoData = {};
                 try {
-                    const errJson = await responsePrice.json();
-                    if (errJson?.message) {
-                        errorMessage += `: ${errJson.message}`;
-                    }
-                } catch (_){/* ignore */}
-                throw new Error(errorMessage);
+                    promoData = JSON.parse(raw);
+                } catch (e) {
+                    promoData = {
+                        raw
+                    };
+                }
+
+                console.log('promoResp status:', promoResp.status);
+                console.log('promoResp raw:', raw);
+
+                if (!promoResp.ok) {
+                    showToast(promoData.message || `Promo API error (${promoResp.status})`, 'error');
+                    return;
+                }
+
+                if (promoData.status !== true) {
+                    showToast(promoData.message || 'Invalid promo code.', 'error');
+                    return;
+                }
+
+                // Save promo info
+                currentPromotionData = promoData.data || null;
+                currentDiscountValue = promoData?.data?.discount_value || 0;
+
+                const promoInput = document.getElementById('promo_code');
+                if (promoInput && promoData?.data?.id) {
+                    promoInput.dataset.promotionId = promoData.data.id;
+                }
+
+                if (typeof updateGrandTotal === 'function') updateGrandTotal();
+
+                setPromoButtonUI(true);
+                showToast('Promo code applied successfully!', 'success');
+
+            } catch (err) {
+                console.error('Promo verify error:', err);
+                showToast(err?.message || 'Network error while verifying promo code.', 'error');
+            } finally {
+                setPromoLoading(false);
             }
-
-            const priceData = await responsePrice.json();
-            const price = priceData?.data?.price ?? priceData?.data?.amount ?? priceData?.price ?? 0;
-
-            document.getElementById('totalPriceDisplay').innerText =
-                parseFloat(price).toFixed(2) + ' AED';
-            document.getElementById('grandTotalDisplay').innerText =
-                parseFloat(price).toFixed(2) + ' AED';
-            document.getElementById('price').innerText =
-                parseFloat(price).toFixed(2) + ' AED';
         }
 
-        document.addEventListener("DOMContentLoaded", async function() {
+        // Click handler (event delegation) — always works
+        document.addEventListener('click', function(e) {
+            const btn = e.target.closest('#applyPromoBtn');
+            if (!btn) return;
 
-            const token = getAuthToken();
-            const pendingBooking = localStorage.getItem('pending_booking');
+            e.preventDefault();
+            e.stopPropagation();
 
-            if (!token || !pendingBooking) return;
+            const promoInput = document.getElementById('promo_code');
+            const promoCode = (promoInput?.value || '').trim();
+            const isApplied = btn.dataset.applied === 'true';
 
-            const data = JSON.parse(pendingBooking);
-
-            // 1️⃣ Set input values
-            document.getElementById('pickup_location').value = data.pickup_location;
-            document.getElementById('drop_location').value = data.drop_location;
-
-            // 2️⃣ Restore coordinates
-            pickupLat = data.pickup_lat;
-            pickupLng = data.pickup_lng;
-            dropLat = data.drop_lat;
-            dropLng = data.drop_lng;
-
-            // 3️⃣ Recalculate distance + price automatically
-            try {
-
-                const origin = pickupLat + "," + pickupLng;
-                const destination = dropLat + "," + dropLng;
-                callDistanceApi(origin, destination);
-                localStorage.removeItem('pending_booking');
-
-            } catch (error) {
-                console.error(error);
+            if (isApplied) {
+                removePromoCode();
+                return;
             }
+
+            if (!promoCode) {
+                showToast('Please enter a promo code.', 'error');
+                return;
+            }
+
+            applyPromoCode(promoCode);
+        }, true);
+
+        function updateGrandTotal() {
+            const totalPriceEl = document.getElementById('totalPriceDisplay');
+            const grandTotalEl = document.getElementById('grandTotalDisplay');
+            const discountRow = document.getElementById('discountRow');
+            const discountAmountEl = document.getElementById('discountAmountDisplay');
+            const platform_fee_amount = document.getElementById("platform_fee_amount");
+            const tax_amount = document.getElementById("tax_amount");
+
+            if (!grandTotalEl) return;
+
+            // Total (original)
+            const original = currentOriginalPrice || 0;
+
+            if (totalPriceEl) totalPriceEl.innerText = original + ' AED';
+
+            let finalPrice = original;
+            let discountAmount = 0;
+
+            // Promo present?
+            if (currentPromotionData) {
+                // detect discount type from different keys
+                const dtypeRaw =
+                    currentPromotionData.discount_type ??
+                    currentPromotionData.type ??
+                    currentPromotionData.discountType ??
+                    '';
+
+                const dtype = String(dtypeRaw).toLowerCase();
+
+                // discount value parse
+                const dval = parseAedAmount(currentDiscountValue ?? currentPromotionData.discount_value ??
+                    currentPromotionData
+                    .value ?? 0);
+
+                if (dval > 0) {
+                    if (dtype === 'percentage' || dtype === 'percent') {
+                        discountAmount = (original * dval) / 100;
+                    } else {
+                        discountAmount = dval; // fixed
+                    }
+
+                    // discount cap (optional)
+                    if (discountAmount > original) discountAmount = original;
+
+                    finalPrice = original - discountAmount;
+                    if (finalPrice < 0) finalPrice = 0;
+
+                    if (discountRow) discountRow.classList.remove('d-none');
+
+                    if (discountAmountEl) discountAmountEl.innerText = discountAmount + ' AED';
+                } else {
+                    if (discountRow) discountRow.classList.add('d-none');
+                    if (discountAmountEl) discountAmountEl.innerText = '0 AED';
+                }
+            } else {
+                if (discountRow) discountRow.classList.add('d-none');
+                if (discountAmountEl) discountAmountEl.innerText = '0 AED';
+            }
+            const platformFee = parseAedAmount(platform_fee_amount?.innerText || platform_fee_amount?.textContent || '');
+            const taxAmount = parseAedAmount(tax_amount?.innerText || tax_amount?.textContent || '');
+
+            //  TOTAL after discount
+            const TotalAmount = finalPrice + platformFee + taxAmount;
+            grandTotalEl.innerText = TotalAmount + ' AED';
+        }
+        const DASH_MAP_DATA_PATH = "/v1/common/dashboard/map-data";
+        const DASH_MAP_DATA_URL = `${PRICE_API_BASE_URL}${DASH_MAP_DATA_PATH}`;
+        const DASH_CAR_ICON_URL = `{{ asset('assets/images/ic_truck1.png') }}`;
+        const DASH_SOCKET_IO_CDN = "https://cdn.socket.io/4.7.5/socket.io.min.js";
+        const DASH_DEBUG_PREFIX = "[Home Drivers Map]";
+        const APP_ENV = @json(app()->environment());
+        const SOCKET_LIVE_URL = @json(config('services.socket.live_url'));
+        const SOCKET_DEV_URL = @json(config('services.socket.dev_url'));
+        const SOCKET_FALLBACK_URL = @json(config('services.socket.url'));
+        const RAW_SOCKET_URL = APP_ENV === 'production' ? (SOCKET_LIVE_URL || SOCKET_FALLBACK_URL) : (SOCKET_DEV_URL ||
+            SOCKET_FALLBACK_URL);
+        const ENV_SOCKET_URL = (RAW_SOCKET_URL || '')
+            .replace(/\/socket\/?$/, '')
+            .replace(/\/+$/, '');
+
+        const dashMapState = window.__homeDriversMapState || (window.__homeDriversMapState = {
+            markers: {},
+            driversById: {},
+            socket: null,
+            socketStarted: false,
+            joinedBookingRooms: {},
+            addressCache: {},
+            pendingAddressRequests: {},
+            geocoder: null,
         });
 
-        function restorePendingBooking() {
+        let dashMarkers = dashMapState.markers; // shared marker store
+        let dashDriversById = dashMapState.driversById; // shared drivers store
+        let dashInfoWindow = null;
+        let dashActiveInfoDriverId = null;
+        let dashTimer = null;
+        let dashStarted = false;
+        let dashSocket = dashMapState.socket;
+        let DashAdvancedMarkerElement = null;
 
-            const token = getAuthToken();
-            const pendingBooking = localStorage.getItem('pending_booking');
-
-            if (!token || !pendingBooking) return;
-
-            const data = JSON.parse(pendingBooking);
-
-            setPickupManually(
-                parseFloat(data.pickup_lat),
-                parseFloat(data.pickup_lng),
-                data.pickup_location
-            );
-
-            setDropManually(
-                parseFloat(data.drop_lat),
-                parseFloat(data.drop_lng),
-                data.drop_location
-            );
-
-            setTimeout(() => {
-                drawRoute();
-            }, 500);
-
-            localStorage.removeItem('pending_booking');
+        function logDashDebug(message, meta) {
+            if (meta === undefined) {
+                console.log(`${DASH_DEBUG_PREFIX} ${message}`);
+                return;
+            }
+            console.log(`${DASH_DEBUG_PREFIX} ${message}`, meta);
         }
 
-        function setDropManually(lat, lng, address) {
+        function normalizeText(value) {
+            if (value === null || value === undefined) return "";
+            return String(value).trim();
+        }
 
-            dropLat = lat;
-            dropLng = lng;
+        function normalizeDriverId(driverLike) {
+            const rawId = driverLike?.id ?? driverLike?.driver_id ?? driverLike?.driverId ?? driverLike?.user_id;
+            if (rawId === null || rawId === undefined) return null;
+            const idText = String(rawId).trim();
+            return idText === "" ? null : idText;
+        }
 
-            if (dropMarker) {
-                dropMarker.setMap(null);
-            }
+        function normalizeBookingId(driverLike) {
+            const rawBookingId = driverLike?.active_booking_id ?? driverLike?.booking_id ?? driverLike?.bookingId;
+            if (rawBookingId === null || rawBookingId === undefined || rawBookingId === "") return null;
+            const bookingId = Number(rawBookingId);
+            return Number.isFinite(bookingId) && bookingId > 0 ? bookingId : null;
+        }
 
-            const position = new google.maps.LatLng(lat, lng);
+        function parseDriverLatLng(driverLike) {
+            const rawLat = driverLike?.current_lat ?? driverLike?.lat ?? driverLike?.latitude;
+            const rawLng = driverLike?.current_lng ?? driverLike?.lng ?? driverLike?.longitude;
+            const lat = parseFloat(rawLat);
+            const lng = parseFloat(rawLng);
+            if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
+            return {
+                lat,
+                lng
+            };
+        }
 
-            dropMarker = new google.maps.Marker({
-                position: position,
-                map: map,
-                title: 'Drop',
-                icon: {
-                    url: "{{ asset('assets/images/pin.png') }}",
-                    scaledSize: new google.maps.Size(30, 30)
+        function parseOptionalBoolean(value) {
+            if (value === null || value === undefined || value === "") return null;
+            if (typeof value === "boolean") return value;
+            if (typeof value === "number") return value === 1;
+
+            const normalized = String(value).trim().toLowerCase();
+            if (["1", "true", "yes", "online", "busy"].includes(normalized)) return true;
+            if (["0", "false", "no", "offline", "idle"].includes(normalized)) return false;
+            return null;
+        }
+
+        function preferIncomingOrExisting(existingValue, incomingValue, fallbackValue = "") {
+            const incoming = normalizeText(incomingValue);
+            if (incoming) return incoming;
+
+            const existing = normalizeText(existingValue);
+            if (existing) return existing;
+
+            return fallbackValue;
+        }
+
+        function isFallbackDriverName(name) {
+            const normalized = normalizeText(name);
+            if (!normalized) return true;
+            return /^driver(\s*#\s*[\w-]+)?$/i.test(normalized);
+        }
+
+        function preferDriverName(existingName, incomingName, driverId) {
+            const incoming = normalizeText(incomingName);
+            const existing = normalizeText(existingName);
+
+            if (incoming) {
+                const incomingFallback = isFallbackDriverName(incoming);
+                const existingFallback = isFallbackDriverName(existing);
+
+                if (!incomingFallback || !existing || existingFallback) {
+                    return incoming;
                 }
-            });
-
-            //  Info Window Add
-            const dropInfoWindow = new google.maps.InfoWindow({
-                content: `
-            <div style="max-width:200px; font-size:13px; line-height:1.4;">
-                <strong>Drop:</strong><br>
-                ${address}
-            </div>
-        `
-            });
-
-            dropInfoWindow.open(map, dropMarker);
-
-            document.getElementById('drop_location').value = address;
-
-            //  If pickup also exists → fit both markers
-            if (pickupMarker) {
-
-                const bounds = new google.maps.LatLngBounds();
-                bounds.extend(pickupMarker.getPosition());
-                bounds.extend(position);
-
-                map.fitBounds(bounds);
-
-                setTimeout(() => {
-                    drawRoute();
-                }, 400);
-
-            } else {
-
-                map.panTo(position);
-                map.setZoom(15);
-            }
-        }
-
-
-        function setPickupManually(lat, lng, address) {
-
-            pickupLat = lat;
-            pickupLng = lng;
-
-            if (pickupMarker) {
-                pickupMarker.setMap(null);
             }
 
-            const position = new google.maps.LatLng(lat, lng);
-
-            pickupMarker = new google.maps.Marker({
-                position: position,
-                map: map,
-                title: 'Pickup',
-                icon: {
-                    url: "{{ asset('assets/images/pin.png') }}",
-                    scaledSize: new google.maps.Size(30, 30)
-                }
-            });
-
-            const pickupInfoWindow = new google.maps.InfoWindow({
-                content: `
-            <div style="max-width:200px; font-size:13px; line-height:1.4;">
-                <strong>Pickup:</strong><br>
-                ${address}
-            </div>
-        `
-            });
-
-            pickupInfoWindow.open(map, pickupMarker);
-
-            document.getElementById('pickup_location').value = address;
-
-            map.panTo(position);
-            map.setZoom(15);
+            if (existing) return existing;
+            return `Driver #${driverId}`;
         }
-        async function callDistanceApi(origin, destination) {
+
+        function deriveSocketBaseUrl(apiBaseUrl) {
+            const raw = normalizeText(apiBaseUrl);
+            if (!raw) return "";
 
             try {
-                const token = localStorage.getItem('auth_token'); //  define
-
-                const responseDistance = await fetch(
-                    `${PRICE_API_BASE_URL}/v1/customer/distance?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&traffic_model=best_guess`, {
-                        method: 'GET',
-                        headers: {
-                            'Accept': 'application/json',
-                            ...(token ? {
-                                'Authorization': 'Bearer ' + token
-                            } : {})
-                        }
-                    }
-                );
-
-                const data = await responseDistance.json(); //  ONLY ONCE
-                console.log("Distance API Response:", data);
-
-                if (!responseDistance.ok) {
-                    console.log("Distance API HTTP error:", responseDistance.status, data);
-                    return;
-                }
-
-                const result = data?.rows?.[0]?.elements?.[0];
-
-                //  status check (Google returns "OK" / "ZERO_RESULTS")
-                if (!result || result.status !== 'OK') {
-                    console.log("Distance API element error:", result);
-                    return;
-                }
-
-                const kmText = result.distance?.text || ''; // e.g. "149 km"
-                const minutes = result.duration_in_traffic?.text || result.duration?.text || '';
-
-                //  best: use meters if available
-                let kmsNumber = null;
-                if (typeof result.distance?.value === 'number') {
-                    kmsNumber = result.distance.value / 1000; // meters -> km
-                } else {
-                    // fallback: parse from text
-                    kmsNumber = parseFloat(kmText.replace(/[^\d.]/g, ""));
-                }
-
-                // UI update
-                const distanceEl = document.getElementById("distance");
-                const minutesEl = document.getElementById("minutes");
-                if (distanceEl) distanceEl.innerText = kmText || (kmsNumber?.toFixed(2) + " km");
-                if (minutesEl) minutesEl.innerText = minutes;
-
-                //  price calculation
-                if (kmsNumber !== null && !Number.isNaN(kmsNumber)) {
-                    const token = getAuthToken();
-                    if (!token) {
-
-                        localStorage.setItem('pending_booking', JSON.stringify({
-                            pickup_location: pickupElement.value,
-                            drop_location: dropElement.value,
-                            pickup_lat: pickupLat,
-                            pickup_lng: pickupLng,
-                            drop_lat: dropLat,
-                            drop_lng: dropLng,
-                            km: kms,
-                            timestamp: Date.now()
-                        }));
-
-                        window.location.href = "{{ route('login') }}";
-                        return;
-                    }
-                    await calculateFinalPrice(kmsNumber, token, minutes);
-                    localStorage.removeItem('pending_booking'); //  clear after success
-                } else {
-                    console.log("Could not parse distance:", kmText, result.distance);
-                }
-
+                const url = new URL(raw);
+                const strippedPath = (url.pathname || "").replace(/\/api\/?$/i, "/");
+                return `${url.protocol}//${url.host}${strippedPath}`.replace(/\/+$/, "");
             } catch (e) {
-                console.error("Distance API call failed:", e);
+                return raw.replace(/\/api\/?$/i, "").replace(/\/+$/, "");
             }
         }
+
+        function resolveDashSocketConfig() {
+            const winCfg = window.DRIVERS_SOCKET_CONFIG || window.TORETTO_SOCKET_CONFIG || {};
+            const socketUrl = normalizeText(winCfg.url || winCfg.socket_url || winCfg.host || ENV_SOCKET_URL);
+
+            const socketPath = normalizeText(winCfg.path || winCfg.socket_path) || "/socket.io";
+            const namespace = normalizeText(winCfg.namespace || winCfg.nsp);
+            const room = normalizeText(winCfg.room || winCfg.room_name || winCfg.join_room || winCfg.channel);
+            const joinEvent = normalizeText(winCfg.join_event || winCfg.joinEvent);
+
+            return {
+                socketUrl: socketUrl.replace(/\/+$/, ""),
+                socketPath,
+                namespace,
+                room,
+                joinEvent
+            };
+        }
+
+        function getUrlOrigin(rawUrl) {
+            const normalized = normalizeText(rawUrl);
+            if (!normalized) return "";
+            try {
+                return new URL(normalized).origin;
+            } catch (e) {
+                return "";
+            }
+        }
+
+        function getCurrentOriginSocketBase() {
+            try {
+                return normalizeText(window.location?.origin || "").replace(/\/+$/, "");
+            } catch (e) {
+                return "";
+            }
+        }
+
+        function isLikelyCorsSocketError(error) {
+            const text = normalizeText(
+                error?.message ||
+                error?.description ||
+                error?.type ||
+                error?.data ||
+                error
+            ).toLowerCase();
+
+            if (!text) return false;
+            return text.includes("xhr poll error") ||
+                text.includes("cors") ||
+                text.includes("access-control-allow-origin");
+        }
+
+        function loadSocketScriptOnce(src) {
+            return new Promise((resolve, reject) => {
+                if (!src) {
+                    reject(new Error("Socket client script URL is empty."));
+                    return;
+                }
+
+                const existing = document.querySelector(`script[data-socket-src="${src}"]`);
+                if (existing) {
+                    if (window.io) {
+                        resolve();
+                        return;
+                    }
+                    existing.addEventListener("load", resolve, {
+                        once: true
+                    });
+                    existing.addEventListener("error", reject, {
+                        once: true
+                    });
+                    return;
+                }
+
+                const script = document.createElement("script");
+                script.src = src;
+                script.async = true;
+                script.defer = true;
+                script.dataset.socketSrc = src;
+                script.onload = () => resolve();
+                script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
+                document.head.appendChild(script);
+            });
+        }
+
+        async function ensureSocketIoClient(socketBaseUrl) {
+            if (typeof window.io === "function") return true;
+
+            const sources = [];
+            const normalizedBase = normalizeText(socketBaseUrl);
+            if (normalizedBase) {
+                sources.push(`${normalizedBase}/socket.io/socket.io.js`);
+            }
+            sources.push(DASH_SOCKET_IO_CDN);
+
+            for (const src of sources) {
+                try {
+                    await loadSocketScriptOnce(src);
+                    if (typeof window.io === "function") return true;
+                } catch (err) {
+                    console.warn(`${DASH_DEBUG_PREFIX} socket script load failed`, {
+                        src,
+                        error: err
+                    });
+                }
+            }
+
+            return false;
+        }
+
+        async function initDashMarkerLibrary() {
+            try {
+                if (!window.google || !google.maps || !google.maps.importLibrary) return false;
+                const lib = await google.maps.importLibrary("marker");
+                DashAdvancedMarkerElement = lib.AdvancedMarkerElement;
+                return true;
+            } catch (e) {
+                console.error("initDashMarkerLibrary error:", e);
+                return false;
+            }
+        }
+
+        function normalizeSocketDriverPayload(payload) {
+            if (!payload || typeof payload !== "object") return null;
+
+            const dataNode = payload.data && typeof payload.data === "object" ? payload.data : null;
+            const driverNode = payload.driver && typeof payload.driver === "object" ? payload.driver : null;
+            const nestedDriver = dataNode?.driver && typeof dataNode.driver === "object" ? dataNode.driver : null;
+            const base = {
+                ...(dataNode || {}),
+                ...(driverNode || {}),
+                ...(nestedDriver || {}),
+                ...payload,
+            };
+
+            return {
+                id: base.id ?? base.driver_id ?? base.driverId ?? base.user_id,
+                driver_id: base.driver_id ?? base.id ?? base.driverId ?? base.user_id,
+                current_lat: base.current_lat ?? base.lat ?? base.latitude,
+                current_lng: base.current_lng ?? base.lng ?? base.longitude,
+                current_address: base.current_address ?? base.address ?? base.formatted_address ?? base.location_name ??
+                    base.location_address,
+                active_booking_id: base.active_booking_id ?? base.booking_id ?? base.bookingId,
+                booking_id: base.booking_id ?? base.active_booking_id ?? base.bookingId,
+                full_name: base.full_name ?? base.name,
+                vehicle_number: base.vehicle_number,
+                vehicle_type: base.vehicle_type,
+                mobile: base.mobile ?? base.phone,
+                is_online: base.is_online,
+                has_active_job: base.has_active_job
+            };
+        }
+
+        function applyIncomingDriverData(targetDriver, incomingDriver, driverId) {
+            const latLng = parseDriverLatLng(incomingDriver);
+            if (latLng) {
+                targetDriver.current_lat = latLng.lat;
+                targetDriver.current_lng = latLng.lng;
+            }
+
+            targetDriver.id = incomingDriver?.id ?? targetDriver.id ?? driverId;
+            targetDriver.driver_id = incomingDriver?.driver_id ?? targetDriver.driver_id ?? driverId;
+            targetDriver.active_booking_id = normalizeBookingId(incomingDriver) ?? targetDriver.active_booking_id ?? null;
+
+            targetDriver.full_name = preferDriverName(targetDriver.full_name, incomingDriver?.full_name, driverId);
+            targetDriver.vehicle_number = preferIncomingOrExisting(targetDriver.vehicle_number, incomingDriver
+                ?.vehicle_number,
+                "N/A");
+            targetDriver.vehicle_type = preferIncomingOrExisting(targetDriver.vehicle_type, incomingDriver?.vehicle_type,
+                "Truck");
+            targetDriver.mobile = preferIncomingOrExisting(targetDriver.mobile, incomingDriver?.mobile, "N/A");
+            targetDriver.current_address = preferIncomingOrExisting(
+                targetDriver.current_address,
+                incomingDriver?.current_address ?? incomingDriver?.address ?? incomingDriver?.formatted_address ??
+                incomingDriver?.location_name ?? incomingDriver?.location_address,
+                ""
+            );
+
+            const isOnline = parseOptionalBoolean(incomingDriver?.is_online);
+            if (isOnline !== null) {
+                targetDriver.is_online = isOnline;
+            } else if (typeof targetDriver.is_online === "undefined") {
+                targetDriver.is_online = false;
+            }
+
+            const hasActiveJob = parseOptionalBoolean(incomingDriver?.has_active_job);
+            if (hasActiveJob !== null) {
+                targetDriver.has_active_job = hasActiveJob;
+            } else if (typeof targetDriver.has_active_job === "undefined") {
+                targetDriver.has_active_job = false;
+            }
+        }
+
+        function upsertDriverState(rawDriver, sourceTag = "api") {
+            const driverId = normalizeDriverId(rawDriver);
+            if (!driverId) return null;
+
+            const latLng = parseDriverLatLng(rawDriver);
+            if (!latLng) return null;
+
+            let existingDriver = dashDriversById[driverId];
+            if (existingDriver) {
+                if (sourceTag === "socket") {
+                    logDashDebug("existing driver found", {
+                        driver_id: driverId
+                    });
+                }
+                applyIncomingDriverData(existingDriver, rawDriver, driverId);
+                return existingDriver;
+            }
+
+            existingDriver = {
+                id: rawDriver.id ?? rawDriver.driver_id ?? driverId,
+                driver_id: rawDriver.driver_id ?? rawDriver.id ?? driverId,
+                current_lat: latLng.lat,
+                current_lng: latLng.lng,
+                full_name: "",
+                vehicle_number: "",
+                vehicle_type: "",
+                mobile: "",
+                current_address: "",
+                active_booking_id: null,
+                is_online: false,
+                has_active_job: false,
+            };
+            applyIncomingDriverData(existingDriver, rawDriver, driverId);
+            dashDriversById[driverId] = existingDriver;
+
+            if (sourceTag === "socket") {
+                logDashDebug("fallback driver created", {
+                    driver_id: driverId
+                });
+            }
+
+            return existingDriver;
+        }
+
+        function isAdvancedMarkerInstance(marker) {
+            return Boolean(marker && typeof marker.setPosition !== "function" && "position" in marker && "content" in
+                marker);
+        }
+
+        function removeMarkerFromMap(marker) {
+            if (!marker) return;
+            if (typeof marker.setMap === "function") {
+                marker.setMap(null);
+                return;
+            }
+            if ("map" in marker) {
+                marker.map = null;
+            }
+        }
+
+        function setMarkerPositionSafely(marker, position) {
+            if (!marker || !position) return;
+
+            if (typeof marker.setPosition === "function") {
+                marker.setPosition(position);
+                return;
+            }
+
+            if ("position" in marker) {
+                marker.position = position;
+            }
+        }
+
+        function formatDriverCoordinates(driver) {
+            const latLng = parseDriverLatLng(driver);
+            if (!latLng) return "Location unavailable";
+            return `${latLng.lat.toFixed(5)}, ${latLng.lng.toFixed(5)}`;
+        }
+
+        function getDriverAddressCacheKey(driver) {
+            const latLng = parseDriverLatLng(driver);
+            if (!latLng) return "";
+            return `${latLng.lat.toFixed(5)},${latLng.lng.toFixed(5)}`;
+        }
+
+        function getDriverAddressText(driver) {
+            return normalizeText(
+                driver?.current_address ??
+                driver?.address ??
+                driver?.formatted_address ??
+                driver?.location_name ??
+                driver?.location_address
+            );
+        }
+
+        function getDashGeocoder() {
+            if (!window.google || !google.maps || typeof google.maps.Geocoder !== "function") {
+                return null;
+            }
+
+            if (!dashMapState.geocoder) {
+                dashMapState.geocoder = new google.maps.Geocoder();
+            }
+
+            return dashMapState.geocoder;
+        }
+
+        function reverseGeocodeDriverAddress(driver) {
+            const latLng = parseDriverLatLng(driver);
+            const cacheKey = getDriverAddressCacheKey(driver);
+            if (!latLng || !cacheKey) return Promise.resolve("");
+
+            const cachedAddress = normalizeText(dashMapState.addressCache[cacheKey]);
+            if (cachedAddress) return Promise.resolve(cachedAddress);
+
+            if (dashMapState.pendingAddressRequests[cacheKey]) {
+                return dashMapState.pendingAddressRequests[cacheKey];
+            }
+
+            const geocoder = getDashGeocoder();
+            if (!geocoder) return Promise.resolve("");
+
+            dashMapState.pendingAddressRequests[cacheKey] = new Promise((resolve) => {
+                geocoder.geocode({
+                    location: latLng
+                }, (results, status) => {
+                    const address = status === "OK" && results && results.length > 0 ?
+                        normalizeText(results[0].formatted_address) :
+                        "";
+
+                    if (address) {
+                        dashMapState.addressCache[cacheKey] = address;
+                    }
+
+                    delete dashMapState.pendingAddressRequests[cacheKey];
+                    resolve(address);
+                });
+            });
+
+            return dashMapState.pendingAddressRequests[cacheKey];
+        }
+
+        async function ensureDriverAddress(driverId) {
+            const driver = dashDriversById[driverId];
+            if (!driver) return "";
+
+            const existingAddress = getDriverAddressText(driver);
+            if (existingAddress) {
+                driver.current_address = existingAddress;
+                return existingAddress;
+            }
+
+            const resolvedAddress = await reverseGeocodeDriverAddress(driver);
+            if (resolvedAddress && dashDriversById[driverId]) {
+                dashDriversById[driverId].current_address = resolvedAddress;
+            }
+
+            return resolvedAddress;
+        }
+
+        function buildDriverInfoHtml(driver) {
+            const address = getDriverAddressText(driver);
+            const locationText = address || formatDriverCoordinates(driver);
+            const isLoadingAddress = !address;
+
+            return `
+                <div class="driver-info-card">
+                    <p class="driver-info-address">${escapeHtml(locationText)}</p>
+                    <div class="driver-info-meta ${isLoadingAddress ? 'loading' : ''}">
+                        <span class="driver-info-pin"></span>
+                        ${isLoadingAddress ? 'Locating address...' : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        async function openDriverInfoWindow(driverId, marker) {
+            if (!dashInfoWindow || !map) return;
+            const driver = dashDriversById[driverId];
+            if (!driver) return;
+
+            dashActiveInfoDriverId = driverId;
+            dashInfoWindow.setContent(buildDriverInfoHtml(driver));
+
+            try {
+                dashInfoWindow.open({
+                    map,
+                    anchor: marker
+                });
+            } catch (e) {
+                dashInfoWindow.open(map, marker);
+            }
+
+            const resolvedAddress = await ensureDriverAddress(driverId);
+            if (!resolvedAddress || dashActiveInfoDriverId !== driverId || !dashInfoWindow) return;
+
+            const updatedDriver = dashDriversById[driverId];
+            if (!updatedDriver) return;
+
+            dashInfoWindow.setContent(buildDriverInfoHtml(updatedDriver));
+        }
+
+        function bindDriverMarkerClick(marker, driverId) {
+            if (!marker || typeof marker.addListener !== "function") return;
+            marker.addListener("click", () => openDriverInfoWindow(driverId, marker));
+        }
+
+        function buildAdvancedMarkerContent(driver) {
+            const status = getDriverStatus(driver);
+            const wrap = document.createElement("div");
+            wrap.className = "dash-car-wrap";
+            wrap.style.width = "34px";
+            wrap.style.height = "34px";
+            wrap.style.borderWidth = "3px";
+            if (status === "busy") wrap.classList.add("busy");
+            if (status === "offline") wrap.classList.add("offline");
+
+            const img = document.createElement("img");
+            img.src = DASH_CAR_ICON_URL;
+            img.alt = driver.full_name || "Driver";
+            img.style.width = "64px";
+            img.style.height = "64px";
+            wrap.appendChild(img);
+
+            return wrap;
+        }
+
+        function joinDashBookingRooms(socket, sourceTag = "unknown") {
+            if (!socket || typeof socket.emit !== "function") return;
+
+            const bookingIds = Object.values(dashDriversById)
+                .map((driver) => normalizeBookingId(driver))
+                .filter((bookingId) => bookingId !== null);
+
+            if (!bookingIds.length) {
+                logDashDebug("no active booking rooms found", {
+                    source: sourceTag
+                });
+                return;
+            }
+
+            [...new Set(bookingIds)].forEach((bookingId) => {
+                const roomKey = String(bookingId);
+                if (dashMapState.joinedBookingRooms[roomKey]) {
+                    logDashDebug("duplicate room join prevented", {
+                        booking_id: bookingId,
+                        source: sourceTag
+                    });
+                    return;
+                }
+
+                socket.emit("join_room", {
+                    booking_id: bookingId
+                });
+
+                dashMapState.joinedBookingRooms[roomKey] = true;
+                logDashDebug("join_room sent", {
+                    booking_id: bookingId,
+                    source: sourceTag
+                });
+            });
+        }
+
+        function updateDriverMarker(driver, sourceTag = "api") {
+            if (!map || !window.google || !google.maps) return;
+
+            const driverId = normalizeDriverId(driver);
+            if (!driverId) return;
+
+            const position = parseDriverLatLng(driver);
+            if (!position) return;
+
+            const markerTitle = driver.full_name || `Driver #${driverId}`;
+            const status = getDriverStatus(driver);
+            const existingMarker = dashMarkers[driverId];
+
+            if (existingMarker) {
+                setMarkerPositionSafely(existingMarker, position);
+
+                if (typeof existingMarker.setIcon === "function") {
+                    const iconUrl = buildCarCardSvg(status, DASH_CAR_ICON_URL);
+                    existingMarker.setIcon({
+                        url: iconUrl,
+                        scaledSize: new google.maps.Size(30, 30),
+                        anchor: new google.maps.Point(15, 15),
+                    });
+                }
+
+                if (isAdvancedMarkerInstance(existingMarker) && existingMarker.content) {
+                    existingMarker.content.className = "dash-car-wrap";
+                    if (status === "busy") existingMarker.content.classList.add("busy");
+                    if (status === "offline") existingMarker.content.classList.add("offline");
+                }
+
+                if ("title" in existingMarker) {
+                    existingMarker.title = markerTitle;
+                }
+
+                logDashDebug("marker updated", {
+                    driver_id: driverId,
+                    source: sourceTag
+                });
+                logDashDebug("duplicate prevented", {
+                    driver_id: driverId
+                });
+                return;
+            }
+
+            let marker;
+            if (DashAdvancedMarkerElement) {
+                marker = new DashAdvancedMarkerElement({
+                    map,
+                    position,
+                    title: markerTitle,
+                    content: buildAdvancedMarkerContent(driver)
+                });
+            } else {
+                const iconUrl = buildCarCardSvg(status, DASH_CAR_ICON_URL);
+                marker = new google.maps.Marker({
+                    map: map,
+                    position,
+                    title: markerTitle,
+                    icon: {
+                        url: iconUrl,
+                        scaledSize: new google.maps.Size(30, 30),
+                        anchor: new google.maps.Point(15, 15)
+                    }
+                });
+            }
+
+            bindDriverMarkerClick(marker, driverId);
+            dashMarkers[driverId] = marker;
+
+            logDashDebug("marker created", {
+                driver_id: driverId,
+                source: sourceTag
+            });
+        }
+
+        async function startDashSocketDrivers() {
+            if (dashMapState.socketStarted) return;
+            dashMapState.socketStarted = true;
+
+            try {
+                const socketConfig = resolveDashSocketConfig();
+                if (!socketConfig.socketUrl) {
+                    logDashDebug("socket URL missing");
+                    dashMapState.socketStarted = false;
+                    return;
+                }
+
+                const hasClient = await ensureSocketIoClient(socketConfig.socketUrl);
+                if (!hasClient || typeof window.io !== "function") {
+                    logDashDebug("socket.io client not loaded");
+                    dashMapState.socketStarted = false;
+                    return;
+                }
+
+                const handleDriverLocationSocketEvent = (eventName, payload) => {
+                    logDashDebug(`${eventName} received`, payload);
+                    const socketDriver = normalizeSocketDriverPayload(payload);
+                    const upsertedDriver = upsertDriverState(socketDriver, "socket");
+                    if (!upsertedDriver) return;
+                    updateDriverMarker(upsertedDriver, "socket");
+                };
+
+                const connectSocket = (baseUrl) => {
+                    const normalizedBase = normalizeText(baseUrl).replace(/\/+$/, "");
+                    if (!normalizedBase) return;
+
+                    const socketTarget = socketConfig.namespace ?
+                        `${normalizedBase}${socketConfig.namespace}` :
+                        normalizedBase;
+
+                    dashSocket = window.io(socketTarget, {
+                        path: socketConfig.socketPath,
+                        transports: ["websocket"],
+                        reconnection: true,
+                        reconnectionAttempts: 5,
+                        reconnectionDelay: 2000,
+                        autoConnect: true
+                    });
+
+                    dashMapState.socket = dashSocket;
+                    logDashDebug("connecting to socket", {
+                        socket_url: normalizedBase
+                    });
+
+                    dashSocket.on("connect", () => {
+                        logDashDebug("socket connected", {
+                            socket_id: dashSocket.id
+                        });
+
+                        if (socketConfig.room && socketConfig.joinEvent) {
+                            dashSocket.emit(socketConfig.joinEvent, socketConfig.room);
+                            logDashDebug("socket room joined", {
+                                room: socketConfig.room,
+                                event: socketConfig.joinEvent
+                            });
+                        }
+
+                        joinDashBookingRooms(dashSocket, "connect");
+                    });
+
+                    dashSocket.on("disconnect", (reason) => {
+                        logDashDebug("socket disconnected", {
+                            reason
+                        });
+                    });
+
+                    dashSocket.on("connect_error", (error) => {
+                        console.warn(`${DASH_DEBUG_PREFIX} socket connect error`, error);
+                    });
+
+                    dashSocket.on("error", (error) => {
+                        console.warn(`${DASH_DEBUG_PREFIX} socket error`, error);
+                    });
+
+                    if (typeof dashSocket.onAny === "function") {
+                        dashSocket.onAny((event, ...args) => {
+                            logDashDebug("socket event observed", {
+                                event,
+                                payload: args[0] ?? null
+                            });
+                        });
+                    }
+
+                    window.dashboardSocket = dashSocket;
+                    dashSocket.on("driver_location_updated", (payload) =>
+                        handleDriverLocationSocketEvent("driver_location_updated", payload));
+                    dashSocket.on("driver_location_update", (payload) =>
+                        handleDriverLocationSocketEvent("driver_location_update", payload));
+                };
+
+                connectSocket(socketConfig.socketUrl);
+            } catch (error) {
+                dashMapState.socketStarted = false;
+                console.warn(`${DASH_DEBUG_PREFIX} socket init failed`, error);
+            }
+        }
+
+        function startDashAutoDrivers() {
+            try {
+                if (dashStarted) return;
+                dashStarted = true;
+
+                if (!map || !window.google || !google.maps) {
+                    dashStarted = false;
+                    setTimeout(startDashAutoDrivers, 500);
+                    return;
+                }
+
+                if (!dashInfoWindow) {
+                    dashInfoWindow = new google.maps.InfoWindow();
+                    dashInfoWindow.addListener("closeclick", () => {
+                        dashActiveInfoDriverId = null;
+                    });
+                }
+
+                initDashMarkerLibrary();
+                startDashSocketDrivers();
+
+                refreshDrivers();
+                dashTimer = setInterval(refreshDrivers, 5000);
+            } catch (e) {
+                dashStarted = false;
+                console.error("startDashAutoDrivers error:", e);
+            }
+        }
+
+        function stopDashAutoDrivers() {
+            try {
+                if (dashTimer) {
+                    clearInterval(dashTimer);
+                    dashTimer = null;
+                }
+
+                if (dashSocket && typeof dashSocket.disconnect === "function") {
+                    dashSocket.disconnect();
+                    dashSocket = null;
+                    dashMapState.socket = null;
+                    dashMapState.socketStarted = false;
+                }
+
+                dashStarted = false;
+            } catch (e) {
+                console.error("stopDashAutoDrivers error:", e);
+            }
+        }
+
+        async function refreshDrivers() {
+            try {
+                if (!map) return;
+                const resp = await fetch(DASH_MAP_DATA_URL, {
+                    method: "GET",
+                    headers: {
+                        "Accept": "application/json"
+                    }
+                });
+
+                console.log(" map-data status:", resp.status);
+                if (!resp.ok) return;
+
+                const json = await resp.json();
+                const drivers = Array.isArray(json) ? json : (json.data || json.drivers || []);
+                if (!Array.isArray(drivers)) return;
+
+                updateDriverCarMarkers(drivers);
+
+                if (dashSocket && dashSocket.connected) {
+                    joinDashBookingRooms(dashSocket, "api-refresh");
+                }
+            } catch (e) {
+                console.error("refreshDrivers error:", e);
+            }
+        }
+
+        function buildCarCardSvg(status, carImageUrl) {
+
+            const ring = status === "busy" ? "#ff3b30" : (status === "offline" ? "#8e8e93" : "#35c759");
+
+            const safeImg = String(carImageUrl || "")
+                .replace(/&/g, "&amp;")
+                .replace(/"/g, "&quot;");
+
+            const svg = `
+<svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 44 44">
+
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <circle cx="22" cy="22" r="16"
+      fill="#ffffff"
+      stroke="${ring}"
+      stroke-width="3"
+      filter="url(#shadow)"/>
+
+  <circle cx="22" cy="22" r="13.5" fill="#ffffff"/>
+
+  <image
+      x="16"
+      y="16"
+      width="12"
+      height="12"
+      xlink:href="${safeImg}"
+      href="${safeImg}"
+      preserveAspectRatio="xMidYMid meet"
+  />
+
+</svg>`;
+
+            const encoded = encodeURIComponent(svg.trim())
+                .replace(/'/g, "%27")
+                .replace(/"/g, "%22");
+
+            return `data:image/svg+xml;charset=UTF-8,${encoded}`;
+        }
+
+        function getDriverStatus(d) {
+            if (d && d.has_active_job) return "busy";
+            if (d && d.is_online) return "online";
+            return "offline";
+        }
+
+        function getRingColor(status) {
+            if (status === "busy") return "#ff3b30";
+            if (status === "offline") return "#8e8e93";
+            return "#35c759";
+        }
+
+        function updateDriverCarMarkers(drivers) {
+            try {
+                if (!map || !window.google || !google.maps) return;
+
+                const activeIds = new Set();
+
+                drivers.forEach((rawDriver) => {
+                    const upsertedDriver = upsertDriverState(rawDriver, "api");
+                    if (!upsertedDriver) return;
+
+                    const driverId = normalizeDriverId(upsertedDriver);
+                    if (!driverId) return;
+
+                    activeIds.add(driverId);
+                    updateDriverMarker(upsertedDriver, "api");
+                });
+
+                Object.keys(dashDriversById).forEach((driverId) => {
+                    if (activeIds.has(driverId)) return;
+
+                    removeMarkerFromMap(dashMarkers[driverId]);
+                    delete dashMarkers[driverId];
+                    delete dashDriversById[driverId];
+                });
+            } catch (e) {
+                console.error("updateDriverCarMarkers error:", e);
+            }
+        }
+
+        function escapeHtml(str) {
+            return String(str ?? "")
+                .replaceAll("&", "&amp;")
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;")
+                .replaceAll('"', "&quot;")
+                .replaceAll("'", "&#039;");
+        }
+
+        (function bootAutoDrivers() {
+            const tryStart = () => {
+                if (mapReady && map) {
+                    startDashAutoDrivers();
+                    return;
+                }
+                setTimeout(tryStart, 500);
+            };
+            tryStart();
+        })();
+
+        window.addEventListener("beforeunload", stopDashAutoDrivers);
     </script>
 @endpush

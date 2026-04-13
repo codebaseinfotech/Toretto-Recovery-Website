@@ -681,7 +681,7 @@ p {
 
 /* Feature section Css Start */
 #Feature {
-    margin-top: -81px;
+    margin-top: 106px;
     z-index: 9;
 }
 
@@ -2834,7 +2834,7 @@ label {
 }
 
 .route-section-home {
-    margin-top: 14px !important;
+    margin-top: 78px !important;
     padding-bottom: 40px;
     max-width: 1324px;
     margin: auto;
@@ -3667,4 +3667,19 @@ label {
 .imagebag {
     padding-right: 2rem;
     padding-left: 2rem;
+}
+@media (max-width: 768px) {
+
+    #scroll-top {
+        width: 40px;
+        height: 40px;
+        right: 19px;
+        bottom: 20px;
+        font-size: 0px;
+    }
+
+    #scroll-top i {
+        font-size: 14px;
+    }
+
 }

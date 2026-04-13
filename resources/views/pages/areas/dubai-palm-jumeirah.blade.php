@@ -21,7 +21,7 @@
           "logo": "https://torettorecovery.ae/logo.png",
           "image": "https://torettorecovery.ae/images/car-recovery-palm-jumeirah.jpg",
           "description": "24/7 emergency car recovery and roadside assistance in Palm Jumeirah. Fast response, safe towing, battery boost, flat tyre replacement, and luxury vehicle transport.",
-          "telephone": " +971 523003423",
+          "telephone": " +971 526917666",
           "priceRange": "$$",
           "areaServed": {
             "@type": "Place",
@@ -37,7 +37,7 @@
             "@type": "ServiceChannel",
             "servicePhone": {
               "@type": "ContactPoint",
-              "telephone": "+971 523003423",
+              "telephone": "+971 526917666",
               "contactType": "Emergency Roadside Assistance",
               "availableLanguage": ["English", "Arabic"]
             }
@@ -167,10 +167,10 @@
                     <p class="pj-tagline-bottom">One call. One solution. Complete peace of mind.</p>
 
                     <div class="pj-hero-btns">
-                        <a href="tel:+971523003423" class="theme-btn">
+                        <a href="tel:+971526917666" class="theme-btn">
                             <i class="fas fa-phone"></i> Call Now
                         </a>
-                        <a href="{{ route('book.now') }}" target="_blank" class="theme-btn theme-btn-outline">
+                        <a href="{{ route('home') }}" target="_blank" class="theme-btn theme-btn-outline">
                             Book Recovery <i class="fas fa-arrow-right-long"></i>
                         </a>
                     </div>
@@ -939,10 +939,10 @@
                     </p>
                 </div>
                 <div class="pj-cta-right">
-                    <a href="tel:+971523003423" class="theme-btn pj-cta-btn-primary">
+                    <a href="tel:+971526917666" class="theme-btn pj-cta-btn-primary">
                         <i class="fas fa-phone"></i> +971 52 300 3423
                     </a>
-                    <a href="{{ route('book.now') }}" target="_blank" class="theme-btn pj-cta-btn-secondary">
+                    <a href="{{ route('home') }}" target="_blank" class="theme-btn pj-cta-btn-secondary">
                         Book Online <i class="fas fa-arrow-right-long"></i>
                     </a>
                     <a href="{{ route('contact') }}" target="_blank" class="pj-cta-link">

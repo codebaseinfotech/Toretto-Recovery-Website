@@ -2,15 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Support\UaePhoneNumber;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class PageController extends Controller
 {
     // Public pages
     public function home()
     {
-        return view('pages.home');
+        $apiUrl = config('services.api.base_url') . '/v1/common/config';
+
+        $response = Http::get($apiUrl);
+        $settings = [];
+        if ($response->successful()) {
+            $settings = $response->json()['data'] ?? [];
+        }
+        $settings = $settings['general_settings'];
+
+        return view('pages.home', compact('settings'));
     }
 
     public function about()
@@ -121,7 +133,6 @@ class PageController extends Controller
         // API Call
         $response = Http::get($apiUrl);
         $settings = [];
-
         if ($response->successful()) {
             $settings = $response->json()['data'] ?? [];
         }
@@ -180,6 +191,8 @@ class PageController extends Controller
     public function ourService($slug)
     {
         $services = [
+            'emergency-fuel-delivery-dubai',
+            'battery-jump-start-dubai',
             'towing-service-dubai',
             'roadside-assistance-dubai',
             'vehicle-recovery-service-dubai',
@@ -203,7 +216,7 @@ class PageController extends Controller
             'dubai-jebel-ali' => 'Dubai Jebel Ali',
             'dubai-deira' => 'Dubai Deira',
             'bur-dubai' => 'Bur Dubai',
-            'dubai-investments-park' => 'Dubai Investments Park',
+            // 'dubai-investments-park' => 'Dubai Investments Park',
             'dip' => 'Dubai DIP',
             'al-warqa' => 'Dubai Al Warqa',
             'mirdif' => 'Dubai Mirdif',
@@ -237,24 +250,57 @@ class PageController extends Controller
 
     public function submitFormContact(Request $request)
     {
+        $request->merge([
+            'phone' => UaePhoneNumber::normalize($request->phone),
+        ]);
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'type' => 'nullable',
             'email' => 'required|email|max:255',
-            'phone' => 'required|string|max:20',
+            'phone' => ['required', 'regex:/^5\d{8}$/'],
             'subject' => 'nullable|string|max:255',
             'message' => 'nullable|string',
+        ], [
+            'phone.regex' => 'Enter a valid UAE mobile number (9 digits starting with 5).',
         ]);
 
         $apiUrl = config('services.api.base_url') . '/v1/common/contact-us';
 
-        $response = Http::timeout(10)
-            ->post($apiUrl, $validated);
+        try {
+            $response = Http::acceptJson()
+                ->timeout(10)
+                ->post($apiUrl, $validated);
 
-        if ($response->successful()) {
-            return back()->with('success', 'Thank you for your message! We will get back to you soon.');
+            if ($response->successful()) {
+                return back()->with('success', 'Thank you for your message! We will get back to you soon.');
+            }
+
+            Log::warning('Contact form API request failed.', [
+                'api_url' => $apiUrl,
+                'status' => $response->status(),
+                'response_body' => substr((string) $response->body(), 0, 1000),
+                'type' => $validated['type'] ?? null,
+                'email' => $validated['email'] ?? null,
+            ]);
+        } catch (ConnectionException $e) {
+            Log::error('Contact form API connection failed.', [
+                'api_url' => $apiUrl,
+                'message' => $e->getMessage(),
+                'type' => $validated['type'] ?? null,
+                'email' => $validated['email'] ?? null,
+            ]);
+        } catch (\Throwable $e) {
+            Log::error('Contact form API request crashed.', [
+                'api_url' => $apiUrl,
+                'message' => $e->getMessage(),
+                'type' => $validated['type'] ?? null,
+                'email' => $validated['email'] ?? null,
+            ]);
         }
 
-        return back()->with('error', 'Failed to submit form. Please try again later.');
+        return back()
+            ->withInput()
+            ->with('error', 'We could not submit your request right now. Please call +971 52 691 7666 while we fix this.');
     }
 }

@@ -134,10 +134,10 @@
                         </h2>
 
                         <div class="hero-btn mt-4">
-                            <a href="{{ route('book.now') }}" target="_blank" class="theme-btn">
+                            <a href="{{ route('home') }}" target="_blank" class="theme-btn">
                                 Book Now <i class="fas fa-arrow-right-long"></i>
                             </a>
-                            <a href="tel:+971523003423" class="theme-btn theme-btn2">
+                            <a href="tel:+971526917666" class="theme-btn theme-btn2">
                                 Call Now <i class="fas fa-arrow-right-long"></i>
                             </a>
                         </div>
@@ -206,9 +206,9 @@
                             your
                             preferred location—fast, professional, and stress-free.</p>
 
-                        <a href="{{ route('book.now') }}" target="_blank" class="theme-btn mt-2">Book Now<i
+                        <a href="{{ route('home') }}" target="_blank" class="theme-btn mt-2">Book Now<i
                                 class="fa-solid fa-arrow-right-long"></i></a>
-                        <a href="tel:+971 523003423" class="theme-btn mt-2"> Call Now<i
+                        <a href="tel:+971 526917666" class="theme-btn mt-2"> Call Now<i
                                 class="fa-solid fa-arrow-right-long"></i></a>
                     </div>
                 </div>
@@ -241,7 +241,7 @@
                                 equipment. Our operators are fully trained, certified, and insured to handle any situation
                                 safely and efficiently.
                             </p>
-                            <a href="{{ route('book.now') }}" target="_blank" class="theme-btn mt-2">Book Now</a>
+                            <a href="{{ route('home') }}" target="_blank" class="theme-btn mt-2">Book Now</a>
                         </div>
                     </div>
                 </div>
@@ -451,7 +451,7 @@
                 safely.
             </p>
             <p>Request Towing at Your Location</p>
-            <a href="{{ route('book.now') }}" target="_blank" class="theme-btn mt-2">Book Now<i
+            <a href="{{ route('home') }}" target="_blank" class="theme-btn mt-2">Book Now<i
                     class="fa-solid fa-arrow-right-long"></i></a>
         </div>
     </section>
@@ -589,7 +589,7 @@
                             <li>Vehicle inspection and secure loading.</li>
                             <li>Delivery to home, garage, or desired destination.</li>
                         </ul>
-                        <a href="tel:+971 523003423" class="theme-btn ">Call Now<i
+                        <a href="tel:+971 526917666" class="theme-btn ">Call Now<i
                                 class="fas fa-arrow-right-long"></i></a>
                     </div>
                 </div>
@@ -713,7 +713,7 @@
                 </div>
 
                 <div class="cta-actions header-actions d-flex align-items-center gap-3">
-                    <a href="tel:+971523003423" class="theme-btn">
+                    <a href="tel:+971526917666" class="theme-btn">
                         Call Now
                     </a>
                     <a href="{{ route('contact') }}" target="_blank" class="theme-btn theme-btn2">

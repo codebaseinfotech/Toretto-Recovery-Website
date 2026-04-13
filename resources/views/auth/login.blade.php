@@ -36,7 +36,8 @@
                                             <span id="dialCode">+971</span>
                                         </button>
 
-                                        <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter your mobile number" maxlength="10">
+                                        <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter your 9-digit mobile number" maxlength="12" inputmode="numeric" autocomplete="tel-national">
+                                        <input type="hidden" name="base_url" value="{{ request()->has('x') ? 'x=' . request('x') : '' }}">
                                     </div>
                                     <!-- Validation Message -->
                                     <div class="invalid-feedback d-block" id="errorMsg"></div>
@@ -81,18 +82,44 @@ document.addEventListener('DOMContentLoaded', function () {
     const btnText = btn.querySelector('.btn-text');
     const btnLoader = btn.querySelector('.btn-loader');
 
-    /* 🔢 Numeric only */
+    function normalizePhone(value) {
+        let digits = value.replace(/\D/g, '');
+
+        if (digits.startsWith('971')) {
+            digits = digits.slice(3);
+        }
+
+        if (digits.length > 9 && digits.startsWith('0')) {
+            digits = digits.slice(1);
+        }
+
+        return digits.slice(0, 9);
+    }
+
+    function isValidUaeMobile(value) {
+        return /^5\d{8}$/.test(value);
+    }
+
+    function setLoading(isLoading) {
+        btn.disabled = isLoading;
+        btnText.classList.toggle('d-none', isLoading);
+        btnLoader.classList.toggle('d-none', !isLoading);
+    }
+
+    /* Numeric only */
     phoneInput.addEventListener('input', function () {
-        this.value = this.value.replace(/\D/g, '');
+        this.value = normalizePhone(this.value);
         this.classList.remove('is-invalid');
         errorBox.innerText = '';
     });
 
-    /* 🚀 Submit */
+    /* Submit */
     form.addEventListener('submit', function (e) {
         e.preventDefault();
 
         const phone = phoneInput.value.trim();
+        const normalizedPhone = normalizePhone(phone);
+        const base_url = document.querySelector('input[name="base_url"]').value;
 
         if (!phone) {
             errorBox.innerText = 'Mobile number is required';
@@ -100,10 +127,13 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        // Show loader
-        btn.disabled = true;
-        btnText.classList.add('d-none');
-        btnLoader.classList.remove('d-none');
+        if (!isValidUaeMobile(normalizedPhone)) {
+            errorBox.innerText = 'Enter a valid UAE mobile number (9 digits starting with 5)';
+            phoneInput.classList.add('is-invalid');
+            return;
+        }
+
+        setLoading(true);
 
         window.ApiUtils.fetch(form.action, {
             method: 'POST',
@@ -112,46 +142,42 @@ document.addEventListener('DOMContentLoaded', function () {
                 'X-Requested-With': 'XMLHttpRequest'
             },
             body: JSON.stringify({
-                phone: phone,
+                phone: normalizedPhone,
+                base_url: base_url,
                 _token: document.querySelector('input[name="_token"]').value
             })
         })
-        .then(response => response.json())
+        .then(async response => {
+            const data = await response.json().catch(() => ({}));
+
+            if (!response.ok || data.status !== true) {
+                throw new Error(data.message || 'Failed to send OTP. Please try again.');
+            }
+
+            return data;
+        })
         .then(data => {
-            // Hide loader
-            btn.disabled = false;
-            btnText.classList.remove('d-none');
-            btnLoader.classList.add('d-none');
-            window.location.href = data.redirect;
-            if (data.status === true) {
-                // Show success toast
-                showToast(data.message, 'success');
+            setLoading(false);
 
-                // Redirect to OTP page
-                if (data.redirect) {
-                    // Store the phone number in localStorage for OTP verification
-                    const phoneWithPrefix = phoneInput.value.trim();
-                    localStorage.setItem('phone_for_verification', phoneWithPrefix);
+            const verifiedPhone = data?.data?.phone || normalizedPhone;
 
-                    setTimeout(() => {
-                        window.location.href = data.redirect;
-                    }, 1500);
-                }
-            } else {
-                // Show error toast
-                showToast((data.message || 'Something went wrong'), 'error');
-                errorBox.innerText = data.message || 'Something went wrong';
-                phoneInput.classList.add('is-invalid');
+            localStorage.setItem('phone_for_verification', verifiedPhone);
+            localStorage.setItem('otp_resend_available_at', String(Date.now() + 30000));
+            showToast(data.message, 'success');
+
+            if (data.redirect) {
+                setTimeout(() => {
+                    window.location.href = data.redirect;
+                }, 1500);
             }
         })
         .catch(error => {
-            // Hide loader
-            btn.disabled = false;
-            btnText.classList.remove('d-none');
-            btnLoader.classList.add('d-none');
+            setLoading(false);
 
-            showToast('Network error. Please try again.', 'error');
-            errorBox.innerText = 'Network error. Please try again.';
+            const message = error.message || 'Network error. Please try again.';
+            showToast(message, 'error');
+            errorBox.innerText = message;
+            phoneInput.classList.add('is-invalid');
         });
     });
 

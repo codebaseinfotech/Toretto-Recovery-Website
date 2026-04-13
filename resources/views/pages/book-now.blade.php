@@ -155,7 +155,7 @@
                             <div class="price-item mb-2">
                                 <span class="fw-bold">Platform Fee:</span>
                                 <span id="platform_fee_amount" class="float-end">
-                                    {{ $settings['platform_fee_amount'] }} AED
+                                    {{ !empty($settings['platform_fee_amount']) ?? 0 }} AED
                                 </span>
                             </div>
                         @endif
@@ -531,7 +531,7 @@
 
             const script = document.createElement('script');
             script.src =
-                `https://maps.googleapis.com/maps/api/js?key={{ config('services.google_maps.key') }}&libraries=places,directions,distance_matrix&callback=initMapAndAutocomplete`;
+                `https://maps.googleapis.com/maps/api/js?key={{ config('services.google_maps.key') }}&libraries=places,routes&callback=initMapAndAutocomplete`;
             script.async = true;
             script.defer = true;
             document.head.appendChild(script);
@@ -837,17 +837,27 @@
                 currentOriginalPrice = price || 0;
                 updateGrandTotal();
 
-                document.getElementById('totalPriceDisplay').innerText = currentOriginalPrice + ' AED';
-                document.getElementById('price').innerText = currentOriginalPrice + ' AED';
-
+                // Safe get elements
                 const platform_fee_amount = document.getElementById("platform_fee_amount");
                 const tax_amount = document.getElementById("tax_amount");
 
-                const platformFee = parseFloat(platform_fee_amount?.innerText) || 0;
-                const taxAmount = parseFloat(tax_amount?.innerText) || 0;
+                // Safe value extraction
+                const platformFee = platform_fee_amount && !isNaN(parseFloat(platform_fee_amount.innerText)) ?
+                    parseFloat(platform_fee_amount.innerText) :
+                    0;
+
+                const taxAmount = tax_amount && !isNaN(parseFloat(tax_amount.innerText)) ?
+                    parseFloat(tax_amount.innerText) :
+                    0;
+
+                // Final calculation
                 const TotalAmount = platformFee + taxAmount + currentOriginalPrice;
 
-                document.getElementById('grandTotalDisplay').innerText = TotalAmount + ' AED';
+                // Safe update
+                const grandTotalEl = document.getElementById('grandTotalDisplay');
+                if (grandTotalEl) {
+                    grandTotalEl.innerText = TotalAmount + ' AED';
+                }
 
             } catch (error) {
                 console.error("calculateFinalPrice() failed:", error);
@@ -1805,12 +1815,24 @@
             } else {
                 if (discountRow) discountRow.classList.add('d-none');
             }
-            const platformFee = parseFloat((platform_fee_amount?.innerText || "0").replace("AED", "").trim()) || 0;
-            const taxAmount = parseFloat((tax_amount?.innerText || "0").replace("AED", "").trim()) || 0;
 
-            //  TOTAL after discount
+            function getAmount(el) {
+                return parseFloat(
+                    (el?.innerText || "0")
+                    .replace(/AED/gi, "") // remove AED (case-insensitive)
+                    .replace(/,/g, "") // remove commas
+                    .trim()
+                ) || 0;
+            }
+            const platformFee = getAmount(platform_fee_amount);
+            const taxAmount = getAmount(tax_amount);
+
+            // TOTAL after discount
             const TotalAmount = finalPrice + platformFee + taxAmount;
-            grandTotalEl.innerText = TotalAmount + ' AED';
+
+            if (grandTotalEl) {
+                grandTotalEl.innerText = TotalAmount + ' AED';
+            }
         }
         const DASH_MAP_DATA_PATH = "/v1/common/dashboard/map-data";
         const DASH_MAP_DATA_URL = `${PRICE_API_BASE_URL}${DASH_MAP_DATA_PATH}`;

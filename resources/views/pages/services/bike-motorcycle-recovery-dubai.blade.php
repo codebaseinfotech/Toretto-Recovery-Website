@@ -158,10 +158,10 @@
 
                         <!-- CTA Section -->
                         <div class="hero-btn mt-4">
-                            <a href="{{ route('book.now') }}" target="_blank" class="theme-btn">
+                            <a href="{{ route('home') }}" target="_blank" class="theme-btn">
                                 Book Now <i class="fas fa-arrow-right-long"></i>
                             </a>
-                            <a href="tel:+971523003423" class="theme-btn theme-btn2">
+                            <a href="tel:+971526917666" class="theme-btn theme-btn2">
                                 Call Now <i class="fas fa-arrow-right-long"></i>
                             </a>
                         </div>
@@ -2439,10 +2439,10 @@
                 <p>Dubai's only dedicated motorcycle recovery service — on every road, at every hour, for every type of
                     bike.</p>
                 <div class="bm-cta-actions">
-                    <a href="tel:+971523003423" class="theme-btn">
+                    <a href="tel:+971526917666" class="theme-btn">
                         <i class="fas fa-phone"></i> Call Now — +971 52 300 3423
                     </a>
-                    <a href="https://wa.me/971523003423" target="_blank" class="theme-btn theme-btn2">
+                    <a href="https://wa.me/971526917666" target="_blank" class="theme-btn theme-btn2">
                         <i class="fab fa-whatsapp"></i> WhatsApp Live Location
                     </a>
                 </div>

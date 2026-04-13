@@ -3,15 +3,18 @@
 @section('title', 'Car Recovery in Deira Dubai | Emergency Towing | Toretto Recovery')
 
 @section('meta_description')
-    Need car recovery or emergency towing in Deira, Dubai? Toretto Recovery offers 24/7 fast, damage-free vehicle recovery. Call now for an instant quote — no hidden charges.
+    Need car recovery or emergency towing in Deira, Dubai? Toretto Recovery offers 24/7 fast, damage-free vehicle recovery.
+    Call now for an instant quote — no hidden charges.
 @endsection
 
-@section('meta_keywords', 'Need car recovery or emergency towing in Deira, Dubai? Toretto Recovery offers 24/7 fast, damage-free vehicle recovery. Call now for an instant quote — no hidden charges.
-')
+@section('meta_keywords',
+    'Need car recovery or emergency towing in Deira, Dubai? Toretto Recovery offers 24/7 fast, damage-free vehicle recovery.
+    Call now for an instant quote — no hidden charges.
+    ')
 
 @section('head')
     @verbatim
-<script type="application/ld+json">
+        <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -119,12 +122,22 @@
                 <div class="de-hero-text">
                     <span class="de-eyebrow"><i class="fas fa-location-dot"></i> Deira, Dubai</span>
                     <h2>24/7 <span>Emergency Towing Service</span></h2>
-                    <p>When your car breaks down on Al Rigga Road or you find yourself stuck in the basement parking of Deira City Centre at midnight, you need help fast — not in an hour. That's exactly what Toretto Recovery is here for.</p>
-                    <p>We provide car recovery near you and emergency towing service across Deira and all of Dubai — 24 hours a day, 7 days a week. From the busy lanes near Naif Souq to the waterfront stretch along Baniyas Road, our team reaches you quickly with the right equipment and zero damage to your vehicle.</p>
-                    <p>With 6 advanced recovery trucks and trained technicians on the road, we handle everything from a simple battery failure to full <a class="text-link" href="{{ route('home') }}" target="_blank">vehicle recovery after a highway accident</a>. Whether you drive a Corolla or a Lamborghini, we treat every car with equal care and precision.</p>
+                    <p>When your car breaks down on Al Rigga Road or you find yourself stuck in the basement parking of
+                        Deira City Centre at midnight, you need help fast — not in an hour. That's exactly what Toretto
+                        Recovery is here for.</p>
+                    <p>We provide car recovery near you and emergency towing service across Deira and all of Dubai — 24
+                        hours a day, 7 days a week. From the busy lanes near Naif Souq to the waterfront stretch along
+                        Baniyas Road, our team reaches you quickly with the right equipment and zero damage to your vehicle.
+                    </p>
+                    <p>With 6 advanced recovery trucks and trained technicians on the road, we handle everything from a
+                        simple battery failure to full <a class="text-link" href="{{ route('home') }}"
+                            target="_blank">vehicle recovery after a highway accident</a>. Whether you drive a Corolla or a
+                        Lamborghini, we treat every car with equal care and precision.</p>
                     <div class="de-hero-btns">
-                        <a href="tel:+971545098498" class="theme-btn de-btn-primary"><i class="fas fa-phone"></i> Call Now</a>
-                        <a href="https://wa.me/971545098498" class="theme-btn de-btn-outline" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                        <a href="tel:+971526917666" class="theme-btn de-btn-primary"><i class="fas fa-phone"></i> Call
+                            Now</a>
+                        <a href="https://wa.me/971526917666" class="theme-btn de-btn-outline" target="_blank"><i
+                                class="fab fa-whatsapp"></i> WhatsApp</a>
                     </div>
                     <div class="de-hero-badges">
                         <div class="de-badge"><i class="fas fa-clock"></i> 24/7 Available</div>
@@ -133,9 +146,8 @@
                     </div>
                 </div>
                 <div class="de-hero-img-wrap">
-                    <img src="{{ asset('assets/images/car-recovery-deira-dubai.jpg') }}"
-                         alt="Car Recovery in Deira Dubai"
-                         class="de-hero-img">
+                    <img src="{{ asset('assets/images/car-recovery-deira-dubai.jpg') }}" alt="Car Recovery in Deira Dubai"
+                        class="de-hero-img">
                 </div>
             </div>
         </div>
@@ -150,14 +162,24 @@
                 <div class="de-what-content">
                     <span class="de-eyebrow"><i class="fas fa-circle-info"></i> Understanding Recovery</span>
                     <h2>What is Car Recovery — and Why Does <span>Deira Need It?</span></h2>
-                    <p>Car recovery is the process of safely moving a disabled, damaged, or stuck vehicle from one location to another — usually to a garage, dealership, or the owner's preferred destination. It includes services like flatbed towing, winching, off-road sand recovery, and jump-start assistance.</p>
-                    <p>Deira is one of Dubai's oldest and most densely trafficked districts. The area blends narrow heritage streets near Gold Souk Metro Station with high-speed connectors like Omar bin al-Khattab Road and the heavy commercial flow around Port Saeed. That mix of old lanes, multi-level parking, and fast arterials creates a constant need for quick, professional vehicle recovery.</p>
-                    <p>On top of that, Dubai's summer heat pushes engines and tyres to their limits. Breakdowns spike between June and September, and drivers near Al Mamzar Beach often find themselves stranded in areas where a standard <a class="text-link" href="{{ route('our-service.ourservice', ['slug' => 'roadside-assistance-dubai']) }}" target="_blank">roadside call-out</a> takes forever. That's where a dedicated, fast-response <a   class="text-link"href="{{ route('our-service.ourservice', ['slug' => 'towing-service-dubai']) }}" target="_blank">towing company in Deira</a> makes all the difference.</p>
+                    <p>Car recovery is the process of safely moving a disabled, damaged, or stuck vehicle from one location
+                        to another — usually to a garage, dealership, or the owner's preferred destination. It includes
+                        services like flatbed towing, winching, off-road sand recovery, and jump-start assistance.</p>
+                    <p>Deira is one of Dubai's oldest and most densely trafficked districts. The area blends narrow heritage
+                        streets near Gold Souk Metro Station with high-speed connectors like Omar bin al-Khattab Road and
+                        the heavy commercial flow around Port Saeed. That mix of old lanes, multi-level parking, and fast
+                        arterials creates a constant need for quick, professional vehicle recovery.</p>
+                    <p>On top of that, Dubai's summer heat pushes engines and tyres to their limits. Breakdowns spike
+                        between June and September, and drivers near Al Mamzar Beach often find themselves stranded in areas
+                        where a standard <a class="text-link"
+                            href="{{ route('our-service.ourservice', ['slug' => 'roadside-assistance-dubai']) }}"
+                            target="_blank">roadside call-out</a> takes forever. That's where a dedicated, fast-response <a
+                            class="text-link"href="{{ route('our-service.ourservice', ['slug' => 'towing-service-dubai']) }}"
+                            target="_blank">towing company in Deira</a> makes all the difference.</p>
                 </div>
                 <div class="de-what-img-wrap">
-                    <img src="{{ asset('assets/images/breakdown-recovery-deira-dubai.jpg') }}"
-                         alt="Breakdown recovery in Deira Dubai"
-                         class="de-what-img">
+                    <img src="{{ asset('assets/images/breakdown-recovery-deira-dubai (1).jpg') }}"
+                        alt="Breakdown recovery in Deira Dubai" class="de-what-img">
                 </div>
             </div>
         </div>
@@ -171,7 +193,8 @@
             <div class="de-section-header text-center">
                 <span class="de-eyebrow light"><i class="fas fa-wrench"></i> Our Services</span>
                 <h2>What's Included in Our <span>Car Recovery Service</span></h2>
-                <p>Every job we take is handled by a certified technician with the right truck for your vehicle type. </br> Here's what you get when you call Toretto Recovery:</p>
+                <p>Every job we take is handled by a certified technician with the right truck for your vehicle type. </br>
+                    Here's what you get when you call Toretto Recovery:</p>
             </div>
 
             <div class="de-svc-grid">
@@ -197,7 +220,9 @@
                 </div>
                 <div class="de-svc-card">
                     <div class="de-svc-icon"><i class="fas fa-car-burst"></i></div>
-                    <h4><a class="text-link" href="{{ route('our-service.ourservice', ['slug' => 'accidental-car-recovery-dubai']) }}" target="_blank">Accident Vehicle Recovery</a></h4>
+                    <h4><a class="text-link"
+                            href="{{ route('our-service.ourservice', ['slug' => 'accidental-car-recovery-dubai']) }}"
+                            target="_blank">Accident Vehicle Recovery</a></h4>
                     <p>Safe, careful handling for damaged or totalled cars</p>
                 </div>
                 <div class="de-svc-card">
@@ -232,7 +257,8 @@
                 </div>
             </div>
 
-            <p class="de-svc-note">All services use modern flatbed and wheel-lift recovery systems that protect your vehicle's undercarriage, bumpers, and bodywork throughout the move.</p>
+            <p class="de-svc-note">All services use modern flatbed and wheel-lift recovery systems that protect your
+                vehicle's undercarriage, bumpers, and bodywork throughout the move.</p>
         </div>
     </section>
 
@@ -245,41 +271,48 @@
                 <span class="de-eyebrow"><i class="fas fa-award"></i> Why Us</span>
                 <h2>Why Choose <span>Toretto Recovery</span> in Deira?</h2>
                 <p>There's no shortage of towing companies that take calls in Deira. </br>
-                 But here's what separates us from most:</p>
+                    But here's what separates us from most:</p>
             </div>
 
             <div class="de-why-grid">
                 <div class="de-why-card">
                     <div class="de-why-img-wrap">
                         <img src="{{ asset('assets/images/flatbed-recovery-dubai.jpg') }}"
-                             alt="Fast response recovery in Deira"
-                             class="de-why-img">
+                            alt="Fast response recovery in Deira" class="de-why-img">
                     </div>
                     <div class="de-why-content">
                         <h3><i class="fas fa-gauge-high"></i> Speed You Can Count On</h3>
-                        <p>We keep trucks stationed across multiple zones so our average response time in areas like Muteena, Salah Al Din, and Al Qusais is significantly faster than typical operators. When you call, we dispatch immediately.</p>
+                        <p>We keep trucks stationed across multiple zones so our average response time in areas like
+                            Muteena, Salah Al Din, and Al Qusais is significantly faster than typical operators. When you
+                            call, we dispatch immediately.</p>
                     </div>
                 </div>
                 <div class="de-why-card">
                     <div class="de-why-img-wrap">
                         <img src="{{ asset('assets/images/expert-car-recovery-service-near-me.jpg') }}"
-                             alt="Fleet of 6 recovery trucks"
-                             class="de-why-img">
+                            alt="Fleet of 6 recovery trucks" class="de-why-img">
                     </div>
                     <div class="de-why-content">
-                        <h3><i class="fas fa-truck-moving"></i> <a href="https://torettorecovery.ae/flatbed-recovery-dubai" class="text-link" >Fleet of 6 Recovery Trucks</a></h3>
-                        <p>Our fleet includes flatbed trucks, wheel-lift vehicles, and low-clearance recovery units — each fitted with safety straps, GPS, and communication tools. We send the right truck for every situation.</p>
+                        <h3><i class="fas fa-truck-moving"></i> <a
+                                href="https://torettorecovery.ae/flatbed-recovery-dubai" class="text-link">Fleet of 6
+                                Recovery Trucks</a></h3>
+                        <p>Our fleet includes flatbed trucks, wheel-lift vehicles, and low-clearance recovery units — each
+                            fitted with safety straps, GPS, and communication tools. We send the right truck for every
+                            situation.</p>
                     </div>
                 </div>
                 <div class="de-why-card">
                     <div class="de-why-img-wrap">
                         <img src="{{ asset('assets/images/luxury-car-towing-by-flatbed-cover.jpg') }}"
-                             alt="Luxury car specialist towing"
-                             class="de-why-img">
+                            alt="Luxury car specialist towing" class="de-why-img">
                     </div>
                     <div class="de-why-content">
-                        <h3><i class="fas fa-gem"></i> <a href="https://torettorecovery.ae/luxury-sports-car-handling-dubai" class="text-link"> Luxury & Sports Car Specialists</a></h3>
-                        <p>Low-riding supercars and luxury sedans need damage-free flatbed towing. Our technicians are trained specifically for high-value vehicles — Ferrari, Rolls-Royce, Porsche, Mercedes — handled with absolute care.</p>
+                        <h3><i class="fas fa-gem"></i> <a
+                                href="https://torettorecovery.ae/luxury-sports-car-handling-dubai" class="text-link">
+                                Luxury & Sports Car Specialists</a></h3>
+                        <p>Low-riding supercars and luxury sedans need damage-free flatbed towing. Our technicians are
+                            trained specifically for high-value vehicles — Ferrari, Rolls-Royce, Porsche, Mercedes — handled
+                            with absolute care.</p>
                     </div>
                 </div>
             </div>
@@ -289,14 +322,17 @@
                     <i class="fas fa-tag"></i>
                     <div>
                         <strong>Transparent Pricing — No Surprises</strong>
-                        <span>We quote before we arrive. No meter surprises, no add-on charges at the destination. The price you hear on the phone is the price you pay.</span>
+                        <span>We quote before we arrive. No meter surprises, no add-on charges at the destination. The price
+                            you hear on the phone is the price you pay.</span>
                     </div>
                 </div>
                 <div class="de-why-pill">
                     <i class="fas fa-clock"></i>
                     <div>
                         <strong>24/7 Availability</strong>
-                        <span>Breakdowns don't follow business hours. Our lines stay open all day, every day — including weekends, public holidays, and late nights near the Deira Fish Market or the commercial zones of Al Khabaisi.</span>
+                        <span>Breakdowns don't follow business hours. Our lines stay open all day, every day — including
+                            weekends, public holidays, and late nights near the Deira Fish Market or the commercial zones of
+                            Al Khabaisi.</span>
                     </div>
                 </div>
             </div>
@@ -316,9 +352,12 @@
             <div class="de-testimonial-grid">
                 <div class="de-testimonial-card">
                     <div class="de-testimonial-stars">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                            class="fas fa-star"></i><i class="fas fa-star"></i>
                     </div>
-                    <p>"I broke down near Al Rigga metro at 11pm and was honestly expecting a long wait. Toretto showed up in under 25 minutes, handled my BMW perfectly on their flatbed, and the driver was completely professional. Highly recommend."</p>
+                    <p>"I broke down near Al Rigga metro at 11pm and was honestly expecting a long wait. Toretto showed up
+                        in under 25 minutes, handled my BMW perfectly on their flatbed, and the driver was completely
+                        professional. Highly recommend."</p>
                     <div class="de-testimonial-author">
                         <strong>Ahmed K.</strong>
                         <span>Al Muteena</span>
@@ -326,9 +365,12 @@
                 </div>
                 <div class="de-testimonial-card">
                     <div class="de-testimonial-stars">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                            class="fas fa-star"></i><i class="fas fa-star"></i>
                     </div>
-                    <p>"Got my car stuck in the basement of a building on Baniyas Road. The team came with a low-clearance truck and got it out without a single scratch. Price was exactly what they quoted over the phone."</p>
+                    <p>"Got my car stuck in the basement of a building on Baniyas Road. The team came with a low-clearance
+                        truck and got it out without a single scratch. Price was exactly what they quoted over the phone."
+                    </p>
                     <div class="de-testimonial-author">
                         <strong>Lina R.</strong>
                         <span>Port Saeed</span>
@@ -346,7 +388,8 @@
             <div class="de-section-header text-center">
                 <span class="de-eyebrow"><i class="fas fa-map-marked-alt"></i> Coverage</span>
                 <h2>Areas We Cover in and <span>Around Deira</span></h2>
-                <p>Our primary base covers all of Deira and extends across Dubai. If you're stranded anywhere in the areas below, one call gets help moving in your direction.</p>
+                <p>Our primary base covers all of Deira and extends across Dubai. If you're stranded anywhere in the areas
+                    below, one call gets help moving in your direction.</p>
             </div>
 
             <div class="de-cov-layout">
@@ -460,16 +503,17 @@
 
                 <div class="de-cov-img-wrap">
                     <img src="{{ asset('assets/images/expert-car-recovery-service-near-me.jpg') }}"
-                         alt="Recovery team covering Deira areas"
-                         class="de-cov-img">
+                        alt="Recovery team covering Deira areas" class="de-cov-img">
                 </div>
             </div>
 
-            <p class="de-area-note">We also cover all other Dubai districts — including Downtown, Business Bay, Jumeirah, Al Barsha, Dubai Silicon Oasis, and the entire Sheikh Zayed Road corridor. <strong>No part of Dubai is out of reach.</strong></p>
+            <p class="de-area-note">We also cover all other Dubai districts — including Downtown, Business Bay, Jumeirah,
+                Al Barsha, Dubai Silicon Oasis, and the entire Sheikh Zayed Road corridor. <strong>No part of Dubai is out
+                    of reach.</strong></p>
         </div>
     </section>
 
- 
+
 
     {{-- ===================================
     SECTION 7 — FAQ
@@ -488,7 +532,9 @@
                         <div class="de-faq-icon"><i class="fas fa-minus"></i></div>
                     </button>
                     <div class="de-faq-answer">
-                        <p>In most parts of Deira — including Al Rigga, Naif, Port Saeed, and Al Muteena — we typically arrive within 20 to 35 minutes. Response time varies slightly based on traffic and exact location, but we dispatch as soon as you call.</p>
+                        <p>In most parts of Deira — including Al Rigga, Naif, Port Saeed, and Al Muteena — we typically
+                            arrive within 20 to 35 minutes. Response time varies slightly based on traffic and exact
+                            location, but we dispatch as soon as you call.</p>
                     </div>
                 </div>
                 <div class="de-faq-item">
@@ -497,7 +543,9 @@
                         <div class="de-faq-icon"><i class="fas fa-plus"></i></div>
                     </button>
                     <div class="de-faq-answer">
-                        <p>Yes. We use fully flat, soft-strapped flatbed trucks for low-clearance and high-value vehicles. Our drivers are trained in luxury car handling and we regularly recover vehicles like Ferraris, Lamborghinis, Mercedes, and Range Rovers without any damage.</p>
+                        <p>Yes. We use fully flat, soft-strapped flatbed trucks for low-clearance and high-value vehicles.
+                            Our drivers are trained in luxury car handling and we regularly recover vehicles like Ferraris,
+                            Lamborghinis, Mercedes, and Range Rovers without any damage.</p>
                     </div>
                 </div>
                 <div class="de-faq-item">
@@ -506,7 +554,8 @@
                         <div class="de-faq-icon"><i class="fas fa-plus"></i></div>
                     </button>
                     <div class="de-faq-answer">
-                        <p>Pricing depends on vehicle type, distance, and type of recovery needed. We give you a clear quote over the phone before we arrive. There are no hidden fees or charges added at the end.</p>
+                        <p>Pricing depends on vehicle type, distance, and type of recovery needed. We give you a clear quote
+                            over the phone before we arrive. There are no hidden fees or charges added at the end.</p>
                     </div>
                 </div>
                 <div class="de-faq-item">
@@ -515,7 +564,9 @@
                         <div class="de-faq-icon"><i class="fas fa-plus"></i></div>
                     </button>
                     <div class="de-faq-answer">
-                        <p>We have low-clearance recovery trucks built specifically for underground car parks. This is one of the most common requests we get in Deira — particularly in buildings around Baniyas Road, Al Muteena, and Festival City.</p>
+                        <p>We have low-clearance recovery trucks built specifically for underground car parks. This is one
+                            of the most common requests we get in Deira — particularly in buildings around Baniyas Road, Al
+                            Muteena, and Festival City.</p>
                     </div>
                 </div>
                 <div class="de-faq-item">
@@ -524,7 +575,8 @@
                         <div class="de-faq-icon"><i class="fas fa-plus"></i></div>
                     </button>
                     <div class="de-faq-answer">
-                        <p>Yes. If the issue is a flat tyre, dead battery, or minor mechanical fault, we offer on-site roadside assistance first. Towing only happens if the car can't be fixed where it is.</p>
+                        <p>Yes. If the issue is a flat tyre, dead battery, or minor mechanical fault, we offer on-site
+                            roadside assistance first. Towing only happens if the car can't be fixed where it is.</p>
                     </div>
                 </div>
                 <div class="de-faq-item">
@@ -533,7 +585,9 @@
                         <div class="de-faq-icon"><i class="fas fa-plus"></i></div>
                     </button>
                     <div class="de-faq-answer">
-                        <p>Absolutely. We handle post-accident vehicle recovery carefully — even for cars with body damage, deflated tyres, or mechanical failure from a collision. We work with most insurance companies and can transport your vehicle to any location you specify.</p>
+                        <p>Absolutely. We handle post-accident vehicle recovery carefully — even for cars with body damage,
+                            deflated tyres, or mechanical failure from a collision. We work with most insurance companies
+                            and can transport your vehicle to any location you specify.</p>
                     </div>
                 </div>
                 <div class="de-faq-item">
@@ -542,7 +596,8 @@
                         <div class="de-faq-icon"><i class="fas fa-plus"></i></div>
                     </button>
                     <div class="de-faq-answer">
-                        <p>Yes — 24 hours a day, every day of the year. We don't close on Fridays, Saturdays, or public holidays. Breakdowns don't wait, and neither do we.</p>
+                        <p>Yes — 24 hours a day, every day of the year. We don't close on Fridays, Saturdays, or public
+                            holidays. Breakdowns don't wait, and neither do we.</p>
                     </div>
                 </div>
                 <div class="de-faq-item">
@@ -551,7 +606,8 @@
                         <div class="de-faq-icon"><i class="fas fa-plus"></i></div>
                     </button>
                     <div class="de-faq-answer">
-                        <p>Yes. While Deira is our primary zone, Toretto Recovery operates across all of Dubai — from Jumeirah and Downtown to Al Quoz, Sharjah border areas, and Dubai Investment Park.</p>
+                        <p>Yes. While Deira is our primary zone, Toretto Recovery operates across all of Dubai — from
+                            Jumeirah and Downtown to Al Quoz, Sharjah border areas, and Dubai Investment Park.</p>
                     </div>
                 </div>
                 <div class="de-faq-item">
@@ -560,7 +616,8 @@
                         <div class="de-faq-icon"><i class="fas fa-plus"></i></div>
                     </button>
                     <div class="de-faq-answer">
-                        <p>We recover sedans, SUVs, 4x4s, pickup trucks, sports cars, luxury vehicles, vans, light commercial vehicles, and motorcycles. Our fleet has the right truck for each vehicle type.</p>
+                        <p>We recover sedans, SUVs, 4x4s, pickup trucks, sports cars, luxury vehicles, vans, light
+                            commercial vehicles, and motorcycles. Our fleet has the right truck for each vehicle type.</p>
                     </div>
                 </div>
             </div>
@@ -574,16 +631,21 @@
         <div class="container">
             <div class="de-story-grid">
                 <div class="de-story-img-wrap">
-                    <img src="{{ asset('assets/images/flatbed-recovery-dubai.jpg') }}"
-                         alt="Real recovery story in Deira"
-                         class="de-story-img">
+                    <img src="{{ asset('assets/images/flatbed-recovery-dubai.jpg') }}" alt="Real recovery story in Deira"
+                        class="de-story-img">
                 </div>
                 <div class="de-story-content">
                     <span class="de-eyebrow light"><i class="fas fa-book-open"></i> Real Recovery Story</span>
                     <h2>Stuck in Salah Al Din at <span>Peak Hours</span></h2>
-                    <p>Earlier this year, a driver contacted us after his Toyota Land Cruiser stalled in the middle of Salah Al Din Street during morning rush hour. The vehicle had a complete engine failure and was blocking a lane — creating a traffic backup and a stressful situation for the owner.</p>
-                    <p>Our team dispatched a heavy-duty flatbed from a nearby zone and reached the location in under <strong>28 minutes</strong>. The truck operator coordinated with traffic, safely winched the Land Cruiser onto the flatbed, and cleared the scene quickly.</p>
-                    <p>The vehicle was delivered to the client's preferred service centre in Al Quoz the same morning. The client left us a <strong>5-star review</strong> and specifically mentioned how calm and professional the driver stayed throughout.</p>
+                    <p>Earlier this year, a driver contacted us after his Toyota Land Cruiser stalled in the middle of Salah
+                        Al Din Street during morning rush hour. The vehicle had a complete engine failure and was blocking a
+                        lane — creating a traffic backup and a stressful situation for the owner.</p>
+                    <p>Our team dispatched a heavy-duty flatbed from a nearby zone and reached the location in under
+                        <strong>28 minutes</strong>. The truck operator coordinated with traffic, safely winched the Land
+                        Cruiser onto the flatbed, and cleared the scene quickly.</p>
+                    <p>The vehicle was delivered to the client's preferred service centre in Al Quoz the same morning. The
+                        client left us a <strong>5-star review</strong> and specifically mentioned how calm and professional
+                        the driver stayed throughout.</p>
                 </div>
             </div>
         </div>
@@ -598,12 +660,16 @@
                 <span class="de-eyebrow light"><i class="fas fa-bolt"></i> Get Help Now</span>
                 <h2>Book Car Recovery in <span>Deira Right Now</span></h2>
                 <div class="de-cta-content">
-                    <p>Call us now for immediate dispatch. Visit our website at <strong>Toretto Recovery</strong> or request a quote directly. Our team is available <strong>24/7, every day of the year.</strong></p>
-                    <p class="de-cta-highlight">Don't wait on the side of the road. Get fast, professional emergency towing in Deira from a team that treats your car the way it deserves to be treated.</p>
+                    <p>Call us now for immediate dispatch. Visit our website at <strong>Toretto Recovery</strong> or request
+                        a quote directly. Our team is available <strong>24/7, every day of the year.</strong></p>
+                    <p class="de-cta-highlight">Don't wait on the side of the road. Get fast, professional emergency towing
+                        in Deira from a team that treats your car the way it deserves to be treated.</p>
                 </div>
                 <div class="de-cta-btns">
-                    <a href="tel:+971545098498" class="theme-btn de-btn-primary"><i class="fas fa-phone"></i> Call For Instant Dispatch</a>
-                    <a href="https://wa.me/971545098498" class="theme-btn de-btn-outline" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
+                    <a href="tel:+971526917666" class="theme-btn de-btn-primary"><i class="fas fa-phone"></i> Call For
+                        Instant Dispatch</a>
+                    <a href="https://wa.me/971526917666" class="theme-btn de-btn-outline" target="_blank"><i
+                            class="fab fa-whatsapp"></i> WhatsApp Us</a>
                 </div>
             </div>
         </div>
@@ -613,15 +679,16 @@
         href="{{ asset('assets/css/dubai-deira.css') }}?v={{ filemtime(public_path('assets/css/dubai-deira.css')) }}">
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const faqItems = document.querySelectorAll('.de-faq-list .de-faq-item');
-            faqItems.forEach(function (item) {
+            faqItems.forEach(function(item) {
                 const btn = item.querySelector('.de-faq-q');
-                btn.addEventListener('click', function () {
+                btn.addEventListener('click', function() {
                     const isActive = item.classList.contains('active');
-                    faqItems.forEach(function (el) {
+                    faqItems.forEach(function(el) {
                         el.classList.remove('active');
-                        el.querySelector('.de-faq-q').setAttribute('aria-expanded', 'false');
+                        el.querySelector('.de-faq-q').setAttribute('aria-expanded',
+                        'false');
                         el.querySelector('.de-faq-icon i').className = 'fas fa-plus';
                     });
                     if (!isActive) {

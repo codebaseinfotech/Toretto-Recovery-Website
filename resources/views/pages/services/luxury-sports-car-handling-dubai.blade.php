@@ -197,10 +197,10 @@
 
                         <!-- CTA Section -->
                         <div class="hero-btn mt-4">
-                            <a href="{{ route('book.now') }}" target="_blank" class="theme-btn">
+                            <a href="{{ route('home') }}" target="_blank" class="theme-btn">
                                 Book Now <i class="fas fa-arrow-right-long"></i>
                             </a>
-                            <a href="tel:+971523003423" class="theme-btn theme-btn2">
+                            <a href="tel:+971526917666" class="theme-btn theme-btn2">
                                 Call Now <i class="fas fa-arrow-right-long"></i>
                             </a>
                         </div>
@@ -256,7 +256,7 @@
                 <div class="col-lg-6 imagebag">
                     <div class="about-left wow animate__animated animate__fadeInLeft">
                         <div class="about-img">
-                            <img src="{{ asset('assets/images/luxury-car-recovery-from-illegel-parked.jpg') }}"
+                            <img src="{{ asset('assets/images/luxury-car-recovery-from-illegel-parkeda.jpg') }}"
                                 alt="">
                         </div>
                     </div>
@@ -1110,7 +1110,7 @@
                             <h2 class="site-title mt-3">Real-World Scenarios: <span>How We Respond</span></h2>
                         </div>
                         <h4 class="mb-3">Scenario: <a class="text-link" target="_blank"
-                                href="{{ route('book.now') }}">Supercar
+                                href="{{ route('home') }}">Supercar
                                 Breakdown
                             </a> on a Major Expressway</h4>
                         <p class="mb-3">A Porsche 911 GT3 RS develops a catastrophic tyre failure at high speed on E11
@@ -1287,7 +1287,7 @@
                         <i class="fa-solid fa-phone"></i>
                         <div>
                             <span class="lsc-faq-cta-label">Still have questions?</span>
-                            <a href="tel:+971523003423" class="lsc-faq-cta-link">
+                            <a href="tel:+971526917666" class="lsc-faq-cta-link">
                                 Call Now <i class="fas fa-arrow-right-long"></i>
                             </a>
                         </div>
@@ -1589,7 +1589,7 @@
                     </div>
 
                     <div class="save-number-contact">
-                        <a href="{{ route('book.now') }}" target="_blank" class="save-number-btn">
+                        <a href="{{ route('home') }}" target="_blank" class="save-number-btn">
                             <i class="fa-solid fa-phone"></i> Book Now / Call 24/7
                         </a>
                         <a href="https://www.torettorecovery.ae" class="save-number-link" target="_blank">
@@ -1650,8 +1650,8 @@
         </div>
     </section>
 
-<link rel="stylesheet"
-      href="{{ asset('assets/css/luxury-sports-car.css') }}?v={{ filemtime(public_path('assets/css/luxury-sports-car.css')) }}">
+    <link rel="stylesheet"
+        href="{{ asset('assets/css/luxury-sports-car.css') }}?v={{ filemtime(public_path('assets/css/luxury-sports-car.css')) }}">
     <script>
         // Urban Districts Accordion
         const leAccordionItems = document.querySelectorAll('.le-accordion-item');

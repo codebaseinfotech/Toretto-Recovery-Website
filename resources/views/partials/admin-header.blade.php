@@ -19,6 +19,18 @@
                     <ul class="dropdown-menu">
                         <li>
                             <a class="dropdown-item"
+                                href="{{ route('our-service.ourservice', 'emergency-fuel-delivery-dubai') }}">
+                                Emergency Fuel Delivery
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item"
+                                href="{{ route('our-service.ourservice', 'battery-jump-start-dubai') }}">
+                                Battery Jump Start
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item"
                                 href="{{ route('our-service.ourservice', 'towing-service-dubai') }}">
                                 Towing Service
                             </a>
@@ -110,11 +122,11 @@
                             </a>
                         </li>
 
-                        <li>
+                        {{-- <li>
                             <a class="dropdown-item" href="{{ route('areas.show', 'dubai-investments-park') }}">
                                 Car Recovery Service in Dubai Investments Park
                             </a>
-                        </li>
+                        </li> --}}
 
                         <li>
                             <a class="dropdown-item" href="{{ route('areas.show', 'dip') }}">
@@ -187,11 +199,11 @@
 
 
                 <div class="header-actions d-flex align-items-center gap-3">
-                    <a href="https://wa.me/971545098498" class="theme-btn" target="_blank">
+                    <a href="https://wa.me/971526917666" class="theme-btn" target="_blank">
                         WhatsApp
                     </a>
-                    {{-- <a href="{{ route('book.now') }}" class="theme-btn">Book Now</a> --}}
-                    <a href="tel:+971523003423" class="theme-btn ">Call Now</a>
+                    {{-- <a href="{{ route('home') }}" class="theme-btn">Book Now</a> --}}
+                    <a href="tel:+971526917666" class="apply-btn">Call Now</a>
                 </div>
 
             </div>
@@ -213,8 +225,8 @@
 
             <!-- BOOK NOW (optional on mobile) -->
             <div class="mobile-header-actions header-actions d-flex gap-3">
-                <a href="{{ route('book.now') }}" class="btn btn-book theme-btn">BOOK NOW</a>
-                <a href="tel:+971523003423" class="btn btn-book theme-btn ">Call now</a>
+                <a href="https://wa.me/971526917666" class="btn btn-book theme-btn">WhatsApp</a>
+                <a href="tel:+971526917666" class="btn btn-book apply-btn ">Call now</a>
             </div>
 
             <!-- TOGGLER -->
@@ -250,6 +262,18 @@
                         OUR SERVICES
                     </a>
                     <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item"
+                                href="{{ route('our-service.ourservice', 'emergency-fuel-delivery-dubai') }}">
+                                Emergency Fuel Delivery
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item"
+                                href="{{ route('our-service.ourservice', 'battery-jump-start-dubai') }}">
+                               Battery Jump Start
+                            </a>
+                        </li>
                         <li>
                             <a class="dropdown-item"
                                 href="{{ route('our-service.ourservice', 'towing-service-dubai') }}">
@@ -342,11 +366,11 @@
                             </a>
                         </li>
 
-                        <li>
+                        {{-- <li>
                             <a class="dropdown-item" href="{{ route('areas.show', 'dubai-investments-park') }}">
                                 Car Recovery Service in Dubai Investments Park
                             </a>
-                        </li>
+                        </li> --}}
 
                         <li>
                             <a class="dropdown-item" href="{{ route('areas.show', 'dip') }}">

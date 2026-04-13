@@ -175,10 +175,10 @@
                         </h2>
 
                         <div class="hero-btn mt-4">
-                            <a href="{{ route('book.now') }}" target="_blank" class="theme-btn">
+                            <a href="{{ route('home') }}" target="_blank" class="theme-btn">
                                 Book Now <i class="fas fa-arrow-right-long"></i>
                             </a>
-                            <a href="tel:+971523003423" class="theme-btn theme-btn2">
+                            <a href="tel:+971526917666" class="theme-btn theme-btn2">
                                 Call Now <i class="fas fa-arrow-right-long"></i>
                             </a>
                         </div>
@@ -264,9 +264,9 @@
                         <p class="mt-2 mb-2">Available 24/7, we provide reliable recovery across the Dubai city roads,
                             highways, and desert
                             routes, ensuring professional care for every vehicle, anytime, anywhere in Dubai.</p>
-                        <a href="{{ route('book.now') }}" target="_blank" class="theme-btn mt-2">Book Now<i
+                        <a href="{{ route('home') }}" target="_blank" class="theme-btn mt-2">Book Now<i
                                 class="fa-solid fa-arrow-right-long"></i></a>
-                        <a href="tel:+971 523003423" class="theme-btn mt-2"> Call Now<i
+                        <a href="tel:+971 526917666" class="theme-btn mt-2"> Call Now<i
                                 class="fa-solid fa-arrow-right-long"></i></a>
                     </div>
                 </div>
@@ -959,7 +959,7 @@
                 <li style="color: black">Corporate account programs for fleet managers</li>
                 <li style="color: black">Written estimates available via WhatsApp or email</li>
             </ul>
-            <a href="{{ route('book.now') }}" target="_blank" class="theme-btn mt-2">Book Now<i
+            <a href="{{ route('home') }}" target="_blank" class="theme-btn mt-2">Book Now<i
                     class="fa-solid fa-arrow-right-long"></i></a>
         </div>
     </section>
@@ -995,9 +995,9 @@
                                 necessary for safe operation.</li>
 
                         </ul>
-                        <a href="{{ route('book.now') }}" target="_blank" class="theme-btn mt-2">Book Now<i
+                        <a href="{{ route('home') }}" target="_blank" class="theme-btn mt-2">Book Now<i
                                 class="fa-solid fa-arrow-right-long"></i></a>
-                        <a href="tel:+971 523003423" class="theme-btn mt-2"> Call Now<i
+                        <a href="tel:+971 526917666" class="theme-btn mt-2"> Call Now<i
                                 class="fa-solid fa-arrow-right-long"></i></a>
                     </div>
                 </div>
@@ -1214,7 +1214,7 @@
 
 
             <div class="cta-actions header-actions rapid-help-buttons d-flex align-items-center gap-3 mt-5">
-                <a href="tel:+971523003423" class="theme-btn">
+                <a href="tel:+971526917666" class="theme-btn">
                     Call Now
                 </a>
                 <a href="{{ route('contact') }}" target="_blank" class="theme-btn theme-btn2">
@@ -1225,8 +1225,8 @@
     </section>
 
 
-  <link rel="stylesheet"
-      href="{{ asset('assets/css/service.css') }}?v={{ filemtime(public_path('assets/css/service.css')) }}">
+    <link rel="stylesheet"
+        href="{{ asset('assets/css/service.css') }}?v={{ filemtime(public_path('assets/css/service.css')) }}">
     <script>
         document.querySelectorAll('.faqs2-question').forEach(button => {
             button.addEventListener('click', () => {

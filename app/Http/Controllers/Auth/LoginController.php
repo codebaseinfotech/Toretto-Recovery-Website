@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Support\UaePhoneNumber;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
@@ -26,9 +28,20 @@ class LoginController extends Controller
             'phone' => 'required|string',
         ]);
 
-        $phone = $request->phone;
+        $phone = UaePhoneNumber::normalize($request->phone);
+        $base_url = $request->base_url;
+        $redirectUrl = route('otp.form');
 
-        Session::put('phone', $phone);
+        if (! UaePhoneNumber::isValidMobile($phone)) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Enter a valid UAE mobile number (9 digits starting with 5).',
+            ], 422);
+        }
+
+        if ($base_url === 'x=1') {
+            $redirectUrl .= '?x=1';
+        }
 
         try {
             $response = Http::withHeaders([
@@ -37,26 +50,46 @@ class LoginController extends Controller
                 'Language' => 'en',
                 'DeviceType' => 'Android',
                 'DeviceID' => '123456789',
-            ])->post(config('services.api.base_url').'/v1/customer/login',
+            ])->timeout(15)->post(config('services.api.base_url').'/v1/customer/login',
                 [
                     'phone' => $phone,
-                    'country_code' => '971',
+                    'country_code' => '+971',
                 ]
             );
-            if ($response->failed()) {
-                return back()->withErrors([
-                    'phone' => 'Failed to send OTP. Please try again.',
+
+            $json = $response->json() ?? [];
+
+            if ($response->failed() || ($json['status'] ?? false) !== true) {
+                $message = $json['message'] ?? 'Failed to send OTP. Please try again.';
+
+                Log::warning('OTP send failed.', [
+                    'phone' => $phone,
+                    'status_code' => $response->status(),
+                    'response' => $json,
                 ]);
+
+                return response()->json([
+                    'status' => false,
+                    'message' => $message,
+                ], $response->successful() ? 422 : $response->status());
             }
+
+            Session::put('phone', $phone);
+
             return response()->json([
                 'status' => true,
                 'message' => 'OTP sent successfully.',
                 'data' => [
                     'phone' => $phone,
                 ],
-                'redirect' => route('otp.form'),
+                'redirect' => $redirectUrl,
             ]);
         } catch (\Throwable $e) {
+            Log::error('OTP send exception.', [
+                'phone' => $phone,
+                'message' => $e->getMessage(),
+            ]);
+
             return response()->json([
                 'status' => false,
                 'message' => 'Something went wrong. Please try again.',
@@ -82,14 +115,27 @@ class LoginController extends Controller
             'latitude' => 'nullable',
             'longitude' => 'nullable',
         ]);
+        $base_url = $request->base_url;
+        if ($base_url === 'x=1') {
+            $redirectUrl = route('home');
+        } else {
+            $redirectUrl = route('home');
+        }
 
-        $phone = Session::get('phone');
+        $phone = UaePhoneNumber::normalize(Session::get('phone'));
 
         if (! $phone) {
-            $phone_header = $request->header('X-Phone-Verification');
+            $phone_header = UaePhoneNumber::normalize($request->header('X-Phone-Verification'));
             if ($phone_header) {
                 $phone = $phone_header;
             }
+        }
+
+        if (! UaePhoneNumber::isValidMobile($phone)) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Phone number not found. Please request OTP again.',
+            ], 422);
         }
 
         try {
@@ -102,7 +148,7 @@ class LoginController extends Controller
             ])->post(
                 config('services.api.base_url').'/v1/customer/verify-otp',
                 [
-                    'country_code' => '971',
+                    'country_code' => '+971',
                     'phone' => $phone,
                     'otp' => $request->otp,
                     'latitude' => $request->latitude,
@@ -150,11 +196,11 @@ class LoginController extends Controller
             // Check for pending booking data
             $pendingBooking = Session::get('pending_booking', []);
 
-            $redirectRoute = $isRegistered ? route('book.now') : route('signup.form');
+            $redirectRoute = $isRegistered ? $redirectUrl : route('signup.form');
 
             // If there's pending booking data, redirect to booking page
             if (! empty($pendingBooking)) {
-                $redirectRoute = route('book.now');
+                $redirectRoute = $redirectUrl;
                 // Clear the pending booking data
                 Session::forget('pending_booking');
             }

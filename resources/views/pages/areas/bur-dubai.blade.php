@@ -20,7 +20,7 @@
   "name": "Toretto Recovery",
   "description": "24/7 car recovery service in Bur Dubai offering emergency breakdown recovery, accident towing, battery jumpstart, flatbed towing, and basement pull-out for all vehicle types.",
   "url": "https://www.torettorecovery.ae/car-recovery-bur-dubai",
-  "telephone": " +971523003423",
+  "telephone": " +971526917666",
   "email": "info@torettorecovery.ae",
   "foundingDate": "2014",
   "priceRange": "AED 150 – AED 600",
@@ -271,7 +271,7 @@
         <div class="container">
             <div class="area-hero-box">
                 <div class="area-hero-links">
-                    <a href="tel:+971545098498" class="hero-contact-link">
+                    <a href="tel:+971526917666" class="hero-contact-link">
                         <span class="hero-icon call">
                             <i class="fa fa-phone"></i>
                         </span>
@@ -280,7 +280,7 @@
 
                     <span class="hero-divider">|</span>
 
-                    <a href="https://wa.me/971545098498" class="hero-contact-link" target="_blank">
+                    <a href="https://wa.me/971526917666" class="hero-contact-link" target="_blank">
                         <span class="hero-icon whatsapp">
                             <i class="fa-brands fa-whatsapp"></i>
                         </span>
@@ -345,9 +345,9 @@
                             to you — not the nearest truck on paper, but the one that actually gets there fastest.</p>
                         <p>Our average response time in Bur Dubai? 20 to 30 minutes. When you're stranded at night near
                             Dubai Creek with hazard lights blinking, every minute counts.</p>
-                        <a href="{{ route('book.now') }}" target="_blank" class="theme-btn mt-2">Book Now<i
+                        <a href="{{ route('home') }}" target="_blank" class="theme-btn mt-2">Book Now<i
                                 class="fa-solid fa-arrow-right-long"></i></a>
-                        <a href="tel:+971523003423" class="theme-btn mt-2"> Call Now<i
+                        <a href="tel:+971526917666" class="theme-btn mt-2"> Call Now<i
                                 class="fa-solid fa-arrow-right-long"></i></a>
                     </div>
                 </div>
@@ -392,7 +392,7 @@
     <section class="bur-situations-section">
         <div class="container">
             <div class="">
-            {{-- <div class="bur-situations-wrap"> --}}
+                {{-- <div class="bur-situations-wrap"> --}}
 
                 {{-- <div class="bur-situations-image">
                     <img src="{{ asset('assets/images/car-recovery-in-bur-dubai-area.jpg') }}"
@@ -1197,7 +1197,7 @@
                                 </p>
                             </div>
                         </div>
-                        <a href="tel:+971523003423" class="tr-emergency-btn">
+                        <a href="tel:+971526917666" class="tr-emergency-btn">
                             <i class="bi bi-telephone-fill"></i>
                             Call Recovery Now
                         </a>
@@ -1315,12 +1315,12 @@
 
                 <div class="tr-final-actions">
 
-                    <a href="tel:+971523003423" class="tr-final-btn call">
+                    <a href="tel:+971526917666" class="tr-final-btn call">
                         <i class="bi bi-telephone-fill"></i>
                         CALL NOW
                     </a>
 
-                    <a href="https://wa.me/971523003423" class="tr-final-btn whatsapp">
+                    <a href="https://wa.me/971526917666" class="tr-final-btn whatsapp">
                         <i class="bi bi-whatsapp"></i>
                         WHATSAPP NOW
                     </a>
@@ -1354,12 +1354,12 @@
 
                         <li>
                             <strong>Phone</strong>
-                            <span>+971 523003423 (24/7)</span>
+                            <span>+971 526917666 (24/7)</span>
                         </li>
 
                         <li>
                             <strong>WhatsApp</strong>
-                            <span>+971 523003423</span>
+                            <span>+971 526917666</span>
                         </li>
 
                         <li>

@@ -362,3 +362,37 @@
             box-shadow: 0 0 8px 6px rgba(207, 8, 8, 0), 0 0 0 40px rgba(0, 0, 0, 0), 0 0 0 40px rgba(207, 8, 8, 0);
         }
     }
+@media (max-width: 768px) {
+
+    #whatsapp {
+        right: 15px;
+        top: 85%;
+        width: 50px;
+        height: 50px;
+    }
+
+    #whatsapp #whatsappMain {
+        width: 50px;
+        height: 50px;
+    }
+
+    #whatsapp #whatsappMain:before {
+        background-size: 60%; /* icon small */
+    }
+
+    #call {
+        right: 15px;
+        top: 77%;
+        width: 50px;
+        height: 50px;
+    }
+
+    #call #callMain {
+        width: 50px;
+        height: 50px;
+    }
+
+    #call #callMain:before {
+        background-size: 60%; /* icon small */
+    }
+}

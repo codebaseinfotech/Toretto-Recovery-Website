@@ -37,7 +37,7 @@
                         <ul class="footer-contact">
                             <li><i class="fas fa-map-marker-alt"></i>274 Street - Dubai Investment Park - 2 - Dubai
                             </li>
-                            <li><a href="tel:+971523003423"><i class="fas fa-phone"></i>+971 523003423</a></li>
+                            <li><a href="tel:+971526917666"><i class="fas fa-phone"></i>+971 526917666</a></li>
 
                             <li>
                                 <a href="mailto:support@torettorecovery.ae">
@@ -63,7 +63,7 @@
                         </div>
 
                         <div class="qr-code">
-                            <img src="{{ asset('assets/images/qr-code.png') }}" alt="QR Code">
+                            <img src="{{ asset('assets/images/QR.png') }}" alt="QR Code">
                         </div>
                     </div>
                 </div>
@@ -76,7 +76,7 @@
             <div class="row">
                 <div class="col-md-12 align-self-center">
                     <p class="copyright-text text-center">
-                        © 2026 Toretto Recovery. All Rights Reserved | Designed & Developed by HA Information Technology
+                        © 2026 Toretto Recovery. All Rights Reserved | Designed & Developed by Hamed Alattas Technology
                     </p>
                 </div>
 
@@ -87,15 +87,16 @@
 
 <div class="floating-social">
     <div id="call">
-        <a href="tel:+971523003423" id="callMain">
+        <a href="tel:+971526917666" id="callMain">
         </a>
     </div>
     <div id="whatsapp">
-        <a href="https://wa.me/+971523003423" id="whatsappMain">
+        <a href="https://wa.me/+971526917666" id="whatsappMain">
         </a>
     </div>
 </div>
 
 <a href="#" id="scroll-top"><i class="fa-solid fa-arrow-up"></i></a>
 
-<link rel="stylesheet" href="{{ asset('assets/css/floating-social.css') }}">
+<link rel="stylesheet"
+    href="{{ asset('assets/css/floating-social.css') }}?v={{ filemtime(public_path('assets/css/floating-social.css')) }}">

@@ -16,7 +16,7 @@
     "@type": "AutoRepair",
     "name": "Toretto Recovery",
     "image": "https://www.yourdomain.com/logo.jpg",
-    "telephone": "+971 523003423",
+    "telephone": "+971 526917666",
     "url": "https://www.yourdomain.com/accidental-car-recovery-dubai",
     "priceRange": "$$",
     "address": {
@@ -288,10 +288,10 @@
 
                         <!-- CTA Section -->
                         <div class="hero-btn mt-4">
-                            <a href="{{ route('book.now') }}" target="_blank" class="theme-btn">
+                            <a href="{{ route('home') }}" target="_blank" class="theme-btn">
                                 Book Now <i class="fas fa-arrow-right-long"></i>
                             </a>
-                            <a href="tel:+971523003423" class="theme-btn theme-btn2">
+                            <a href="tel:+971526917666" class="theme-btn theme-btn2">
                                 Call Now <i class="fas fa-arrow-right-long"></i>
                             </a>
                         </div>
@@ -1687,7 +1687,8 @@
     </section>
 
 
-    <link rel="stylesheet" href="{{ asset('assets/css/accidental-car.css') }}?v={{ filemtime(public_path('assets/css/accidental-car.css')) }}">
+    <link rel="stylesheet"
+        href="{{ asset('assets/css/accidental-car.css') }}?v={{ filemtime(public_path('assets/css/accidental-car.css')) }}">
     <script>
         // Original FAQ functionality (if exists)
         document.querySelectorAll('.faq-question').forEach(btn => {
