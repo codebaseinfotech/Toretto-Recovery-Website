@@ -5,7 +5,7 @@
 @section('meta_description',
     'Reliable 24/7 car recovery, vehicle towing, and emergency roadside assistance across Dubai
     and the UAE. Fast response, safe transport, affordable rates — call now!')
-
+{{-- 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 --}}
 @section('content')
     {{-- <div class="seo-content-wrapper" style="position: absolute; left: -9999px; top: -9999px; width: 1px; height: 1px; overflow: hidden;">
     <h1>24/7 Car Recovery Service in Dubai Marina</h1>
@@ -240,32 +240,6 @@
                                     <span class="fw-bold">Grand Total:</span>
                                     <span id="grandTotalDisplay" class="float-end fw-bold">0.00 AED</span>
                                 </div>
-                            </div>
-
-                            <div class="payment-method-section mb-4"
-                                style="background: #f8f9fa; border-radius: 8px; padding: 15px; border: 1px solid #eee;">
-
-                                <!-- COD (default selected) -->
-                                @if (!empty($settings['is_COD_enabale']) && $settings['is_COD_enabale'] == 'true')
-                                    <div class="form-check m-0 d-flex align-items-center gap-2">
-                                        <input class="form-check-input mt-0" type="radio" name="payment_method"
-                                            id="payment_cod" value="cash" required checked style="cursor: pointer;">
-                                        <label class="form-check-label" for="payment_cod"
-                                            style="font-size: 14px; font-weight: 500; color: #000; cursor: pointer; margin-top:2px;">
-                                            Cash on Delivery (COD)
-                                        </label>
-                                    </div>
-                                @endif
-                                @if (!empty($settings['is_payment_link']) && $settings['is_payment_link'] == 'true')
-                                    <div class="form-check m-0 d-flex align-items-center gap-2">
-                                        <input class="form-check-input mt-0" type="radio" name="payment_method"
-                                            id="payment_link" value="payment_link" required style="cursor: pointer;">
-                                        <label class="form-check-label" for="payment_link"
-                                            style="font-size: 14px; font-weight: 500; color: #000; cursor: pointer; margin-top:2px;">
-                                            Pay by Link
-                                        </label>
-                                    </div>
-                                @endif
                             </div>
 
                             <!-- SUBMIT -->
@@ -1248,6 +1222,7 @@
         const PRICE_API_BASE_URL = "{{ config('services.api.base_url') }}";
         const API_BEARER_TOKEN = localStorage.getItem('auth_token') || '';
         const DRIVER_ICON_URL = "{{ asset('assets/images/driver-truck.png') }}";
+        const TRIP_PREPAYMENT_STORAGE_KEY = 'trip_prepayment_context';
         let latestDistanceKm = 0;
         let currentOriginalPrice = 0;
         let currentDiscountValue = 0;
@@ -1321,6 +1296,511 @@
                 width: '400px',
                 padding: '20px',
             });
+        }
+
+
+    // code for trip prepayment status handling and storage
+    // ------------------- Trip Prepayment Status Handling ------------------
+    function normalizeText(value) {
+        if (value === null || value === undefined) return '';
+        return String(value).trim().toLowerCase();
+    }
+
+    let tripPrepaymentContext = readTripPrepaymentContext() || {};
+    let tripPrepaymentId = tripPrepaymentContext.prepayment_id || '';
+    let tripPrepaymentStatus = tripPrepaymentContext.status || '';
+    const initialPrepaymentIdFromUrl = ''; // getTripPrepaymentIdFromLocation();
+
+    if (initialPrepaymentIdFromUrl) {
+        tripPrepaymentId = initialPrepaymentIdFromUrl;
+            alert('Found prepayment ID in URL: ' + tripPrepaymentId);
+            saveTripPrepaymentContext({
+                prepayment_id: tripPrepaymentId
+            });
+
+        API_BEARER_TOKEN && callTripPrepaymentStatusApi(tripPrepaymentId, API_BEARER_TOKEN);
+
+        console.log('[Trip Prepayment] Initialized with prepayment ID from URL:', tripPrepaymentId , getTripPrepaymentIdFromLocation());
+        let statusText = tripPrepaymentStatus || 'unknown';
+        if (statusText) {
+                console.log('[Trip Prepayment] Initial status from context:', statusText);
+            if (isTripPrepaymentPaid(statusText)) {
+                showToast('Your payment was successful! We are processing your booking.', 'success');
+                clearTripPrepaymentContext();
+            } else if (isTripPrepaymentPending(statusText)) {
+                clearTripPrepaymentContext();
+                showToast('Your payment is pending. We will update you once it is confirmed.', 'info');
+            } else if (isTripPrepaymentCancelled(statusText)) {
+                showToast('Your payment was cancelled or failed. Please try booking again.', 'error');
+                clearTripPrepaymentContext();
+                clearTripPrepaymentParamsFromLocation();
+            } else {
+                clearTripPrepaymentParamsFromLocation();
+                console.log('[Trip Prepayment] Unrecognized status:', statusText);
+            }
+        } else {
+            clearTripPrepaymentParamsFromLocation();
+            console.log('[Trip Prepayment] No initial status found in context.');
+        }
+
+        let tripPrepaymentStatusCheckInterval = null;
+        function startTripPrepaymentStatusPolling(prepaymentId, token) {
+            if (tripPrepaymentStatusCheckInterval) {
+                clearInterval(tripPrepaymentStatusCheckInterval);
+                console.log('[Trip Prepayment] Cleared existing polling interval before starting new one.');
+            }
+            tripPrepaymentStatusCheckInterval = setInterval(() => {
+                callTripPrepaymentStatusApi(prepaymentId, token);
+            }, 5000); // Poll every 5 seconds
+        }
+
+        function stopTripPrepaymentStatusPolling() {
+            if (tripPrepaymentStatusCheckInterval) {
+                clearInterval(tripPrepaymentStatusCheckInterval);
+                tripPrepaymentStatusCheckInterval = null;
+            }
+        console.log('[Trip Prepayment] Stopped status polling.');
+
+        function callTripPrepaymentStatusApi(prepaymentId, token) {
+            if (!prepaymentId || !token) {
+                console.warn('[Trip Prepayment] Missing prepayment ID or token for status API call.');
+                return;
+            }
+            fetch(`${PRICE_API_BASE_URL}/trip-prepayment/status/${prepaymentId}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const statusText = getTripPrepaymentStatusText(data);
+                console.log('[Trip Prepayment] Polled status:', statusText, data);
+                saveTripPrepaymentContext({ status: statusText });
+
+                if (isTripPrepaymentPaid(statusText)) {
+                    showToast('Your payment was successful! We are processing your booking.', 'success');
+                    clearTripPrepaymentContext();
+                    stopTripPrepaymentStatusPolling();
+                } else if (isTripPrepaymentPending(statusText)) {
+                    showToast('Your payment is pending. We will update you once it is confirmed.', 'info');
+                } else if (isTripPrepaymentCancelled(statusText)) {
+                    showToast('Your payment was cancelled or failed. Please try booking again.', 'error');
+                    clearTripPrepaymentContext();
+                    clearTripPrepaymentParamsFromLocation();
+                    stopTripPrepaymentStatusPolling();
+                } else {
+                    console.log('[Trip Prepayment] Unrecognized status during polling:', statusText);
+                }
+            })
+            .catch(error => {
+                console.error('[Trip Prepayment] Failed to fetch status:', error);
+            });
+        }
+
+    }
+}
+
+
+function handleTripPrepaymentStatusOnLoad() {
+    if (!tripPrepaymentId) {
+        console.log('[Trip Prepayment] No prepayment ID in context on load.');
+        return;
+    }
+    if (!API_BEARER_TOKEN) {
+        console.warn('[Trip Prepayment] No API token available to check status on load.');
+        return;
+    }
+    console.log('[Trip Prepayment] Checking status on load for prepayment ID:', tripPrepaymentId);
+    callTripPrepaymentStatusApi(tripPrepaymentId, API_BEARER_TOKEN);
+    startTripPrepaymentStatusPolling(tripPrepaymentId, API_BEARER_TOKEN);
+}
+// Initialize the trip prepayment status handling when the page loads
+
+function initTripPrepaymentStatusHandling() {
+    document.addEventListener('DOMContentLoaded', () => {
+        handleTripPrepaymentStatusOnLoad();
+    });
+}
+
+publiclyExposeFunction('initTripPrepaymentStatusHandling', initTripPrepaymentStatusHandling);
+// Ensure this runs after the main JS functions are initialized
+mainJsFunctions.push(initTripPrepaymentStatusHandling);
+// If using a module system, you can also export the function
+// export { initTripPrepaymentStatusHandling };
+// Call this function in the main script initialization to set up the trip prepayment status handling
+// Trip Prepayment Context Management
+// Using localStorage to persist prepayment ID and status across page loads and redirects
+//-------------------- Trip Prepayment Context Management ------------------
+
+
+        function readTripPrepaymentContext() {
+            try {
+                const raw = localStorage.getItem(TRIP_PREPAYMENT_STORAGE_KEY);
+                return raw ? JSON.parse(raw) : null;
+            } catch (error) {
+                return null;
+            }
+        }
+
+        function saveTripPrepaymentContext(context = {}) {
+            try {
+                const currentContext = readTripPrepaymentContext() || {};
+                localStorage.setItem(TRIP_PREPAYMENT_STORAGE_KEY, JSON.stringify({
+                    ...currentContext,
+                    ...context
+                }));
+            } catch (error) {
+                console.warn('[Trip Prepayment] Failed to save context:', error);
+            }
+        }
+
+        function clearTripPrepaymentContext() {
+            try {
+                localStorage.removeItem(TRIP_PREPAYMENT_STORAGE_KEY);
+            } catch (error) {
+                console.warn('[Trip Prepayment] Failed to clear context:', error);
+            }
+        }
+
+        // function getTripPrepaymentIdFromLocation() {
+        //     try {
+        //         const params = new URLSearchParams(window.location.search || '');
+        //         return params.get('prepayment_id') ||
+        //             params.get('prepayment') ||
+        //             params.get('trip_prepayment_id') ||
+        //             params.get('trip_prepayment') ||
+        //             params.get('trip_prepayment_request_id') ||
+        //             '';
+        //     } catch (error) {
+        //         return '';
+        //     }
+        // }
+
+        // function isStripeTripPrepaymentSuccessReturn() {
+        //     try {
+        //         const params = new URLSearchParams(window.location.search || '');
+        //         const gateway = normalizeTripPrepaymentStatus(params.get('payment_gateway'));
+        //         const state = normalizeTripPrepaymentStatus(params.get('state'));
+        //         return gateway === 'stripe' && state === 'success';
+        //     } catch (error) {
+        //         return false;
+        //     }
+        // }
+
+        function clearTripPrepaymentParamsFromLocation() {
+            try {
+                const url = new URL(window.location.href);
+                const params = url.searchParams;
+                let changed = false;
+
+                [
+                    'prepayment_id',
+                    'prepayment',
+                    'trip_prepayment_id',
+                    'trip_prepayment',
+                    'trip_prepayment_request_id',
+                    'payment_gateway',
+                    'state'
+                ].forEach((key) => {
+                    if (params.has(key)) {
+                        params.delete(key);
+                        changed = true;
+                    }
+                });
+
+                if (changed) {
+                    const cleanedUrl = `${url.origin}${url.pathname}${params.toString() ? `?${params.toString()}` : ''}${url.hash}`;
+                    window.history.replaceState({}, document.title, cleanedUrl);
+                }
+            } catch (error) {
+                console.warn('[Trip Prepayment] Failed to clean URL params:', error);
+            }
+        }
+
+        function normalizeTripPrepaymentStatus(value) {
+            if (value === null || value === undefined) return '';
+            return normalizeText(value).toLowerCase();
+        }
+
+        function getTripPrepaymentStatusTokens(statusText) {
+            return normalizeTripPrepaymentStatus(statusText)
+                .replace(/[^a-z0-9]+/g, ' ')
+                .split(/\s+/)
+                .filter(Boolean);
+        }
+
+        function getTripPrepaymentResponseData(resData) {
+            return resData?.data ?? resData ?? {};
+        }
+
+        function getTripPrepaymentStatusText(resData) {
+            const payload = getTripPrepaymentResponseData(resData);
+            const candidates = [
+                payload?.payment_status,
+                payload?.prepayment_status,
+                payload?.booking_status,
+                payload?.state,
+                payload?.status,
+                resData?.payment_status,
+                resData?.prepayment_status,
+                resData?.booking_status,
+                resData?.state
+            ];
+
+            for (const candidate of candidates) {
+                if (typeof candidate === 'string' && candidate.trim() !== '') {
+                    return normalizeTripPrepaymentStatus(candidate);
+                }
+            }
+
+            return '';
+        }
+
+        function hasTripPrepaymentBooking(resData) {
+            const payload = getTripPrepaymentResponseData(resData);
+            return Boolean(
+                payload?.booking ||
+                payload?.booking_id ||
+                payload?.bookingId ||
+                payload?.booking_number ||
+                payload?.booking_no ||
+                payload?.booking_reference ||
+                payload?.booking_ref ||
+                payload?.booking_uuid ||
+                payload?.booking_code
+            );
+        }
+
+        function isTripPrepaymentPaid(statusText) {
+            const status = normalizeTripPrepaymentStatus(statusText);
+            const tokens = getTripPrepaymentStatusTokens(statusText);
+            return [
+                'paid',
+                'succeeded',
+                'success',
+                'completed',
+                'complete',
+                'captured',
+                'done'
+            ].some((value) => status === value || tokens.includes(value));
+        }
+
+        function isTripPrepaymentPending(statusText) {
+            const status = normalizeTripPrepaymentStatus(statusText);
+            const tokens = getTripPrepaymentStatusTokens(statusText);
+            if (status === 'requires_payment' || status === 'requires_payment_method') {
+                return true;
+            }
+
+            return [
+                'pending',
+                'created',
+                'open',
+                'processing'
+            ].some((value) => status === value || tokens.includes(value)) ||
+                (tokens.includes('requires') && tokens.includes('payment'));
+        }
+
+        function isTripPrepaymentCancelled(statusText) {
+            const status = normalizeTripPrepaymentStatus(statusText);
+            const tokens = getTripPrepaymentStatusTokens(statusText);
+            return ['cancel', 'cancelled', 'canceled', 'failed', 'expired', 'void'].some(
+                (value) => status === value || tokens.includes(value)
+            );
+        }
+
+        async function callTripPrepaymentApi(endpoint, token, options = {}) {
+            if (!token) {
+                return {
+                    resp: null,
+                    resData: {
+                        status: false,
+                        message: 'Authentication token is missing.'
+                    }
+                };
+            }
+
+            const headers = {
+                'Authorization': 'Bearer ' + token,
+                'Accept': 'application/json',
+                ...(options.body ? {
+                    'Content-Type': 'application/json'
+                } : {})
+            };
+
+            if (options.headers) {
+                Object.assign(headers, options.headers);
+            }
+
+            const resp = await window.ApiUtils.fetch(
+                `${PRICE_API_BASE_URL}/v1/customer/payments/${endpoint}`, {
+                    method: options.method || 'GET',
+                    headers,
+                    ...(options.body ? {
+                        body: options.body
+                    } : {})
+                });
+
+            const rawResponse = await resp.text();
+            let resData = {};
+
+            try {
+                resData = JSON.parse(rawResponse);
+            } catch (error) {
+                resData = {
+                    raw: rawResponse
+                };
+            }
+
+            return {
+                resp,
+                resData
+            };
+        }
+
+        async function fetchTripPrepaymentStatus(prepaymentId, token) {
+            return callTripPrepaymentApi(`trip-prepayments/${encodeURIComponent(prepaymentId)}`, token);
+        }
+
+        async function fetchTripPrepaymentLinks(prepaymentId, token) {
+            return callTripPrepaymentApi(`trip-prepayments/${encodeURIComponent(prepaymentId)}/links`, token);
+        }
+
+        async function finalizeTripPrepayment(prepaymentId, token) {
+            return callTripPrepaymentApi(`trip-prepayments/${encodeURIComponent(prepaymentId)}/finalize`, token, {
+                method: 'POST'
+            });
+        }
+
+        async function handleTripPrepaymentResume() {
+            const token = getAuthToken();
+            const storedContext = readTripPrepaymentContext() || {};
+            const prepaymentId = storedContext.prepayment_id || getTripPrepaymentIdFromLocation();
+            const isStripeSuccessReturn = isStripeTripPrepaymentSuccessReturn();
+
+            if (isStripeSuccessReturn) {
+                clearTripPrepaymentParamsFromLocation();
+            }
+
+            if (!prepaymentId) {
+                if (isStripeSuccessReturn) {
+                    showBookingSuccessPopup();
+                    return true;
+                }
+                return null;
+            }
+
+            if (!token) {
+                return null;
+            }
+
+            if (!storedContext.prepayment_id) {
+                saveTripPrepaymentContext({
+                    prepayment_id: prepaymentId
+                });
+            }
+
+            if (getTripPrepaymentIdFromLocation()) {
+                clearTripPrepaymentParamsFromLocation();
+            }
+
+            try {
+                const statusResult = await fetchTripPrepaymentStatus(prepaymentId, token);
+                const statusData = getTripPrepaymentResponseData(statusResult.resData);
+                const statusText = getTripPrepaymentStatusText(statusResult.resData);
+                const statusMessage = statusData?.message || statusResult.resData?.message || '';
+
+                console.log('[Trip Prepayment] Status response:', {
+                    status: statusResult.resp?.status,
+                    ok: statusResult.resp?.ok,
+                    data: statusResult.resData
+                });
+
+                if (!statusResult.resp || !statusResult.resp.ok || statusResult.resData?.status === false) {
+                    if (statusMessage) {
+                        showToast(statusMessage, 'error');
+                    }
+                    return false;
+                }
+
+                if (isTripPrepaymentPaid(statusText)) {
+                    if (hasTripPrepaymentBooking(statusData)) {
+                        clearTripPrepaymentContext();
+                        showBookingSuccessPopup();
+                        return true;
+                    }
+
+                    const finalizeResult = await finalizeTripPrepayment(prepaymentId, token);
+                    console.log('[Trip Prepayment] Finalize response:', {
+                        status: finalizeResult.resp?.status,
+                        ok: finalizeResult.resp?.ok,
+                        data: finalizeResult.resData
+                    });
+
+                    if (finalizeResult.resp?.ok && finalizeResult.resData?.status !== false) {
+                        clearTripPrepaymentContext();
+                        showBookingSuccessPopup();
+                        return true;
+                    }
+
+                    showToast(finalizeResult.resData?.message || 'Payment is complete, but booking finalization is still pending.', 'warning');
+                    return false;
+                }
+
+                if (isTripPrepaymentCancelled(statusText)) {
+                    clearTripPrepaymentContext();
+                    if (statusMessage) {
+                        showToast(statusMessage, 'warning');
+                    }
+                    return false;
+                }
+
+                if (!isTripPrepaymentPending(statusText) && statusText) {
+                    saveTripPrepaymentContext({
+                        prepayment_id: prepaymentId,
+                        latest_status: statusText
+                    });
+                }
+
+                const linksResult = await fetchTripPrepaymentLinks(prepaymentId, token);
+                const linksData = getTripPrepaymentResponseData(linksResult.resData);
+                const checkoutUrl = linksData?.checkout_url || storedContext.checkout_url;
+                const successUrl = linksData?.success_url || storedContext.success_url;
+                const cancelUrl = linksData?.cancel_url || storedContext.cancel_url;
+                const publicStatusUrl = linksData?.public_status_url || storedContext.public_status_url;
+
+                console.log('[Trip Prepayment] Links response:', {
+                    status: linksResult.resp?.status,
+                    ok: linksResult.resp?.ok,
+                    data: linksResult.resData
+                });
+
+                saveTripPrepaymentContext({
+                    prepayment_id: prepaymentId,
+                    checkout_url: checkoutUrl || storedContext.checkout_url || '',
+                    success_url: successUrl || storedContext.success_url || '',
+                    cancel_url: cancelUrl || storedContext.cancel_url || '',
+                    public_status_url: publicStatusUrl || storedContext.public_status_url || ''
+                });
+
+                if (checkoutUrl) {
+                    window.location.replace(checkoutUrl);
+                    return true;
+                }
+
+                if (linksResult.resData?.status === false && linksResult.resData?.message) {
+                    showToast(linksResult.resData.message, 'error');
+                } else {
+                    showToast('Payment link is not available right now. Please try again.', 'error');
+                }
+                return false;
+            } catch (error) {
+                console.error('[Trip Prepayment] Resume error:', error);
+                showToast('Unable to resume the payment right now. Please try again.', 'error');
+                return false;
+            }
         }
 
         function parseKmFromDistanceText(text) {
@@ -2400,294 +2880,713 @@
                     }, 100);
                 }
             });
-        }
-        /* ------------------ DOM Ready ------------------ */
-        document.addEventListener('DOMContentLoaded', function() {
-            checkLocationPermission();
-            loadGoogleMapsScript();
+        // }
 
-            // Use current location
-            const useCurrentLocationBtn = document.getElementById('useCurrentLocationBtn');
-            if (useCurrentLocationBtn) {
-                useCurrentLocationBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    if (!map) return showToast('Map is still loading...', 'info');
-                    getUserLiveLocation();
-                });
-            }
+        // async function showNoDriversAvailablePopup(onContinueBooking) {
+        //     const result = await Swal.fire({
+        //         icon: 'warning',
+        //         title: 'Sorry! No Drivers Available',
+        //         html: `
+        //             <style>
+        //                 .no-drivers-popup {
+        //                     border-radius: 22px;
+        //                     padding: 24px 22px 18px;
+        //                 }
 
-            initializeRecoveryTypes();
+        //                 .no-drivers-popup .swal2-title {
+        //                     font-size: 22px;
+        //                     font-weight: 800;
+        //                     color: #111827;
+        //                     margin-bottom: 8px;
+        //                 }
 
-            const recoveryTypesTrigger = document.getElementById('recoveryTypesTrigger');
-            const recoveryTypesDropdown = document.getElementById('recoveryTypesDropdown');
-            const recoveryTypesDoneBtn = document.getElementById('recoveryTypesDoneBtn');
-            const recoveryTypesRequiredProxy = document.getElementById('recoveryTypesRequiredProxy');
-            if (recoveryTypesTrigger && recoveryTypesDropdown) {
-                recoveryTypesTrigger.addEventListener('click', function() {
-                    const panel = document.getElementById('recoveryTypesPanel');
-                    const isOpen = panel ? panel.classList.contains('d-none') : false;
-                    setRecoveryTypesDropdownOpen(isOpen);
-                });
+        //                 .no-drivers-popup .swal2-html-container {
+        //                     margin: 0;
+        //                     font-size: 15px;
+        //                     line-height: 1.6;
+        //                     color: #6b7280;
+        //                     text-align: center;
+        //                 }
 
-                document.addEventListener('click', function(event) {
-                    if (!recoveryTypesDropdown.contains(event.target)) {
-                        setRecoveryTypesDropdownOpen(false);
-                    }
-                });
+        //                 .no-drivers-popup .swal2-actions {
+        //                     width: 100%;
+        //                     display: flex;
+        //                     flex-direction: column;
+        //                     align-items: stretch;
+        //                     gap: 10px;
+        //                     margin-top: 20px;
+        //                 }
 
-                document.addEventListener('keydown', function(event) {
-                    if (event.key === 'Escape') {
-                        setRecoveryTypesDropdownOpen(false);
-                    }
-                });
-            }
+        //                 .no-drivers-popup .swal2-confirm,
+        //                 .no-drivers-popup .swal2-deny,
+        //                 .no-drivers-popup .swal2-cancel {
+        //                     width: 100%;
+        //                     margin: 0 !important;
+        //                     border-radius: 10px;
+        //                     min-height: 48px;
+        //                     font-size: 15px;
+        //                     font-weight: 700;
+        //                     box-shadow: none !important;
+        //                 }
 
-            if (recoveryTypesRequiredProxy) {
-                recoveryTypesRequiredProxy.addEventListener('invalid', function() {
-                    setRecoveryTypesDropdownOpen(true);
-                });
-            }
+        //                 .no-drivers-popup .swal2-confirm {
+        //                     background: #000 !important;
+        //                     color: #fff !important;
+        //                     border: 1px solid #000 !important;
+        //                 }
 
-            if (recoveryTypesDoneBtn) {
-                recoveryTypesDoneBtn.addEventListener('click', function() {
-                    setRecoveryTypesDropdownOpen(false);
-                });
-            }
+        //                 .no-drivers-popup .swal2-deny {
+        //                     background: #fff !important;
+        //                     color: #111 !important;
+        //                     border: 1px solid #d1d5db !important;
+        //                 }
 
-            // Calculate Price button
-            const calculatePriceBtn = document.getElementById('calculatePriceBtn');
-            if (calculatePriceBtn) {
-                calculatePriceBtn.addEventListener('click', async function(e) {
-                    e.preventDefault();
+        //                 .no-drivers-popup .swal2-cancel {
+        //                     background: transparent !important;
+        //                     color: #ff4d4f !important;
+        //                     border: 0 !important;
+        //                 }
 
-                    const pickupElement = document.getElementById('pickup_location');
-                    const dropElement = document.getElementById('drop_location');
+        //                 .no-drivers-popup .swal2-icon {
+        //                     margin: 0 auto 10px;
+        //                 }
+        //             </style>
+        //             <div style="text-align: center;">
+        //                 <p style="margin: 0 0 12px 0;">We don't have any drivers available in your area for the next 30 minutes.</p>
+        //                 <p style="margin: 0;">If your trip isn't urgent, you can continue booking.<br>For immediate assistance, please contact support.</p>
+        //             </div>
+        //         `,
+        //         showDenyButton: true,
+        //         showCancelButton: true,
+        //         confirmButtonText: 'Continue Booking',
+        //         denyButtonText: 'Contact Support',
+        //         cancelButtonText: 'Cancel',
+        //         buttonsStyling: false,
+        //         customClass: {
+        //             popup: 'no-drivers-popup',
+        //             actions: 'no-drivers-actions',
+        //             confirmButton: 'no-drivers-confirm-btn',
+        //             denyButton: 'no-drivers-support-btn',
+        //             cancelButton: 'no-drivers-cancel-btn'
+        //         },
+        //         allowOutsideClick: false,
+        //         reverseButtons: false,
+        //         focusConfirm: false
+        //     });
 
-                    if (!pickupElement.value || !dropElement.value) {
-                        showToast('Please enter both pickup and drop locations', 'error');
-                        return;
-                    }
+        //     if (result.isConfirmed && typeof onContinueBooking === 'function') {
+        //         return onContinueBooking();
+        //     }
 
-                    if (!pickupMarker || !dropMarker) {
-                        showToast('Please select pickup and drop from suggestions.', 'error');
-                        return;
-                    }
+        //     if (result.isDenied) {
+        //         window.location.href = "{{ route('contact') }}";
+        //     }
 
-                    const origin = pickupMarker.getPosition().lat() + "," + pickupMarker.getPosition()
-                        .lng();
-                    const destination = dropMarker.getPosition().lat() + "," + dropMarker.getPosition()
-                        .lng();
+        //     return null;
+        // }
 
-                    await callDistanceApi(origin, destination);
+        // async function checkDriverAvailability(pickupLat, pickupLng) {
+        //     const token = getAuthToken();
+        //     const response = await window.ApiUtils.fetch(
+        //         `${PRICE_API_BASE_URL}/v1/customer/drivers/availability-status`, {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Authorization': 'Bearer ' + token,
+        //                 'Accept': 'application/json',
+        //                 'Content-Type': 'application/json'
+        //             },
+        //             body: JSON.stringify({
+        //                 pickup_lat: pickupLat,
+        //                 pickup_lng: pickupLng
+        //             })
+        //         });
 
-                    const token = getAuthToken();
-                    if (!token) {
-                        localStorage.setItem('pending_booking', JSON.stringify({
-                            pickup_location: pickupElement.value,
-                            drop_location: dropElement.value,
-                            pickup_lat: pickupMarker.getPosition().lat(),
-                            pickup_lng: pickupMarker.getPosition().lng(),
-                            drop_lat: dropMarker.getPosition().lat(),
-                            drop_lng: dropMarker.getPosition().lng(),
-                            timestamp: Date.now()
-                        }));
+        //     const rawResponse = await response.text();
+        //     let responseData = {};
 
-                        window.location.href = "{{ route('login') }}?x=1";
-                        return;
-                    }
-                });
-            }
+        //     try {
+        //         responseData = JSON.parse(rawResponse);
+        //     } catch (error) {
+        //         responseData = {
+        //             raw: rawResponse
+        //         };
+        //     }
 
-            // Booking Submit
-            document.getElementById('bookingForm').addEventListener('submit', async function(e) {
-                e.preventDefault();
+        //     console.log('[Driver Availability] API response:', {
+        //         status: response.status,
+        //         ok: response.ok,
+        //         data: responseData
+        //     });
 
-                const pickupElement = document.getElementById('pickup_location');
-                const dropElement = document.getElementById('drop_location');
-                const promoElement = document.getElementById('promo_code');
-                const selectedRecoveryTypes = Array.from(document.querySelectorAll(
-                    'input[name="recovery_types_id[]"]:checked')).map((element) => Number(element.value))
-                    .filter((value) => Number.isFinite(value) && value > 0);
+        //     if (!response.ok) {
+        //         return {
+        //             available: null,
+        //             responseData
+        //         };
+        //     }
 
-                console.log('[Booking] Selected Vehicle Types:', selectedRecoveryTypes);
+        //     const available = parseOptionalBoolean(
+        //         responseData?.data?.is_drives_status ??
+        //         responseData?.data?.isDriversStatus ??
+        //         responseData?.is_drives_status ??
+        //         responseData?.isDriversStatus
+        //     );
 
-                if (!pickupElement.value || !dropElement.value) {
-                    showToast('Please enter both pickup and drop locations', 'error');
-                    return;
-                }
+        //     return {
+        //         available,
+        //         responseData
+        //     };
+        // }
 
-                if (!pickupMarker || !dropMarker) {
-                    showToast('Please select valid pickup and drop locations on the map.', 'error');
-                    return;
-                }
+        // function formatAedAmount(amount) {
+        //     const numericAmount = Number(amount);
+        //     const safeAmount = Number.isFinite(numericAmount) ? numericAmount : 0;
+        //     return `AED ${safeAmount.toFixed(2)}`;
+        // }
 
-                const distanceText = document.getElementById('distance')?.innerText || '';
-                const distanceValue = parseKmFromDistanceText(distanceText);
-                if (distanceValue <= 0) {
-                    showToast('Distance could not be calculated. Please click Calculate Price first.',
-                        'error');
-                    return;
-                }
+        // async function showTripPaymentOptionPopup(totalAmount, onContinuePayment) {
+        //     const depositAmount = 50;
+        //     const numericTotalAmount = Number(totalAmount);
+        //     const fullPaymentAmount = Number.isFinite(numericTotalAmount) && numericTotalAmount > 0 ? numericTotalAmount :
+        //         depositAmount;
 
-                const token = getAuthToken();
-                if (!token) {
-                    localStorage.setItem('pending_booking', JSON.stringify({
-                        pickup_location: pickupElement.value,
-                        drop_location: dropElement.value,
-                        pickup_lat: pickupMarker.getPosition().lat(),
-                        pickup_lng: pickupMarker.getPosition().lng(),
-                        drop_lat: dropMarker.getPosition().lat(),
-                        drop_lng: dropMarker.getPosition().lng(),
-                        timestamp: Date.now()
-                    }));
-                    window.location.href = "{{ route('login') }}";
-                    return;
-                }
+        //     if (fullPaymentAmount <= depositAmount) {
+        //         return onContinuePayment(fullPaymentAmount);
+        //     }
 
-                const pickupLatLng = pickupMarker.getPosition();
-                const dropLatLng = dropMarker.getPosition();
+        //     const result = await Swal.fire({
+        //         title: 'Choose your payment option',
+        //         html: `
+        //             <style>
+        //                 .trip-payment-popup {
+        //                     border-radius: 22px;
+        //                     padding: 24px 22px 18px;
+        //                 }
 
-                let promotionId = null;
-                if (promoElement && promoElement.dataset.promotionId) {
-                    promotionId = promoElement.dataset.promotionId;
-                }
+        //                 .trip-payment-options {
+        //                     display: flex;
+        //                     flex-direction: column;
+        //                     gap: 12px;
+        //                     text-align: left;
+        //                 }
 
-                // DOM values
-                const totalPrice = document.getElementById("grandTotalDisplay")?.innerText || "";
-                const etaMinutes = document.getElementById("minutes")?.innerText || "";
-                const basePrice = document.getElementById("price")?.innerText || "";
-                const discountAmountDisplay = document.getElementById("discountAmountDisplay")
-                    ?.innerText || "";
-                const platform_fee_amount = document.getElementById("platform_fee_amount");
-                const tax_amount = document.getElementById("tax_amount");
+        //                 .trip-payment-option {
+        //                     display: flex;
+        //                     gap: 12px;
+        //                     align-items: flex-start;
+        //                     border: 1px solid #d1d5db;
+        //                     border-radius: 16px;
+        //                     padding: 14px 16px;
+        //                     cursor: pointer;
+        //                     transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        //                 }
 
-                // remove text like "AED" or "mins"
-                const cleanTotalPrice = parseAedAmount(totalPrice);
-                const cleanBasePrice = parseAedAmount(basePrice);
-                const discountPrice = parseAedAmount(discountAmountDisplay);
-                const cleanMinutes = convertToMinutes(etaMinutes);
-                const platformFee = parseAedAmount(platform_fee_amount?.innerText || platform_fee_amount
-                    ?.textContent || '');
-                const taxAmount = parseAedAmount(tax_amount?.innerText || tax_amount?.textContent ||
-                    '');
+        //                 .trip-payment-option.is-active {
+        //                     border-color: #dc3545;
+        //                     box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.08);
+        //                 }
 
-                let payment_method = document.querySelector('input[name="payment_method"]:checked')
-                    .value;
-                if (!payment_method) {
-                    alert("Please select payment method");
-                    return;
-                }
-                const bookingPayload = {
-                    service_type_id: 1,
-                    pickup_address: pickupElement.value,
-                    pickup_lat: pickupLatLng.lat(),
-                    pickup_lng: pickupLatLng.lng(),
-                    dropoff_address: dropElement.value,
-                    dropoff_lat: dropLatLng.lat(),
-                    dropoff_lng: dropLatLng.lng(),
-                    distance_km: distanceValue,
-                    platform_fee: platformFee,
-                    tax: taxAmount,
-                    payment_method: payment_method,
-                    // extra values
-                    total_price: cleanTotalPrice,
-                    price: cleanBasePrice,
-                    eta_minutes: cleanMinutes,
-                    discountPrice: discountPrice,
-                    polyline: latestRoutePolyline
-                };
+        //                 .trip-payment-option input {
+        //                     margin-top: 4px;
+        //                 }
 
-                if (selectedRecoveryTypes.length) {
-                    bookingPayload.recovery_types_id = selectedRecoveryTypes;
-                }
+        //                 .trip-payment-option__content {
+        //                     flex: 1;
+        //                 }
 
-                console.log('[Booking] Payload before promotion:', bookingPayload);
+        //                 .trip-payment-option__head {
+        //                     display: flex;
+        //                     align-items: center;
+        //                     justify-content: space-between;
+        //                     gap: 12px;
+        //                     font-size: 15px;
+        //                     font-weight: 700;
+        //                     color: #111827;
+        //                 }
 
-                if (promotionId) bookingPayload.promotion_id = promotionId;
-                console.log('[Booking] Final payload:', bookingPayload);
+        //                 .trip-payment-option__note {
+        //                     margin-top: 4px;
+        //                     font-size: 13px;
+        //                     line-height: 1.45;
+        //                     color: #6b7280;
+        //                 }
 
-                try {
-                    const resp = await window.ApiUtils.fetch(
-                        `${PRICE_API_BASE_URL}/v1/customer/bookings?called_by=web`, {
-                            method: 'POST',
-                            headers: {
-                                'Authorization': 'Bearer ' + token
-                            },
-                            body: JSON.stringify(bookingPayload)
-                        });
+        //                 .trip-payment-warning {
+        //                     margin-top: 6px;
+        //                     padding: 10px 12px;
+        //                     border-radius: 12px;
+        //                     background: #fff7ed;
+        //                     color: #f97316;
+        //                     font-size: 13px;
+        //                     line-height: 1.45;
+        //                 }
 
-                    const resData = await resp.json();
-                    console.log('[Booking] API response:', {
-                        status: resp.status,
-                        ok: resp.ok,
-                        data: resData
-                    });
-                    if (!resp.ok || resData.status !== true) {
-                        showToast(resData.message || 'Please try again.', 'error');
-                        return;
-                    }
+        //                 .trip-payment-popup .swal2-actions {
+        //                     width: 100%;
+        //                     display: flex;
+        //                     gap: 10px;
+        //                     margin-top: 20px;
+        //                 }
 
-                    showToast('Booking created successfully!', 'success');
-                    showBookingSuccessPopup();
-                    return;
-                } catch (err) {
-                    showToast('Please try again.', 'error');
-                }
-            });
-        });
+        //                 .trip-payment-popup .swal2-confirm,
+        //                 .trip-payment-popup .swal2-cancel {
+        //                     flex: 1;
+        //                     margin: 0 !important;
+        //                     min-height: 48px;
+        //                     border-radius: 10px;
+        //                     font-size: 15px;
+        //                     font-weight: 700;
+        //                     box-shadow: none !important;
+        //                 }
 
-        function convertToMinutes(timeText) {
-            if (!timeText) return 0;
+        //                 .trip-payment-popup .swal2-confirm {
+        //                     background: #000 !important;
+        //                     color: #fff !important;
+        //                     border: 1px solid #000 !important;
+        //                 }
 
-            let hours = 0;
-            let minutes = 0;
+        //                 .trip-payment-popup .swal2-cancel {
+        //                     background: #fff !important;
+        //                     color: #111 !important;
+        //                     border: 1px solid #d1d5db !important;
+        //                 }
+        //             </style>
+        //             <div class="trip-payment-options">
+        //                 <label class="trip-payment-option is-active">
+        //                     <input type="radio" name="trip_payment_option" value="full" checked>
+        //                     <div class="trip-payment-option__content">
+        //                         <div class="trip-payment-option__head">
+        //                             <span>Pay full amount now</span>
+        //                             <strong>${formatAedAmount(fullPaymentAmount)}</strong>
+        //                         </div>
+        //                         <div class="trip-payment-option__note">No payment required to driver</div>
+        //                         <div class="trip-payment-option__note">Faster & smoother trip</div>
+        //                     </div>
+        //                 </label>
 
-            const hourMatch = timeText.match(/(\d+)\s*h/i);
-            const minMatch = timeText.match(/(\d+)\s*m/i);
+        //                 <label class="trip-payment-option">
+        //                     <input type="radio" name="trip_payment_option" value="deposit">
+        //                     <div class="trip-payment-option__content">
+        //                         <div class="trip-payment-option__head">
+        //                             <span>Pay at least AED 50 to confirm the trip</span>
+        //                             <strong>${formatAedAmount(depositAmount)}</strong>
+        //                         </div>
+        //                         <div class="trip-payment-option__note">Remaining amount payable when driver arrives</div>
+        //                         <div class="trip-payment-option__note">Vehicle will be picked up only after full payment</div>
+        //                     </div>
+        //                 </label>
 
-            if (hourMatch) {
-                hours = parseInt(hourMatch[1]);
-            }
+        //                 <div class="trip-payment-warning">
+        //                     Minimum amount of AED 50 is non-refundable if the customer cancels.
+        //                 </div>
+        //             </div>
+        //         `,
+        //         confirmButtonText: 'Continue',
+        //         cancelButtonText: 'Cancel',
+        //         showCancelButton: true,
+        //         buttonsStyling: false,
+        //         customClass: {
+        //             popup: 'trip-payment-popup',
+        //             confirmButton: 'trip-payment-confirm-btn',
+        //             cancelButton: 'trip-payment-cancel-btn'
+        //         },
+        //         allowOutsideClick: false,
+        //         focusConfirm: false,
+        //         didOpen: () => {
+        //             const popup = Swal.getPopup();
+        //             const optionLabels = popup?.querySelectorAll('.trip-payment-option') || [];
+        //             const radios = popup?.querySelectorAll('input[name="trip_payment_option"]') || [];
 
-            if (minMatch) {
-                minutes = parseInt(minMatch[1]);
-            }
+        //             const syncActiveState = () => {
+        //                 optionLabels.forEach((label) => label.classList.remove('is-active'));
+        //                 const selectedRadio = popup?.querySelector('input[name="trip_payment_option"]:checked');
+        //                 if (selectedRadio) {
+        //                     selectedRadio.closest('.trip-payment-option')?.classList.add('is-active');
+        //                 }
+        //             };
 
-            return (hours * 60) + minutes;
-        }
+        //             radios.forEach((radio) => {
+        //                 radio.addEventListener('change', syncActiveState);
+        //             });
 
-        function setPromoButtonUI(isApplied) {
-            const btn = document.getElementById('applyPromoBtn');
-            const promoInput = document.getElementById('promo_code');
-            if (!btn) return;
+        //             syncActiveState();
+        //         },
+        //         preConfirm: () => {
+        //             const selectedOption = Swal.getPopup()?.querySelector('input[name="trip_payment_option"]:checked')
+        //                 ?.value || 'full';
+        //             return selectedOption;
+        //         }
+        //     });
 
-            btn.dataset.applied = isApplied ? 'true' : 'false';
+        //     if (!result.isConfirmed) return null;
 
-            const txt = btn.querySelector('.btn-text');
-            if (txt) txt.textContent = isApplied ? 'Remove' : 'Apply';
+        //     const selectedAmount = result.value === 'deposit' ? depositAmount : fullPaymentAmount;
+        //     return onContinuePayment(selectedAmount);
+        // }
 
-            if (!isApplied && promoInput) {
-                promoInput.value = '';
-                delete promoInput.dataset.promotionId;
-            }
-        }
+        // function buildTripPrepaymentPayload(bookingPayload, prepaymentAmount) {
+        //     const numericAmount = Number(prepaymentAmount);
+        //     const safePrepaymentAmount = Number.isFinite(numericAmount) && numericAmount > 0 ? numericAmount : 50;
 
-        // Globals (ensure these exist)
-        function setPromoButtonUI(isApplied) {
-            const btn = document.getElementById('applyPromoBtn');
-            const promoInput = document.getElementById('promo_code');
-            if (!btn) return;
+        //     return {
+        //         service_type_id: bookingPayload.service_type_id,
+        //         pickup_address: bookingPayload.pickup_address,
+        //         pickup_lat: bookingPayload.pickup_lat,
+        //         pickup_lng: bookingPayload.pickup_lng,
+        //         dropoff_address: bookingPayload.dropoff_address,
+        //         dropoff_lat: bookingPayload.dropoff_lat,
+        //         dropoff_lng: bookingPayload.dropoff_lng,
+        //         distance_km: bookingPayload.distance_km,
+        //         eta_minutes: bookingPayload.eta_minutes,
+        //         booking_type: 'immediate',
+        //         payment_method: bookingPayload.payment_method,
+        //         prepayment_amount: safePrepaymentAmount,
+        //         additional_notes: '',
+        //         ...(bookingPayload.recovery_types_id?.length ? {
+        //             recovery_types_id: bookingPayload.recovery_types_id
+        //         } : {})
+        //     };
+        // }
 
-            btn.dataset.applied = isApplied ? 'true' : 'false';
+        // async function submitTripPrepaymentRequest(bookingPayload, token, prepaymentAmount) {
+        //     const prepaymentPayload = buildTripPrepaymentPayload(bookingPayload, prepaymentAmount);
 
-            const txt = btn.querySelector('.btn-text');
-            if (txt) txt.textContent = isApplied ? 'Remove' : 'Apply';
+        //     const {
+        //         resp,
+        //         resData
+        //     } = await callTripPrepaymentApi('trip-prepayments-web', token, {
+        //         method: 'POST',
+        //         body: JSON.stringify(prepaymentPayload)
+        //     });
 
-            if (!isApplied && promoInput) {
-                promoInput.value = '';
-                delete promoInput.dataset.promotionId;
-            }
-        }
+        //     console.log('[Trip Prepayment] API response:', {
+        //         status: resp.status,
+        //         ok: resp.ok,
+        //         data: resData
+        //     });
+
+        //     if (!resp.ok || resData.status !== true) {
+        //         showToast(resData.message || 'Please try again.', 'error');
+        //         return false;
+        //     }
+
+        //     const responseData = getTripPrepaymentResponseData(resData);
+        //     const prepaymentId = responseData?.prepayment_id || resData?.prepayment_id || '';
+        //     const checkoutUrl = responseData?.checkout_url;
+        //     const successUrl = responseData?.success_url;
+        //     const cancelUrl = responseData?.cancel_url;
+        //     const publicStatusUrl = responseData?.public_status_url;
+
+        //     if (!checkoutUrl) {
+        //         showToast('Payment link generated, but checkout URL is missing.', 'error');
+        //         return false;
+        //     }
+
+        //     saveTripPrepaymentContext({
+        //         prepayment_id: prepaymentId,
+        //         checkout_url: checkoutUrl || '',
+        //         success_url: successUrl || '',
+        //         cancel_url: cancelUrl || '',
+        //         public_status_url: publicStatusUrl || '',
+        //         booking_payload: prepaymentPayload,
+        //         prepayment_amount: prepaymentPayload.prepayment_amount
+        //     });
+
+        //     window.location.replace(checkoutUrl);
+        //     return true;
+        // }
+
+        // async function submitBookingRequest(bookingPayload, token) {
+        //     return showTripPaymentOptionPopup(bookingPayload.total_price, (selectedAmount) =>
+        //         submitTripPrepaymentRequest(bookingPayload, token, selectedAmount)
+        //     );
+        // }
+
+        // /* ------------------ DOM Ready ------------------ */
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     handleTripPrepaymentResume();
+        //     checkLocationPermission();
+        //     loadGoogleMapsScript();
+
+        //     // Use current location
+        //     const useCurrentLocationBtn = document.getElementById('useCurrentLocationBtn');
+        //     if (useCurrentLocationBtn) {
+        //         useCurrentLocationBtn.addEventListener('click', function(e) {
+        //             e.preventDefault();
+        //             if (!map) return showToast('Map is still loading...', 'info');
+        //             getUserLiveLocation();
+        //         });
+        //     }
+
+        //     initializeRecoveryTypes();
+
+        //     const recoveryTypesTrigger = document.getElementById('recoveryTypesTrigger');
+        //     const recoveryTypesDropdown = document.getElementById('recoveryTypesDropdown');
+        //     const recoveryTypesDoneBtn = document.getElementById('recoveryTypesDoneBtn');
+        //     const recoveryTypesRequiredProxy = document.getElementById('recoveryTypesRequiredProxy');
+        //     if (recoveryTypesTrigger && recoveryTypesDropdown) {
+        //         recoveryTypesTrigger.addEventListener('click', function() {
+        //             const panel = document.getElementById('recoveryTypesPanel');
+        //             const isOpen = panel ? panel.classList.contains('d-none') : false;
+        //             setRecoveryTypesDropdownOpen(isOpen);
+        //         });
+
+        //         document.addEventListener('click', function(event) {
+        //             if (!recoveryTypesDropdown.contains(event.target)) {
+        //                 setRecoveryTypesDropdownOpen(false);
+        //             }
+        //         });
+
+        //         document.addEventListener('keydown', function(event) {
+        //             if (event.key === 'Escape') {
+        //                 setRecoveryTypesDropdownOpen(false);
+        //             }
+        //         });
+        //     }
+
+        //     if (recoveryTypesRequiredProxy) {
+        //         recoveryTypesRequiredProxy.addEventListener('invalid', function() {
+        //             setRecoveryTypesDropdownOpen(true);
+        //         });
+        //     }
+
+        //     if (recoveryTypesDoneBtn) {
+        //         recoveryTypesDoneBtn.addEventListener('click', function() {
+        //             setRecoveryTypesDropdownOpen(false);
+        //         });
+        //     }
+
+        //     // Calculate Price button
+        //     const calculatePriceBtn = document.getElementById('calculatePriceBtn');
+        //     if (calculatePriceBtn) {
+        //         calculatePriceBtn.addEventListener('click', async function(e) {
+        //             e.preventDefault();
+
+        //             const pickupElement = document.getElementById('pickup_location');
+        //             const dropElement = document.getElementById('drop_location');
+
+        //             if (!pickupElement.value || !dropElement.value) {
+        //                 showToast('Please enter both pickup and drop locations', 'error');
+        //                 return;
+        //             }
+
+        //             if (!pickupMarker || !dropMarker) {
+        //                 showToast('Please select pickup and drop from suggestions.', 'error');
+        //                 return;
+        //             }
+
+        //             const origin = pickupMarker.getPosition().lat() + "," + pickupMarker.getPosition()
+        //                 .lng();
+        //             const destination = dropMarker.getPosition().lat() + "," + dropMarker.getPosition()
+        //                 .lng();
+
+        //             await callDistanceApi(origin, destination);
+
+        //             const token = getAuthToken();
+        //             if (!token) {
+        //                 localStorage.setItem('pending_booking', JSON.stringify({
+        //                     pickup_location: pickupElement.value,
+        //                     drop_location: dropElement.value,
+        //                     pickup_lat: pickupMarker.getPosition().lat(),
+        //                     pickup_lng: pickupMarker.getPosition().lng(),
+        //                     drop_lat: dropMarker.getPosition().lat(),
+        //                     drop_lng: dropMarker.getPosition().lng(),
+        //                     timestamp: Date.now()
+        //                 }));
+
+        //                 window.location.href = "{{ route('login') }}?x=1";
+        //                 return;
+        //             }
+        //         });
+        //     }
+
+        //     // Booking Submit
+        //     document.getElementById('bookingForm').addEventListener('submit', async function(e) {
+        //         e.preventDefault();
+
+        //         const pickupElement = document.getElementById('pickup_location');
+        //         const dropElement = document.getElementById('drop_location');
+        //         const promoElement = document.getElementById('promo_code');
+        //         const selectedRecoveryTypes = Array.from(document.querySelectorAll(
+        //             'input[name="recovery_types_id[]"]:checked')).map((element) => Number(element.value))
+        //             .filter((value) => Number.isFinite(value) && value > 0);
+
+        //         console.log('[Booking] Selected Vehicle Types:', selectedRecoveryTypes);
+
+        //         if (!pickupElement.value || !dropElement.value) {
+        //             showToast('Please enter both pickup and drop locations', 'error');
+        //             return;
+        //         }
+
+        //         if (!pickupMarker || !dropMarker) {
+        //             showToast('Please select valid pickup and drop locations on the map.', 'error');
+        //             return;
+        //         }
+
+        //         const distanceText = document.getElementById('distance')?.innerText || '';
+        //         const distanceValue = parseKmFromDistanceText(distanceText);
+        //         if (distanceValue <= 0) {
+        //             showToast('Distance could not be calculated. Please click Calculate Price first.',
+        //                 'error');
+        //             return;
+        //         }
+
+        //         const token = getAuthToken();
+        //         if (!token) {
+        //             localStorage.setItem('pending_booking', JSON.stringify({
+        //                 pickup_location: pickupElement.value,
+        //                 drop_location: dropElement.value,
+        //                 pickup_lat: pickupMarker.getPosition().lat(),
+        //                 pickup_lng: pickupMarker.getPosition().lng(),
+        //                 drop_lat: dropMarker.getPosition().lat(),
+        //                 drop_lng: dropMarker.getPosition().lng(),
+        //                 timestamp: Date.now()
+        //             }));
+        //             window.location.href = "{{ route('login') }}";
+        //             return;
+        //         }
+
+        //         const pickupLatLng = pickupMarker.getPosition();
+        //         const dropLatLng = dropMarker.getPosition();
+
+        //         let promotionId = null;
+        //         if (promoElement && promoElement.dataset.promotionId) {
+        //             promotionId = promoElement.dataset.promotionId;
+        //         }
+
+        //         // DOM values
+        //         const totalPrice = document.getElementById("grandTotalDisplay")?.innerText || "";
+        //         const etaMinutes = document.getElementById("minutes")?.innerText || "";
+        //         const basePrice = document.getElementById("price")?.innerText || "";
+        //         const discountAmountDisplay = document.getElementById("discountAmountDisplay")
+        //             ?.innerText || "";
+        //         const platform_fee_amount = document.getElementById("platform_fee_amount");
+        //         const tax_amount = document.getElementById("tax_amount");
+
+        //         // remove text like "AED" or "mins"
+        //         const cleanTotalPrice = parseAedAmount(totalPrice);
+        //         const cleanBasePrice = parseAedAmount(basePrice);
+        //         const discountPrice = parseAedAmount(discountAmountDisplay);
+        //         const cleanMinutes = convertToMinutes(etaMinutes);
+        //         const platformFee = parseAedAmount(platform_fee_amount?.innerText || platform_fee_amount
+        //             ?.textContent || '');
+        //         const taxAmount = parseAedAmount(tax_amount?.innerText || tax_amount?.textContent ||
+        //             '');
+
+        //         const payment_method = 'payment_link';
+        //         const bookingPayload = {
+        //             service_type_id: 1,
+        //             pickup_address: pickupElement.value,
+        //             pickup_lat: pickupLatLng.lat(),
+        //             pickup_lng: pickupLatLng.lng(),
+        //             dropoff_address: dropElement.value,
+        //             dropoff_lat: dropLatLng.lat(),
+        //             dropoff_lng: dropLatLng.lng(),
+        //             distance_km: distanceValue,
+        //             platform_fee: platformFee,
+        //             tax: taxAmount,
+        //             payment_method: payment_method,
+        //             // extra values
+        //             total_price: cleanTotalPrice,
+        //             price: cleanBasePrice,
+        //             eta_minutes: cleanMinutes,
+        //             discountPrice: discountPrice,
+        //             polyline: latestRoutePolyline
+        //         };
+
+        //         if (selectedRecoveryTypes.length) {
+        //             bookingPayload.recovery_types_id = selectedRecoveryTypes;
+        //         }
+
+        //         console.log('[Booking] Payload before promotion:', bookingPayload);
+
+        //         if (promotionId) bookingPayload.promotion_id = promotionId;
+        //         console.log('[Booking] Final payload:', bookingPayload);
+
+        //         try {
+        //             const availabilityResult = await checkDriverAvailability(
+        //                 pickupLatLng.lat(),
+        //                 pickupLatLng.lng()
+        //             );
+
+        //             if (availabilityResult.available === false) {
+        //                 await showNoDriversAvailablePopup(() => submitBookingRequest(bookingPayload, token));
+        //                 return;
+        //             }
+
+        //             if (availabilityResult.available === null && !availabilityResult.responseData?.status) {
+        //                 showToast(availabilityResult.responseData?.message || 'Unable to check driver availability right now.',
+        //                     'error');
+        //                 return;
+        //             }
+
+        //             await submitBookingRequest(bookingPayload, token);
+        //             return;
+        //         } catch (err) {
+        //             console.error('[Booking] submit error:', err);
+        //             showToast('Please try again.', 'error');
+        //         }
+        //     });
+        // });
+
+        // window.addEventListener('pageshow', function(event) {
+        //     if (event.persisted) {
+        //         handleTripPrepaymentResume();
+        //     }
+        // });
+
+        // function convertToMinutes(timeText) {
+        //     if (!timeText) return 0;
+
+        //     let hours = 0;
+        //     let minutes = 0;
+
+        //     const hourMatch = timeText.match(/(\d+)\s*h/i);
+        //     const minMatch = timeText.match(/(\d+)\s*m/i);
+
+        //     if (hourMatch) {
+        //         hours = parseInt(hourMatch[1]);
+        //     }
+
+        //     if (minMatch) {
+        //         minutes = parseInt(minMatch[1]);
+        //     }
+
+        //     return (hours * 60) + minutes;
+        // }
+
+        // function setPromoButtonUI(isApplied) {
+        //     const btn = document.getElementById('applyPromoBtn');
+        //     const promoInput = document.getElementById('promo_code');
+        //     if (!btn) return;
+
+        //     btn.dataset.applied = isApplied ? 'true' : 'false';
+
+        //     const txt = btn.querySelector('.btn-text');
+        //     if (txt) txt.textContent = isApplied ? 'Remove' : 'Apply';
+
+        //     if (!isApplied && promoInput) {
+        //         promoInput.value = '';
+        //         delete promoInput.dataset.promotionId;
+        //     }
+        // }
+
+        // // Globals (ensure these exist)
+        // function setPromoButtonUI(isApplied) {
+        //     const btn = document.getElementById('applyPromoBtn');
+        //     const promoInput = document.getElementById('promo_code');
+        //     if (!btn) return;
+
+        //     btn.dataset.applied = isApplied ? 'true' : 'false';
+
+        //     const txt = btn.querySelector('.btn-text');
+        //     if (txt) txt.textContent = isApplied ? 'Remove' : 'Apply';
+
+        //     if (!isApplied && promoInput) {
+        //         promoInput.value = '';
+        //         delete promoInput.dataset.promotionId;
+        //     }
+        // }
 
         function setPromoLoading(isLoading) {
             const btn = document.getElementById('applyPromoBtn');
