@@ -1439,6 +1439,17 @@
         }
         /* ------------------ DOM Ready ------------------ */
         document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const paymentStatus = urlParams.get('payment');
+            
+            if (paymentStatus === 'success') {
+                showBookingSuccessPopup();
+                window.history.replaceState({}, document.title, window.location.pathname);
+            } else if (paymentStatus === 'cancel') {
+                showToast('Payment was cancelled or failed. Please try again.', 'error');
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+
             checkLocationPermission();
             loadGoogleMapsScript();
 
@@ -1571,8 +1582,9 @@
                     payment_method: "payment_link",
                     booking_type: "immediate",
                     prepayment_amount: cleanTotalPrice,
-                    success_url: window.location.origin,
-                    cancel_url: window.location.origin,
+                    success_url: window.location.origin + "?payment=success",
+                    cancel_url: window.location.origin + "?payment=cancel",
+                    called_by: "web",
                     // extra values
                     total_price: cleanTotalPrice,
                     price: cleanBasePrice,
@@ -1591,7 +1603,7 @@
                     
                     try {
                         const resp = await window.ApiUtils.fetch(
-                            `${PRICE_API_BASE_URL}/v1/customer/payments/trip-prepayments`, {
+                            `${PRICE_API_BASE_URL}/v1/customer/payments/trip-prepayments?called_by=web`, {
                                 method: 'POST',
                                 headers: {
                                     'Authorization': 'Bearer ' + token,
