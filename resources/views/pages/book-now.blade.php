@@ -1603,7 +1603,8 @@
                     
                     try {
                         const resp = await window.ApiUtils.fetch(
-                            `${PRICE_API_BASE_URL}/v1/customer/payments/trip-prepayments-web`, {
+                            `${PRICE_API_BASE_URL}/v1/customer/payments/trip-prepayments?called_by=web`, {
+
                                 method: 'POST',
                                 headers: {
                                     'Authorization': 'Bearer ' + token,
