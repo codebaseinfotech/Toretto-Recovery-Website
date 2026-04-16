@@ -2543,6 +2543,11 @@
 
                 console.log('[Booking] Selected Vehicle Types:', selectedRecoveryTypes);
 
+                if (!selectedRecoveryTypes || selectedRecoveryTypes.length === 0) {
+                    showToast('Please select at least one Vehicle Type.', 'error');
+                    return;
+                }
+
                 if (!pickupElement.value || !dropElement.value) {
                     showToast('Please enter both pickup and drop locations', 'error');
                     return;
@@ -2623,6 +2628,8 @@
                     payment_method: payment_method || "payment_link",
                     booking_type: "immediate",
                     prepayment_amount: cleanTotalPrice,
+                    success_url: window.location.origin,
+                    cancel_url: window.location.origin,
                     // extra values
                     total_price: cleanTotalPrice,
                     price: cleanBasePrice,

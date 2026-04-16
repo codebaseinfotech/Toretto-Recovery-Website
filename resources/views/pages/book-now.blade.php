@@ -1571,6 +1571,8 @@
                     payment_method: "payment_link",
                     booking_type: "immediate",
                     prepayment_amount: cleanTotalPrice,
+                    success_url: window.location.origin,
+                    cancel_url: window.location.origin,
                     // extra values
                     total_price: cleanTotalPrice,
                     price: cleanBasePrice,
