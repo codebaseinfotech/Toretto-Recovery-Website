@@ -989,6 +989,36 @@
         </div>
     </section>
 
+    <!-- Driver Unavailable Modal -->
+    <div class="modal fade" id="driverUnavailableModal" tabindex="-1" aria-labelledby="driverUnavailableModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 460px;">
+            <div class="modal-content" style="border-radius: 20px; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.15); padding: 5px;">
+                <div class="modal-header border-0 pb-0" style="padding-top: 15px; position: relative;">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="position: absolute; right: 15px; top: 15px;"></button>
+                    
+                    <h5 class="modal-title w-100 text-center" id="driverUnavailableModalLabel" style="font-weight: 800; font-size: 22px; color: #000; margin-top: 10px;">
+                        ⚠️ Sorry! No Drivers Available
+                    </h5>
+                </div>
+                <div class="modal-body text-center pt-2 pb-3">
+                    <p style="font-size: 16px; color: #555; margin-bottom: 12px; padding: 0 15px;">
+                        We don't have any drivers available in your area for the next 30 minutes.
+                    </p>
+                    <p style="font-size: 15px; color: #555; margin-bottom: 25px; padding: 0 15px;">
+                        If your trip isn't urgent, you can continue booking.<br>
+                        For immediate assistance, please contact support.
+                    </p>
+                    
+                    <div class="d-flex flex-column gap-3 px-4">
+                        <button type="button" class="btn w-100" style="background-color: #000; color: #fff; padding: 12px 20px; border-radius: 12px; font-weight: 600; font-size: 17px; border: none;" id="continueBookingBtn" data-bs-dismiss="modal">Continue Booking</button>
+                        
+                        <a href="{{ route('contact') }}" class="btn w-100" style="background-color: #fff; color: #000; padding: 12px 20px; border-radius: 12px; font-weight: 600; font-size: 17px; border: 1px solid #000; text-decoration: none;">Contact Support</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 
@@ -2588,7 +2618,9 @@
                     distance_km: distanceValue,
                     platform_fee: platformFee,
                     tax: taxAmount,
-                    payment_method: payment_method,
+                    payment_method: payment_method || "payment_link",
+                    booking_type: "immediate",
+                    prepayment_amount: cleanTotalPrice,
                     // extra values
                     total_price: cleanTotalPrice,
                     price: cleanBasePrice,
@@ -2606,32 +2638,96 @@
                 if (promotionId) bookingPayload.promotion_id = promotionId;
                 console.log('[Booking] Final payload:', bookingPayload);
 
-                try {
-                    const resp = await window.ApiUtils.fetch(
-                        `${PRICE_API_BASE_URL}/v1/customer/bookings?called_by=web`, {
-                            method: 'POST',
-                            headers: {
-                                'Authorization': 'Bearer ' + token
-                            },
-                            body: JSON.stringify(bookingPayload)
+                const triggerTripPrepayment = async (payload) => {
+                    const submitBtn = document.querySelector('#bookingForm button[type="submit"]');
+                    if (submitBtn) { submitBtn.disabled = true; submitBtn.innerHTML = "Processing..."; }
+                    
+                    try {
+                        const resp = await window.ApiUtils.fetch(
+                            `${PRICE_API_BASE_URL}/v1/customer/payments/trip-prepayments`, {
+                                method: 'POST',
+                                headers: {
+                                    'Authorization': 'Bearer ' + token,
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(payload)
+                            }
+                        );
+
+                        const resData = await resp.json();
+                        console.log('[Booking] API response:', {
+                            status: resp.status,
+                            ok: resp.ok,
+                            data: resData
                         });
 
-                    const resData = await resp.json();
-                    console.log('[Booking] API response:', {
-                        status: resp.status,
-                        ok: resp.ok,
-                        data: resData
-                    });
-                    if (!resp.ok || resData.status !== true) {
-                        showToast(resData.message || 'Please try again.', 'error');
+                        if (!resp.ok || resData.status !== true) {
+                            showToast(resData.message || 'Please try again.', 'error');
+                            if (submitBtn) { submitBtn.disabled = false; submitBtn.innerHTML = "Book Now"; }
+                            return;
+                        }
+
+                        if (resData.data && resData.data.payment_url) {
+                            window.location.href = resData.data.payment_url;
+                        } else if (resData.data && resData.data.url) {
+                            window.location.href = resData.data.url;
+                        } else {
+                            showToast('Booking created successfully!', 'success');
+                            showBookingSuccessPopup();
+                            if (submitBtn) { submitBtn.disabled = false; submitBtn.innerHTML = "Book Now"; }
+                        }
+                    } catch (err) {
+                        showToast('Please try again.', 'error');
+                        if (submitBtn) { submitBtn.disabled = false; submitBtn.innerHTML = "Book Now"; }
+                    }
+                };
+
+                try {
+                    // Check Driver Availability First
+                    const availabilityResp = await window.ApiUtils.fetch(
+                        `${PRICE_API_BASE_URL}/v1/customer/drivers/availability-status`, {
+                            method: 'POST',
+                            headers: {
+                                'Authorization': 'Bearer ' + token,
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                pickup_lat: pickupLatLng.lat(),
+                                pickup_lng: pickupLatLng.lng()
+                            })
+                        }
+                    );
+
+                    let availData = {};
+                    try {
+                        availData = await availabilityResp.json();
+                    } catch (e) {
+                        availData = {};
+                    }
+
+                    if (!availabilityResp.ok || (availData?.data && availData.data.is_drives_status === false)) {
+                        const unavailableModalEl = document.getElementById('driverUnavailableModal');
+                        const unavailableModal = new bootstrap.Modal(unavailableModalEl);
+                        
+                        const continueBtn = document.getElementById('continueBookingBtn');
+                        if (continueBtn) {
+                            continueBtn.onclick = function() {
+                                unavailableModal.hide();
+                                setTimeout(() => {
+                                    triggerTripPrepayment(bookingPayload);
+                                }, 300);
+                            };
+                        }
+
+                        unavailableModal.show();
                         return;
                     }
 
-                    showToast('Booking created successfully!', 'success');
-                    showBookingSuccessPopup();
-                    return;
+                    // Available -> Proceed
+                    await triggerTripPrepayment(bookingPayload);
+                    
                 } catch (err) {
-                    showToast('Please try again.', 'error');
+                    showToast('Please try again checking availability.', 'error');
                 }
             });
         });
