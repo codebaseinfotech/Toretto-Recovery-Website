@@ -2361,6 +2361,8 @@
                 showCloseButton: true,
                 width: '600px',
                 padding: '30px',
+                timer: isSuccess ? 30000 : undefined,
+                timerProgressBar: isSuccess ? true : false,
                 willClose: () => {
                     if (isSuccess) {
                     // Clear the form instead of reloading the page
