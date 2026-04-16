@@ -1140,10 +1140,15 @@
             });
         }
 
-        function showBookingSuccessPopup() {
-            Swal.fire({
-                title: '<strong style="font-size: 24px;">Thank You!</strong>',
-                html: `
+        function showBookingSuccessPopup(isSuccess = true, errorMessage = null) {
+            let titleHtml = isSuccess 
+                ? '<strong style="font-size: 24px;">Thank You!</strong>' 
+                : '<strong style="font-size: 24px; color: #dc3545;">Booking Error</strong>';
+
+            let popupHtml = '';
+            
+            if (isSuccess) {
+                popupHtml = `
                 <style>
                     .finding-wrap{
                         display:flex;
@@ -1332,12 +1337,38 @@
                             Go to Home Screen
                         </button>
                     </div>
-                </div>`,
+                </div>`;
+            } else {
+                let displayMessage = errorMessage ? errorMessage : 'An error occurred during booking. Please try again.';
+                popupHtml = `
+                <div style="text-align: center; max-width: 500px; margin: 0 auto; font-family: 'Avenir', sans-serif;">
+                    <div style="margin: 20px 0;">
+                        <svg viewBox="0 0 24 24" width="80" height="80" stroke="#dc3545" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                    </div>
+                    <p style="font-size: 18px; margin-bottom: 25px; color: #333;">
+                        ${displayMessage}
+                    </p>
+                    <div style="margin-top: 25px;">
+                        <button style="background-color: #333; color: white; border: none; padding: 12px 30px; border-radius: 6px; cursor: pointer; font-size: 16px; font-family: 'Avenir', sans-serif; font-weight: bold; transition: background-color 0.3s;" onclick="Swal.close()">
+                            Close
+                        </button>
+                    </div>
+                </div>`;
+            }
+
+            Swal.fire({
+                title: titleHtml,
+                html: popupHtml,
                 showConfirmButton: false,
                 showCloseButton: true,
                 width: '600px',
                 padding: '30px',
                 willClose: () => {
+                    if (isSuccess) {
                     // Clear the form instead of reloading the page
                     document.getElementById('bookingForm').reset();
 
@@ -1417,6 +1448,7 @@
                         });
                         map.setZoom(11);
                     }
+                    } // close if (isSuccess)
                 },
                 customClass: {
                     popup: 'booking-success-popup',
@@ -1446,7 +1478,7 @@
                 showBookingSuccessPopup();
                 window.history.replaceState({}, document.title, window.location.pathname);
             } else if (paymentStatus === 'cancel') {
-                showToast('Payment was cancelled or failed. Please try again.', 'error');
+                showBookingSuccessPopup(false, 'Payment was cancelled or failed. Please try again.');
                 window.history.replaceState({}, document.title, window.location.pathname);
             }
 
@@ -1617,7 +1649,7 @@
                         const resData = await resp.json();
                         
                         if (!resp.ok || resData.status !== true) {
-                            showToast(resData.message || 'Please try again.', 'error');
+                            showBookingSuccessPopup(false, resData.message || 'Please try again.');
                             if (submitBtn) { submitBtn.disabled = false; submitBtn.innerHTML = "Book Now"; }
                             return;
                         }
@@ -1634,7 +1666,7 @@
                             if (submitBtn) { submitBtn.disabled = false; submitBtn.innerHTML = "Book Now"; }
                         }
                     } catch (err) {
-                        showToast('Please try again.', 'error');
+                        showBookingSuccessPopup(false, 'Please try again.');
                         if (submitBtn) { submitBtn.disabled = false; submitBtn.innerHTML = "Book Now"; }
                     }
                 };
