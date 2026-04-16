@@ -1473,11 +1473,12 @@
         document.addEventListener('DOMContentLoaded', function() {
             const urlParams = new URLSearchParams(window.location.search);
             const paymentStatus = urlParams.get('payment');
+            const stateStatus = urlParams.get('state');
             
-            if (paymentStatus === 'success') {
+            if (paymentStatus === 'success' || stateStatus === 'success') {
                 showBookingSuccessPopup();
                 window.history.replaceState({}, document.title, window.location.pathname);
-            } else if (paymentStatus === 'cancel') {
+            } else if (paymentStatus === 'cancel' || stateStatus === 'cancel' || stateStatus === 'fail' || stateStatus === 'failed') {
                 showBookingSuccessPopup(false, 'Payment was cancelled or failed. Please try again.');
                 window.history.replaceState({}, document.title, window.location.pathname);
             }
