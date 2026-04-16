@@ -1013,6 +1013,8 @@
                         <button type="button" class="btn w-100" style="background-color: #000; color: #fff; padding: 12px 20px; border-radius: 12px; font-weight: 600; font-size: 17px; border: none;" id="continueBookingBtn" data-bs-dismiss="modal">Continue Booking</button>
                         
                         <a href="{{ route('contact') }}" class="btn w-100" style="background-color: #fff; color: #000; padding: 12px 20px; border-radius: 12px; font-weight: 600; font-size: 17px; border: 1px solid #000; text-decoration: none;">Contact Support</a>
+                        
+                        <button type="button" class="btn w-100" style="background: transparent; color: #ff3b30; padding: 10px; font-weight: 600; font-size: 16px; border: none; outline: none; box-shadow: none;" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -2667,7 +2669,9 @@
                             return;
                         }
 
-                        if (resData.data && resData.data.payment_url) {
+                        if (resData.data && resData.data.checkout_url) {
+                            window.location.href = resData.data.checkout_url;
+                        } else if (resData.data && resData.data.payment_url) {
                             window.location.href = resData.data.payment_url;
                         } else if (resData.data && resData.data.url) {
                             window.location.href = resData.data.url;
