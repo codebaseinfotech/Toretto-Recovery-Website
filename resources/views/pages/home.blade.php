@@ -2631,12 +2631,7 @@
                 const taxAmount = parseAedAmount(tax_amount?.innerText || tax_amount?.textContent ||
                     '');
 
-                let payment_method = document.querySelector('input[name="payment_method"]:checked')
-                    .value;
-                if (!payment_method) {
-                    alert("Please select payment method");
-                    return;
-                }
+                const payment_method = (document.querySelector('input[name="payment_method"]:checked') || document.querySelector('input[name="payment_method"]'))?.value || "payment_link";
                 const bookingPayload = {
                     service_type_id: 1,
                     pickup_address: pickupElement.value,
