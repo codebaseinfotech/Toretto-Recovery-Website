@@ -182,17 +182,8 @@
                         </div>
                     </div>
 
-                    <div class="payment-method-section mb-4 p-3 bg-light rounded">
-                        <h5 class="mb-3">Payment Method</h5>
-
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="payment_method" id="payment_cod"
-                                value="cod" required>
-                            <label class="form-check-label d-flex align-items-center gap-2" for="payment_cod">
-                                <span class="fw-bold">Cash on Delivery (COD)</span>
-                            </label>
-                        </div>
-                    </div>
+                    {{-- Payment method is always 'payment_link' — user is redirected to checkout on Book Now --}}
+                    <input type="hidden" name="payment_method" value="payment_link">
 
                     <!-- SUBMIT -->
                     <div class="form-button">
