@@ -242,31 +242,8 @@
                                 </div>
                             </div>
 
-                            <div class="payment-method-section mb-4"
-                                style="background: #f8f9fa; border-radius: 8px; padding: 15px; border: 1px solid #eee;">
-
-                                <!-- COD (default selected) -->
-                                @if (!empty($settings['is_COD_enabale']) && $settings['is_COD_enabale'] == 'true')
-                                    <div class="form-check m-0 d-flex align-items-center gap-2">
-                                        <input class="form-check-input mt-0" type="radio" name="payment_method"
-                                            id="payment_cod" value="cash" required checked style="cursor: pointer;">
-                                        <label class="form-check-label" for="payment_cod"
-                                            style="font-size: 14px; font-weight: 500; color: #000; cursor: pointer; margin-top:2px;">
-                                            Cash on Delivery (COD)
-                                        </label>
-                                    </div>
-                                @endif
-                                @if (!empty($settings['is_payment_link']) && $settings['is_payment_link'] == 'true')
-                                    <div class="form-check m-0 d-flex align-items-center gap-2">
-                                        <input class="form-check-input mt-0" type="radio" name="payment_method"
-                                            id="payment_link" value="payment_link" required style="cursor: pointer;">
-                                        <label class="form-check-label" for="payment_link"
-                                            style="font-size: 14px; font-weight: 500; color: #000; cursor: pointer; margin-top:2px;">
-                                            Pay by Link
-                                        </label>
-                                    </div>
-                                @endif
-                            </div>
+                            {{-- Payment method fixed to payment_link — Book Now always redirects to payment checkout --}}
+                            <input type="hidden" name="payment_method" id="payment_link" value="payment_link">
 
                             <!-- SUBMIT -->
                             <div class="form-button">
