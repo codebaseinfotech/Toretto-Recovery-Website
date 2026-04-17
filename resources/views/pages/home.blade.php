@@ -2319,10 +2319,10 @@
 
                     <div style="margin-bottom: 25px;">
                         <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
-                            <a href="#" target="_blank" style="display: inline-block;">
+                            <a href="https://play.google.com/store/apps/details?id=com.cb.fixmycaruae" target="_blank" style="display: inline-block;">
                                 <img src="{{ asset('assets/images/google-play.png') }}" alt="Google Play" style="height: 50px; width: auto;">
                             </a>
-                            <a href="#" target="_blank" style="display: inline-block;">
+                            <a href="https://apps.apple.com/in/app/fixmycar-uae/id6757262754" target="_blank" style="display: inline-block;">
                                 <img src="{{ asset('assets/images/app-store.png') }}" alt="App Store" style="height: 50px; width: auto;">
                             </a>
                         </div>
