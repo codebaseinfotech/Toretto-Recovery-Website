@@ -182,17 +182,8 @@
                         </div>
                     </div>
 
-                    <div class="payment-method-section mb-4 p-3 bg-light rounded">
-                        <h5 class="mb-3">Payment Method</h5>
-
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="payment_method" id="payment_cod"
-                                value="cod" required>
-                            <label class="form-check-label d-flex align-items-center gap-2" for="payment_cod">
-                                <span class="fw-bold">Cash on Delivery (COD)</span>
-                            </label>
-                        </div>
-                    </div>
+                    {{-- Payment method is always 'payment_link' — user is redirected to checkout on Book Now --}}
+                    <input type="hidden" name="payment_method" value="payment_link">
 
                     <!-- SUBMIT -->
                     <div class="form-button">
@@ -277,6 +268,39 @@
             </div>
         </div>
     </div>
+
+    <!-- Driver Unavailable Modal -->
+    <div class="modal fade" id="driverUnavailableModal" tabindex="-1" aria-labelledby="driverUnavailableModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 460px;">
+            <div class="modal-content" style="border-radius: 20px; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.15); padding: 5px;">
+                <div class="modal-header border-0 pb-0" style="padding-top: 15px; position: relative;">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="position: absolute; right: 15px; top: 15px;"></button>
+                    
+                    <h5 class="modal-title w-100 text-center" id="driverUnavailableModalLabel" style="font-weight: 800; font-size: 22px; color: #000; margin-top: 10px;">
+                        ⚠️ Sorry! No Drivers Available
+                    </h5>
+                </div>
+                <div class="modal-body text-center pt-2 pb-3">
+                    <p style="font-size: 16px; color: #555; margin-bottom: 12px; padding: 0 15px;">
+                        We don't have any drivers available in your area for the next 30 minutes.
+                    </p>
+                    <p style="font-size: 15px; color: #555; margin-bottom: 25px; padding: 0 15px;">
+                        If your trip isn't urgent, you can continue booking.<br>
+                        For immediate assistance, please contact support.
+                    </p>
+                    
+                    <div class="d-flex flex-column gap-3 px-4">
+                        <button type="button" class="btn w-100" style="background-color: #000; color: #fff; padding: 12px 20px; border-radius: 12px; font-weight: 600; font-size: 17px; border: none;" id="continueBookingBtn" data-bs-dismiss="modal">Continue Booking</button>
+                        
+                        <a href="{{ route('contact') }}" class="btn w-100" style="background-color: #fff; color: #000; padding: 12px 20px; border-radius: 12px; font-weight: 600; font-size: 17px; border: 1px solid #000; text-decoration: none;">Contact Support</a>
+                        
+                        <button type="button" class="btn w-100" style="background: transparent; color: #ff3b30; padding: 10px; font-weight: 600; font-size: 16px; border: none; outline: none; box-shadow: none;" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 
@@ -1107,10 +1131,15 @@
             });
         }
 
-        function showBookingSuccessPopup() {
-            Swal.fire({
-                title: '<strong style="font-size: 24px;">Thank You!</strong>',
-                html: `
+        function showBookingSuccessPopup(isSuccess = true, errorMessage = null) {
+            let titleHtml = isSuccess 
+                ? '<strong style="font-size: 24px;">Thank You!</strong>' 
+                : '<strong style="font-size: 24px; color: #dc3545;">Booking Error</strong>';
+
+            let popupHtml = '';
+            
+            if (isSuccess) {
+                popupHtml = `
                 <style>
                     .finding-wrap{
                         display:flex;
@@ -1268,10 +1297,10 @@
 
                     <div style="margin-bottom: 25px;">
                         <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
-                            <a href="#" target="_blank" style="display: inline-block;">
+                            <a href="https://play.google.com/store/apps/details?id=com.cb.fixmycaruae" target="_blank" style="display: inline-block;">
                                 <img src="{{ asset('assets/images/google-play.png') }}" alt="Google Play" style="height: 50px; width: auto;">
                             </a>
-                            <a href="#" target="_blank" style="display: inline-block;">
+                            <a href="https://apps.apple.com/in/app/fixmycar-uae/id6757262754" target="_blank" style="display: inline-block;">
                                 <img src="{{ asset('assets/images/app-store.png') }}" alt="App Store" style="height: 50px; width: auto;">
                             </a>
                         </div>
@@ -1299,12 +1328,40 @@
                             Go to Home Screen
                         </button>
                     </div>
-                </div>`,
+                </div>`;
+            } else {
+                let displayMessage = errorMessage ? errorMessage : 'An error occurred during booking. Please try again.';
+                popupHtml = `
+                <div style="text-align: center; max-width: 500px; margin: 0 auto; font-family: 'Avenir', sans-serif;">
+                    <div style="margin: 20px 0;">
+                        <svg viewBox="0 0 24 24" width="80" height="80" stroke="#dc3545" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                    </div>
+                    <p style="font-size: 18px; margin-bottom: 25px; color: #333;">
+                        ${displayMessage}
+                    </p>
+                    <div style="margin-top: 25px;">
+                        <button style="background-color: #333; color: white; border: none; padding: 12px 30px; border-radius: 6px; cursor: pointer; font-size: 16px; font-family: 'Avenir', sans-serif; font-weight: bold; transition: background-color 0.3s;" onclick="Swal.close()">
+                            Close
+                        </button>
+                    </div>
+                </div>`;
+            }
+
+            Swal.fire({
+                title: titleHtml,
+                html: popupHtml,
                 showConfirmButton: false,
                 showCloseButton: true,
                 width: '600px',
                 padding: '30px',
+                timer: isSuccess ? 30000 : undefined,
+                timerProgressBar: isSuccess ? true : false,
                 willClose: () => {
+                    if (isSuccess) {
                     // Clear the form instead of reloading the page
                     document.getElementById('bookingForm').reset();
 
@@ -1384,6 +1441,7 @@
                         });
                         map.setZoom(11);
                     }
+                    } // close if (isSuccess)
                 },
                 customClass: {
                     popup: 'booking-success-popup',
@@ -1406,6 +1464,18 @@
         }
         /* ------------------ DOM Ready ------------------ */
         document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const paymentStatus = urlParams.get('payment');
+            const stateStatus = urlParams.get('state');
+            
+            if (paymentStatus === 'success' || stateStatus === 'success') {
+                showBookingSuccessPopup();
+                window.history.replaceState({}, document.title, window.location.pathname);
+            } else if (paymentStatus === 'cancel' || stateStatus === 'cancel' || stateStatus === 'fail' || stateStatus === 'failed') {
+                showBookingSuccessPopup(false, 'Payment was cancelled or failed. Please try again.');
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+
             checkLocationPermission();
             loadGoogleMapsScript();
 
@@ -1533,8 +1603,14 @@
                     dropoff_lat: dropLatLng.lat(),
                     dropoff_lng: dropLatLng.lng(),
                     distance_km: distanceValue,
-                    platform_fee: parseFloat(platform_fee_amount.innerText) ?? 0,
-                    tax: parseFloat(tax_amount.innerText) ?? 0,
+                    platform_fee: parseFloat(platform_fee_amount?.innerText || platform_fee_amount?.textContent || "0") || 0,
+                    tax: parseFloat(tax_amount?.innerText || tax_amount?.textContent || "0") || 0,
+                    payment_method: "payment_link",
+                    booking_type: "immediate",
+                    prepayment_amount: cleanTotalPrice,
+                    success_url: window.location.origin + "?payment=success",
+                    cancel_url: window.location.origin + "?payment=cancel",
+                    called_by: "web",
                     // extra values
                     total_price: cleanTotalPrice,
                     price: cleanBasePrice,
@@ -1547,27 +1623,94 @@
 
                 if (promotionId) bookingPayload.promotion_id = promotionId;
 
+                const triggerTripPrepayment = async (payload) => {
+                    const submitBtn = document.querySelector('#bookingForm button[type="submit"]');
+                    if (submitBtn) { submitBtn.disabled = true; submitBtn.innerHTML = "Processing..."; }
+                    
+                    try {
+                        const resp = await window.ApiUtils.fetch(
+                            `${PRICE_API_BASE_URL}/v1/customer/payments/trip-prepayments?called_by=web`, {
+
+                                method: 'POST',
+                                headers: {
+                                    'Authorization': 'Bearer ' + token,
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(payload)
+                            }
+                        );
+
+                        const resData = await resp.json();
+                        
+                        if (!resp.ok || resData.status !== true) {
+                            showBookingSuccessPopup(false, resData.message || 'Please try again.');
+                            if (submitBtn) { submitBtn.disabled = false; submitBtn.innerHTML = "Book Now"; }
+                            return;
+                        }
+
+                        if (resData.data && resData.data.checkout_url) {
+                            window.location.href = resData.data.checkout_url;
+                        } else if (resData.data && resData.data.payment_url) {
+                            window.location.href = resData.data.payment_url;
+                        } else if (resData.data && resData.data.url) {
+                            window.location.href = resData.data.url;
+                        } else {
+                            showToast('Booking created successfully!', 'success');
+                            showBookingSuccessPopup();
+                            if (submitBtn) { submitBtn.disabled = false; submitBtn.innerHTML = "Book Now"; }
+                        }
+                    } catch (err) {
+                        showBookingSuccessPopup(false, 'Please try again.');
+                        if (submitBtn) { submitBtn.disabled = false; submitBtn.innerHTML = "Book Now"; }
+                    }
+                };
+
                 try {
-                    const resp = await window.ApiUtils.fetch(
-                        `${PRICE_API_BASE_URL}/v1/customer/bookings`, {
+                    // Check Driver Availability First
+                    const availabilityResp = await window.ApiUtils.fetch(
+                        `${PRICE_API_BASE_URL}/v1/customer/drivers/availability-status`, {
                             method: 'POST',
                             headers: {
-                                'Authorization': 'Bearer ' + token
+                                'Authorization': 'Bearer ' + token,
+                                'Content-Type': 'application/json'
                             },
-                            body: JSON.stringify(bookingPayload)
-                        });
+                            body: JSON.stringify({
+                                pickup_lat: pickupLatLng.lat(),
+                                pickup_lng: pickupLatLng.lng()
+                            })
+                        }
+                    );
 
-                    const resData = await resp.json();
-                    if (!resp.ok || resData.status !== true) {
-                        showToast(resData.message || 'Please try again.', 'error');
+                    let availData = {};
+                    try {
+                        availData = await availabilityResp.json();
+                    } catch (e) {
+                        availData = {};
+                    }
+
+                    if (!availabilityResp.ok || (availData?.data && availData.data.is_drives_status === false)) {
+                        const unavailableModalEl = document.getElementById('driverUnavailableModal');
+                        const unavailableModal = new bootstrap.Modal(unavailableModalEl);
+                        
+                        const continueBtn = document.getElementById('continueBookingBtn');
+                        if (continueBtn) {
+                            continueBtn.onclick = function() {
+                                unavailableModal.hide();
+                                setTimeout(() => {
+                                    triggerTripPrepayment(bookingPayload);
+                                }, 300);
+                            };
+                        }
+
+                        unavailableModal.show();
                         return;
                     }
 
-                    showToast('Booking created successfully!', 'success');
-                    showBookingSuccessPopup();
-                    return;
+                    // Available -> Proceed
+                    await triggerTripPrepayment(bookingPayload);
+                    
                 } catch (err) {
-                    showToast('Please try again.', 'error');
+                    showToast('Please try again checking availability.', 'error');
                 }
             });
         });
