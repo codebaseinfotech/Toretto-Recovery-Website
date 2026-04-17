@@ -1,0 +1,280 @@
+/* emergency-fuel-delivery-dubai.blade.php Custom Styling */
+
+.fuel-content-section {
+    padding: 80px 0;
+    background-color: #111; /* Dark theme */
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+}
+
+.fuel-content-section.bg-darker {
+    background-color: #0b0b0b;
+}
+
+.fuel-text-center {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.fuel-heading {
+    font-size: 42px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #fff;
+    line-height: 1.3;
+}
+
+.fuel-subheading {
+    font-size: 18px;
+    color: #ccc;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    font-weight: 300;
+}
+
+/* Pricing Cards */
+.fuel-prices-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-top: 50px;
+}
+
+.fuel-price-card {
+    background: #1a1a1a;
+    border-radius: 12px;
+    padding: 20px 30px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    min-width: 280px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    transition: transform 0.3s ease;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.fuel-price-card:hover {
+    transform: translateY(-5px);
+}
+
+.fuel-grade {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    font-size: 24px;
+    font-weight: 800;
+    background: #000;
+}
+
+.fuel-grade.super { color: #00c3ff; border: 2px solid rgba(0,195,255,0.2); }
+.fuel-grade.special { color: #00ff88; border: 2px solid rgba(0,255,136,0.2); }
+.fuel-grade.diesel { color: #ffd700; border: 2px solid rgba(255,215,0,0.2); }
+
+.fuel-price-details h4 {
+    margin: 0 0 5px 0;
+    font-size: 18px;
+    color: #fff;
+    font-weight: 600;
+}
+
+.fuel-price-details p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.fuel-price-details p.super-price { color: #00c3ff; }
+.fuel-price-details p.special-price { color: #00ff88; }
+.fuel-price-details p.diesel-price { color: #ffd700; }
+
+/* Why Toretto - Huge Text Section */
+.why-toretto-wrapper {
+    position: relative;
+    padding: 100px 0 60px 0;
+    text-align: center;
+}
+
+.huge-bg-text {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 15vw;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.03);
+    white-space: nowrap;
+    z-index: 0;
+    text-transform: uppercase;
+    line-height: 1;
+    pointer-events: none;
+}
+
+.why-features {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    gap: 40px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+    margin-top: 60px;
+}
+
+.why-feature {
+    flex: 1;
+    min-width: 250px;
+}
+
+.why-feature h4 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.4;
+}
+
+/* Image + Text Split Layouts */
+.split-layout {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    flex-wrap: wrap;
+    margin-bottom: 80px;
+}
+
+.split-layout.flipped .split-image {
+    order: 2;
+}
+
+.split-layout.flipped .split-text {
+    order: 1;
+}
+
+.split-image {
+    flex: 1;
+    min-width: 300px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+}
+
+.split-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 20px;
+    transition: transform 0.5s ease;
+}
+
+.split-image:hover img {
+    transform: scale(1.05);
+}
+
+.split-text {
+    flex: 1;
+    min-width: 300px;
+}
+
+.split-text h3 {
+    font-size: 40px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.split-text p {
+    font-size: 17px;
+    color: #ccc;
+    line-height: 1.7;
+    margin-bottom: 25px;
+}
+
+/* Steps Section */
+.steps-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.step-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.step-number {
+    width: 40px;
+    height: 40px;
+    background: #1a1a1a;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: #fff;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.step-text {
+    font-size: 18px;
+    color: #fff;
+    font-weight: 500;
+}
+
+/* Testimonials */
+.testimonials-grid {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-top: 50px;
+}
+
+.testimonial-card {
+    flex: 1;
+    min-width: 300px;
+    background: #151515;
+    padding: 40px 30px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.05);
+    position: relative;
+}
+
+.testimonial-card i {
+    font-size: 30px;
+    color: rgba(215, 0, 6, 0.4);
+    margin-bottom: 20px;
+}
+
+.testimonial-card p {
+    font-size: 16px;
+    color: #ddd;
+    line-height: 1.6;
+    margin-bottom: 25px;
+    font-style: italic;
+}
+
+.testimonial-author {
+    font-weight: 700;
+    color: #fff;
+    font-size: 16px;
+}
+
+/* Responsive Overrides */
+@media (max-width: 991px) {
+    .split-layout.flipped .split-image { order: 1; }
+    .split-layout.flipped .split-text { order: 2; }
+    
+    .fuel-prices-wrapper { gap: 15px; }
+    .fuel-price-card { min-width: 100%; }
+    
+    .huge-bg-text { font-size: 20vw; top: -10px; }
+    .fuel-heading { font-size: 32px; }
+    .split-text h3 { font-size: 30px; }
+}
