@@ -260,7 +260,7 @@
             <div class="row align-items-center">
                 
                 <div class="col-lg-6 mt-4 mt-lg-0 order-2 order-lg-1">
-                    <img src="{{ asset('assets/images/24_7 Fuel Delivery Assistance in Bengaluru - RESCUE.png') }}" alt="Fuel Delivery Steps" class="img-fluid rounded-4 shadow-lg wow animate__animated animate__fadeInLeft" style="max-height: 500px; object-fit: cover; width: 100%;">
+                    <img src="{{ asset('assets/images/emergency-fuel-delivery-assistance.jpg') }}" alt="Fuel Delivery Steps" class="img-fluid rounded-4 shadow-lg wow animate__animated animate__fadeInLeft" style="max-height: 500px; object-fit: cover; width: 100%;">
                 </div>
 
                 <!-- Right Column Scenarios -->
