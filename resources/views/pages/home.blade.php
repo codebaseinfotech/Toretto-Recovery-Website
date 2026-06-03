@@ -3545,7 +3545,7 @@
 
             const img = document.createElement("img");
             img.src = DASH_CAR_ICON_URL;
-            img.alt = driver.full_name || "Driver";
+            img.alt = "Recovery Vehicle";
             img.style.width = "64px";
             img.style.height = "64px";
             wrap.appendChild(img);
@@ -3598,7 +3598,7 @@
             const position = parseDriverLatLng(driver);
             if (!position) return;
 
-            const markerTitle = driver.full_name || `Driver #${driverId}`;
+            const markerTitle = "";
             const status = getDriverStatus(driver);
             const existingMarker = dashMarkers[driverId];
 

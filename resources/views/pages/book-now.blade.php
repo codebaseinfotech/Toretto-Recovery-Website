@@ -2146,7 +2146,7 @@
                         lng
                     };
 
-                    const title = d.full_name || "Driver";
+                    const title = "Recovery Vehicle";
                     const vehicleText = (d.vehicle_type || "Truck") + " • " + (d.vehicle_number || "N/A");
                     const mobile = d.mobile || "N/A";
 
@@ -2176,7 +2176,7 @@
                         const marker = new google.maps.Marker({
                             map: map,
                             position: pos,
-                            title: title,
+                            title: "",
                             icon: {
                                 url: DASH_CAR_ICON_URL,
                                 scaledSize: new google.maps.Size(40, 40),
