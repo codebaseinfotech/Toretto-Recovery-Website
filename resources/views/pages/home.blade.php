@@ -123,6 +123,9 @@
                                 </div>
                             </div>
 
+                            <div id="nearestDriverInfo" class="text-danger fw-bold mb-2 text-center" style="display: none; font-size: 14px;">
+                                Driver is <span id="nearDriverMin"></span> away from pickup
+                            </div>
 
                             <div class="form-group mb-3">
                                 <label for="recoveryTypesTrigger">Vehicle Types</label>
@@ -1835,10 +1838,10 @@
             callDistanceApi(origin, destination);
         }
 
-        async function calculateFinalPrice(kms, token, minutes) {
+        async function calculateFinalPrice(kms, token, minutes, nearDriverKm = 0, nearDriverTime = 0) {
             try {
 
-                const responsePrice = await fetch(`${PRICE_API_BASE_URL}/v1/customer/price/calculate`, {
+                const responsePrice = await fetch(`${PRICE_API_BASE_URL}/v2/customer/price/calculate`, {
                     method: 'POST',
                     headers: {
                         'Authorization': 'Bearer ' + token,
@@ -1850,7 +1853,9 @@
                         longitude: pickupLng,
                         drop_latitude: dropLat,
                         drop_longitude: dropLng,
-                        minutes: minutes
+                        minutes: minutes,
+                        near_driver_km: nearDriverKm,
+                        near_driver_time: nearDriverTime
                     })
                 });
 
@@ -1971,8 +1976,78 @@
                     });
                 }
 
+                // ------------------ Nearest Driver Logic ------------------
+                let nearestDriverDistance = Infinity;
+                let nearestDriverLat = null;
+                let nearestDriverLng = null;
+
+                // Find nearest driver
+                if (typeof dashDriversById !== 'undefined') {
+                    for (const driverId in dashDriversById) {
+                        const driver = dashDriversById[driverId];
+                        const latLng = parseDriverLatLng(driver);
+                        if (latLng) {
+                            const d = haversineDistance(pickupLat, pickupLng, latLng.lat, latLng.lng);
+                            if (d < nearestDriverDistance) {
+                                nearestDriverDistance = d;
+                                nearestDriverLat = latLng.lat;
+                                nearestDriverLng = latLng.lng;
+                            }
+                        }
+                    }
+                }
+
+                let near_driver_km = 0;
+                let near_driver_time = 0;
+
+                if (nearestDriverLat !== null && nearestDriverLng !== null) {
+                    try {
+                        const driverOrigin = `${nearestDriverLat},${nearestDriverLng}`;
+                        const driverDestination = `${pickupLat},${pickupLng}`;
+                        const responseNearDriver = await fetch(
+                            `${PRICE_API_BASE_URL}/v1/customer/distance?origin=${encodeURIComponent(driverOrigin)}&destination=${encodeURIComponent(driverDestination)}&traffic_model=best_guess`
+                        );
+                        
+                        const ndData = await responseNearDriver.json();
+                        const ndResult = ndData?.data;
+                        if (ndData?.status && ndResult && ndResult.distance?.text) {
+                            const ndKmText = ndResult.distance.text;
+                            const ndMinText = ndResult.duration_in_traffic?.text || ndResult.duration?.text || '';
+                            
+                            // parse km
+                            if (ndKmText.toLowerCase().includes('km')) {
+                                near_driver_km = parseFloat(ndKmText.toLowerCase().replace('km', '').replace(/,/g, '').trim());
+                            } else if (ndKmText.toLowerCase().includes('m')) {
+                                near_driver_km = parseFloat(ndKmText.toLowerCase().replace('m', '').replace(/,/g, '').trim()) / 1000;
+                            }
+                            near_driver_km = Number.isFinite(near_driver_km) ? near_driver_km : 0;
+                            
+                            // parse time
+                            if (ndMinText) {
+                                // Extract digits
+                                const parsedMin = parseInt(ndMinText.replace(/[^\d]/g, ''), 10);
+                                near_driver_time = Number.isFinite(parsedMin) ? parsedMin : 0;
+                                
+                                // show in UI
+                                const infoEl = document.getElementById("nearestDriverInfo");
+                                const minEl = document.getElementById("nearDriverMin");
+                                if (infoEl && minEl && near_driver_time > 0) {
+                                    minEl.innerText = near_driver_time + ' min';
+                                    infoEl.style.display = 'block';
+                                }
+                            }
+                        }
+                    } catch (ndErr) {
+                        console.error("Nearest driver API call failed:", ndErr);
+                    }
+                } else {
+                    // Hide UI if no driver found
+                    const infoEl = document.getElementById("nearestDriverInfo");
+                    if (infoEl) infoEl.style.display = 'none';
+                }
+
                 if (token) {
-                    await calculateFinalPrice(latestDistanceKm, token, minutes);
+                    await calculateFinalPrice(latestDistanceKm, token, minutes, near_driver_km, near_driver_time);
                 } else {
                     console.log("Skipping price calculation: token missing");
                 }
