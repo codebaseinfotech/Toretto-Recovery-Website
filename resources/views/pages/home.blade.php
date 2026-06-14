@@ -1896,49 +1896,45 @@
             try {
                 const token = getAuthToken();
 
-                const responseDistance = await fetch(
-                    `${PRICE_API_BASE_URL}/v1/customer/distance?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&traffic_model=best_guess`
-                );
+                const directionsService = new google.maps.DirectionsService();
+                const directionsResult = await new Promise((resolve) => {
+                    directionsService.route({
+                        origin: origin,
+                        destination: destination,
+                        travelMode: google.maps.TravelMode.DRIVING,
+                        drivingOptions: {
+                            departureTime: new Date(),
+                            trafficModel: 'bestguess'
+                        }
+                    }, (result, status) => {
+                        if (status === 'OK') resolve(result);
+                        else resolve(null);
+                    });
+                });
 
-                const data = await responseDistance.json();
-                console.log('Distance API full response:', data);
-
-                if (!responseDistance.ok) {
-                    showToast(data?.message || "Distance API request failed.", "error");
-                    return;
-                }
-
-                const result = data?.data;
-
-                if (!data?.status || !result || !result.distance?.text) {
-                    console.log('Invalid result:', result);
+                if (!directionsResult || !directionsResult.routes || directionsResult.routes.length === 0) {
                     showToast("Unable to calculate route. Try different locations.", "error");
                     return;
                 }
 
-                latestRoutePolyline = result.polyline || null;
+                const route = directionsResult.routes[0];
+                const leg = route.legs[0];
+                
+                latestRoutePolyline = route.overview_polyline;
 
-                const kmText = result.distance?.text || '';
-                const minutes = result.duration_in_traffic?.text || result.duration?.text || '';
+                const kmText = leg.distance.text;
+                const minutes = leg.duration_in_traffic ? leg.duration_in_traffic.text : leg.duration.text;
 
                 let kmsNumber = null;
-
                 if (kmText) {
                     if (kmText.toLowerCase().includes('km')) {
-                        kmsNumber = parseFloat(
-                            kmText.toLowerCase().replace('km', '').replace(/,/g, '').trim()
-                        );
+                        kmsNumber = parseFloat(kmText.toLowerCase().replace('km', '').replace(/,/g, '').trim());
                     } else if (kmText.toLowerCase().includes('m')) {
-                        kmsNumber = parseFloat(
-                            kmText.toLowerCase().replace('m', '').replace(/,/g, '').trim()
-                        ) / 1000;
+                        kmsNumber = parseFloat(kmText.toLowerCase().replace('m', '').replace(/,/g, '').trim()) / 1000;
                     }
                 }
 
                 latestDistanceKm = Number.isFinite(kmsNumber) ? kmsNumber : 0;
-
-                console.log('kmText:', kmText);
-                console.log('latestDistanceKm:', latestDistanceKm);
 
                 if (latestDistanceKm <= 0) {
                     showToast("Unable to calculate route. Distance not found.", "error");
@@ -1953,81 +1949,72 @@
                     routePolyline = null;
                 }
 
-                if (result.polyline && map && google?.maps?.geometry?.encoding) {
-                    const path = google.maps.geometry.encoding.decodePath(result.polyline);
+                routePolyline = new google.maps.Polyline({
+                    path: route.overview_path,
+                    geodesic: true,
+                    strokeColor: "#000000",
+                    strokeOpacity: 1,
+                    strokeWeight: 4,
+                    map: map
+                });
 
-                    routePolyline = new google.maps.Polyline({
-                        path: path,
-                        geodesic: true,
-                        strokeColor: "#000000",
-                        strokeOpacity: 1,
-                        strokeWeight: 4,
-                        map: map
-                    });
-
-                    const bounds = new google.maps.LatLngBounds();
-                    path.forEach(point => bounds.extend(point));
-                    map.fitBounds(bounds);
-                } else {
-                    console.log("Polyline not drawn", {
-                        hasPolyline: !!result.polyline,
-                        hasMap: !!map,
-                        hasGeometry: !!google?.maps?.geometry?.encoding
-                    });
-                }
+                map.fitBounds(route.bounds);
 
                 // ------------------ Nearest Driver Logic ------------------
-                let nearestDriverDistance = Infinity;
-                let nearestDriverLat = null;
-                let nearestDriverLng = null;
+                let near_driver_km = 0;
+                let near_driver_time = 0;
 
-                // Find nearest driver
+                let origins = [];
                 if (typeof dashDriversById !== 'undefined') {
                     for (const driverId in dashDriversById) {
                         const driver = dashDriversById[driverId];
                         const latLng = parseDriverLatLng(driver);
                         if (latLng) {
-                            const d = haversineDistance(pickupLat, pickupLng, latLng.lat, latLng.lng);
-                            if (d < nearestDriverDistance) {
-                                nearestDriverDistance = d;
-                                nearestDriverLat = latLng.lat;
-                                nearestDriverLng = latLng.lng;
-                            }
+                            origins.push(new google.maps.LatLng(latLng.lat, latLng.lng));
                         }
                     }
                 }
 
-                let near_driver_km = 0;
-                let near_driver_time = 0;
+                origins = origins.slice(0, 25);
 
-                if (nearestDriverLat !== null && nearestDriverLng !== null) {
+                if (origins.length > 0) {
                     try {
-                        const driverOrigin = `${nearestDriverLat},${nearestDriverLng}`;
-                        const driverDestination = `${pickupLat},${pickupLng}`;
-                        const responseNearDriver = await fetch(
-                            `${PRICE_API_BASE_URL}/v1/customer/distance?origin=${encodeURIComponent(driverOrigin)}&destination=${encodeURIComponent(driverDestination)}&traffic_model=best_guess`
-                        );
-                        
-                        const ndData = await responseNearDriver.json();
-                        const ndResult = ndData?.data;
-                        if (ndData?.status && ndResult && ndResult.distance?.text) {
-                            const ndKmText = ndResult.distance.text;
-                            const ndMinText = ndResult.duration_in_traffic?.text || ndResult.duration?.text || '';
-                            
-                            // parse km
-                            if (ndKmText.toLowerCase().includes('km')) {
-                                near_driver_km = parseFloat(ndKmText.toLowerCase().replace('km', '').replace(/,/g, '').trim());
-                            } else if (ndKmText.toLowerCase().includes('m')) {
-                                near_driver_km = parseFloat(ndKmText.toLowerCase().replace('m', '').replace(/,/g, '').trim()) / 1000;
-                            }
-                            near_driver_km = Number.isFinite(near_driver_km) ? near_driver_km : 0;
-                            
-                            // parse time
-                            if (ndMinText) {
-                                // Extract digits
-                                const parsedMin = parseInt(ndMinText.replace(/[^\d]/g, ''), 10);
-                                near_driver_time = Number.isFinite(parsedMin) ? parsedMin : 0;
-                                
+                        const service = new google.maps.DistanceMatrixService();
+                        const matrixResponse = await new Promise((resolve) => {
+                            service.getDistanceMatrix({
+                                origins: origins,
+                                destinations: [new google.maps.LatLng(pickupLat, pickupLng)],
+                                travelMode: google.maps.TravelMode.DRIVING,
+                                drivingOptions: {
+                                    departureTime: new Date(),
+                                    trafficModel: 'bestguess'
+                                }
+                            }, (response, status) => {
+                                if (status === 'OK') resolve(response);
+                                else resolve(null);
+                            });
+                        });
+
+                        if (matrixResponse && matrixResponse.rows) {
+                            let minDuration = Infinity;
+                            let bestDistance = 0;
+                            let bestDuration = 0;
+
+                            matrixResponse.rows.forEach(row => {
+                                if (row.elements && row.elements[0] && row.elements[0].status === 'OK') {
+                                    const durationVal = row.elements[0].duration.value;
+                                    if (durationVal < minDuration) {
+                                        minDuration = durationVal;
+                                        bestDistance = row.elements[0].distance.value / 1000;
+                                        bestDuration = Math.ceil(row.elements[0].duration.value / 60);
+                                    }
+                                }
+                            });
+
+                            if (minDuration !== Infinity) {
+                                near_driver_km = bestDistance;
+                                near_driver_time = bestDuration;
+
                                 // show in UI
                                 const infoEl = document.getElementById("nearestDriverInfo");
                                 const minEl = document.getElementById("nearDriverMin");
@@ -2035,6 +2022,9 @@
                                     minEl.innerText = near_driver_time + ' min';
                                     infoEl.style.display = 'block';
                                 }
+                            } else {
+                                const infoEl = document.getElementById("nearestDriverInfo");
+                                if (infoEl) infoEl.style.display = 'none';
                             }
                         }
                     } catch (ndErr) {
