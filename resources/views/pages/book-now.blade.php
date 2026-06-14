@@ -838,7 +838,7 @@
         async function calculateFinalPrice(kms, token, minutes) {
             try {
 
-                const responsePrice = await fetch(`${PRICE_API_BASE_URL}/v1/customer/price/calculate`, {
+                const responsePrice = await fetch(`${PRICE_API_BASE_URL}/v2/customer/price/calculate`, {
                     method: 'POST',
                     headers: {
                         'Authorization': 'Bearer ' + token,
