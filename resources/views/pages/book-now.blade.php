@@ -943,59 +943,56 @@
                             const driversData = await allDriversResp.json();
                             const drivers = Array.isArray(driversData) ? driversData : (driversData.data || driversData.drivers || []);
                             
-                            let nearestDriverDistance = Infinity;
-                            let nearestDriverLat = null;
-                            let nearestDriverLng = null;
-                            
-                            // Find nearest driver locally first
+                            let origins = [];
                             drivers.forEach(driver => {
                                 const rawLat = driver?.current_lat ?? driver?.lat ?? driver?.latitude;
                                 const rawLng = driver?.current_lng ?? driver?.lng ?? driver?.longitude;
                                 const lat = parseFloat(rawLat);
                                 const lng = parseFloat(rawLng);
-                                
                                 if (Number.isFinite(lat) && Number.isFinite(lng)) {
-                                    const R = 6371; // km
-                                    const dLat = (lat - pickupLat) * Math.PI / 180;
-                                    const dLon = (lng - pickupLng) * Math.PI / 180;
-                                    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                                              Math.cos(pickupLat * Math.PI / 180) * Math.cos(lat * Math.PI / 180) *
-                                              Math.sin(dLon/2) * Math.sin(dLon/2);
-                                    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-                                    const d = R * c;
-                                    
-                                    if (d < nearestDriverDistance) {
-                                        nearestDriverDistance = d;
-                                        nearestDriverLat = lat;
-                                        nearestDriverLng = lng;
-                                    }
+                                    origins.push(new google.maps.LatLng(lat, lng));
                                 }
                             });
-                            
-                            // 3. Google direction to get distance for nearest driver
-                            if (nearestDriverLat !== null && nearestDriverLng !== null) {
-                                const driverOrigin = `${nearestDriverLat},${nearestDriverLng}`;
-                                const driverDestination = `${pickupLat},${pickupLng}`;
-                                const responseNearDriver = await fetch(
-                                    `${PRICE_API_BASE_URL}/v1/customer/distance?origin=${encodeURIComponent(driverOrigin)}&destination=${encodeURIComponent(driverDestination)}&traffic_model=best_guess`
-                                );
-                                
-                                const ndData = await responseNearDriver.json();
-                                const ndResult = ndData?.data;
-                                if (ndData?.status && ndResult && ndResult.distance?.text) {
-                                    const ndKmText = ndResult.distance.text;
-                                    const ndMinText = ndResult.duration_in_traffic?.text || ndResult.duration?.text || '';
-                                    
-                                    if (ndKmText.toLowerCase().includes('km')) {
-                                        near_driver_km = parseFloat(ndKmText.toLowerCase().replace('km', '').replace(/,/g, '').trim());
-                                    } else if (ndKmText.toLowerCase().includes('m')) {
-                                        near_driver_km = parseFloat(ndKmText.toLowerCase().replace('m', '').replace(/,/g, '').trim()) / 1000;
-                                    }
-                                    near_driver_km = Number.isFinite(near_driver_km) ? near_driver_km : 0;
-                                    
-                                    if (ndMinText) {
-                                        const parsedMin = parseInt(ndMinText.replace(/[^\d]/g, ''), 10);
-                                        near_driver_time = Number.isFinite(parsedMin) ? parsedMin : 0;
+
+                            // Google Distance Matrix limits origins to 25 per request. 
+                            origins = origins.slice(0, 25);
+
+                            if (origins.length > 0) {
+                                const service = new google.maps.DistanceMatrixService();
+                                const matrixResponse = await new Promise((resolve) => {
+                                    service.getDistanceMatrix({
+                                        origins: origins,
+                                        destinations: [new google.maps.LatLng(pickupLat, pickupLng)],
+                                        travelMode: google.maps.TravelMode.DRIVING,
+                                        drivingOptions: {
+                                            departureTime: new Date(),
+                                            trafficModel: 'bestguess'
+                                        }
+                                    }, (response, status) => {
+                                        if (status === 'OK') resolve(response);
+                                        else resolve(null);
+                                    });
+                                });
+
+                                if (matrixResponse && matrixResponse.rows) {
+                                    let minDuration = Infinity;
+                                    let bestDistance = 0;
+                                    let bestDuration = 0;
+
+                                    matrixResponse.rows.forEach(row => {
+                                        if (row.elements && row.elements[0] && row.elements[0].status === 'OK') {
+                                            const durationVal = row.elements[0].duration.value;
+                                            if (durationVal < minDuration) {
+                                                minDuration = durationVal;
+                                                bestDistance = row.elements[0].distance.value / 1000; // km
+                                                bestDuration = Math.ceil(row.elements[0].duration.value / 60); // min
+                                            }
+                                        }
+                                    });
+
+                                    if (minDuration !== Infinity) {
+                                        near_driver_km = bestDistance;
+                                        near_driver_time = bestDuration;
                                     }
                                 }
                             }
