@@ -835,7 +835,7 @@
             callDistanceApi(origin, destination);
         }
 
-        async function calculateFinalPrice(kms, token, minutes) {
+        async function calculateFinalPrice(kms, token, minutes, nearDriverKm = 0, nearDriverTime = 0) {
             try {
 
                 const responsePrice = await fetch(`${PRICE_API_BASE_URL}/v2/customer/price/calculate`, {
@@ -850,7 +850,9 @@
                         longitude: pickupLng,
                         drop_latitude: dropLat,
                         drop_longitude: dropLng,
-                        minutes: minutes
+                        minutes: minutes,
+                        near_driver_km: nearDriverKm,
+                        near_driver_time: nearDriverTime
                     })
                 });
 
@@ -891,6 +893,117 @@
         async function callDistanceApi(origin, destination) {
             try {
                 const token = getAuthToken();
+
+                let near_driver_km = 0;
+                let near_driver_time = 0;
+
+                if (token) {
+                    try {
+                        // 1. Check availability status
+                        const availabilityResp = await fetch(
+                            `${PRICE_API_BASE_URL}/v1/customer/drivers/availability-status`, {
+                                method: 'POST',
+                                headers: {
+                                    'Authorization': 'Bearer ' + token,
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    pickup_lat: pickupLat,
+                                    pickup_lng: pickupLng
+                                })
+                            }
+                        );
+                        
+                        let availData = {};
+                        try {
+                            availData = await availabilityResp.json();
+                        } catch (e) {}
+                        
+                        if (!availabilityResp.ok || (availData?.data && availData.data.is_drives_status === false)) {
+                            const unavailableModalEl = document.getElementById('driverUnavailableModal');
+                            if (unavailableModalEl) {
+                                const unavailableModal = new bootstrap.Modal(unavailableModalEl);
+                                unavailableModal.show();
+                            }
+                            return; // Stop the process
+                        }
+
+                        // 2. Fetch all-drivers API
+                        const allDriversResp = await fetch(
+                            `${PRICE_API_BASE_URL}/v1/customer/all-drivers`, {
+                                method: 'GET',
+                                headers: {
+                                    'Authorization': 'Bearer ' + token,
+                                    'Content-Type': 'application/json'
+                                }
+                            }
+                        );
+                        
+                        if (allDriversResp.ok) {
+                            const driversData = await allDriversResp.json();
+                            const drivers = Array.isArray(driversData) ? driversData : (driversData.data || driversData.drivers || []);
+                            
+                            let nearestDriverDistance = Infinity;
+                            let nearestDriverLat = null;
+                            let nearestDriverLng = null;
+                            
+                            // Find nearest driver locally first
+                            drivers.forEach(driver => {
+                                const rawLat = driver?.current_lat ?? driver?.lat ?? driver?.latitude;
+                                const rawLng = driver?.current_lng ?? driver?.lng ?? driver?.longitude;
+                                const lat = parseFloat(rawLat);
+                                const lng = parseFloat(rawLng);
+                                
+                                if (Number.isFinite(lat) && Number.isFinite(lng)) {
+                                    const R = 6371; // km
+                                    const dLat = (lat - pickupLat) * Math.PI / 180;
+                                    const dLon = (lng - pickupLng) * Math.PI / 180;
+                                    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                                              Math.cos(pickupLat * Math.PI / 180) * Math.cos(lat * Math.PI / 180) *
+                                              Math.sin(dLon/2) * Math.sin(dLon/2);
+                                    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+                                    const d = R * c;
+                                    
+                                    if (d < nearestDriverDistance) {
+                                        nearestDriverDistance = d;
+                                        nearestDriverLat = lat;
+                                        nearestDriverLng = lng;
+                                    }
+                                }
+                            });
+                            
+                            // 3. Google direction to get distance for nearest driver
+                            if (nearestDriverLat !== null && nearestDriverLng !== null) {
+                                const driverOrigin = `${nearestDriverLat},${nearestDriverLng}`;
+                                const driverDestination = `${pickupLat},${pickupLng}`;
+                                const responseNearDriver = await fetch(
+                                    `${PRICE_API_BASE_URL}/v1/customer/distance?origin=${encodeURIComponent(driverOrigin)}&destination=${encodeURIComponent(driverDestination)}&traffic_model=best_guess`
+                                );
+                                
+                                const ndData = await responseNearDriver.json();
+                                const ndResult = ndData?.data;
+                                if (ndData?.status && ndResult && ndResult.distance?.text) {
+                                    const ndKmText = ndResult.distance.text;
+                                    const ndMinText = ndResult.duration_in_traffic?.text || ndResult.duration?.text || '';
+                                    
+                                    if (ndKmText.toLowerCase().includes('km')) {
+                                        near_driver_km = parseFloat(ndKmText.toLowerCase().replace('km', '').replace(/,/g, '').trim());
+                                    } else if (ndKmText.toLowerCase().includes('m')) {
+                                        near_driver_km = parseFloat(ndKmText.toLowerCase().replace('m', '').replace(/,/g, '').trim()) / 1000;
+                                    }
+                                    near_driver_km = Number.isFinite(near_driver_km) ? near_driver_km : 0;
+                                    
+                                    if (ndMinText) {
+                                        const parsedMin = parseInt(ndMinText.replace(/[^\d]/g, ''), 10);
+                                        near_driver_time = Number.isFinite(parsedMin) ? parsedMin : 0;
+                                    }
+                                }
+                            }
+                        }
+                    } catch (err) {
+                        console.error("Availability or Nearest Driver check failed:", err);
+                    }
+                }
 
                 const responseDistance = await fetch(
                     `${PRICE_API_BASE_URL}/v1/customer/distance?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&traffic_model=best_guess`
@@ -973,7 +1086,7 @@
                 }
 
                 if (token) {
-                    await calculateFinalPrice(latestDistanceKm, token, minutes);
+                    await calculateFinalPrice(latestDistanceKm, token, minutes, near_driver_km, near_driver_time);
                 } else {
                     console.log("Skipping price calculation: token missing");
                 }
