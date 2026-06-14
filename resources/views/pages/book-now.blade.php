@@ -1002,49 +1002,45 @@
                     }
                 }
 
-                const responseDistance = await fetch(
-                    `${PRICE_API_BASE_URL}/v1/customer/distance?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&traffic_model=best_guess`
-                );
+                const directionsService = new google.maps.DirectionsService();
+                const directionsResult = await new Promise((resolve) => {
+                    directionsService.route({
+                        origin: origin,
+                        destination: destination,
+                        travelMode: google.maps.TravelMode.DRIVING,
+                        drivingOptions: {
+                            departureTime: new Date(),
+                            trafficModel: 'bestguess'
+                        }
+                    }, (result, status) => {
+                        if (status === 'OK') resolve(result);
+                        else resolve(null);
+                    });
+                });
 
-                const data = await responseDistance.json();
-                console.log('Distance API full response:', data);
-
-                if (!responseDistance.ok) {
-                    showToast(data?.message || "Distance API request failed.", "error");
-                    return;
-                }
-
-                const result = data?.data;
-
-                if (!data?.status || !result || !result.distance?.text) {
-                    console.log('Invalid result:', result);
+                if (!directionsResult || !directionsResult.routes || directionsResult.routes.length === 0) {
                     showToast("Unable to calculate route. Try different locations.", "error");
                     return;
                 }
 
-                latestRoutePolyline = result.polyline || null;
+                const route = directionsResult.routes[0];
+                const leg = route.legs[0];
+                
+                latestRoutePolyline = route.overview_polyline;
 
-                const kmText = result.distance?.text || '';
-                const minutes = result.duration_in_traffic?.text || result.duration?.text || '';
-
+                const kmText = leg.distance.text;
+                const minutes = leg.duration_in_traffic ? leg.duration_in_traffic.text : leg.duration.text;
+                
                 let kmsNumber = null;
-
                 if (kmText) {
                     if (kmText.toLowerCase().includes('km')) {
-                        kmsNumber = parseFloat(
-                            kmText.toLowerCase().replace('km', '').replace(/,/g, '').trim()
-                        );
+                        kmsNumber = parseFloat(kmText.toLowerCase().replace('km', '').replace(/,/g, '').trim());
                     } else if (kmText.toLowerCase().includes('m')) {
-                        kmsNumber = parseFloat(
-                            kmText.toLowerCase().replace('m', '').replace(/,/g, '').trim()
-                        ) / 1000;
+                        kmsNumber = parseFloat(kmText.toLowerCase().replace('m', '').replace(/,/g, '').trim()) / 1000;
                     }
                 }
 
                 latestDistanceKm = Number.isFinite(kmsNumber) ? kmsNumber : 0;
-
-                console.log('kmText:', kmText);
-                console.log('latestDistanceKm:', latestDistanceKm);
 
                 if (latestDistanceKm <= 0) {
                     showToast("Unable to calculate route. Distance not found.", "error");
@@ -1059,28 +1055,16 @@
                     routePolyline = null;
                 }
 
-                if (result.polyline && map && google?.maps?.geometry?.encoding) {
-                    const path = google.maps.geometry.encoding.decodePath(result.polyline);
+                routePolyline = new google.maps.Polyline({
+                    path: route.overview_path,
+                    geodesic: true,
+                    strokeColor: "#000000",
+                    strokeOpacity: 1,
+                    strokeWeight: 4,
+                    map: map
+                });
 
-                    routePolyline = new google.maps.Polyline({
-                        path: path,
-                        geodesic: true,
-                        strokeColor: "#000000",
-                        strokeOpacity: 1,
-                        strokeWeight: 4,
-                        map: map
-                    });
-
-                    const bounds = new google.maps.LatLngBounds();
-                    path.forEach(point => bounds.extend(point));
-                    map.fitBounds(bounds);
-                } else {
-                    console.log("Polyline not drawn", {
-                        hasPolyline: !!result.polyline,
-                        hasMap: !!map,
-                        hasGeometry: !!google?.maps?.geometry?.encoding
-                    });
-                }
+                map.fitBounds(route.bounds);
 
                 if (token) {
                     await calculateFinalPrice(latestDistanceKm, token, minutes, near_driver_km, near_driver_time);
