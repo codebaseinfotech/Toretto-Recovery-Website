@@ -308,7 +308,7 @@
                         return;
                     }
 
-                    if (this.latitude !== null && this.longitude !== null) {
+                    if (this.latitude !== null && this.longitude !== null && this.latitude !== 0) {
                         resolve({
                             latitude: this.latitude,
                             longitude: this.longitude
@@ -326,19 +326,37 @@
                                 longitude: this.longitude
                             });
                         },
-                        (error) => {
+                        async (error) => {
                             console.warn('Geolocation error:', error);
-                            if (highAccuracy && error.code === 2) {
+                            
+                            if (highAccuracy && (error.code === 2 || error.code === 3)) {
                                 console.log("Retrying without high accuracy...");
                                 resolve(this.getCurrentLocation(false));
-                            } else {
-                                this.latitude = 0;
-                                this.longitude = 0;
-                                resolve({
-                                    latitude: 0,
-                                    longitude: 0
-                                });
+                                return;
                             }
+
+                            if (error.code !== 1) {
+                                try {
+                                    console.log("Fallback to IP location...");
+                                    const res = await fetch('https://get.geojs.io/v1/ip/geo.json');
+                                    const data = await res.json();
+                                    if (data && data.latitude && data.longitude) {
+                                        this.latitude = parseFloat(data.latitude);
+                                        this.longitude = parseFloat(data.longitude);
+                                        resolve({ latitude: this.latitude, longitude: this.longitude });
+                                        return;
+                                    }
+                                } catch (e) {
+                                    console.error("IP fallback failed", e);
+                                }
+                            }
+
+                            this.latitude = 0;
+                            this.longitude = 0;
+                            resolve({
+                                latitude: 0,
+                                longitude: 0
+                            });
                         }, {
                             enableHighAccuracy: highAccuracy,
                             timeout: 10000,

@@ -2151,7 +2151,27 @@
             }
         }
 
-        /* ------------------ Current Location ------------------ */
+        async function fetchFallbackLocation() {
+            try {
+                const response = await fetch('https://get.geojs.io/v1/ip/geo.json');
+                const data = await response.json();
+                if (data && data.latitude && data.longitude) {
+                    const lat = parseFloat(data.latitude);
+                    const lng = parseFloat(data.longitude);
+                    if (!isLocationInUAE(lat, lng)) {
+                        showToast("Your current location is outside UAE.", "warning");
+                        return;
+                    }
+                    setPickupFromLatLng(lat, lng);
+                } else {
+                    showToast("Unable to fetch location.", "error");
+                }
+            } catch (err) {
+                console.error("IP fallback error:", err);
+                showToast("Unable to fetch location.", "error");
+            }
+        }
+
         function getUserLiveLocation(highAccuracy = true) {
             if (!navigator.geolocation) {
                 showToast("Geolocation not supported.", "error");
@@ -2177,12 +2197,19 @@
                 },
                 (error) => {
                     console.warn("Geolocation error:", error);
-                    if (highAccuracy && error.code === 2) {
+                    if (error.code === 1) {
+                        showToast("Location access denied.", "error");
+                        return;
+                    }
+
+                    if (highAccuracy && (error.code === 2 || error.code === 3)) {
                         console.log("Retrying without high accuracy...");
                         getUserLiveLocation(false);
-                    } else {
-                        showToast("Unable to fetch location.", "error");
+                        return;
                     }
+                    
+                    console.log("Native geolocation failed. Falling back to IP location...");
+                    fetchFallbackLocation();
                 }, {
                     enableHighAccuracy: highAccuracy,
                     timeout: 15000,
