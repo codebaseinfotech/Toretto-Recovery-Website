@@ -419,9 +419,7 @@
                             'Content-Type': 'application/json',
                             'Accept': 'application/json',
                         },
-                        body: JSON.stringify({
-                            role: 'customer'
-                        }),
+                        body: JSON.stringify({}),
                         cache: 'no-store',
                     });
 
