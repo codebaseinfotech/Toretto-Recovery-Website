@@ -2152,7 +2152,7 @@
         }
 
         /* ------------------ Current Location ------------------ */
-        function getUserLiveLocation() {
+        function getUserLiveLocation(highAccuracy = true) {
             if (!navigator.geolocation) {
                 showToast("Geolocation not supported.", "error");
                 return;
@@ -2175,8 +2175,16 @@
 
                     setPickupFromLatLng(lat, lng);
                 },
-                () => showToast("Unable to fetch location.", "error"), {
-                    enableHighAccuracy: true,
+                (error) => {
+                    console.warn("Geolocation error:", error);
+                    if (highAccuracy && error.code === 2) {
+                        console.log("Retrying without high accuracy...");
+                        getUserLiveLocation(false);
+                    } else {
+                        showToast("Unable to fetch location.", "error");
+                    }
+                }, {
+                    enableHighAccuracy: highAccuracy,
                     timeout: 15000,
                     maximumAge: 60000
                 }

@@ -301,7 +301,7 @@
             longitude: null,
             locationPermissionGranted: false,
 
-            async getCurrentLocation() {
+            async getCurrentLocation(highAccuracy = true) {
                 return new Promise((resolve, reject) => {
                     if (!navigator.geolocation) {
                         reject(new Error('Geolocation is not supported by this browser.'));
@@ -328,14 +328,19 @@
                         },
                         (error) => {
                             console.warn('Geolocation error:', error);
-                            this.latitude = 0;
-                            this.longitude = 0;
-                            resolve({
-                                latitude: 0,
-                                longitude: 0
-                            });
+                            if (highAccuracy && error.code === 2) {
+                                console.log("Retrying without high accuracy...");
+                                resolve(this.getCurrentLocation(false));
+                            } else {
+                                this.latitude = 0;
+                                this.longitude = 0;
+                                resolve({
+                                    latitude: 0,
+                                    longitude: 0
+                                });
+                            }
                         }, {
-                            enableHighAccuracy: true,
+                            enableHighAccuracy: highAccuracy,
                             timeout: 10000,
                             maximumAge: 300000
                         }
