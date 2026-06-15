@@ -1860,6 +1860,11 @@
                 });
 
                 const priceData = await responsePrice.json();
+                console.log("Price API Response:", responsePrice.status, priceData);
+
+                if (!responsePrice.ok) {
+                    showToast(priceData?.message || "Failed to calculate price.", "error");
+                }
 
                 const price = priceData?.data?.price ?? 0;
 
@@ -1935,6 +1940,15 @@
                 }
 
                 latestDistanceKm = Number.isFinite(kmsNumber) ? kmsNumber : 0;
+                
+                let minutesNumber = 0;
+                if (minutes) {
+                    const pMin = parseInt(minutes.replace(/[^\d]/g, ''), 10);
+                    minutesNumber = Number.isFinite(pMin) ? pMin : 0;
+                }
+
+                console.log('kmText:', kmText);
+                console.log('minutes string:', minutes, 'parsed:', minutesNumber);
 
                 if (latestDistanceKm <= 0) {
                     showToast("Unable to calculate route. Distance not found.", "error");
@@ -2037,7 +2051,7 @@
                 }
 
                 if (token) {
-                    await calculateFinalPrice(latestDistanceKm, token, minutes, near_driver_km, near_driver_time);
+                    await calculateFinalPrice(latestDistanceKm, token, minutesNumber, near_driver_km, near_driver_time);
                 } else {
                     console.log("Skipping price calculation: token missing");
                 }
