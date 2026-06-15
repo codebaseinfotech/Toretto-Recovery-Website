@@ -28,9 +28,7 @@ class CallModifyLastLogin
                 $response = Http::withToken($token)
                     ->acceptJson()
                     ->timeout(8)
-                    ->post($url, [
-                        'role' => 'customer',
-                    ]);
+                    ->post($url, []);
 
                 Log::info('modify-last-login response', [
                     'status' => $response->status(),

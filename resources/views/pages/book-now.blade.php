@@ -1031,6 +1031,13 @@
                 const kmText = leg.distance.text;
                 const minutes = leg.duration_in_traffic ? leg.duration_in_traffic.text : leg.duration.text;
                 
+                let minutesNumber = 0;
+                if (leg.duration_in_traffic && leg.duration_in_traffic.value) {
+                    minutesNumber = Math.ceil(leg.duration_in_traffic.value / 60);
+                } else if (leg.duration && leg.duration.value) {
+                    minutesNumber = Math.ceil(leg.duration.value / 60);
+                }
+
                 let kmsNumber = null;
                 if (kmText) {
                     if (kmText.toLowerCase().includes('km')) {
@@ -1067,7 +1074,7 @@
                 map.fitBounds(route.bounds);
 
                 if (token) {
-                    await calculateFinalPrice(latestDistanceKm, token, minutes, near_driver_km, near_driver_time);
+                    await calculateFinalPrice(latestDistanceKm, token, minutesNumber, near_driver_km, near_driver_time);
                 } else {
                     console.log("Skipping price calculation: token missing");
                 }
@@ -1174,8 +1181,28 @@
             }
         }
 
-        /* ------------------ Current Location ------------------ */
-        function getUserLiveLocation() {
+        async function fetchFallbackLocation() {
+            try {
+                const response = await fetch('https://get.geojs.io/v1/ip/geo.json');
+                const data = await response.json();
+                if (data && data.latitude && data.longitude) {
+                    const lat = parseFloat(data.latitude);
+                    const lng = parseFloat(data.longitude);
+                    if (!isLocationInUAE(lat, lng)) {
+                        showToast("Your current location is outside UAE.", "warning");
+                        return;
+                    }
+                    setPickupFromLatLng(lat, lng);
+                } else {
+                    showToast("Unable to fetch location.", "error");
+                }
+            } catch (err) {
+                console.error("IP fallback error:", err);
+                showToast("Unable to fetch location.", "error");
+            }
+        }
+
+        function getUserLiveLocation(highAccuracy = true) {
             if (!navigator.geolocation) {
                 showToast("Geolocation not supported.", "error");
                 return;
@@ -1198,8 +1225,23 @@
 
                     setPickupFromLatLng(lat, lng);
                 },
-                () => showToast("Unable to fetch location.", "error"), {
-                    enableHighAccuracy: true,
+                (error) => {
+                    console.warn("Geolocation error:", error);
+                    if (error.code === 1) {
+                        showToast("Location access denied.", "error");
+                        return;
+                    }
+
+                    if (highAccuracy && (error.code === 2 || error.code === 3)) {
+                        console.log("Retrying without high accuracy...");
+                        getUserLiveLocation(false);
+                        return;
+                    }
+                    
+                    console.log("Native geolocation failed. Falling back to IP location...");
+                    fetchFallbackLocation();
+                }, {
+                    enableHighAccuracy: highAccuracy,
                     timeout: 15000,
                     maximumAge: 60000
                 }
