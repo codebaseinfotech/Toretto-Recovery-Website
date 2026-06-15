@@ -1031,6 +1031,13 @@
                 const kmText = leg.distance.text;
                 const minutes = leg.duration_in_traffic ? leg.duration_in_traffic.text : leg.duration.text;
                 
+                let minutesNumber = 0;
+                if (leg.duration_in_traffic && leg.duration_in_traffic.value) {
+                    minutesNumber = Math.ceil(leg.duration_in_traffic.value / 60);
+                } else if (leg.duration && leg.duration.value) {
+                    minutesNumber = Math.ceil(leg.duration.value / 60);
+                }
+
                 let kmsNumber = null;
                 if (kmText) {
                     if (kmText.toLowerCase().includes('km')) {
@@ -1067,7 +1074,7 @@
                 map.fitBounds(route.bounds);
 
                 if (token) {
-                    await calculateFinalPrice(latestDistanceKm, token, minutes, near_driver_km, near_driver_time);
+                    await calculateFinalPrice(latestDistanceKm, token, minutesNumber, near_driver_km, near_driver_time);
                 } else {
                     console.log("Skipping price calculation: token missing");
                 }
